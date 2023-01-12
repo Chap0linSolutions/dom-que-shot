@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SocketConnection from '../../lib/socket';
 import games, { Game } from '../../contexts/games';
 import gsap from 'gsap';
@@ -28,6 +28,7 @@ type Player = {
 export default function Lobby() {
   const navigate = useNavigate();
   const userData = JSON.parse(window.localStorage.getItem('userData'));
+  const returningPlayer = useLocation().state?.returningPlayer ? true : false;
 
   const [ownerVisibility, setOwnerVisibility] = useState<Visibility>(
     Visibility.Invisible
@@ -89,12 +90,26 @@ export default function Lobby() {
       setCurrentOwner(playerName);
     });
 
+    socket.addEventListener('currently-playing-card-game', (destination) => {
+      //TODO: adicionar um jeito de verificar se está na capa ou na página de espera
+      navigate(destination, {
+        state: {
+          isYourTurn: false,
+          isOwner: false,
+        },
+      });
+    });
+
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (destination === '/SelectNextGame') {
         console.log(`Movendo a sala para ${destination}.`);
         return navigate(destination);
       }
     });
+
+    if (returningPlayer) {
+      socket.push('get-current-game-by-room', userData.roomCode);
+    }
 
     return () => {
       socket.removeAllListeners();

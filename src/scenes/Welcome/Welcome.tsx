@@ -18,7 +18,7 @@ function Welcome() {
         )
         .then(() => {
           console.log('OK');
-          navigate('/Lobby');
+          navigate('/Lobby', { state: { returningPlayer: true } });
         })
         .catch(() => {
           console.log('Acesso negado.');
