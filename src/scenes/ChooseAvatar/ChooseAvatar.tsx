@@ -44,11 +44,9 @@ function ChooseAvatar() {
     });
 
     return () => {
-      console.log('saindo da tela chooseAvatar (return do useEffect)');
-      console.log(socket);
-      if(socket.socket){                    //TODO: paliativo. Socket.socket não deveria estar indefinido aqui,
-        socket.removeAllListeners();        //mas por algum motivo fica quando o usuário está no chooseAvatar e decide sair da sala (voltar pra tela Home)
-      }                                     //quando o usuário decide voltar pro lobby (continua na sala), o problema não acontece. Vai entender.
+      if(socket.socket){      
+        socket.removeAllListeners();   
+      }                      
     };
   }, []);
 
@@ -171,9 +169,7 @@ function ChooseAvatar() {
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
   const leaveMatch = () => {
-    if(socket){
-      socket.disconnect();
-    }
+    socket && socket.disconnect();
     navigate('/Home');
   };
 
