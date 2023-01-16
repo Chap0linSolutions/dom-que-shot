@@ -31,7 +31,7 @@ function ChooseAvatar() {
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
-  const socket = SocketConnection.getInstance();
+  const socket = SocketConnection.getInstance(true);
 
   useEffect(() => {
     socket.connect();
