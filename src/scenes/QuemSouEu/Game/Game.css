@@ -1,0 +1,104 @@
+.PlayerWhoDiv {
+    display: flex;
+    height: 550px;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.PlayerWhoDiv::-webkit-scrollbar {
+    display: none;
+}
+
+.PlayerWhoGameTitleAndHide {
+    margin: 0 5% 8px 5%; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.PlayerWhoGameTitle {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.PlayerWhoHide {
+    background: #403A55;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.PlayerWhoCard {
+    width: 90%;
+    height: 80px;
+    background-color: #403A55;
+    border-radius: 10px;
+    margin: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.PlayerWhoFrame {
+    width: 8px;
+    height: 80px;
+    border-radius: 10px 0 0 10px;
+    background: #8877DF;
+}
+
+.PlayerWhoFrameAndName {
+    display: flex;
+    align-items: center;
+}
+
+.PlayerWhoName {
+    font-family: 'Roboto';
+    font-size: 26px;
+    font-weight: 500;
+    color: white;
+    margin-left: 8px;
+}
+
+.PlayerYourName {
+    font-family: 'Roboto';
+    font-size: 26px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    margin-left: 8px;
+}
+
+.PlayerWho {
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px 0 10px 0;
+    padding: 0 10px;
+    min-width: 120px;
+}
+
+.PlayerWhoNickname {
+    font-family: 'Roboto';
+    font-weight: 500;
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.54);
+    margin: 0 8px;
+}
+
+.PlayerWhoAvatar {
+    width: 24px;
+    height: 24px;
+}
+
+.PlayerWhoButton {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+}

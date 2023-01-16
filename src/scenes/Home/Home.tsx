@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { gameCards } from './GameCards';
 import { ArrowRight, AlertTriangle } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import ImageSlider from './ImageSlider';
@@ -9,6 +8,7 @@ import Button from '../../components/Button';
 import GameInfo from './GameInfo';
 import api from '../../services/api';
 import gsap from 'gsap';
+import games from '../../contexts/games';
 import './Home.css';
 
 type GameInformation = {
@@ -147,7 +147,7 @@ function Home() {
       <div className="ChooseGameDiv">
         <p>Já conhece nossos jogos?</p>
         <ImageSlider
-          content={gameCards}
+          content={games}
           show={() => toggleGameInfo(true)}
           setGameInfo={setGameInfo}
         />

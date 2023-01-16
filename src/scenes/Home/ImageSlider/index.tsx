@@ -1,20 +1,13 @@
 import React, { useState } from 'react';
 import './ImageSlider.css';
-
-type Card = {
-  image: string;
-  title: string;
-  id: number;
-  color: string;
-  description: string | JSX.Element;
-}
+import { Game } from '../../../contexts/games';
 
 type GameInformation = {
   title: string;
   description: string | JSX.Element;
 }
 interface ImageSliderProps {
-  content: Card[];
+  content: Game[];
   show: () => void;
   setGameInfo: React.Dispatch<React.SetStateAction<GameInformation>>;
 }
@@ -31,14 +24,14 @@ export default function ImageSlider({
 
   return (
     <div className="slider">
-      {content.map((slide, i) => (
+      {content.map((slide) => (
         <div
-          key={`${i}`}
+          key={`${slide.id}`}
           className="card"
-          onClick={() => updateInfoCard(slide.title, slide.description)}
-          style={{ background: slide.color }}>
-          <img className="image" src={slide.image} alt="game" />
-          <p className="title">{slide.title}</p>
+          onClick={() => updateInfoCard(slide.text, slide.description)}
+          style={{ background: slide.backgroundColor }}>
+          <img className="image" src={slide.src} alt="game" />
+          <p className="title">{slide.text}</p>
         </div>
       ))}
     </div>

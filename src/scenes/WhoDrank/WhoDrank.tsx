@@ -8,6 +8,7 @@ import Avatar from '../../components/Avatar';
 import beer from '../../assets/beer.png';
 import gsap from 'gsap';
 import './WhoDrank.css';
+import AwaitingBanner from '../../components/AwaitingBanner';
 
 interface PlayerProps {
   nickname: string;
@@ -57,15 +58,6 @@ export default function WhoDrankPage() {
       gsap.to('.WhoDrankUnselectedAvatar', { rotate: 0, duration: 0.5 });
     }
   }, [SP]);
-
-  useEffect(() => {
-    gsap.to('.WhoDrankAwaitingIcon', {
-      rotate: -360,
-      duration: 5,
-      ease: 'linear',
-      repeat: -1,
-    });
-  });
 
   const selectPlayer = (player: PlayerProps) => {
     const selectedOnes = selectedPlayers;
@@ -143,16 +135,12 @@ export default function WhoDrankPage() {
   return (
     <Background>
       <Header logo={coverImg} />
-      <div className="WhoDrankDiv">
-        <div className="WhoDrankAwaitingDiv">
-          <img className="WhoDrankAwaitingIcon" src={beer} />
-          <div className="WhoDrankAwaitingTitle">
-            <p>
-              Aguardando o jogador da vez escolher quem bebeu dentre vocês...
-            </p>
-            Vamos torcer que ele não durma no processo.
-          </div>
-        </div>
+      <div className='WhoDrankContainer' style={{marginTop: '3em'}}>
+        <AwaitingBanner
+            icon={beer}
+            firstText="Aguardando o jogador da vez escolher quem bebeu entre vocês..."
+            secondText="vamos torcer que ele não durma no processo."
+        />
       </div>
     </Background>
   );

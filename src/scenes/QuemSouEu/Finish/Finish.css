@@ -1,0 +1,145 @@
+.WhoDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.WhoCardsWinnersDiv {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  border-radius: 20px;
+  border: 2px solid #F9C95C;
+  background: #403a55;
+  padding: 0 0 0 10px;
+  margin: 0 0 20px 0;
+}
+
+.WhoCardsLosersDiv {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  height: 330px;
+  border-radius: 20px;
+  background: #403a55;
+  border: 2px solid #8877df;
+  padding: 10px 0 0 10px;
+}
+
+.WhoCardsLoser {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 300px;
+  height: calc(100% - 10px);
+}
+
+.WhoCardsLoser::-webkit-scrollbar {
+  display: none;
+}
+
+.WhoIconDiv {
+  align-self: flex-end;
+  border-radius: 10px 0 15px 0;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.WhoIcon {
+  width: 30px;
+  height: 30px;
+}
+
+.WhoTitle {
+  margin: 10px;
+  font-size: 22px;
+  font-weight: 500;
+  font-family: 'Roboto';
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.WhoText {
+  font-size: 16px;
+  margin: 4px;
+}
+
+.WhoPlayerOuterCard {
+  background-color: #403a55;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+}
+
+.WhoPlayerInnerCard {
+  opacity: 0;
+  scale: 0;
+  background-color: #8877df;
+  border-radius: 20px;
+  padding: 10px;
+  margin-right: 8px;
+}
+
+.WhoCardsTextDiv {
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.WhoCardsNickname {
+  opacity: 0;
+  font-family: Adumu;
+  font-size: 24px;
+  margin: 2px 4px;
+}
+
+.WhoCardsRole {
+  font-size: 18px;
+  margin: 2px 4px;
+}
+
+.Avatar {
+  width: 105px;
+  height: 105px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.WhoResultsButton {
+  opacity: 0;
+  padding: 40px 0 0 0;
+}
+
+
+@media (max-height: 750px) {
+  .WhoTitle {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 500;
+    font-family: Adumu;
+  }
+
+  .WhoDiv{
+    margin-top: -5%;
+  }
+
+  .WhoResultsButton {
+    padding: 0;
+    padding-top: 3em;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .Avatar {
+    width: 80px;
+    height: 80px;
+  }
+}

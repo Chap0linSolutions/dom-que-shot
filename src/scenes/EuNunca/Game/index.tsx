@@ -2,6 +2,7 @@ import React from 'react';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
 import Button from '../../../components/Button';
+import AwaitingBanner from '../../../components/AwaitingBanner';
 import glassIcon from '../../../assets/glass-icon-yellow-background.png';
 import './Game.css';
 
@@ -48,17 +49,14 @@ export default function GamePage({
   return (
     <Background>
       <Header logo={coverImg} />
-      <div className="EuNuncaDiv">
-        <div className="EuNuncaSuggestionsDiv EuNuncaAwaitingDiv">
-          <img className="EuNuncaAwaitingIcon" src={glassIcon} />
-          <div className="EuNuncaAwaitingTitle">
-            <p>
-              Aguardando o jogador da vez falar uma frase começada por "EU
-              NUNCA"...
-            </p>
-            Se ele demorar a falar, pode dar um pescotapa. Eu deixo.
-          </div>
-        </div>
+      <div className='WhoDrankContainer' style={{marginTop: '3em'}}>
+        <AwaitingBanner
+            icon={glassIcon}
+            firstText={`Aguardando o jogador da vez falar uma frase começada por "EU NUNCA"...`}
+            secondText={"Se ele demorar a falar, pode dar um pescotapa. Eu deixo."}
+            background="#403a55"
+            border={"3px solid #f9c95c"}
+        />
       </div>
     </Background>
   );

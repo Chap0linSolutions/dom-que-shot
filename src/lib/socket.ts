@@ -3,7 +3,7 @@ import { io, Socket } from 'socket.io-client';
 class SocketConnection {
   private static instance;
   socket: Socket;
-  serverAddress = 'http://localhost:3000';
+  serverAddress = 'http://192.168.0.115:3000';
 
   connect() {
     if (!this.socket) {
