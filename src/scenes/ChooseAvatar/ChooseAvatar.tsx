@@ -29,6 +29,29 @@ function ChooseAvatar() {
     visibility: 'hidden',
   });
 
+  //SOCKET///////////////////////////////////////////////////////////////////////////////////////
+
+  const socket = SocketConnection.getInstance();
+
+  useEffect(() => {
+    socket.connect();
+    console.log(socket);
+    socket.addEventListener('room-is-moving-to', (destination) => {
+      if (destination === '/SelectNextGame') {
+        console.log(`Movendo a sala para ${destination}.`);
+        return navigate(destination);
+      }
+    });
+
+    return () => {
+      if(socket.socket){      
+        socket.removeAllListeners();   
+      }                      
+    };
+  }, []);
+
+  //////////////////////////////////////////////////////////////////////////////////////////////
+
   useEffect(() => {
     if (userData.nickname) {
       setUserName(userData.nickname);
@@ -146,8 +169,7 @@ function ChooseAvatar() {
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
   const leaveMatch = () => {
-    const socket = SocketConnection.getInstance();
-    socket.disconnect();
+    socket && socket.disconnect();
     navigate('/Home');
   };
 
