@@ -42,11 +42,11 @@ export function BangBang() {
       Neste jogo, cada participante vai jogar com o seu aparelho.
       <br />
       <br />
-      Iniciada a partida, todos os jogadores devem atirar no alvo dentro do
+      Iniciada a partida, todos os jogadores devem apertar o botão dentro do
       tempo de 10 segundos.
       <br />
       <br />
-      Quem atirar por último, ou não atirar dentro do tempo de 10 segundos, bebe
+      Quem apertar por último ou não apertar a tempo bebe
       uma dose.
     </>
   );

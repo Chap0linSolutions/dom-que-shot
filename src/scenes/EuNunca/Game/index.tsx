@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 import AwaitingBanner from '../../../components/AwaitingBanner';
 import glassIcon from '../../../assets/glass-icon-yellow-background.png';
+import gsap from 'gsap';
 import './Game.css';
 
 interface GameProps {
@@ -19,6 +20,16 @@ export default function GamePage({
   coverImg,
   turnVisibility,
 }: GameProps) {
+
+  useEffect(() => {
+    gsap.to('.EuNuncaSuggestionIcon', {
+      rotate: -360,
+      duration: 5,
+      ease: 'linear',
+      repeat: -1,
+    });
+  });
+
   if (turnVisibility === true) {
     return (
       <Background>
