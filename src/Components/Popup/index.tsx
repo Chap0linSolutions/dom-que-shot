@@ -68,19 +68,27 @@ export default function Popup({
   }
 
   const popupStyle = {
-    height: (height)? `${height}px` : 'auto',
-    backgroundColor: (backgroundColor)? backgroundColor : '#ffffff',
+    height: height ? `${height}px` : 'auto',
+    backgroundColor: backgroundColor ? backgroundColor : '#ffffff',
     opacity: 0.95,
-  }
+  };
 
   return (
     <div className={`PopupContainer ${comesFromTop ? 'Top' : 'Bottom'}`}>
       <div className="PopupDiv" style={popupStyle}>
         <div className="PopupHeader">
-          <p className="PopupTitle" style={(titleColor? {color: titleColor} : {})}>{title}</p>
+          <p
+            className="PopupTitle"
+            style={titleColor ? { color: titleColor } : {}}>
+            {title}
+          </p>
           <X color="#170C32" width="24px" strokeWidth="5px" onClick={exit} />
         </div>
-        <p className="PopupDescription" style={(descriptionColor)? {color: descriptionColor} : {}}>{description}</p>
+        <p
+          className="PopupDescription"
+          style={descriptionColor ? { color: descriptionColor } : {}}>
+          {description}
+        </p>
       </div>
     </div>
   );

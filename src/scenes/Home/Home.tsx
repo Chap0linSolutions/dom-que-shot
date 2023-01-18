@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { gameCards } from './GameCards';
 import { ArrowRight, AlertTriangle } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
@@ -46,7 +46,7 @@ function Home() {
   };
 
   const updateRoomCode = (e) => {
-    const newRoom:string = e.target.value.trim().toUpperCase();
+    const newRoom: string = e.target.value.trim().toUpperCase();
     if (newRoom.length !== 0) {
       setRoomCode(newRoom);
       //room = newRoom;

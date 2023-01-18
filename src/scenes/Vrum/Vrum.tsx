@@ -38,7 +38,8 @@ export default function Vrum() {
       O jogador da vez inicia falando a primeira palavra (VRUM, IHHH ou PLOFT).
       <br />
       <br />
-      Finalizando a rodada com o primeiro que errar, clique no botão abaixo para informar quem bebeu.
+      Finalizando a rodada com o primeiro que errar, clique no botão abaixo para
+      informar quem bebeu.
     </>
   );
 

@@ -4,7 +4,6 @@ import GameCard from '../../../components/GameCard';
 import { AlertTriangle } from 'react-feather';
 import { Game } from '../../../contexts/games';
 import './Settings.css';
-import { useEffect } from 'react';
 
 interface SettingsProps {
   gameList: Game[];

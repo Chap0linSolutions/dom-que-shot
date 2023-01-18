@@ -21,6 +21,7 @@ type Player = {
 
 interface MainProps {
   ownerVisibility: Visibility;
+  currentOwner: string;
   roomCode: string;
   beginMatch: () => void;
   copyToClipboard: () => void;
@@ -30,6 +31,7 @@ interface MainProps {
 
 export default function Main({
   ownerVisibility,
+  currentOwner,
   roomCode,
   beginMatch,
   copyToClipboard,
@@ -90,6 +92,19 @@ export default function Main({
         <p className="PlayerListTitle">Jogadores:</p>
         <div className="PlayerList">
           <PlayerList players={playerList} />
+        </div>
+        <div
+          className="WaitingMessageDiv"
+          style={
+            ownerVisibility === Visibility.Invisible
+              ? { visibility: 'visible' }
+              : { display: 'none' }
+          }>
+          <p className="WaitingMessage">
+            Aguardando {currentOwner}
+            <br />
+            iniciar o jogo...
+          </p>
         </div>
         <div
           className="BeginButton"

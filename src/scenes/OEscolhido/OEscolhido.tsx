@@ -77,12 +77,12 @@ export default function OEscolhido() {
     </>
   );
 
-  const startGame =() => {
+  const startGame = () => {
     socket.push('move-room-to', {
       roomCode: userData.roomCode,
       destination: Game.Game,
     });
-  }
+  };
 
   const nextRound = () => {
     socket.push('update-turn', userData.roomCode);
