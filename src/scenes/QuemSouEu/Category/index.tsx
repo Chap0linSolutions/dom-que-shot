@@ -10,9 +10,9 @@ import AwaitingBanner from "../../../components/AwaitingBanner";
 const categories: {name: string, color: string}[] = [
     {name: "Animais", color: "#3D1365"},
     {name: "Atores",  color: '#3C1A7D'},
-    {name: "Cantores e Bandas", color: '#533D8B'},
-    {name: "Celebridades brasileiras", color: "#857DB1"},
-    {name: "Celebridades internacionais", color: "#B098C1"},
+    {name: "Cantores e bandas", color: '#533D8B'},
+    {name: "Personalidades brasileiras", color: "#857DB1"},
+    {name: "Personalidades internacionais", color: "#B098C1"},
     {name: "Jogadores de futebol", color: "#8D69A2"},
     {name: "Personagens da Disney", color: "#72418C"},
     {name: "Personagens de desenho animado", color: "#67127C"}

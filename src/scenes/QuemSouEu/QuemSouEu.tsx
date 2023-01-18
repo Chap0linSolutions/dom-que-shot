@@ -118,6 +118,12 @@ export default function OEscolhido() {
       setWinners(JSON.parse(players));
     });
 
+    socket.addEventListener('game-category-is', (category) => {
+      if(turnVisibility === false){
+        setCategory(category);
+      }
+    });
+
     return () => {
       socket.removeAllListeners();
     };
@@ -196,7 +202,7 @@ export default function OEscolhido() {
   useEffect(() => {
     if (category) {
       console.log(`categoria selecionada: ${category}`);
-      socket.pushMessage(userData.roomCode, 'game-category-is', 'Animais');
+      socket.pushMessage(userData.roomCode, 'game-category-is', category);
       if(turnVisibility === true){
         const playersWithNoNames = playerList
         .filter(p => p.whoYouAre === undefined)
@@ -247,6 +253,7 @@ export default function OEscolhido() {
     case Game.Game:
         return (
           <GamePage
+              category={category}
               currentPlayerNickname={userData.nickname}
               players={playerList}
               setWinners={updatePlayerList}   //the winners of the match will have the 'whoYouAre' field either set as 'winner' or undefined. That's how we'll filter it

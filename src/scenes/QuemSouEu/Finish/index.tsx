@@ -64,7 +64,7 @@ export default function FinishPage({
     <Background>
       <Header logo={logo}/>
       <div className="WhoDiv">
-        <p className="WhoTitle">Quem acertou:</p>
+        <p className="WhoTitle">Quem acertou primeiro:</p>
         <div className="WhoCardsWinnersDiv">
           {winners.map((player) => (
             <div key={player.nickname} className="WhoPlayerOuterCard">

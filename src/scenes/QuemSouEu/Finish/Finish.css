@@ -124,11 +124,11 @@
     margin: 0;
     font-size: 22px;
     font-weight: 500;
-    font-family: Adumu;
   }
 
   .WhoDiv{
-    margin-top: -5%;
+    margin-top: 0;
+    scale: 0.9;
   }
 
   .WhoResultsButton {

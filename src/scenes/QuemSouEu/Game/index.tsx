@@ -19,9 +19,10 @@ interface GameProps {
     players: ListedPlayerProps[];
     setWinners: React.Dispatch<React.SetStateAction<ListedPlayerProps[]>>;
     turnVisibility: boolean;
+    category: string;
 }
 
-export default function GamePage({currentPlayerNickname, turnVisibility, players, setWinners} : GameProps){
+export default function GamePage({currentPlayerNickname, category, turnVisibility, players, setWinners} : GameProps){
 
     const [whoPlayers, setWhoPlayers] = useState<WhoPlayersProps[]>(
         players.map(player => {
@@ -91,25 +92,28 @@ export default function GamePage({currentPlayerNickname, turnVisibility, players
                                 ? {background: '#8877DF'}
                                 : {background: '#403A55'}
                             }>
-                                <div className="PlayerWhoFrameAndName">
-                                    <div className="PlayerWhoFrame">
-                                        &nbsp;
+                            <div className="PlayerWhoFrame">
+                                    &nbsp;
+                            </div>
+                            <div className="PlayerWhoFrameAndName">
+                                { 
+                                (areNamesVisible === true)
+                                    ? playerName
+                                    : <p className="PlayerYourName">{secretText}</p> 
+                                }
+                                <div className="PlayerWhoCategoryAndPlayer">
+                                    <p className="PlayerWhoCategory">{category}</p>
+                                    <div className="PlayerWho">
+                                        <div className="PlayerWhoAvatar">
+                                            <Avatar seed={player.avatarSeed}/>
+                                        </div>
+                                        <p className="PlayerWhoNickname">
+                                            {player.nickname}
+                                        </p>
                                     </div>
-                                    { 
-                                        (areNamesVisible === true)
-                                            ? playerName
-                                            : <p className="PlayerYourName">{secretText}</p> 
-                                    }
-                                </div>
-                                <div className="PlayerWho">
-                                    <div className="PlayerWhoAvatar">
-                                        <Avatar seed={player.avatarSeed}/>
-                                    </div>
-                                    <p className="PlayerWhoNickname">
-                                        {player.nickname}
-                                    </p>
                                 </div>
                             </div>
+                        </div>
                         ); 
                     }))}
                 </div>
@@ -145,23 +149,26 @@ export default function GamePage({currentPlayerNickname, turnVisibility, players
                         : <p className="PlayerWhoName">{player.whoYouAre}</p>; 
                     return (
                         <div key={player.nickname} className="PlayerWhoCard">
-                            <div className="PlayerWhoFrameAndName">
-                                <div className="PlayerWhoFrame">
+                            <div className="PlayerWhoFrame">
                                     &nbsp;
-                                </div>
+                            </div>
+                            <div className="PlayerWhoFrameAndName">
                                 { 
                                 (areNamesVisible === true)
                                     ? playerName
                                     : <p className="PlayerYourName">{secretText}</p> 
                                 }
-                            </div>
-                            <div className="PlayerWho">
-                                <div className="PlayerWhoAvatar">
-                                    <Avatar seed={player.avatarSeed}/>
+                                <div className="PlayerWhoCategoryAndPlayer">
+                                    <p className="PlayerWhoCategory">{category}</p>
+                                    <div className="PlayerWho">
+                                        <div className="PlayerWhoAvatar">
+                                            <Avatar seed={player.avatarSeed}/>
+                                        </div>
+                                        <p className="PlayerWhoNickname">
+                                            {player.nickname}
+                                        </p>
+                                    </div>
                                 </div>
-                                <p className="PlayerWhoNickname">
-                                    {player.nickname}
-                                </p>
                             </div>
                         </div>
                     ); 
