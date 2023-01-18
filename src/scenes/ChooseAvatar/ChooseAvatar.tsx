@@ -44,9 +44,9 @@ function ChooseAvatar() {
     });
 
     return () => {
-      if(socket.socket){      
-        socket.removeAllListeners();   
-      }                      
+      if (socket.socket) {
+        socket.removeAllListeners();
+      }
     };
   }, []);
 

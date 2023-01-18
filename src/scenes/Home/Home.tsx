@@ -46,7 +46,7 @@ function Home() {
   };
 
   const updateRoomCode = (e) => {
-    const newRoom:string = e.target.value.trim().toUpperCase();
+    const newRoom: string = e.target.value.trim().toUpperCase();
     if (newRoom.length !== 0) {
       setRoomCode(newRoom);
       //room = newRoom;

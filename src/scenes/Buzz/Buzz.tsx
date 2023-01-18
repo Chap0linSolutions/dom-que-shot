@@ -37,7 +37,8 @@ export default function Buzz() {
       O jogador da vez inicia a contagem.
       <br />
       <br />
-      Finalizando a rodada com o primeiro que errar, clique no botão abaixo para informar quem bebeu.
+      Finalizando a rodada com o primeiro que errar, clique no botão abaixo para
+      informar quem bebeu.
     </>
   );
 

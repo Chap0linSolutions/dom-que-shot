@@ -119,10 +119,14 @@ export default function WhoDrankPage() {
                       : 'WhoDrankUnselectedItem WhoDrankPlayerListItem'
                   }
                   key={player.id}>
-                  <p className="WhoDrankPlayerListNickname">{player.nickname}</p>
+                  <p className="WhoDrankPlayerListNickname">
+                    {player.nickname}
+                  </p>
                   <div
                     className={
-                      selectedPlayers.find((p) => p.nickname === player.nickname)
+                      selectedPlayers.find(
+                        (p) => p.nickname === player.nickname
+                      )
                         ? 'WhoDrankSelectedAvatar WhoDrankPlayerListAvatar'
                         : 'WhoDrankUnselectedAvatar WhoDrankPlayerListAvatar'
                     }>

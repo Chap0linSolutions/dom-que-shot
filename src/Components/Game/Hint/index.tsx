@@ -40,7 +40,6 @@ export default function HintPage({
   gamePage,
   description,
 }: HintProps) {
-
   return (
     <Background>
       <Header logo={coverImg} goBackArrow={coverPage} title={title} />
