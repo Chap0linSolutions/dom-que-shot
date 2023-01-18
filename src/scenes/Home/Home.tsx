@@ -6,20 +6,23 @@ import ImageSlider from './ImageSlider';
 import Background from '../../components/Background';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
-import GameInfo from './GameInfo';
+import Popup from '../../components/Popup';
 import api from '../../services/api';
-import gsap from 'gsap';
 import './Home.css';
 
 type GameInformation = {
   title: string;
   description: string | JSX.Element;
-}
+};
 
 function Home() {
   const navigate = useNavigate();
 
-  const [gameInfo, setGameInfo] = useState<GameInformation>({title: '', description: ''});
+  const [gameInfo, setGameInfo] = useState<GameInformation>({
+    title: '',
+    description: '',
+  });
+  const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
   const [roomCode, setRoomCode] = useState<string>('');
   const [inputErrorMsg, setInputErrorMsg] = useState({
     msg: '',
@@ -97,13 +100,6 @@ function Home() {
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
-  const toggleGameInfo = (show) => {
-    if (show === true) {
-      return gsap.to('.GameInfoPopup', { scale: 1, yPercent: -105, duration: 0.6, ease: 'power2'});
-    }
-    return gsap.to('.GameInfoPopup', { scale: 0, yPercent: 0, duration: 0.6, ease: 'power2'});
-  };
-
   return (
     <Background>
       <Header title="Vamos começar?" logo />
@@ -148,18 +144,18 @@ function Home() {
         <p>Já conhece nossos jogos?</p>
         <ImageSlider
           content={gameCards}
-          show={() => toggleGameInfo(true)}
+          show={() => setPopupVisibility(true)}
           setGameInfo={setGameInfo}
         />
       </div>
 
-      <div className="GameInfoPopup">
-        <GameInfo
-          title={gameInfo.title}
-          description={gameInfo.description}
-          exit={() => toggleGameInfo(false)}
-        />
-      </div>
+      <Popup
+        height={280}
+        title={gameInfo.title}
+        description={gameInfo.description}
+        show={popupVisibility}
+        exit={() => setPopupVisibility(false)}
+      />
     </Background>
   );
 }

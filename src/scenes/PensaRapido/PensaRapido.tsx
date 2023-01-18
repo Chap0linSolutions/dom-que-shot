@@ -9,25 +9,33 @@ export default function PensaRapido() {
       Este jogo deve ser jogado fora do aparelho. Funciona assim:
       <br />
       <br />
-      O jogo testa não só a capacidade alcoólica, mas também os conhecimentos de
-      quem participa.
+      O jogador da vez escolhe alguém para responder uma pergunta
+      de conhecimentos gerais ou de algum tema que o grupo decidir.
+      O escolhido então começa a beber, ouve a pergunta e só pode
+      parar quando souber a resposta &#40;ou acabar o copo&#41;.
       <br />
-      Você pode organizar um quiz com perguntas diversas, dividindo os
-      participantes em duas ou três equipes.
       <br />
-      Os temas podem variar de filmes, cultura pop, ou até mesmo esportes. Cabe
-      a você pensar no que combina com o perfil dos seus convidados.
-      <br />
-      Conforme as perguntas são feitas, o jogador precisa pensar na resposta
-      enquanto bebe a cerveja &#40;ou qualquer seja a bebida&#41; e só pode
-      parar quando estiver pronto para responder.
+      Caso o interrogado erre ou não saiba a resposta, o jogador da
+      vez deve responder quando o escolhido terminar de beber. Se nem
+      ele souber a resposta, também deve virar uma dose.
     </>
+  );
+  const hint = (
+    <>
+      PREPARADOS??
+      <br />
+      <br />
+      O jogador da vez inicia indicando uma pessoa e fazendo uma pergunta.
+      <br />
+      <br />
+      Finalizando a rodada, clique no botão abaixo para informar quem bebeu.</>
   );
 
   return (
     <SimpleCardGame
       title={title}
       description={description}
+      hint={hint}
       coverImg={coverImg}
     />
   );

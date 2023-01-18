@@ -23,11 +23,23 @@ export default function BichoBebe() {
       foi chamado, tem de virar uma dose.
     </>
   );
+  const hint = (
+    <>
+      PREPARADOS??
+      <br />
+      <br />
+      Após todos informarem os bichos que escolheram, o jogador da vez inicia perguntando.
+      <br />
+      <br />
+      Finalizando a rodada com o primeiro que errar, clique no botão abaixo para informar quem bebeu.
+    </>
+  )
 
   return (
     <SimpleCardGame
       title={title}
       description={description}
+      hint={hint}
       coverImg={coverImg}
     />
   );

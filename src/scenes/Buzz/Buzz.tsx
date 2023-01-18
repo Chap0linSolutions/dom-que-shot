@@ -16,11 +16,28 @@ export default function Buzz() {
       <br />
       Os números em questão são:
       <ul>
-        <li>Os que contém um 7 &#40;7, 17, 27...&#41;</li>
-        <li>Múltiplos de 7 &#40;7, 14, 21...&#41;</li>
-        <li>Os que tiverem dígitos iguais &#40;11, 22, 33...&#41;</li>
+        <li style={{ color: 'black' }}>
+          Os que contém um 7 &#40;7, 17, 27...&#41;
+        </li>
+        <li style={{ color: 'black' }}>
+          Múltiplos de 7 &#40;7, 14, 21...&#41;
+        </li>
+        <li style={{ color: 'black' }}>
+          Os que tiverem dígitos iguais &#40;11, 22, 33...&#41;
+        </li>
       </ul>
       Quem errar o Buzz deve virar uma dose!
+    </>
+  );
+  const hint = (
+    <>
+      PREPARADOS??
+      <br />
+      <br />
+      O jogador da vez inicia a contagem.
+      <br />
+      <br />
+      Finalizando a rodada com o primeiro que errar, clique no botão abaixo para informar quem bebeu.
     </>
   );
 
@@ -28,6 +45,7 @@ export default function Buzz() {
     <SimpleCardGame
       title={title}
       description={description}
+      hint={hint}
       coverImg={coverImg}
     />
   );

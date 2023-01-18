@@ -7,12 +7,12 @@ type Card = {
   id: number;
   color: string;
   description: string | JSX.Element;
-}
+};
 
 type GameInformation = {
   title: string;
   description: string | JSX.Element;
-}
+};
 interface ImageSliderProps {
   content: Card[];
   show: () => void;
@@ -22,10 +22,10 @@ interface ImageSliderProps {
 export default function ImageSlider({
   content,
   show,
-  setGameInfo
+  setGameInfo,
 }: ImageSliderProps) {
   const updateInfoCard = (title, description) => {
-    setGameInfo({title: title, description: description});
+    setGameInfo({ title: title, description: description });
     show();
   };
 
