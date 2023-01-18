@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import SocketConnection from '../../lib/socket';
 import Background from '../../components/Background';
 import CoverPage from '../../components/Game/Cover';
-import InfoPage from '../../components/Game/Info';
 import coverImg from '../../assets/game-covers/quem-sou-eu.png';
 import CategoryPage from './Category';
 import GamePage from './Game';
@@ -26,7 +25,6 @@ type whoPlayer = {
 
 enum Game {
   Cover,
-  Info,
   Category,
   Game,
   Finish,
@@ -50,10 +48,13 @@ export default function OEscolhido() {
       Neste jogo, cada participante vai jogar com o seu aparelho.
       <br />
       <br />
-      A descrição ainda está por vir rs.
+      Serão sorteados personagens para cada jogador a partir da categoria
+      escolhida pelo jogador da vez. A partir daí cada um na sua vez vai
+      fazendo perguntas de sim ou não para tentar adivinhar quem é o personagem
+      sorteado. Ele pode ser um ator/atriz, cantor e etc.
       <br />
       <br />
-      Boa sorte!
+      O primeiro a acertar é o único que não bebe. Boa sorte!
     </>
   );
 
@@ -225,26 +226,16 @@ export default function OEscolhido() {
           goBackPage={backToLobby}
           turnVisibility={turnVisibility}
           ownerVisibility={ownerVisibility}
-          infoPage={() => setCurrentGameState(Game.Info)}
-          gamePage={startCategorySelection}       
-        />
-      );
-
-    case Game.Info:
-      return (
-        <InfoPage
-          title={title}
           description={description}
-          coverImg={coverImg}
-          coverPage={() => setCurrentGameState(Game.Cover)}
-          gamePage={startCategorySelection}      
-          turnVisibility={turnVisibility}
+          gamePage={startCategorySelection}       
         />
       );
 
     case Game.Category:
       return (
         <CategoryPage
+            title={title}
+            description={description}
             setCategory={setCategory}
             turnVisibility={turnVisibility}
         />
@@ -253,6 +244,8 @@ export default function OEscolhido() {
     case Game.Game:
         return (
           <GamePage
+              title={title}
+              description={description}
               category={category}
               currentPlayerNickname={userData.nickname}
               players={playerList}

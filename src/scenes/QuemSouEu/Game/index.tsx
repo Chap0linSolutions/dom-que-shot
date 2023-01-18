@@ -7,6 +7,7 @@ import Button from '../../../components/Button';
 import Header from '../../../components/Header';
 import Alert from '../../../components/Alert';
 import './Game.css'
+import Popup from '../../../components/Popup';
 
 
 interface WhoPlayersProps extends ListedPlayerProps {
@@ -15,6 +16,8 @@ interface WhoPlayersProps extends ListedPlayerProps {
 } 
 
 interface GameProps {
+    title: string;
+    description: string | JSX.Element;
     currentPlayerNickname: string;
     players: ListedPlayerProps[];
     setWinners: React.Dispatch<React.SetStateAction<ListedPlayerProps[]>>;
@@ -22,8 +25,9 @@ interface GameProps {
     category: string;
 }
 
-export default function GamePage({currentPlayerNickname, category, turnVisibility, players, setWinners} : GameProps){
+export default function GamePage({title, description, currentPlayerNickname, category, turnVisibility, players, setWinners} : GameProps){
 
+    const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
     const [whoPlayers, setWhoPlayers] = useState<WhoPlayersProps[]>(
         players.map(player => {
             return {...player, selected: false, isNameVisible: false}
@@ -70,7 +74,14 @@ export default function GamePage({currentPlayerNickname, category, turnVisibilit
     if(turnVisibility === true){
         return (
             <Background noImage>
-                <Header infoPage={() => console.log('nada por aqui.')} />
+                <Popup
+                    title={title}
+                    description={description}
+                    show={popupVisibility}
+                    exit={() => setPopupVisibility(false)}
+                    comesFromTop
+                />
+                <Header infoPage={() => setPopupVisibility(true)} />
                 <Alert message="Clique no jogador que acertar primeiro!"/>
                 <div className="PlayerWhoGameTitleAndHide">
                     <p className="PlayerWhoGameTitle">
@@ -132,7 +143,14 @@ export default function GamePage({currentPlayerNickname, category, turnVisibilit
 
     return (
         <Background noImage>
-            <Header infoPage={() => console.log('nada por aqui.')} />
+            <Popup
+                title={title}
+                description={description}
+                show={popupVisibility}
+                exit={() => setPopupVisibility(false)}
+                comesFromTop
+            />
+            <Header infoPage={() => setPopupVisibility(true)} />
             <div className="PlayerWhoGameTitleAndHide">
                 <p className="PlayerWhoGameTitle">
                     Veja quem são seus amigos:

@@ -5,6 +5,7 @@ import Header from "../../../components/Header";
 import beer from '../../../assets/beer.png';
 import './Category.css'
 import AwaitingBanner from "../../../components/AwaitingBanner";
+import Popup from "../../../components/Popup";
 
 
 const categories: {name: string, color: string}[] = [
@@ -19,12 +20,15 @@ const categories: {name: string, color: string}[] = [
 ]
 
 interface CategoryProps {
+    title: string;
+    description: string | JSX.Element;
     setCategory: React.Dispatch<React.SetStateAction<string>>;
     turnVisibility: boolean;
 }
 
-export default function CategoryPage({setCategory, turnVisibility}: CategoryProps){
+export default function CategoryPage({title, description, setCategory, turnVisibility}: CategoryProps){
     
+    const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
     const [selectedCategory, setSelectedCategory] = useState<string>(undefined);
     
     const selectCategory = (name : string) => {
@@ -37,7 +41,14 @@ export default function CategoryPage({setCategory, turnVisibility}: CategoryProp
     if(turnVisibility === true){
         return (
             <Background noImage>
-                <Header infoPage={() => {console.log('Nada a declarar.')}}/>
+                <Popup
+                    title={title}
+                    description={description}
+                    show={popupVisibility}
+                    exit={() => setPopupVisibility(false)}
+                    comesFromTop
+                />
+                <Header infoPage={() => setPopupVisibility(true)}/>
 
                 <p className="categoriesTitle">
                     Escolha uma categoria para o grupo:
@@ -71,16 +82,23 @@ export default function CategoryPage({setCategory, turnVisibility}: CategoryProp
 
     return (
         <Background>
-          <Header infoPage={() => {console.log('Nada a declarar.')}}/>
-          <div className="categoriesDiv awaiting">
-            <AwaitingBanner
-                icon={beer}
-                firstText="Aguardando o jogador da vez largar do zap e escolher uma categoria..."
-                secondText="eita Giovana, o forninho caiu"
-                background="#3D1365"
-                border="4px solid #800080"
+            <Popup
+                title={title}
+                description={description}
+                show={popupVisibility}
+                exit={() => setPopupVisibility(false)}
+                comesFromTop
             />
-          </div>
+            <Header infoPage={() => {setPopupVisibility(true)}}/>
+            <div className="categoriesDiv awaiting">
+                <AwaitingBanner
+                    icon={beer}
+                    firstText="Aguardando o jogador da vez largar do zap e escolher uma categoria..."
+                    secondText="eita Giovana, o forninho caiu"
+                    background="#3D1365"
+                    border="4px solid #800080"
+                />
+            </div>
         </Background>
     );
 }
