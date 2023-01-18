@@ -30,11 +30,23 @@ export default function Vrum() {
       a palavra, tem de virar uma dose.
     </>
   );
+  const hint = (
+    <>
+      PREPARADOS??
+      <br />
+      <br />
+      O jogador da vez inicia falando a primeira palavra (VRUM, IHHH ou PLOFT).
+      <br />
+      <br />
+      Finalizando a rodada com o primeiro que errar, clique no botão abaixo para informar quem bebeu.
+    </>
+  );
 
   return (
     <SimpleCardGame
       title={title}
       description={description}
+      hint={hint}
       coverImg={coverImg}
     />
   );

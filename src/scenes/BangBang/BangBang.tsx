@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import SocketConnection from '../../lib/socket';
 import Background from '../../components/Background';
 import CoverPage from '../../components/Game/Cover';
-import InfoPage from '../../components/Game/Info';
+import HintPage from '../../components/Game/Hint';
 import { RankingPage } from './Ranking';
 import { GamePage } from './Game';
 import coverImg from '../../assets/game-covers/bang-bang.png';
@@ -11,7 +11,7 @@ import './BangBang.css';
 
 enum Game {
   Cover,
-  Info,
+  Hint,
   Game,
   Ranking,
 }
@@ -46,7 +46,8 @@ export function BangBang() {
       tempo de 10 segundos.
       <br />
       <br />
-      Quem atirar por último ou quem não atirar dentro do tempo, bebe uma dose.
+      Quem atirar por último, ou não atirar dentro do tempo de 10 segundos, bebe
+      uma dose.
     </>
   );
 
@@ -135,19 +136,8 @@ export function BangBang() {
           goBackPage={backToLobby}
           turnVisibility={turnVisibility}
           ownerVisibility={ownerVisibility}
-          infoPage={() => setCurrentGameState(Game.Info)}
+          description={description} //full game info is now loaded here
           gamePage={() => setCurrentGameState(Game.Game)}
-        />
-      );
-    case Game.Info:
-      return (
-        <InfoPage
-          title={title}
-          description={description}
-          coverImg={coverImg}
-          coverPage={() => setCurrentGameState(Game.Cover)}
-          gamePage={() => setCurrentGameState(Game.Game)}
-          turnVisibility={turnVisibility}
         />
       );
     case Game.Game:

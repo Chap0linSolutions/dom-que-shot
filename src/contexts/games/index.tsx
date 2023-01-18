@@ -86,7 +86,7 @@ const games: Game[] = [
     backgroundColor: GameTypes.Simple,
     description: `O jogador da vez escolhe alguém para responder uma pergunta. Essa pessoa então
     ouve a pergunta e começa a beber, só podendo parar quando souber a resposta. Se o autor da pergunta
-    não souber a resposta, ele próprio tem de virar uma dose.`, 
+    não souber a resposta, ele próprio tem de virar uma dose.`,
   },
   {
     src: QuemSouEu,
