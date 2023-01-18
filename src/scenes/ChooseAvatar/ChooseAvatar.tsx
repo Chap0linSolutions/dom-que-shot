@@ -31,10 +31,10 @@ function ChooseAvatar() {
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
-  const socket = SocketConnection.getInstance();
+  const socket = SocketConnection.getInstance(true);
 
   useEffect(() => {
-    socket.connect();
+    socket.connect(true);
     console.log(socket);
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (destination === '/SelectNextGame') {
