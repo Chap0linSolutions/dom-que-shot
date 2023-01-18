@@ -90,7 +90,6 @@ export default function SimpleCardGame({
           title={title}
           coverImg={coverImg}
           description={hint}
-          gameType="simple"
           coverPage={() => setCurrentGameState(Game.Cover)}
           gamePage={endOfGame}
         />

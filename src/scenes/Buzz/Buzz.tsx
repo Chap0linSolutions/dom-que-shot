@@ -46,7 +46,6 @@ export default function Buzz() {
       title={title}
       description={description}
       hint={hint}
-      sizeOfDescription={500}
       coverImg={coverImg}
     />
   );

@@ -4,13 +4,11 @@ import coverImg from '../../assets/game-covers/eu-nunca.png';
 import SocketConnection from '../../lib/socket';
 import Background from '../../components/Background';
 import CoverPage from '../../components/Game/Cover';
-import HintPage from '../../components/Game/Hint';
 import GamePage from './Game';
 import './EuNunca.css';
 
 enum Game {
   Cover,
-  Hint,
   Game,
 }
 
@@ -106,22 +104,10 @@ export default function EuNunca() {
           title={title}
           coverImg={coverImg}
           goBackPage={backToLobby}
-          gamePage={() => setCurrentGameState(Game.Hint)}
+          gamePage={startGame}
           turnVisibility={turnVisibility}
           ownerVisibility={ownerVisibility}
           description={description} //full game info is now loaded here
-        />
-      );
-
-    case Game.Hint: 
-      return (
-        <HintPage       
-          title={title}
-          description={description}
-          gameType="dynamic"
-          coverImg={coverImg}
-          coverPage={() => setCurrentGameState(Game.Cover)}
-          gamePage={startGame}
         />
       );
 

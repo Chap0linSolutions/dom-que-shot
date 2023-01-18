@@ -28,7 +28,6 @@ const HintPageDescription = styled.p`
 interface HintProps {
   coverImg: string;
   title: string;
-  gameType: string;
   coverPage: () => void;
   gamePage: () => void;
   description: JSX.Element | string;
@@ -37,13 +36,10 @@ interface HintProps {
 export default function HintPage({
   title,
   coverImg,
-  gameType,
   coverPage,
   gamePage,
   description,
 }: HintProps) {
-
-  const buttonText = gameType === 'simple' ? 'Finalizar' : 'Iniciar';
 
   return (
     <Background>
@@ -51,7 +47,7 @@ export default function HintPage({
       <HintPageDiv>
         <HintPageDescription>{description}</HintPageDescription>
         <div>
-          <Button onClick={gamePage}>{buttonText}</Button>
+          <Button onClick={gamePage}>Finalizar</Button>
         </div>
       </HintPageDiv>
     </Background>

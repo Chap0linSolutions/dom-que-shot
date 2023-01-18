@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import SocketConnection from '../../lib/socket';
 import Background from '../../components/Background';
 import CoverPage from '../../components/Game/Cover';
-import HintPage from '../../components/Game/Hint';
 import GamePage from './Game';
 import FinishPage from './Finish';
 import AwaitingResults from './Awaiting';
@@ -24,7 +23,6 @@ interface VotedPlayerProps {
 
 enum Game {
   Cover,
-  Hint,
   Game,
   AwaitingResults,
   Finish,
@@ -78,6 +76,13 @@ export default function OEscolhido() {
       Boa sorte!
     </>
   );
+
+  const startGame =() => {
+    socket.push('move-room-to', {
+      roomCode: userData.roomCode,
+      destination: Game.Game,
+    });
+  }
 
   const nextRound = () => {
     socket.push('update-turn', userData.roomCode);
@@ -135,10 +140,6 @@ export default function OEscolhido() {
 
   useEffect(() => {
     if (currentGameState === Game.Game) {
-      socket.push('move-room-to', {
-        roomCode: userData.roomCode,
-        destination: Game.Game,
-      });
       startTimer();
     } else if (currentGameState === Game.AwaitingResults) {
       const votedPlayer = window.localStorage.getItem('voted-player');
@@ -164,19 +165,7 @@ export default function OEscolhido() {
           turnVisibility={turnVisibility}
           ownerVisibility={ownerVisibility}
           description={description} //full game info is now loaded here
-          gamePage={() => setCurrentGameState(Game.Hint)}
-        />
-      );
-
-    case Game.Hint:
-      return (
-        <HintPage               
-          title={title}
-          description={description}
-          coverImg={coverImg}
-          gameType="round"
-          coverPage={() => setCurrentGameState(Game.Cover)}
-          gamePage={() => setCurrentGameState(Game.Game)}
+          gamePage={startGame}
         />
       );
 

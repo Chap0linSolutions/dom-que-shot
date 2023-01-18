@@ -49,7 +49,7 @@ export default function GamePage({
     <Background noImage>
       <Header timer={msTimeLeft} />
       <div className="OEscolhidoDiv">
-        <p>Escolha um participante:</p>
+        <p>Vote em quem deve beber:</p>
         <div className="GamePlayerListDiv">
           {playerList.map((player, i) => (
             <div

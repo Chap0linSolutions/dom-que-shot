@@ -48,7 +48,6 @@ export default function Vrum() {
       description={description}
       hint={hint}
       coverImg={coverImg}
-      sizeOfDescription={740}
     />
   );
 }
