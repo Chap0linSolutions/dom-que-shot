@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import PlaceholderImage from '../../../components/Placeholder/Image';
 import './ImageSlider.css';
 
 type Card = {
@@ -29,6 +30,28 @@ export default function ImageSlider({
     show();
   };
 
+//Placeholder /////////////////////////////////////////////////////////////////////////////
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const [innerHeight, setInnerHeight] = useState<number>(window.innerHeight);
+
+  const handleResize = () => {
+    setInnerHeight(window.innerHeight);
+  }
+
+  const finishedLoading = () => {
+    console.log('imagem carregada.');
+    setLoaded(true);
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+  }, []);
+
+  const placeholderSize = (innerHeight <= 720)? 110 : 140;
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
   return (
     <div className="slider">
       {content.map((slide, i) => (
@@ -37,7 +60,21 @@ export default function ImageSlider({
           className="card"
           onClick={() => updateInfoCard(slide.title, slide.description)}
           style={{ background: slide.color }}>
-          <img className="image" src={slide.image} alt="game" />
+          <div className="HomeImageDiv">
+            <img 
+              className="image"
+              style={loaded === true? {} : {display: 'none'}} 
+              src={slide.image} 
+              alt="game" 
+              onLoad={() => setLoaded(true)}
+            />
+            <PlaceholderImage
+              loaded={loaded}
+              width={placeholderSize}
+              height={placeholderSize}
+              borderRadius='10px'
+            />
+          </div>
           <p className="title">{slide.title}</p>
         </div>
       ))}
