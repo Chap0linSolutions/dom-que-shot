@@ -69,7 +69,7 @@ export default function ImageSlider({
             <PlaceholderImage
               width={placeholderSize}
               height={placeholderSize}
-              loaded={false}
+              loaded={loaded}
               borderRadius="10px"
             />
           </div>
