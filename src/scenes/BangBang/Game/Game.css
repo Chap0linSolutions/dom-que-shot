@@ -34,6 +34,7 @@
   height: 60%;
   display: flex;
   justify-content: center;
+  position: relative;
 }
 
 #game-bang-bang .container-baloon {
@@ -62,6 +63,30 @@
 .target-img {
   width: 80%;
   object-fit: scale-down;
+}
+
+.wrong-local-container {
+  position: absolute;
+  z-index: 1;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.wrong-local-message {
+  border: solid 2px orangered;
+  border-radius: 30%;
+  background-color: white;
+  padding: 10px;
+}
+
+.wrong-local-container p {
+  text-align: center;
+  color: #403A55
 }
 
 @media (min-height: 720px) {

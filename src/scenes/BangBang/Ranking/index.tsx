@@ -38,9 +38,8 @@ export function RankingPage({
   let noOneVoted = false;
 
   data.forEach((player) => {
-    if (parseInt(player.shotTime) / -1000 === 10) {
+    if (parseInt(player.shotTime) / -1000 >= 10) {
       count++;
-      console.log('CONTADOR DE PERDEDORES >>>> ', count);
     }
   });
 
