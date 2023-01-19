@@ -19,10 +19,13 @@
 }
 
 .image {
-  margin-top: 1em;
   width: 140px;
   height: 140px;
   object-fit: scale-down;
+}
+
+.HomeImageDiv{
+  margin-top: 1em;
 }
 
 .title {
