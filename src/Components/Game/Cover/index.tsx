@@ -3,6 +3,7 @@ import Background from '../../Background';
 import Header from '../../Header';
 import Button from '../../Button';
 import PingTracker from '../../Debug/PingTracker';
+import Popup from '../../Popup';
 import gsap from 'gsap';
 import './Cover.css';
 
@@ -10,7 +11,8 @@ interface CoverProps {
   title: string;
   coverImg: string;
   type: string;
-  infoPage: () => void;
+  description: string | JSX.Element;
+  sizeOfDescription?: number;
   gamePage: () => void;
   goBackPage: () => void;
   turnVisibility: boolean;
@@ -21,18 +23,23 @@ export default function CoverPage({
   type,
   title,
   coverImg,
-  infoPage,
+  description,
+  sizeOfDescription,
   gamePage,
   goBackPage,
   turnVisibility,
   ownerVisibility,
 }: CoverProps) {
   const [cardColor, setCardColor] = useState('#000000');
+  const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
 
   const header = ownerVisibility ? (
-    <Header goBackArrow={goBackPage} infoPage={infoPage} />
+    <Header
+      goBackArrow={goBackPage}
+      infoPage={() => setPopupVisibility(true)}
+    />
   ) : (
-    <Header infoPage={infoPage} />
+    <Header infoPage={() => setPopupVisibility(true)} />
   );
 
   useEffect(() => {
@@ -104,6 +111,14 @@ export default function CoverPage({
 
   return (
     <Background>
+      <Popup
+        height={sizeOfDescription ? sizeOfDescription : undefined}
+        title={title}
+        description={description}
+        show={popupVisibility}
+        exit={() => setPopupVisibility(false)}
+        comesFromTop
+      />
       {header}
       <div className="CoverPageDiv">
         <div

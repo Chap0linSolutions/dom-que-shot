@@ -102,7 +102,7 @@ export function GamePage({ rankingPage, shot, ready }: GameProps) {
 
   return (
     <Background>
-      <div id="game-bang-bang" className="container">
+      <div id="game-bang-bang" className="game-bang-bang">
         <Header timer={formatedTime()} />
 
         <div className="target-image">

@@ -2,23 +2,27 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SocketConnection from '../../../lib/socket';
 import CoverPage from '../Cover';
-import InfoPage from '../Info';
+import HintPage from '../Hint';
 import './SimpleCardGame.css';
 
 enum Game {
   Cover,
-  Info,
+  Hint,
 }
 
 interface SimpleCardGameProps {
   title: string;
   description: string | JSX.Element;
+  hint: string | JSX.Element;
+  sizeOfDescription?: number;
   coverImg: string;
 }
 
 export default function SimpleCardGame({
   title,
   description,
+  hint,
+  sizeOfDescription,
   coverImg,
 }: SimpleCardGameProps) {
   const userData = JSON.parse(window.localStorage.getItem('userData'));
@@ -72,20 +76,22 @@ export default function SimpleCardGame({
           title={title}
           coverImg={coverImg}
           goBackPage={backToLobby}
-          infoPage={() => setCurrentGameState(Game.Info)}
+          description={description} //full game info is now loaded here
+          sizeOfDescription={sizeOfDescription ? sizeOfDescription : undefined}
           turnVisibility={turnVisibility}
           ownerVisibility={ownerVisibility}
-          gamePage={endOfGame}
+          gamePage={() => setCurrentGameState(Game.Hint)}
         />
       );
 
-    case Game.Info:
+    case Game.Hint:
       return (
-        <InfoPage
+        <HintPage
           title={title}
           coverImg={coverImg}
-          description={description}
+          description={hint}
           coverPage={() => setCurrentGameState(Game.Cover)}
+          gamePage={endOfGame}
         />
       );
   }

@@ -65,7 +65,7 @@ export default function FinishPage({
             <div className="ResultsInnerCard NoVotesOuter">
               <p className="ResultsText" />
               <div className="ResultsAvatar Avatar">
-                <img src={noOneVoted} width="100px;" />
+                <img src={noOneVoted} />
               </div>
               <p className="ResultsText Nickname">R.I.P. Votação</p>
             </div>
@@ -96,20 +96,25 @@ export default function FinishPage({
       <Background noImage>
         <Header />
         <div className="OEscolhidoDiv">
-          <p className="ResultsTitle">E o mais votado foi:</p>
-          <div className="ResultsOuterCard">
-            <p className="ResultsText" />
-            <div className="ResultsInnerCard">
+          <div className="UpperInfos">
+            <p className="ResultsTitle">E o mais votado foi:</p>
+            <div className="ResultsOuterCard">
               <p className="ResultsText" />
-              <div className="ResultsAvatar Avatar">
-                <Avatar seed={votedPlayer.at(0).avatarSeed} />
+              <div className="ResultsInnerCard">
+                <p className="ResultsText" />
+                <div className="ResultsAvatar Avatar">
+                  <Avatar seed={votedPlayer.at(0).avatarSeed} />
+                </div>
+                <p className="ResultsText Nickname">
+                  {votedPlayer.at(0).nickname}
+                </p>
               </div>
-              <p className="ResultsText Nickname">
-                {votedPlayer.at(0).nickname}
-              </p>
+              <p className="ResultsText">{`${
+                votedPlayer.at(0).votes
+              } votos`}</p>
             </div>
-            <p className="ResultsText">{`${votedPlayer.at(0).votes} votos`}</p>
           </div>
+          <div className="SpaceDiv"></div>
           <div
             className="ResultsButtons"
             style={
@@ -206,7 +211,7 @@ export default function FinishPage({
           style={
             turnVisibility
               ? { visibility: 'visible' }
-              : { visibility: 'hidden' }
+              : { visibility: 'hidden', height: 0, padding: 0 }
           }>
           <Button onClick={roulettePage}>{rouletteButtonText}</Button>
         </div>

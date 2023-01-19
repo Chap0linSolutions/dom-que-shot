@@ -67,6 +67,28 @@
   font-weight: 500;
 }
 
-.GameVoteButton {
+.GameVoteButtonEuNunca {
   margin: 2em;
+}
+
+@media (max-height: 720px) {
+  .EuNuncaSuggestionsDiv {
+    width: 88%;
+    height: 350px;
+    padding-top: 0.65rem;
+  }
+
+  .EuNuncaSuggestion {
+    font-size: 20px;
+    line-height: 20px;
+    margin-bottom: 1.5em;
+  }
+
+  .GameVoteButtonEuNunca {
+    margin: 1.6em;
+  }
+
+  .EuNuncaDiv {
+    height: 80%;
+  }
 }

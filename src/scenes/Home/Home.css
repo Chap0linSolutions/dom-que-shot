@@ -117,12 +117,22 @@
   bottom: -280px;
 }
 
- @media screen and (min-width: 500px) {
+@media screen and (min-width: 500px) {
   .GameInfoPopup {
     width: 412px;
     display: flex;
     justify-content: center;
     position: fixed;
     bottom: -280px;
+  }
+}
+
+@media (max-height: 720px) {
+  .JoinRoomDiv {
+    margin-top: 30px;
+  }
+
+  .ChooseGameDiv {
+    margin-top: 25px;
   }
 }

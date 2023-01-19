@@ -50,7 +50,7 @@ export default function Lobby() {
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
-  const socket = SocketConnection.getInstance();
+  const socket = SocketConnection.getInstance(true);
 
   useEffect(() => {
     socket.connect();
@@ -147,6 +147,7 @@ export default function Lobby() {
       return (
         <MainPage
           ownerVisibility={ownerVisibility}
+          currentOwner={currentOwner}
           roomCode={userData.roomCode}
           copyToClipboard={copyToClipboard}
           beginMatch={beginMatch}

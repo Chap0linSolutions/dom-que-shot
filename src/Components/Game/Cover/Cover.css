@@ -34,3 +34,16 @@
   margin: 2em;
   z-index: 0;
 }
+
+@media (max-height: 720px) {
+  .CoverPageCardDiv {
+    margin-top: 1.2em;
+    width: 275px;
+    height: 387px;
+  }
+
+  .CoverPageImage {
+    width: 240px;
+    height: 240px;
+  }
+}

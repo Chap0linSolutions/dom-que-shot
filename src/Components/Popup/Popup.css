@@ -1,0 +1,67 @@
+.PopupDiv {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 20px 0 20px;
+  width: 360px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.PopupHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.PopupTitle {
+  color: black;
+  margin: 0;
+  font-family: 'Adumu';
+  font-size: 24px;
+}
+
+.PopupDescription {
+  color: black;
+  font-family: 'Roboto';
+  font-size: 18px;
+  overflow-y: scroll;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.PopupDescription::-webkit-scrollbar {
+  display: none;
+}
+
+.PopupCloseIcon {
+  width: 24px;
+  object-fit: scale-down;
+}
+
+.PopupContainer {
+  scale: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.Bottom {
+  position: fixed;
+  bottom: -280px;
+  z-index: 5;
+}
+
+.Top {
+  position: fixed;
+  top: -280px;
+  z-index: 5;
+}
+
+@media screen and (min-width: 500px) {
+  .PopupContainer {
+    scale: 0;
+    width: 412px;
+    display: flex;
+    justify-content: center;
+  }
+}

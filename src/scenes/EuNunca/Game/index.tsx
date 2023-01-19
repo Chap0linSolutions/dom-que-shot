@@ -37,7 +37,7 @@ export default function GamePage({
               </div>
             ))}
           </div>
-          <div className="GameVoteButton">
+          <div className="GameVoteButtonEuNunca">
             <Button onClick={finishPage}>Continuar</Button>
           </div>
         </div>

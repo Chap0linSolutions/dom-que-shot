@@ -1,3 +1,11 @@
+.OEscolhidoDiv {
+  display: flex;
+}
+
+.SpaceDiv {
+  height: 120px;
+}
+
 .ResultsTitle {
   margin: 0;
   font-size: 24px;
@@ -17,8 +25,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: 0;
   margin-top: 2em;
-  width: 210px;
+  width: 230px;
   height: 304px;
   background: #403a55;
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -141,4 +150,52 @@
 .MultipleTiesText {
   font-family: Adumu;
   font-size: 24px;
+}
+
+.Avatar img {
+  width: 100px;
+}
+
+@media (max-height: 750px) {
+  .ResultsTitle {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 500;
+    font-family: Adumu;
+  }
+
+  .SpaceDiv {
+    height: 0;
+  }
+
+  .OEscolhidoDiv {
+    margin-top: -5%;
+  }
+
+  .ResultsButtons {
+    padding: 0;
+    padding-top: 3em;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ResultsOuterCard {
+    height: 40%;
+  }
+
+  .ResultsAvatar {
+    margin-top: -10px;
+    width: 80px;
+    height: 80px;
+    object-fit: scale-down;
+  }
+  .NoVotesText {
+    margin: 1.2em;
+    font-size: 20px;
+    line-height: 28px;
+    text-align: center;
+  }
+  .Avatar img {
+    width: 80px;
+  }
 }

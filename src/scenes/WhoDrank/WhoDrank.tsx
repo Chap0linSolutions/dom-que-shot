@@ -103,33 +103,39 @@ export default function WhoDrankPage() {
     return (
       <Background>
         <Header logo={coverImg} />
-        <div className="WhoDrankDiv">
-          <p className="WhoDrankTitle">E aí, quem perdeu?</p>
-          <p style={{ margin: 0 }}>Selecione quem bebeu uma dose:</p>
-          <div className="WhoDrankPlayerListDiv">
-            {playerList.map((player) => (
-              <div
-                onClick={() => {
-                  console.log('aaah');
-                  selectPlayer(player);
-                }}
-                className={
-                  selectedPlayers.find((p) => p.nickname === player.nickname)
-                    ? 'WhoDrankSelectedItem WhoDrankPlayerListItem'
-                    : 'WhoDrankUnselectedItem WhoDrankPlayerListItem'
-                }
-                key={player.id}>
-                <p className="WhoDrankPlayerListNickname">{player.nickname}</p>
+        <div className="WhoDrankContainer">
+          <div className="WhoDrankDiv">
+            <p className="WhoDrankTitle">E aí, quem perdeu?</p>
+            <p style={{ margin: 0 }}>Selecione quem bebeu uma dose:</p>
+            <div className="WhoDrankPlayerListDiv">
+              {playerList.map((player) => (
                 <div
+                  onClick={() => {
+                    console.log('aaah');
+                    selectPlayer(player);
+                  }}
                   className={
                     selectedPlayers.find((p) => p.nickname === player.nickname)
-                      ? 'WhoDrankSelectedAvatar WhoDrankPlayerListAvatar'
-                      : 'WhoDrankUnselectedAvatar WhoDrankPlayerListAvatar'
-                  }>
-                  <Avatar seed={player.avatarSeed} />
+                      ? 'WhoDrankSelectedItem WhoDrankPlayerListItem'
+                      : 'WhoDrankUnselectedItem WhoDrankPlayerListItem'
+                  }
+                  key={player.id}>
+                  <p className="WhoDrankPlayerListNickname">
+                    {player.nickname}
+                  </p>
+                  <div
+                    className={
+                      selectedPlayers.find(
+                        (p) => p.nickname === player.nickname
+                      )
+                        ? 'WhoDrankSelectedAvatar WhoDrankPlayerListAvatar'
+                        : 'WhoDrankUnselectedAvatar WhoDrankPlayerListAvatar'
+                    }>
+                    <Avatar seed={player.avatarSeed} />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
           <div className="WhoDrankVoteButton">
             <Button onClick={backToRoulette}>{buttonText}</Button>

@@ -50,7 +50,7 @@ export default function GamePage({
     <Background noImage>
       <Header timer={msTimeLeft} />
       <div className="OEscolhidoDiv">
-        <p>Escolha um participante:</p>
+        <p>Vote em quem deve beber:</p>
         <div className="GamePlayerListDiv">
           {playerList.map((player, i) => (
             <div
@@ -77,11 +77,12 @@ export default function GamePage({
             </div>
           ))}
         </div>
-        <div className="GameVoteButton">
-          <Button isDisabled={!hasSelected} onClick={finishPage}>
-            Votar
-          </Button>
-        </div>
+      </div>
+
+      <div className="GameVoteButton">
+        <Button isDisabled={!hasSelected} onClick={finishPage}>
+          Votar
+        </Button>
       </div>
       <PingTracker />
     </Background>

@@ -1,12 +1,11 @@
-.container {
-  width: 100%;
-  min-height: 100%;
+#game-bang-bang {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #170c32;
   align-items: center;
   border-radius: 20px;
+  height: 100%;
+  position: relative;
 }
 
 .button-bang {
@@ -16,7 +15,7 @@
   border-color: darkgray;
   border-width: 5px;
   border-radius: 50%;
-  margin-bottom: 98px;
+  margin-bottom: 20%;
   z-index: 1;
 }
 
@@ -32,6 +31,9 @@
 
 #game-bang-bang .target-image {
   opacity: 0.4;
+  height: 60%;
+  display: flex;
+  justify-content: center;
 }
 
 #game-bang-bang .container-baloon {
@@ -40,6 +42,7 @@
   position: absolute;
   top: 0;
   left: 0;
+  position: absolute;
   z-index: 0;
   display: flex;
   justify-content: center;
@@ -47,16 +50,28 @@
 }
 
 .animation-balloon {
-  padding: 30px;
-  margin-top: -50px;
+  padding: 17px;
+  margin-top: -13px;
 }
 
 .balloon-img {
-  width: 360px;
+  width: 100%;
   object-fit: scale-down;
 }
 
 .target-img {
-  width: 360px;
+  width: 80%;
   object-fit: scale-down;
+}
+
+@media (min-height: 720px) {
+  .balloon-img {
+    width: 100%;
+    object-fit: scale-down;
+  }
+
+  .animation-balloon {
+    padding: 13px;
+    margin-top: -13px;
+  }
 }
