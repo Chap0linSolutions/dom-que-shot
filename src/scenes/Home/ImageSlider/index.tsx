@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PlaceholderImage from '../../../components/Placeholder/Image';
 import './ImageSlider.css';
 
@@ -30,27 +30,26 @@ export default function ImageSlider({
     show();
   };
 
-//Placeholder /////////////////////////////////////////////////////////////////////////////
+  //Placeholder /////////////////////////////////////////////////////////////////////////////
   const [loaded, setLoaded] = useState<boolean>(false);
   const [innerHeight, setInnerHeight] = useState<number>(window.innerHeight);
 
   const handleResize = () => {
     setInnerHeight(window.innerHeight);
-  }
+  };
 
   const finishedLoading = () => {
     console.log('imagem carregada.');
     setLoaded(true);
-  }
+  };
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
   }, []);
 
-  const placeholderSize = (innerHeight <= 720)? 110 : 140;
+  const placeholderSize = innerHeight <= 720 ? 110 : 140;
 
-///////////////////////////////////////////////////////////////////////////////////////////
-
+  ///////////////////////////////////////////////////////////////////////////////////////////
 
   return (
     <div className="slider">
@@ -61,18 +60,18 @@ export default function ImageSlider({
           onClick={() => updateInfoCard(slide.title, slide.description)}
           style={{ background: slide.color }}>
           <div className="HomeImageDiv">
-            <img 
+            <img
               className="image"
-              style={loaded === true? {} : {display: 'none'}} 
-              src={slide.image} 
-              alt="game" 
+              style={loaded === true ? {} : { display: 'none' }}
+              src={slide.image}
+              alt="game"
               onLoad={() => setLoaded(true)}
             />
             <PlaceholderImage
               loaded={loaded}
               width={placeholderSize}
               height={placeholderSize}
-              borderRadius='10px'
+              borderRadius="10px"
             />
           </div>
           <p className="title">{slide.title}</p>
