@@ -39,7 +39,6 @@ export default function ImageSlider({
   };
 
   const finishedLoading = () => {
-    console.log('imagem carregada.');
     setLoaded(true);
   };
 
@@ -65,12 +64,12 @@ export default function ImageSlider({
               style={loaded === true ? {} : { display: 'none' }}
               src={slide.image}
               alt="game"
-              onLoad={() => setLoaded(true)}
+              onLoad={finishedLoading}
             />
             <PlaceholderImage
-              loaded={loaded}
               width={placeholderSize}
               height={placeholderSize}
+              loaded={false}
               borderRadius="10px"
             />
           </div>
