@@ -28,12 +28,14 @@ export default function BichoBebe() {
       PREPARADOS??
       <br />
       <br />
-      Após todos informarem os bichos que escolheram, o jogador da vez inicia perguntando.
+      Após todos informarem os bichos que escolheram, o jogador da vez inicia
+      perguntando.
       <br />
       <br />
-      Finalizando a rodada com o primeiro que errar, clique no botão abaixo para informar quem bebeu.
+      Finalizando a rodada com o primeiro que errar, clique no botão abaixo para
+      informar quem bebeu.
     </>
-  )
+  );
 
   return (
     <SimpleCardGame

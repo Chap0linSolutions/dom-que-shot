@@ -1,4 +1,4 @@
-.OEscolhidoDiv{
+.OEscolhidoDiv {
   display: flex;
 }
 
@@ -168,7 +168,7 @@
     height: 0;
   }
 
-  .OEscolhidoDiv{
+  .OEscolhidoDiv {
     margin-top: -5%;
   }
 
@@ -195,7 +195,7 @@
     line-height: 28px;
     text-align: center;
   }
-  .Avatar img{
+  .Avatar img {
     width: 80px;
   }
 }

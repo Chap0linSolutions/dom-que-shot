@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import SocketConnection from '../../lib/socket';
 import Background from '../../components/Background';
 import CoverPage from '../../components/Game/Cover';
-import HintPage from '../../components/Game/Hint';
 import { RankingPage } from './Ranking';
 import { GamePage } from './Game';
 import coverImg from '../../assets/game-covers/bang-bang.png';

@@ -147,6 +147,7 @@ export default function Lobby() {
       return (
         <MainPage
           ownerVisibility={ownerVisibility}
+          currentOwner={currentOwner}
           roomCode={userData.roomCode}
           copyToClipboard={copyToClipboard}
           beginMatch={beginMatch}

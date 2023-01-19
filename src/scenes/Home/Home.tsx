@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ArrowRight, AlertTriangle } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import ImageSlider from './ImageSlider';
@@ -7,7 +7,6 @@ import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Popup from '../../components/Popup';
 import api from '../../services/api';
-import gsap from 'gsap';
 import games from '../../contexts/games';
 import './Home.css';
 
@@ -47,7 +46,7 @@ function Home() {
   };
 
   const updateRoomCode = (e) => {
-    const newRoom:string = e.target.value.trim().toUpperCase();
+    const newRoom: string = e.target.value.trim().toUpperCase();
     if (newRoom.length !== 0) {
       setRoomCode(newRoom);
       //room = newRoom;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './ImageSlider.css';
 import { Game } from '../../../contexts/games';
 
