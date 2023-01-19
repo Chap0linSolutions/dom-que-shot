@@ -17,7 +17,6 @@ export default function RouletteCard({ text, src }: RouletteCardProps) {
   };
 
   const finishedLoading = () => {
-    console.log('imagem carregada.');
     setLoaded(true);
   };
 
