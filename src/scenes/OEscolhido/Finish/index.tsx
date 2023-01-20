@@ -64,7 +64,7 @@ export default function FinishPage({
             <div className="ResultsInnerCard NoVotesOuter">
               <p className="ResultsText" />
               <div className="ResultsAvatar Avatar">
-                <img src={noOneVoted}/>
+                <img src={noOneVoted} />
               </div>
               <p className="ResultsText Nickname">R.I.P. Votação</p>
             </div>
@@ -107,7 +107,9 @@ export default function FinishPage({
                   {votedPlayer.at(0).nickname}
                 </p>
               </div>
-              <p className="ResultsText">{`${votedPlayer.at(0).votes} votos`}</p>
+              <p className="ResultsText">{`${
+                votedPlayer.at(0).votes
+              } votos`}</p>
             </div>
           </div>
           <div className="SpaceDiv"></div>

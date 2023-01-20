@@ -65,6 +65,5 @@
 @media (max-height: 720px) {
   .GamePlayerListDiv {
     max-height: calc(100vh - 107px - 2rem - 230px);
-
   }
 }
