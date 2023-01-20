@@ -20,3 +20,9 @@
   margin: 10px 0;
   color: white;
 }
+
+@media (max-height: 720px) {
+  .CardTitle {
+    font-size: 17px;
+  }
+}

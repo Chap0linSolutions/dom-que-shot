@@ -45,33 +45,44 @@ export default function Settings({
   };
 
   const selectionMessage = defineSelectionMessage();
+  const gameCardsDivStyle = {
+    height: (0.66 * window.innerHeight)
+  }
 
   return (
     <Background>
       <Header goBackArrow={mainPage} />
       <div className="LobbySettingsDiv">
-        <p className="LobbySettingsTitle">Selecione os jogos da partida:</p>
+        <div>
+          <p className="LobbySettingsTitle">Selecione os jogos da partida:</p>
 
-        <div className="LobbySettingsGameCardsDiv">
-          {gameList.map((card) => (
-            <div
-              key={card.id}
-              className="LobbySettingsGameCard"
-              style={card.id >= 1000 ? { opacity: 0.2 } : { opacity: 1 }}>
-              <GameCard
-                onClick={() => updateSelection(card.id)}
-                id={card.id}
-                title={card.text}
-                image={card.src}
-                backgroundColor={card.backgroundColor}
-              />
-            </div>
-          ))}
+          <div 
+            className="LobbySettingsGameCardsDiv"
+            style={gameCardsDivStyle}
+          >
+            {gameList.map((card) => (
+              <div
+                key={card.id}
+                className="LobbySettingsGameCard"
+                style={card.id >= 1000 ? { opacity: 0.2 } : { opacity: 1 }}>
+                <GameCard
+                  onClick={() => updateSelection(card.id)}
+                  id={card.id}
+                  title={card.text}
+                  image={card.src}
+                  backgroundColor={card.backgroundColor}
+                />
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="LobbySettingsSelectedText">{selectionMessage}</div>
-        <div className="LobbySettingsWarning">
-          <AlertTriangle width="20px" height="20px" color="red" />
-          <p className="LobbyWarningText">Mínimo de 3 jogos!</p>
+        
+        <div>
+          <div className="LobbySettingsSelectedText">{selectionMessage}</div>
+          <div className="LobbySettingsWarning">
+            <AlertTriangle width="20px" height="20px" color="red" />
+            <p className="LobbyWarningText">Mínimo de 3 jogos!</p>
+          </div>
         </div>
       </div>
     </Background>
