@@ -131,6 +131,8 @@ export default function SelectNextGame() {
 
 //ajuste com o tamanho da tela///////////////////////////////////////////////////////////////
 
+  const sizeConstant = 1.25;
+
   type rouletteProps = {
     cardSize: number,
     width: number,
@@ -158,7 +160,7 @@ export default function SelectNextGame() {
     setRouletteDimensions({
       cardSize: baseSize,
       height: 3*(baseSize) + 8,
-      width: (innerHeight > 740) ? baseSize + 28 : (1.4 * baseSize) + 28,
+      width: (innerHeight > 740) ? baseSize + 28 : (sizeConstant * baseSize) + 28,
     });
   }, [innerHeight]);
 
@@ -227,7 +229,7 @@ export default function SelectNextGame() {
               {games.map((rouletteCard, index) => (
                 <div key={index} className="RouletteCard">
                   <RouletteCard
-                    width={(innerHeight > 740)? rouletteDimensions.cardSize : 1.4 * rouletteDimensions.cardSize}
+                    width={(innerHeight > 740)? rouletteDimensions.cardSize : sizeConstant * rouletteDimensions.cardSize}
                     height={rouletteDimensions.cardSize}
                     text={rouletteCard.text}
                     src={rouletteCard.src} />
@@ -236,7 +238,7 @@ export default function SelectNextGame() {
               {games.map((rouletteCard, index) => (
                 <div key={index} className="RouletteCard">
                   <RouletteCard
-                    width={(innerHeight > 740)? rouletteDimensions.cardSize : 1.4 * rouletteDimensions.cardSize}
+                    width={(innerHeight > 740)? rouletteDimensions.cardSize : sizeConstant * rouletteDimensions.cardSize}
                     height={rouletteDimensions.cardSize}
                     text={rouletteCard.text}
                     src={rouletteCard.src} />
@@ -245,7 +247,7 @@ export default function SelectNextGame() {
               {games.map((rouletteCard, index) => (
                 <div key={index} className="RouletteCard">
                   <RouletteCard
-                    width={(innerHeight > 740)? rouletteDimensions.cardSize : 1.4 * rouletteDimensions.cardSize}
+                    width={(innerHeight > 740)? rouletteDimensions.cardSize : sizeConstant * rouletteDimensions.cardSize}
                     height={rouletteDimensions.cardSize}
                     text={rouletteCard.text}
                     src={rouletteCard.src} />

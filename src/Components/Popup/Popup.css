@@ -26,6 +26,7 @@
   overflow-y: scroll;
   text-align: justify;
   text-justify: inter-word;
+  max-height: 600px;
 }
 
 .PopupDescription::-webkit-scrollbar {
@@ -63,5 +64,15 @@
     width: 412px;
     display: flex;
     justify-content: center;
+  }
+}
+
+@media (max-height: 740px) {
+  .PopupDiv {
+    width: 300px;
+  }
+
+  .PopupDescription {
+    max-height: 450px;
   }
 }
