@@ -6,7 +6,7 @@ import Background from '../../../components/Background';
 import Button from '../../../components/Button';
 import PlayerList from './PlayerList';
 import './Main.css';
-import BottomButton from '../../../components/BottomButton';
+import BottomButton from '../../../components/Button/BottomButton';
 
 enum Visibility {
   Invisible,
@@ -56,6 +56,7 @@ export default function Main({
       />
     ) : (
       <Header
+        logo
         goBackArrow={() => {
           navigate('/ChooseAvatar', {
             state: { option: 'update', roomCode: roomCode },
@@ -129,49 +130,3 @@ export default function Main({
     </Background>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/* <div
-          className="BeginButton"
-          style={
-            ownerVisibility === Visibility.Visible
-              ? { visibility: 'visible' }
-              : { visibility: 'hidden' }
-          }>
-          <div>
-            &nbsp;
-          </div>
-          <div>
-            <div className="LobbyWarning">
-              <AlertTriangle width="20px" height="20px" color="red" />
-              <p className="LobbyWarningText">Mínimo de 2 jogadores!</p>
-            </div>
-            <BottomButton onClick={beginMatch}>
-              Iniciar
-            </BottomButton>
-          </div>
-        </div> */}
-
-// <Button width="240px" height="56px" onClick={beginMatch}>
-// Iniciar
-// </Button>

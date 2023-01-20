@@ -46,7 +46,7 @@ export default function Settings({
   };
 
 
-//ajuste com o tamanho da tela///////////////////////////////////////////////////////////////
+//ajuste com o tamanho da tela/////////////////////////////////////////////////////////////
 
   const [innerHeight, setInnerHeight] = useState<number>(window.innerHeight);
 

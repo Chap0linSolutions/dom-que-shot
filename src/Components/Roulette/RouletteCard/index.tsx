@@ -3,36 +3,33 @@ import PlaceholderImage from '../../Placeholder/Image';
 import './RouletteCard.css';
 
 interface RouletteCardProps {
+  width?: number;
+  height?: number;
   text: string;
   src: string;
 }
 
-export default function RouletteCard({ text, src }: RouletteCardProps) {
+export default function RouletteCard({width, height, text, src }: RouletteCardProps) {
+
   //Placeholder /////////////////////////////////////////////////////////////////////////////
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [innerHeight, setInnerHeight] = useState<number>(window.innerHeight);
-
-  const handleResize = () => {
-    setInnerHeight(window.innerHeight);
-  };
 
   const finishedLoading = () => {
     setLoaded(true);
   };
 
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-  }, []);
-
-  const placeholderSize = innerHeight <= 720 ? 110 : 140;
-
   ///////////////////////////////////////////////////////////////////////////////////////////
+
+  const cardWidth = (width)? `${width}px` : '140px';
+  const cardHeight = (height)? `${height}px` : '140px';
 
   return (
     <div>
       <img
         style={loaded === true ? {} : { display: 'none' }}
         className="RouletteCardImage"
+        width={cardWidth}
+        height={cardHeight}
         src={src}
         alt={text}
         onLoad={finishedLoading}
@@ -40,8 +37,8 @@ export default function RouletteCard({ text, src }: RouletteCardProps) {
 
       <PlaceholderImage
         loaded={loaded}
-        width={placeholderSize}
-        height={placeholderSize}
+        width={(width)? width : 140}
+        height={(height)? height : 140}
       />
     </div>
   );

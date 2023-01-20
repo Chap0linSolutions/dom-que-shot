@@ -1,4 +1,4 @@
-import Button from "../Button";
+import Button from "../";
 import './BottomButton.css';
 
 interface BottomButtonProps {

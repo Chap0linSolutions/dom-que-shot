@@ -20,7 +20,7 @@
 }
 
 .RouletteCenter {
-  width: 168px;
+  width: 168px; 
   height: 428px;
   background: #ffffff;
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -31,7 +31,7 @@
   align-items: center;
 }
 
-@media (max-height: 720px) {
+/* @media (max-height: 720px) {
   .RouletteCenter {
     width: 143px;
     height: 338px;
@@ -48,4 +48,4 @@
     height: 16px;
     background-color: #f9c95c;
   }
-}
+} */

@@ -17,3 +17,12 @@
   background-color: rgb(85, 1, 85);
   pointer-events: none;
 }
+
+
+@media (max-height: 740px) {
+  .RegularButton {
+    width: 210px;
+    height: 50px;
+    font-size: 18px;
+  }
+}

@@ -1,9 +1,10 @@
 .SelectGameSection {
   margin-top: 1.6em;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
 }
 
 .RouletteDiv {
@@ -35,6 +36,7 @@
   font-size: 25px;
   font-weight: 700;
   margin: 25px 0 40px 0;
+  text-align: center;
 }
 
 #RoulettePage .WaitingMessageDiv {
@@ -54,37 +56,10 @@
 }
 
 @media (max-height: 740px) {
-  .SelectGameSection {
-    margin-top: 1.1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    position: relative;
-  }
-
-  .RouletteDiv {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
   .RouletteSideIconSpace {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 10px;
-    width: 40px;
-    height: 40px;
-  }
-
-  .RouletteCard {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #170c32;
-    border-radius: 10px;
-    margin-top: 2px;
+    margin: 20px;
+    width: 30px;
+    height: 30px;
   }
 
   .NextGameName {
@@ -95,12 +70,6 @@
   }
 
   #RoulettePage .WaitingMessage {
-    color: rgba(255, 255, 255, 0.6);
-    text-align: center;
-    font-size: 20px;
-    font-family: 'Roboto';
-    font-weight: 400;
-    letter-spacing: 0em;
-    position: absolute;
+    font-size: 16px;
   }
 }
