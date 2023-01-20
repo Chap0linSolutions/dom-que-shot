@@ -10,7 +10,9 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "jest ./src",
-    "deploy:gh": "bash ./scripts/deploy-gh.sh"
+    "deploy:gh": "bash ./scripts/deploy-gh.sh",
+    "setup:prod": "bash ./scripts/setup-env.sh prod",
+    "setup:dev": "bash ./scripts/setup-env.sh dev"
   },
   "dependencies": {
     "@dicebear/adventurer": "^4.10.5",

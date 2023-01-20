@@ -50,7 +50,6 @@ export default function DireitaEsquerda() {
     <SimpleCardGame
       title={title}
       description={description}
-      coverImg={coverImg}
-    />
+      coverImg={coverImg} hint={''}    />
   );
 }
