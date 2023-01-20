@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Header from '../../../components/Header';
 import Background from '../../../components/Background';
 import GameCard from '../../../components/GameCard';
@@ -44,10 +45,22 @@ export default function Settings({
     }
   };
 
+
+//ajuste com o tamanho da tela///////////////////////////////////////////////////////////////
+
+  const [innerHeight, setInnerHeight] = useState<number>(window.innerHeight);
+
+  const handleResize = () => {
+    setInnerHeight(window.innerHeight);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+  }, []);
+  
+///////////////////////////////////////////////////////////////////////////////////////////
+
   const selectionMessage = defineSelectionMessage();
-  const gameCardsDivStyle = {
-    height: (0.66 * window.innerHeight)
-  }
 
   return (
     <Background>
@@ -58,7 +71,9 @@ export default function Settings({
 
           <div 
             className="LobbySettingsGameCardsDiv"
-            style={gameCardsDivStyle}
+            style={{
+              height: (0.66 * innerHeight),
+            }}
           >
             {gameList.map((card) => (
               <div
