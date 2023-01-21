@@ -13,7 +13,7 @@ const RankingItem: React.FC<RankingItemProps> = ({ position, name, time }) => {
     <div id="ranking-item">
       <div className="position">
         <div className="circle-border">
-          {time >= 10  ? <img src={thumbDown} /> : <p>{position + 1}º</p>}
+          {time >= 10 ? <img src={thumbDown} /> : <p>{position + 1}º</p>}
         </div>
       </div>
       <div className="infos">
@@ -28,7 +28,9 @@ const RankingItem: React.FC<RankingItemProps> = ({ position, name, time }) => {
 
         {time === 10 ? (
           <>
-            <p style={{ color: 'red', textDecoration: 'line-through' }}>{name}</p>
+            <p style={{ color: 'red', textDecoration: 'line-through' }}>
+              {name}
+            </p>
             <p style={{ color: 'red' }}>{time}s</p>
           </>
         ) : (
@@ -37,14 +39,14 @@ const RankingItem: React.FC<RankingItemProps> = ({ position, name, time }) => {
 
         {time > 10 ? (
           <>
-            <p style={{ color: 'red', textDecoration: 'line-through' }}>{name}</p>
-            <p style={{ color: 'red', fontSize: "14px" }}>Queimou a largada</p>
+            <p style={{ color: 'red', textDecoration: 'line-through' }}>
+              {name}
+            </p>
+            <p style={{ color: 'red', fontSize: '14px' }}>Queimou a largada</p>
           </>
         ) : (
           <></>
         )}
-
-        
       </div>
     </div>
   );

@@ -35,3 +35,13 @@ npm run lint
 ```
 npm run build
 ```
+
+## Configurando variáveis de ambiente
+## para desenvolvimento
+```
+npm run setup:dev
+```
+## para producao
+```
+npm run setup:prod
+```
