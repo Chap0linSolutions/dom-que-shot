@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
-import Button from '../../../components/Button';
+import BottomButton from '../../../components/Button/BottomButton';
 import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
 import './Game.css';
@@ -49,39 +49,38 @@ export default function GamePage({
     <Background noImage>
       <Header timer={msTimeLeft} />
       <div className="OEscolhidoDiv">
-        <p>Vote em quem deve beber:</p>
-        <div className="GamePlayerListDiv">
-          {playerList.map((player, i) => (
-            <div
-              key={`${i}`}
-              onClick={() => {
-                selectPlayer(player);
-              }}
-              className={
-                player.avatarSeed === selectedPlayer.avatarSeed &&
-                player.nickname === selectedPlayer.nickname
-                  ? 'selectedItem GamePlayerListItem'
-                  : 'unselectedItem GamePlayerListItem'
-              }>
-              <p className="GamePlayerListNickname">{player.nickname}</p>
+        <div className="OEscolhidoTitleAndList">
+          <p>Vote em quem deve beber:</p>
+          <div className="GamePlayerListDiv">
+            {playerList.map((player, i) => (
               <div
+                key={`${i}`}
+                onClick={() => {
+                  selectPlayer(player);
+                }}
                 className={
                   player.avatarSeed === selectedPlayer.avatarSeed &&
                   player.nickname === selectedPlayer.nickname
-                    ? 'selectedAvatar GamePlayerListAvatar'
-                    : 'unselectedAvatar GamePlayerListAvatar'
+                    ? 'selectedItem GamePlayerListItem'
+                    : 'unselectedItem GamePlayerListItem'
                 }>
-                <Avatar seed={player.avatarSeed} />
+                <p className="GamePlayerListNickname">{player.nickname}</p>
+                <div
+                  className={
+                    player.avatarSeed === selectedPlayer.avatarSeed &&
+                    player.nickname === selectedPlayer.nickname
+                      ? 'selectedAvatar GamePlayerListAvatar'
+                      : 'unselectedAvatar GamePlayerListAvatar'
+                  }>
+                  <Avatar seed={player.avatarSeed} />
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-
-      <div className="GameVoteButton">
-        <Button isDisabled={!hasSelected} onClick={finishPage}>
+        <BottomButton isDisabled={!hasSelected} onClick={finishPage}>
           Votar
-        </Button>
+        </BottomButton>
       </div>
     </Background>
   );

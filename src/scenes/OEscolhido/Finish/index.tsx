@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
-import Button from '../../../components/Button';
+import BottomButton from '../../../components/Button/BottomButton';
 import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
 import noOneVoted from '../../../assets/no-votes.png';
@@ -57,33 +57,34 @@ export default function FinishPage({
       <Background noImage>
         <Header />
         <div className="OEscolhidoDiv">
-          <p className="ResultsTitle">POXA! Ninguém votou?</p>
-          <p className="ResultsText">&#40;É sério isso?&#41;</p>
-          <div className="ResultsOuterCard NoVotesInner">
-            <p className="ResultsText" />
-            <div className="ResultsInnerCard NoVotesOuter">
+          <div className="FinishVotesDiv">
+            <p className="ResultsTitle">POXA! Ninguém votou?</p>
+            <p className="ResultsText">&#40;É sério isso?&#41;</p>
+            <div className="ResultsOuterCard NoVotesInner">
               <p className="ResultsText" />
-              <div className="ResultsAvatar Avatar">
-                <img src={noOneVoted} />
+              <div className="ResultsInnerCard NoVotesOuter">
+                <p className="ResultsText" />
+                <div className="ResultsAvatar Avatar">
+                  <img src={noOneVoted} />
+                </div>
+                <p className="ResultsText Nickname">R.I.P. Votação</p>
               </div>
-              <p className="ResultsText Nickname">R.I.P. Votação</p>
+              <p className="ResultsText" />
             </div>
-            <p className="ResultsText" />
+            <p className="ResultsText NoVotesText">
+              Neste caso...
+              <br />
+              TODO mundo bebe!
+            </p>
           </div>
-          <p className="ResultsText NoVotesText">
-            Neste caso...
-            <br />
-            TODO mundo bebe!
-          </p>
-          <div
-            className="ResultsButtons"
+
+          <BottomButton
+            onClick={roulettePage}
             style={
-              turnVisibility
-                ? { visibility: 'visible' }
-                : { visibility: 'hidden' }
+              turnVisibility ? { visibility: 'visible' } : { display: 'none' }
             }>
-            <Button onClick={roulettePage}>{rouletteButtonText}</Button>
-          </div>
+            {rouletteButtonText}
+          </BottomButton>
         </div>
       </Background>
     );
@@ -94,7 +95,7 @@ export default function FinishPage({
       <Background noImage>
         <Header />
         <div className="OEscolhidoDiv">
-          <div className="UpperInfos">
+          <div className="FinishVotesDiv">
             <p className="ResultsTitle">E o mais votado foi:</p>
             <div className="ResultsOuterCard">
               <p className="ResultsText" />
@@ -112,16 +113,13 @@ export default function FinishPage({
               } votos`}</p>
             </div>
           </div>
-          <div className="SpaceDiv"></div>
-          <div
-            className="ResultsButtons"
+          <BottomButton
+            onClick={roulettePage}
             style={
-              turnVisibility
-                ? { visibility: 'visible' }
-                : { visibility: 'hidden' }
+              turnVisibility ? { visibility: 'visible' } : { display: 'none' }
             }>
-            <Button onClick={roulettePage}>{rouletteButtonText}</Button>
-          </div>
+            {rouletteButtonText}
+          </BottomButton>
         </div>
       </Background>
     );
@@ -132,50 +130,50 @@ export default function FinishPage({
       <Background noImage>
         <Header />
         <div className="OEscolhidoDiv">
-          <p className="ResultsTitle">Tivemos um empate!</p>
-          <div className="Tie">
-            <div className="ResultsOuterCard TieOuter">
-              <p className="ResultsText TieText" />
-              <div className="ResultsInnerCard TieInner">
-                <div className="ResultsAvatar TieAvatar Avatar">
-                  <Avatar seed={votedPlayer.at(0).avatarSeed} />
+          <div className="FinishVotesDiv">
+            <p className="ResultsTitle">Tivemos um empate!</p>
+            <div className="Tie">
+              <div className="ResultsOuterCard TieOuter">
+                <p className="ResultsText TieText" />
+                <div className="ResultsInnerCard TieInner">
+                  <div className="ResultsAvatar TieAvatar Avatar">
+                    <Avatar seed={votedPlayer.at(0).avatarSeed} />
+                  </div>
+                  <p className="ResultsText TieText Nickname">
+                    {votedPlayer.at(0).nickname}
+                  </p>
                 </div>
-                <p className="ResultsText TieText Nickname">
-                  {votedPlayer.at(0).nickname}
-                </p>
+                <p className="ResultsText TieText">{`${
+                  votedPlayer.at(0).votes
+                } votos`}</p>
               </div>
-              <p className="ResultsText TieText">{`${
-                votedPlayer.at(0).votes
-              } votos`}</p>
-            </div>
-            <div className="TieSpacer" />
-            <div className="ResultsOuterCard TieOuter">
-              <p className="ResultsText TieText" />
-              <div className="ResultsInnerCard TieInner">
-                <div className="ResultsAvatar TieAvatar Avatar">
-                  <Avatar seed={votedPlayer.at(1).avatarSeed} />
+              <div className="TieSpacer" />
+              <div className="ResultsOuterCard TieOuter">
+                <p className="ResultsText TieText" />
+                <div className="ResultsInnerCard TieInner">
+                  <div className="ResultsAvatar TieAvatar Avatar">
+                    <Avatar seed={votedPlayer.at(1).avatarSeed} />
+                  </div>
+                  <p className="ResultsText TieText Nickname">
+                    {votedPlayer.at(1).nickname}
+                  </p>
                 </div>
-                <p className="ResultsText TieText Nickname">
-                  {votedPlayer.at(1).nickname}
-                </p>
+                <p className="ResultsText TieText">{`${
+                  votedPlayer.at(1).votes
+                } votos`}</p>
               </div>
-              <p className="ResultsText TieText">{`${
-                votedPlayer.at(1).votes
-              } votos`}</p>
             </div>
+            <p className="ResultsText TieTitle">
+              Neste caso, ambos os empatados devem beber!
+            </p>
           </div>
-          <p className="ResultsText TieTitle">
-            Neste caso, todos os empatados devem beber!
-          </p>
-          <div
-            className="ResultsButtons"
+          <BottomButton
+            onClick={roulettePage}
             style={
-              turnVisibility
-                ? { visibility: 'visible' }
-                : { visibility: 'hidden' }
+              turnVisibility ? { visibility: 'visible' } : { display: 'none' }
             }>
-            <Button onClick={roulettePage}>{rouletteButtonText}</Button>
-          </div>
+            {rouletteButtonText}
+          </BottomButton>
         </div>
       </Background>
     );
@@ -185,32 +183,32 @@ export default function FinishPage({
     <Background noImage>
       <Header />
       <div className="OEscolhidoDiv">
-        <p className="ResultsTitle">Tivemos um empate!</p>
-        <div className="ResultsMultipleTies">
-          {votedPlayer.map((player) => (
-            <div className="MultipleTiesOuterCard">
-              <div className="MultipleTiesInnerCard Avatar">
-                <Avatar seed={player.avatarSeed} />
+        <div className="FinishVotesDiv FullHeight">
+          <p className="ResultsTitle">Tivemos um empate!</p>
+          <div className="ResultsMultipleTies">
+            {votedPlayer.map((player) => (
+              <div className="MultipleTiesOuterCard">
+                <div className="MultipleTiesInnerCard Avatar">
+                  <Avatar seed={player.avatarSeed} />
+                </div>
+                <div className="MultipleTiesTextDiv">
+                  <p className="MultipleTiesText">{player.nickname}</p>
+                  <p>{player.votes} votos</p>
+                </div>
               </div>
-              <div className="MultipleTiesTextDiv">
-                <p className="MultipleTiesText">{player.nickname}</p>
-                <p>{player.votes} votos</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <p className="ResultsText TieTitle">
+            Neste caso, todos os empatados devem beber!
+          </p>
         </div>
-        <p className="ResultsText TieTitle">
-          Neste caso, todos os empatados devem beber!
-        </p>
-        <div
-          className="ResultsButtons"
+        <BottomButton
+          onClick={roulettePage}
           style={
-            turnVisibility
-              ? { visibility: 'visible' }
-              : { visibility: 'hidden', height: 0, padding: 0 }
+            turnVisibility ? { visibility: 'visible' } : { display: 'none' }
           }>
-          <Button onClick={roulettePage}>{rouletteButtonText}</Button>
-        </div>
+          {rouletteButtonText}
+        </BottomButton>
       </div>
     </Background>
   );

@@ -123,7 +123,7 @@ export default function SelectNextGame() {
       setTimeout(() => {
         socket.push('start-game', {
           roomCode: userData.roomCode,
-          nextGame: nextGame,
+          nextGame: 'O Escolhido', //TODO revert after ticket is done
         });
       }, 1000);
     }
