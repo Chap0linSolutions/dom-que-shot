@@ -45,8 +45,7 @@ export default function Settings({
     }
   };
 
-
-//ajuste com o tamanho da tela/////////////////////////////////////////////////////////////
+  //ajuste com o tamanho da tela/////////////////////////////////////////////////////////////
 
   const [innerHeight, setInnerHeight] = useState<number>(window.innerHeight);
 
@@ -57,8 +56,8 @@ export default function Settings({
   useEffect(() => {
     window.addEventListener('resize', handleResize);
   }, []);
-  
-///////////////////////////////////////////////////////////////////////////////////////////
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
 
   const selectionMessage = defineSelectionMessage();
 
@@ -69,12 +68,11 @@ export default function Settings({
         <div>
           <p className="LobbySettingsTitle">Selecione os jogos da partida:</p>
 
-          <div 
+          <div
             className="LobbySettingsGameCardsDiv"
             style={{
-              height: (0.66 * innerHeight),
-            }}
-          >
+              height: 0.66 * innerHeight,
+            }}>
             {gameList.map((card) => (
               <div
                 key={card.id}
@@ -91,7 +89,7 @@ export default function Settings({
             ))}
           </div>
         </div>
-        
+
         <div>
           <div className="LobbySettingsSelectedText">{selectionMessage}</div>
           <div className="LobbySettingsWarning">

@@ -113,18 +113,16 @@ export default function Main({
 
         <div
           className="BeginButton"
-          style={ ownerVisibility === Visibility.Visible
-            ? { visibility: 'visible' }
-            : { display: 'none' }
-          }
-        >
+          style={
+            ownerVisibility === Visibility.Visible
+              ? { visibility: 'visible' }
+              : { display: 'none' }
+          }>
           <div className="LobbyWarning">
             <AlertTriangle width="20px" height="20px" color="red" />
             <p className="LobbyWarningText">Mínimo de 2 jogadores!</p>
           </div>
-          <BottomButton onClick={beginMatch}>
-            Iniciar
-          </BottomButton>
+          <BottomButton onClick={beginMatch}>Iniciar</BottomButton>
         </div>
       </div>
     </Background>

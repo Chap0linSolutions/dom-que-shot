@@ -8,34 +8,24 @@ interface RouletteProps {
 }
 
 export default function Roulette({ width, height, children }: RouletteProps) {
-  
   const bodyStyle = {
-    width: (width)? width : undefined,
-    height: (height)? height : undefined,
-  }
+    width: width ? width : undefined,
+    height: height ? height : undefined,
+  };
 
   const detailStyle = {
-    width: (width)? Math.round(0.87 * width) : undefined,
-  }
+    width: width ? Math.round(0.87 * width) : undefined,
+  };
 
   return (
     <div className="Roulette">
-      <div 
-        className="RouletteDetail Upper"
-        style={detailStyle}
-      />
-      
-      <div 
-        className="RouletteCenter"
-        style={bodyStyle}
-      >
+      <div className="RouletteDetail Upper" style={detailStyle} />
+
+      <div className="RouletteCenter" style={bodyStyle}>
         {children}
       </div>
 
-      <div 
-        className="RouletteDetail Lower"
-        style={detailStyle}
-      />
+      <div className="RouletteDetail Lower" style={detailStyle} />
     </div>
   );
 }

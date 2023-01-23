@@ -129,15 +129,15 @@ export default function SelectNextGame() {
     }
   };
 
-//ajuste com o tamanho da tela///////////////////////////////////////////////////////////////
+  //ajuste com o tamanho da tela///////////////////////////////////////////////////////////////
 
   const sizeConstant = 1.25;
 
   type rouletteProps = {
-    cardSize: number,
-    width: number,
-    height: number,
-  }
+    cardSize: number;
+    width: number;
+    height: number;
+  };
 
   const [innerHeight, setInnerHeight] = useState<number>(window.innerHeight);
   const [rouletteDimensions, setRouletteDimensions] = useState<rouletteProps>({
@@ -159,14 +159,12 @@ export default function SelectNextGame() {
 
     setRouletteDimensions({
       cardSize: baseSize,
-      height: 3*(baseSize) + 8,
-      width: (innerHeight > 740) ? baseSize + 28 : (sizeConstant * baseSize) + 28,
+      height: 3 * baseSize + 8,
+      width: innerHeight > 740 ? baseSize + 28 : sizeConstant * baseSize + 28,
     });
   }, [innerHeight]);
 
-  
-
-///////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////
 
   const spin = (id) => {
     console.log(games.map((game) => game.text));
@@ -196,7 +194,6 @@ export default function SelectNextGame() {
       .call(startSelectedGame);
   };
 
-
   const turnTheWheel = () => {
     socket.push('roulette-number-is', userData.roomCode);
   };
@@ -224,33 +221,47 @@ export default function SelectNextGame() {
             <div className="RouletteSideIconSpace">&nbsp;</div>
             <Roulette
               width={rouletteDimensions.width}
-              height={rouletteDimensions.height}
-            >
+              height={rouletteDimensions.height}>
               {games.map((rouletteCard, index) => (
                 <div key={index} className="RouletteCard">
                   <RouletteCard
-                    width={(innerHeight > 740)? rouletteDimensions.cardSize : sizeConstant * rouletteDimensions.cardSize}
+                    width={
+                      innerHeight > 740
+                        ? rouletteDimensions.cardSize
+                        : sizeConstant * rouletteDimensions.cardSize
+                    }
                     height={rouletteDimensions.cardSize}
                     text={rouletteCard.text}
-                    src={rouletteCard.src} />
+                    src={rouletteCard.src}
+                  />
                 </div>
               ))}
               {games.map((rouletteCard, index) => (
                 <div key={index} className="RouletteCard">
                   <RouletteCard
-                    width={(innerHeight > 740)? rouletteDimensions.cardSize : sizeConstant * rouletteDimensions.cardSize}
+                    width={
+                      innerHeight > 740
+                        ? rouletteDimensions.cardSize
+                        : sizeConstant * rouletteDimensions.cardSize
+                    }
                     height={rouletteDimensions.cardSize}
                     text={rouletteCard.text}
-                    src={rouletteCard.src} />
+                    src={rouletteCard.src}
+                  />
                 </div>
               ))}
               {games.map((rouletteCard, index) => (
                 <div key={index} className="RouletteCard">
                   <RouletteCard
-                    width={(innerHeight > 740)? rouletteDimensions.cardSize : sizeConstant * rouletteDimensions.cardSize}
+                    width={
+                      innerHeight > 740
+                        ? rouletteDimensions.cardSize
+                        : sizeConstant * rouletteDimensions.cardSize
+                    }
                     height={rouletteDimensions.cardSize}
                     text={rouletteCard.text}
-                    src={rouletteCard.src} />
+                    src={rouletteCard.src}
+                  />
                 </div>
               ))}
             </Roulette>
@@ -265,7 +276,7 @@ export default function SelectNextGame() {
             style={
               turnVisibility === Visibility.Invisible && !rouletteIsSpinning
                 ? { visibility: 'visible' }
-                : { display: 'none'}
+                : { display: 'none' }
             }>
             <p className="WaitingMessage">
               Aguardando {currentPlayer}
@@ -284,11 +295,7 @@ export default function SelectNextGame() {
                 ? { visibility: 'visible' }
                 : { display: 'none' }
             }>
-            <BottomButton 
-              onClick={turnTheWheel}
-            >
-              Girar
-            </BottomButton>
+            <BottomButton onClick={turnTheWheel}>Girar</BottomButton>
           </div>
         </div>
       </div>

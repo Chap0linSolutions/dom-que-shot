@@ -9,8 +9,12 @@ interface RouletteCardProps {
   src: string;
 }
 
-export default function RouletteCard({width, height, text, src }: RouletteCardProps) {
-
+export default function RouletteCard({
+  width,
+  height,
+  text,
+  src,
+}: RouletteCardProps) {
   //Placeholder /////////////////////////////////////////////////////////////////////////////
   const [loaded, setLoaded] = useState<boolean>(false);
 
@@ -20,8 +24,8 @@ export default function RouletteCard({width, height, text, src }: RouletteCardPr
 
   ///////////////////////////////////////////////////////////////////////////////////////////
 
-  const cardWidth = (width)? `${width}px` : '140px';
-  const cardHeight = (height)? `${height}px` : '140px';
+  const cardWidth = width ? `${width}px` : '140px';
+  const cardHeight = height ? `${height}px` : '140px';
 
   return (
     <div>
@@ -37,8 +41,8 @@ export default function RouletteCard({width, height, text, src }: RouletteCardPr
 
       <PlaceholderImage
         loaded={loaded}
-        width={(width)? width : 140}
-        height={(height)? height : 140}
+        width={width ? width : 140}
+        height={height ? height : 140}
       />
     </div>
   );

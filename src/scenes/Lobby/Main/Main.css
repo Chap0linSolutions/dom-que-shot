@@ -105,11 +105,9 @@
   font-size: 20px;
   font-family: 'Roboto';
   font-weight: 400;
-
 }
 
 @media (max-height: 720px) {
-  
   .PlayerListTitle {
     margin: 22px 0 8px 24px;
     font-size: 18px;
@@ -122,7 +120,7 @@
   .RoomCodeTitle {
     font-size: 18px;
   }
-  
+
   .PlayerList {
     height: 254px;
   }
