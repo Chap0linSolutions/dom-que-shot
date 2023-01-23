@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 
 import Background from '../../components/Background';
-import Button from '../../components/Button';
 import Header from '../../components/Header';
 import Roulette from '../../components/Roulette';
 import RouletteCard from '../../components/Roulette/RouletteCard';
@@ -123,7 +122,7 @@ export default function SelectNextGame() {
       setTimeout(() => {
         socket.push('start-game', {
           roomCode: userData.roomCode,
-          nextGame: 'O Escolhido', //TODO revert after ticket is done
+          nextGame: nextGame,
         });
       }, 1000);
     }
