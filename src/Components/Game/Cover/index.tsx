@@ -11,7 +11,6 @@ import {
   CoverTitle,
   CoverButton,
 } from './styles';
-import './Cover.css';
 
 interface CoverProps {
   title: string;
