@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 
@@ -8,10 +8,20 @@ import Roulette from '../../components/Roulette';
 import RouletteCard from '../../components/Roulette/RouletteCard';
 import SocketConnection from '../../lib/socket';
 import gameList from '../../contexts/games';
-
-import RouletteTriangle from '../../assets/roulette-triangle.png';
-import './SelectNextGame.css';
 import BottomButton from '../../components/Button/BottomButton';
+import RouletteTriangle from '../../assets/roulette-triangle.png';
+import {
+  SelectGameDiv,
+  RouletteDiv,
+  SideIconSpace,
+  SideIcon,
+  Card,
+  NextGameName,
+  ButtonDiv,
+  ContentDiv,
+  WaitingMessageDiv,
+  WaitingMessage,
+} from './styles';
 
 enum Visibility {
   Invisible,
@@ -165,6 +175,9 @@ export default function SelectNextGame() {
 
   ///////////////////////////////////////////////////////////////////////////////////////////
 
+  const rouletteButton = useRef();
+  const nextGameTitle = useRef();
+
   const spin = (id) => {
     console.log(games.map((game) => game.text));
     const selectedGame = games.find((game) => game.id === id);
@@ -172,20 +185,24 @@ export default function SelectNextGame() {
     setNextGameName(nextGame);
 
     setRouletteIsSpinning(true);
-    gsap.to('.RouletteButton', { opacity: 0, display: 'none', duration: 0.25 });
+    gsap.to(rouletteButton.current, {
+      opacity: 0,
+      display: 'none',
+      duration: 0.25,
+    });
     const timeline = gsap.timeline();
     timeline
-      .to('.RouletteCard', {
+      .to('.rouletteCard', {
         y: `-${3 * (games.length - 2) * (rouletteDimensions.cardSize + 2)}px`,
         duration: 1,
         ease: 'linear',
       })
-      .to('.RouletteCard', {
+      .to('.rouletteCard', {
         y: `-${(games.length - 1 + id) * (rouletteDimensions.cardSize + 2)}px`,
         duration: 2,
         ease: 'elastic',
       })
-      .to('.NextGameName', {
+      .to(nextGameTitle.current, {
         opacity: 1,
         duration: 1,
         ease: 'power2',
@@ -214,15 +231,15 @@ export default function SelectNextGame() {
   return (
     <Background>
       {header}
-      <div className="SelectGameSection" id="RoulettePage">
-        <div>
-          <div className="RouletteDiv">
-            <div className="RouletteSideIconSpace">&nbsp;</div>
+      <SelectGameDiv>
+        <ContentDiv>
+          <RouletteDiv>
+            <SideIconSpace>&nbsp;</SideIconSpace>
             <Roulette
               width={rouletteDimensions.width}
               height={rouletteDimensions.height}>
               {games.map((rouletteCard, index) => (
-                <div key={index} className="RouletteCard">
+                <Card key={index} className="rouletteCard">
                   <RouletteCard
                     width={
                       innerHeight > 740
@@ -233,10 +250,10 @@ export default function SelectNextGame() {
                     text={rouletteCard.text}
                     src={rouletteCard.src}
                   />
-                </div>
+                </Card>
               ))}
               {games.map((rouletteCard, index) => (
-                <div key={index} className="RouletteCard">
+                <Card key={index} className="rouletteCard">
                   <RouletteCard
                     width={
                       innerHeight > 740
@@ -247,10 +264,10 @@ export default function SelectNextGame() {
                     text={rouletteCard.text}
                     src={rouletteCard.src}
                   />
-                </div>
+                </Card>
               ))}
               {games.map((rouletteCard, index) => (
-                <div key={index} className="RouletteCard">
+                <Card key={index} className="rouletteCard">
                   <RouletteCard
                     width={
                       innerHeight > 740
@@ -261,43 +278,40 @@ export default function SelectNextGame() {
                     text={rouletteCard.text}
                     src={rouletteCard.src}
                   />
-                </div>
+                </Card>
               ))}
             </Roulette>
 
-            <div className="RouletteSideIconSpace">
-              <img src={RouletteTriangle} width="40px" height="44px" />
-            </div>
-          </div>
+            <SideIconSpace>
+              <SideIcon src={RouletteTriangle} />
+            </SideIconSpace>
+          </RouletteDiv>
 
-          <div
-            className="WaitingMessageDiv"
+          <WaitingMessageDiv
             style={
               turnVisibility === Visibility.Invisible && !rouletteIsSpinning
                 ? { visibility: 'visible' }
                 : { display: 'none' }
             }>
-            <p className="WaitingMessage">
+            <WaitingMessage>
               Aguardando {currentPlayer}
               <br />
               girar a roleta...
-            </p>
-          </div>
-          <p className="NextGameName">{nextGameName}</p>
-        </div>
+            </WaitingMessage>
+          </WaitingMessageDiv>
+          <NextGameName ref={nextGameTitle}>{nextGameName}</NextGameName>
+        </ContentDiv>
 
-        <div>
-          <div
-            className="RouletteButton"
-            style={
-              turnVisibility === Visibility.Visible
-                ? { visibility: 'visible' }
-                : { display: 'none' }
-            }>
-            <BottomButton onClick={turnTheWheel}>Girar</BottomButton>
-          </div>
-        </div>
-      </div>
+        <ButtonDiv
+          ref={rouletteButton}
+          style={
+            turnVisibility === Visibility.Visible
+              ? { visibility: 'visible' }
+              : { display: 'none' }
+          }>
+          <BottomButton onClick={turnTheWheel}>Girar</BottomButton>
+        </ButtonDiv>
+      </SelectGameDiv>
     </Background>
   );
 }

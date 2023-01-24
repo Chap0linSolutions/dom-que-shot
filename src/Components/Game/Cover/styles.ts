@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const smallScreen = innerHeight < 720;
+const smallScreen = innerHeight < 740;
 
 const imgSize = smallScreen ? 240 : 280;
 const titleSize = smallScreen ? 26 : 32;

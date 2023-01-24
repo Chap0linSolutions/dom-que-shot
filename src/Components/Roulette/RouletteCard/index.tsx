@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PlaceholderImage from '../../Placeholder/Image';
-import './RouletteCard.css';
+import styled from '@emotion/styled';
 
 interface RouletteCardProps {
   width?: number;
@@ -24,20 +24,15 @@ export default function RouletteCard({
 
   ///////////////////////////////////////////////////////////////////////////////////////////
 
-  const cardWidth = width ? `${width}px` : '140px';
-  const cardHeight = height ? `${height}px` : '140px';
+  const imageStyle = {
+    width: width ? `${width}px` : '140px',
+    height: height ? `${height}px` : '140px',
+    display: loaded === true ? undefined : 'none',
+  };
 
   return (
     <div>
-      <img
-        style={loaded === true ? {} : { display: 'none' }}
-        className="RouletteCardImage"
-        width={cardWidth}
-        height={cardHeight}
-        src={src}
-        alt={text}
-        onLoad={finishedLoading}
-      />
+      <Image style={imageStyle} src={src} alt={text} onLoad={finishedLoading} />
 
       <PlaceholderImage
         loaded={loaded}
@@ -47,3 +42,10 @@ export default function RouletteCard({
     </div>
   );
 }
+
+const Image = styled.img`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: scale-down;
+`;

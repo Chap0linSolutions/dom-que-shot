@@ -1,5 +1,5 @@
 import React from 'react';
-import './Roulette.css';
+import { RouletteDiv, UpperDetail, LowerDetail, Center } from './styles';
 
 interface RouletteProps {
   width?: number;
@@ -18,14 +18,10 @@ export default function Roulette({ width, height, children }: RouletteProps) {
   };
 
   return (
-    <div className="Roulette">
-      <div className="RouletteDetail Upper" style={detailStyle} />
-
-      <div className="RouletteCenter" style={bodyStyle}>
-        {children}
-      </div>
-
-      <div className="RouletteDetail Lower" style={detailStyle} />
-    </div>
+    <RouletteDiv>
+      <UpperDetail style={detailStyle} />
+      <Center style={bodyStyle}>{children}</Center>
+      <LowerDetail style={detailStyle} />
+    </RouletteDiv>
   );
 }

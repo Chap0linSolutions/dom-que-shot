@@ -1,5 +1,5 @@
 import Button from '../';
-import './BottomButton.css';
+import styled from '@emotion/styled';
 
 interface BottomButtonProps {
   style?: any;
@@ -15,10 +15,19 @@ export default function BottomButton({
   children,
 }: BottomButtonProps) {
   return (
-    <div style={style} className="BottomButtonDiv">
+    <ButtonDiv style={style}>
       <Button onClick={onClick} isDisabled={isDisabled}>
         {children}
       </Button>
-    </div>
+    </ButtonDiv>
   );
 }
+
+const ButtonDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 0 40px 0;
+  flex: 1;
+`;

@@ -126,11 +126,9 @@ export default function CoverPage({
       }
 
       gsap.from(coverButton.current, {
-        opacity: 0,
-        scale: 0,
         yPercent: 100,
         duration: 2,
-        delay: 0.25,
+        delay: 0.5,
         ease: 'elastic',
       });
     });
