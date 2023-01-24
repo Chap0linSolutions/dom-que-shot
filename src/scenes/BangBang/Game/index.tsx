@@ -23,6 +23,7 @@ interface GameProps {
 
 export function GamePage({ rankingPage, shot, ready }: GameProps) {
   const [msTimer, setMsTimer] = useState(4600);
+  const [showPopUp, setPopUp] = useState(false);
   const [buttonStatus, setButtonStatus] = useState<ButtonStatus>(
     ButtonStatus.disabled
   );
@@ -92,11 +93,32 @@ export function GamePage({ rankingPage, shot, ready }: GameProps) {
     setBalloonImg(balloonReady);
   };
 
+  const shotValidation = () => {
+    if(msTimer > 0){ // queima da largada
+      console.log("False start");
+      shot(-10000 - msTimer);
+    }
+    else {
+      shot(msTimer);
+    }
+  };
+
   const handleClick = () => {
-    shot(msTimer);
+    shotValidation();
     clearInterval(timer);
     setButtonStatus(ButtonStatus.used);
     rankingPage();
+  };
+
+  const showErrorPopUp = () => {
+    if (showPopUp === false) {
+      setPopUp(true);
+      console.log("Changed to true");
+    }
+    else{
+      setPopUp(false);
+      console.log("Changed to false");
+    }
   };
 
   return (
@@ -104,20 +126,29 @@ export function GamePage({ rankingPage, shot, ready }: GameProps) {
       <div id="game-bang-bang" className="game-bang-bang">
         <Header timer={formatedTime()} />
 
-        <div className="target-image">
+        <div onClick={showErrorPopUp} className="target-image">
           <img src={targetImage} className="target-img" />
+          <div className="wrong-local-container"  style={{ visibility: showPopUp ? 'visible' : 'hidden' }}>
+            <div className="wrong-local-message">
+                <p>Errrroooou!!!</p>
+            </div>
+          </div>
         </div>
 
         <div className="container-baloon">
           <div className="animation-balloon">
-            <img src={balloonImg} className="balloon-img" />
+            <img onClick={showErrorPopUp} src={balloonImg} className="balloon-img" />
           </div>
         </div>
 
         <button
           className="button-bang"
           onClick={handleClick}
-          disabled={buttonStatus !== ButtonStatus.enabled}></button>
+          style={{
+            opacity: buttonStatus !== ButtonStatus.enabled? 0.3 : 1, 
+            cursor: buttonStatus !== ButtonStatus.enabled? "default" : "pointer" 
+          }}>
+        </button>
       </div>
     </Background>
   );
