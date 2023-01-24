@@ -20,7 +20,7 @@ enum Visibility {
 
 interface GameCard {
   id: number;
-  text: string;
+  title: string;
   src: string;
 }
 
@@ -98,8 +98,8 @@ export default function SelectNextGame() {
 
   const updateGameList = (newGames: string[]) => {
     let id = -1;
-    const rouletteGames = games.filter((game) => newGames.includes(game.text));
-    //console.log(rouletteGames.map((game) => game.text));
+    const rouletteGames = games.filter((game) => newGames.includes(game.title));
+    //console.log(rouletteGames.map((game) => game.title));
 
     updateGames(
       rouletteGames.map((game) => {
@@ -111,7 +111,7 @@ export default function SelectNextGame() {
 
   useEffect(() => {
     if (number >= 0) {
-      console.log(games.map((game) => game.text));
+      console.log(games.map((game) => game.title));
       console.log(number);
       spin(number);
     }
@@ -129,9 +129,9 @@ export default function SelectNextGame() {
   };
 
   const spin = (id) => {
-    console.log(games.map((game) => game.text));
+    console.log(games.map((game) => game.title));
     const selectedGame = games.find((game) => game.id === id);
-    nextGame = selectedGame.text;
+    nextGame = selectedGame.title;
     setNextGameName(nextGame);
 
     setRouletteIsSpinning(true);
@@ -184,17 +184,17 @@ export default function SelectNextGame() {
           <Roulette>
             {games.map((rouletteCard, index) => (
               <div key={index} className="RouletteCard">
-                <RouletteCard text={rouletteCard.text} src={rouletteCard.src} />
+                <RouletteCard text={rouletteCard.title} src={rouletteCard.src} />
               </div>
             ))}
             {games.map((rouletteCard, index) => (
               <div key={index} className="RouletteCard">
-                <RouletteCard text={rouletteCard.text} src={rouletteCard.src} />
+                <RouletteCard text={rouletteCard.title} src={rouletteCard.src} />
               </div>
             ))}
             {games.map((rouletteCard, index) => (
               <div key={index} className="RouletteCard">
-                <RouletteCard text={rouletteCard.text} src={rouletteCard.src} />
+                <RouletteCard text={rouletteCard.title} src={rouletteCard.src} />
               </div>
             ))}
           </Roulette>

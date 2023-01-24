@@ -59,7 +59,7 @@ export default function Lobby() {
 
     socket.addEventListener('games-update', (newGames: string[]) => {
       const updatedGames = gameList.map((game) => {
-        if (newGames.find((gameName) => gameName === game.text)) {
+        if (newGames.find((gameName) => gameName === game.title)) {
           if (game.id >= 1000) {
             return { ...game, id: game.id - 1000 };
           } else {
@@ -113,7 +113,7 @@ export default function Lobby() {
   const finishSettings = () => {
     const selectedGames = gameList.filter((game) => game.id < 1000);
     if (selectedGames.length >= 3) {
-      const selection = selectedGames.map((game) => game.text);
+      const selection = selectedGames.map((game) => game.title);
       socket.push('selected-games-are', {
         roomCode: userData.roomCode,
         selectedGames: JSON.stringify(selection),

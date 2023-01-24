@@ -18,7 +18,7 @@ enum GameTypes {
 
 export type Game = {
   id: number;
-  text: string;
+  title: string;
   src: string;
   backgroundColor: GameTypes;
   description: string | JSX.Element;
@@ -28,7 +28,7 @@ const games: Game[] = [
   //TODO incluir o jogo Direita-Esquerda (aqui e no backend) quando a mecânica dos dados tiver sido implementada
   {
     src: BangBang,
-    text: 'Bang Bang',
+    title: 'Bang Bang',
     id: 0,
     backgroundColor: GameTypes.Round,
     description: `3, 2, 1, BANG! Ao final da contagem regressiva, todos os jogadores verão
@@ -37,7 +37,7 @@ const games: Game[] = [
   },
   {
     src: Vrum,
-    text: 'Vrum',
+    title: 'Vrum',
     id: 1,
     backgroundColor: GameTypes.Simple,
     description: `Cada jogador na sua vez vai falar Vrum, IHHH ou ploft (é pra imitar um carro
@@ -46,7 +46,7 @@ const games: Game[] = [
   },
   {
     src: Medusa,
-    text: 'Medusa',
+    title: 'Medusa',
     id: 2,
     backgroundColor: GameTypes.Simple,
     description: `Todos abaixam a cabeça e assim ficam até o jogador da vez falar "Já". Aí todos
@@ -55,7 +55,7 @@ const games: Game[] = [
   },
   {
     src: EuNunca,
-    text: 'Eu Nunca',
+    title: 'Eu Nunca',
     id: 3,
     backgroundColor: GameTypes.Dynamic,
     description: `É o "Eu Nunca" de sempre. O jogador da vez fala uma frase
@@ -64,7 +64,7 @@ const games: Game[] = [
   },
   {
     src: OEscolhido,
-    text: 'O Escolhido',
+    title: 'O Escolhido',
     id: 4,
     backgroundColor: GameTypes.Round,
     description: `É um jogo de votação clássico. Vote em quem você acha que deve beber, e o mais
@@ -72,7 +72,7 @@ const games: Game[] = [
   },
   {
     src: CSComposto,
-    text: 'C, S, Composto',
+    title: 'C, S, Composto',
     id: 5,
     backgroundColor: GameTypes.Simple,
     description: `Começando pelo jogador da vez, cada um vai falando uma palavra. A palavra tem que
@@ -81,7 +81,7 @@ const games: Game[] = [
   },
   {
     src: PensaRapido,
-    text: 'Pensa Rápido',
+    title: 'Pensa Rápido',
     id: 6,
     backgroundColor: GameTypes.Simple,
     description: `O jogador da vez escolhe alguém para responder uma pergunta. Essa pessoa então
@@ -90,7 +90,7 @@ const games: Game[] = [
   },
   {
     src: QuemSouEu,
-    text: 'Quem Sou Eu',
+    title: 'Quem Sou Eu',
     id: 7,
     backgroundColor: GameTypes.Round,
     description: `O jogador da vez escolhe uma categoria - por exemplo, animais - e todos os participantes
@@ -99,7 +99,7 @@ const games: Game[] = [
   },
   {
     src: Buzz,
-    text: 'Buzz',
+    title: 'Buzz',
     id: 8,
     backgroundColor: GameTypes.Simple,
     description: <>É um jogo de contagem coletiva - o jogador da vez começa com '1' e cada um na sua vez
@@ -108,7 +108,7 @@ const games: Game[] = [
   },
   {
     src: BichoBebe,
-    text: 'Bicho Bebe',
+    title: 'Bicho Bebe',
     id: 9,
     backgroundColor: GameTypes.Simple,
     description: <>Cada jogador vai pensar em um animal que o represente e falar em voz alta. O jogador da
