@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
 import Button from '../../../components/Button';
-import AwaitingBanner from '../../../components/AwaitingBanner/AwaitingBanner';
+import AwaitingBanner from '../../../components/AwaitingBanner';
 import glassIcon from '../../../assets/glass-icon-yellow-background.png';
 import gsap from 'gsap';
 import './Game.css';
