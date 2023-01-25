@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Background from "../../../components/Background";
 import Button from "../../../components/Button";
 import Header from "../../../components/Header";
 import beer from '../../../assets/beer.png';
-import './Category.css'
 import AwaitingBanner from "../../../components/AwaitingBanner";
 import Popup from "../../../components/Popup";
+import { Categories, Category, CategoryName, Title, Awaiting, Content, CategoryDiv } from "./Category.style";
+import BottomButton from "../../../components/Button/BottomButton";
 
 
 const categories: {name: string, color: string}[] = [
@@ -32,11 +33,19 @@ export default function CategoryPage({title, description, setCategory, turnVisib
     const [selectedCategory, setSelectedCategory] = useState<string>(undefined);
     
     const selectCategory = (name : string) => {
-        //console.log(`categoria selecionada: ${name}`);
         if(name !== selectedCategory){
             return setSelectedCategory(name);
         } setSelectedCategory(undefined);
     }    
+
+    const setStyle = (name: string, color: string) => {
+        return {
+            background: color,
+            border: (name === selectedCategory)
+            ? '5px solid #FF00B8'
+            : undefined
+        }
+    }
 
     if(turnVisibility === true){
         return (
@@ -49,33 +58,29 @@ export default function CategoryPage({title, description, setCategory, turnVisib
                     comesFromTop
                 />
                 <Header infoPage={() => setPopupVisibility(true)}/>
-
-                <p className="categoriesTitle">
-                    Escolha uma categoria para o grupo:
-                </p>
-                <div className="categoriesDiv">
-                    {categories.map(category => {
-                        return ( 
-                            <div 
-                            onClick={() => selectCategory(category.name)}
-                            key={category.name} 
-                            className='category'
-                            style={{
-                                background: category.color,
-                                border: (category.name === selectedCategory)? '5px solid #FF00B8' : 'none'
-                            }}>
-                                <p className="categoryName">
-                                    {category.name}
-                                </p>
-                            </div>
-                        );
-                    })}
-                </div>
-                <div className="categoriesButton">
-                    <Button onClick={() => setCategory(selectedCategory)} isDisabled={(selectedCategory)? false : true}>
+                <CategoryDiv>
+                    <Content>
+                        <Title>Escolha uma categoria para o grupo:</Title>
+                        <Categories>
+                            {categories.map(category => {
+                                return ( 
+                                    <Category 
+                                        onClick={() => selectCategory(category.name)}
+                                        key={category.name}
+                                        style={setStyle(category.name, category.color)}
+                                    >
+                                        <CategoryName>
+                                            {category.name}
+                                        </CategoryName>
+                                    </Category>
+                                );
+                            })}
+                        </Categories>
+                    </Content>
+                    <BottomButton onClick={() => setCategory(selectedCategory)} isDisabled={(selectedCategory)? false : true}>
                         Começar
-                    </Button>
-                </div>
+                    </BottomButton>
+                </CategoryDiv>
             </Background>
         );
     }
@@ -90,7 +95,7 @@ export default function CategoryPage({title, description, setCategory, turnVisib
                 comesFromTop
             />
             <Header infoPage={() => {setPopupVisibility(true)}}/>
-            <div className="categoriesDiv awaiting">
+            <Awaiting>
                 <AwaitingBanner
                     icon={beer}
                     firstText="Aguardando o jogador da vez largar do zap e escolher uma categoria..."
@@ -98,7 +103,7 @@ export default function CategoryPage({title, description, setCategory, turnVisib
                     background="#3D1365"
                     border="4px solid #800080"
                 />
-            </div>
+            </Awaiting>
         </Background>
     );
 }
