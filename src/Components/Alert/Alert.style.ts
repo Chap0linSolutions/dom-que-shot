@@ -1,17 +1,26 @@
+import styled from "@emotion/styled";
 
-.AlertDarkenedBackground {
+let screenWidth = window.innerWidth;
+let desktop = (screenWidth >= 500);
+let backgroundWidth = (desktop)? '408px' : '100vw';
+let backgroundBorderRadius = (desktop)? 20 : 0;
+
+
+export const Background = styled.div`
     opacity: 0;
-    width: 100vw;
+    width: ${backgroundWidth};
     min-height: 100vh;
     position: fixed;
     z-index: 6;
     background: rgba(0, 0, 0, 0.4);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-}
+    border-radius: ${backgroundBorderRadius}px;
+`;
 
-.AlertDiv {
+export const AlertDiv = styled.div`
     scale: 0;
     padding: 10px;
     display: flex;
@@ -24,18 +33,23 @@
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
     z-index: 6;
-}
+`;
 
-.AlertMessage {
+export const Image = styled.img`
+    width: 40px;
+    object-fit: scale-down;
+`;
+
+export const Message = styled.p`
     font-family: 'Roboto';
     font-weight: 500;
     font-size: 18px;
     text-align: center;
     color: rgba(0, 0, 0, 0.6);
     z-index: 6;
-}
+`;
 
-.AlertButton {
+export const Button = styled.button`
     width: 84px;
     height: 22px;
     background: #8877DF;
@@ -47,16 +61,4 @@
     justify-content: center;
     align-items: center;
     z-index: 6;
-}
-
-@media (min-width: 500px) {
-    .AlertDarkenedBackground {
-      max-width: 412px;
-      min-width: 412px;
-      box-sizing: border-box;
-      min-height: 100vh;
-      border-radius: 20px;
-      display: flex;
-      flex-direction: column;
-    }
-  }
+`;
