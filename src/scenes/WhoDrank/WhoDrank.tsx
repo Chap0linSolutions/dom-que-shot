@@ -8,7 +8,7 @@ import Avatar from '../../components/Avatar';
 import beer from '../../assets/beer.png';
 import gsap from 'gsap';
 import './WhoDrank.css';
-import AwaitingBanner from '../../components/AwaitingBanner';
+import AwaitingBanner from '../../components/AwaitingBanner/AwaitingBanner';
 
 interface PlayerProps {
   nickname: string;

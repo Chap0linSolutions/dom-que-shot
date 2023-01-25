@@ -4,7 +4,7 @@ import Button from "../../../components/Button";
 import Header from "../../../components/Header";
 import beer from '../../../assets/beer.png';
 import './Category.css'
-import AwaitingBanner from "../../../components/AwaitingBanner";
+import AwaitingBanner from "../../../components/AwaitingBanner/AwaitingBanner";
 import Popup from "../../../components/Popup";
 
 
