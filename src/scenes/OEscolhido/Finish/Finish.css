@@ -94,8 +94,8 @@
 }
 
 .TieAvatar {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
 }
 
 .TieText {
@@ -152,10 +152,6 @@
   font-size: 24px;
 }
 
-.Avatar img {
-  width: 100px;
-}
-
 @media (max-height: 750px) {
   .ResultsTitle {
     margin: 0;
@@ -197,5 +193,10 @@
   }
   .Avatar img {
     width: 80px;
+  }
+
+  .TieOuter {
+    width: 160px;
+    height: 228px;
   }
 }
