@@ -1,30 +1,32 @@
 import styled from "@emotion/styled";
 
 const smallScreen = (window.innerHeight < 740);
-const categorySize = (smallScreen)?  [144, 90] : [140, 80]; [160, 100]
+const titleSize = (smallScreen)? 18 : 20;
+const titlePadding = (smallScreen)? '0 25px' : '0 50px';
+const titleMargin = (smallScreen)? '10px 0' : '20px 0';
+const categorySize = (smallScreen)?  [144, 80] : [160, 100];
+const categoryFontSize = (smallScreen)? 16 : 18;
 
 export const Title = styled.p`
-    width: 100vw;
-    padding: 0 50px;
-    margin: 20px 0;
+    padding: ${titlePadding};
+    margin: ${titleMargin};
     text-align: center;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 500;
-    font-size: 20px;
+    font-size: ${titleSize}px;
 `;
 
 export const CategoryDiv = styled.div`
     display: flex;
-    flx-direction: column;
-    align-items: center
-    justify-contet: space-between;
-    width: 100vw;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     height: 100%;
 `;
 
 export const Content = styled.div`
-    width: 100vw;
+    width: 100%;
 `;
 
 export const Categories = styled.div`
@@ -55,7 +57,8 @@ export const Category = styled.div`
 
 export const CategoryName = styled.p`
     text-align: center;
-    font-size: 18px;
+    font-size: ${categoryFontSize}px;
     font-family: 'Roboto';
     font-weight: 500;
+    margin: 0;
 `;

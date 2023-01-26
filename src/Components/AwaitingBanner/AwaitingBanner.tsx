@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { BannerDiv, BannerIcon, BannerTexts, FirstText, SecondText } from './AwaitingBanner.style';
 
@@ -18,7 +18,7 @@ export default function AwaitingBanner({border, background, icon, firstText, sec
         border: (border)? border : ''
     }
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const loop = gsap.to(bannerIcon.current, {
           rotate: -360,
           duration: 5,

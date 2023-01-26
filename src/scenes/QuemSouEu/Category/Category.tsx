@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Background from "../../../components/Background";
-import Button from "../../../components/Button";
 import Header from "../../../components/Header";
 import beer from '../../../assets/beer.png';
 import AwaitingBanner from "../../../components/AwaitingBanner";
