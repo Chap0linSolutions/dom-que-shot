@@ -39,6 +39,8 @@ export default function Lobby() {
     LobbyStates.Main
   );
 
+  const [alertMessage, setAlertMessage] = useState<string>(undefined);
+
   const [gameList, updateGameList] = useState<Game[]>(games);
   const [playerList, updatePlayerList] = useState<Player[]>([
     {
@@ -90,16 +92,6 @@ export default function Lobby() {
       setCurrentOwner(playerName);
     });
 
-    socket.addEventListener('currently-playing-card-game', (destination) => {
-      //TODO: adicionar um jeito de verificar se está na capa ou na página de espera
-      navigate(destination, {
-        state: {
-          isYourTurn: false,
-          isOwner: false,
-        },
-      });
-    });
-
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (destination === '/SelectNextGame') {
         console.log(`Movendo a sala para ${destination}.`);
@@ -108,6 +100,20 @@ export default function Lobby() {
     });
 
     if (returningPlayer) {
+      socket.addEventListener('current-game-is', (currentGame) => {
+        if (currentGame == 'BangBang' || currentGame == 'OEscolhido') {
+          setAlertMessage('Aguardando finalizar jogo em andamento.');
+        } else {
+          setAlertMessage('Reconectando...');
+          return navigate(`/${currentGame}`, {
+            state: {
+              isYourTurn: false,
+              isOwner: false,
+            },
+          });
+        }
+      });
+
       socket.push('get-current-game-by-room', userData.roomCode);
     }
 
@@ -162,6 +168,7 @@ export default function Lobby() {
       return (
         <MainPage
           ownerVisibility={ownerVisibility}
+          alertMessage={alertMessage}
           currentOwner={currentOwner}
           roomCode={userData.roomCode}
           copyToClipboard={copyToClipboard}
