@@ -1,24 +1,18 @@
 import styled from '@emotion/styled';
 
-const smallScreen = window.innerHeight < 720;
-const gameDivMargin = smallScreen ? 1.2 : 1.6;
-const rouletteIconMargin = smallScreen ? 20 : 10;
-const rouletteIconSize = smallScreen ? 30 : 40;
-const nextGameFontSize = smallScreen ? 20 : 25;
-const nextGameFontWeight = smallScreen ? 500 : 700;
-const nextGameMargin = smallScreen ? '20px 0 40px 0' : '25px 0 40px 0';
-const waitingMessageFontSize = smallScreen ? 16 : 20;
-
 export const ContentDiv = styled.div``;
 export const ButtonDiv = styled.div``;
 
 export const SelectGameDiv = styled.div`
-  margin-top: ${gameDivMargin}em;
+  margin-top: 1.6em;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  @media (max-height: 740px){
+    margin-top: 1.2em;
+  }
 `;
 
 export const RouletteDiv = styled.div`
@@ -31,9 +25,14 @@ export const SideIconSpace = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: ${rouletteIconMargin}px;
-  width: ${rouletteIconSize}px;
-  height: ${rouletteIconSize}px;
+  margin: 20px;
+  width: 40px;
+  height: 40px;
+  @media (max-height: 740px) {
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+  }
 `;
 
 export const Card = styled.div`
@@ -53,10 +52,15 @@ export const SideIcon = styled.img`
 
 export const NextGameName = styled.p`
   opacity: 0;
-  font-size: ${nextGameFontSize}px;
-  font-weight: ${nextGameFontWeight};
-  margin: ${nextGameMargin};
+  font-size: 25px;
+  font-weight: 700;
+  margin: 25px 0 40px 0;
   text-align: center;
+  @media (max-height: 740px){
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 20px;
+  }
 `;
 
 export const WaitingMessageDiv = styled.div`
@@ -69,8 +73,11 @@ export const WaitingMessageDiv = styled.div`
 export const WaitingMessage = styled.p`
   color: rgba(255, 255, 255, 0.6);
   text-align: center;
-  font-size: ${waitingMessageFontSize};
+  font-size: 20px;
   font-family: 'Roboto';
   font-weight: 400;
   letter-spacing: 0em;
+  @media (max-height: 740px) {
+    font-size: 16px;
+  }
 `;

@@ -1,12 +1,5 @@
 import styled from '@emotion/styled';
 
-const smallScreen = innerHeight < 740;
-
-const imgSize = smallScreen ? 240 : 280;
-const titleSize = smallScreen ? 26 : 32;
-const cardSize = smallScreen ? [264, 367] : [307, 426];
-const cardMarginTop = smallScreen ? 1 : 2;
-
 export const CoverDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -16,29 +9,39 @@ export const CoverDiv = styled.div`
 `;
 
 export const CoverCard = styled.div`
-  margin-top: ${cardMarginTop}em;
+  margin-top: 2em;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: ${cardSize[0]}px;
-  height: ${cardSize[1]}px;
+  width: 426px;
+  height: 307px;
   border-radius: 10px;
   z-index: 1;
+  @media (max-height: 740px) {
+    width: 264px;
+    height: 367px;
+    margin-top: 1em;
+  }
 `;
 
 export const CoverImg = styled.img`
-  width: ${imgSize}px;
-  height: ${imgSize}px;
+  width: 280px;
   object-fit: scale-down;
+  @media (max-height: 740px) {
+    width: 240px;
+  }
 `;
 
 export const CoverTitle = styled.p`
   font-family: 'Adumu';
-  font-size: ${titleSize}px;
+  font-size: 32px;
   font-weight: 700;
   color: white;
   margin: 12px;
+  @media (max-height: 740px) {
+    font-size: 26px;
+  }
 `;
 
 export const CoverButton = styled.div``;
