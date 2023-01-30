@@ -309,7 +309,9 @@ export default function SelectNextGame() {
               ? { visibility: 'visible' }
               : { display: 'none' }
           }>
-          <Button margin="0 auto 40px auto" onClick={turnTheWheel}>Girar</Button>
+          <Button margin="0 auto 40px auto" onClick={turnTheWheel}>
+            Girar
+          </Button>
         </ButtonDiv>
       </SelectGameDiv>
     </Background>

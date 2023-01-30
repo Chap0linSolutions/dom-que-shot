@@ -55,7 +55,7 @@ export default function CoverPage({
   useLayoutEffect(() => {
     //same as useEffect, but it waits untill all DOM elements are rendered to execute
 
-    let animation = gsap.context(() => {
+    const animation = gsap.context(() => {
       //we need gsap.context() to be able to remove all animation once the component unmounts
       switch (type) {
         case 'simple':
@@ -141,7 +141,9 @@ export default function CoverPage({
 
   const button =
     turnVisibility === true ? (
-      <Button margin="0 auto 40px auto" onClick={gamePage}>Começar jogo</Button>
+      <Button margin="0 auto 40px auto" onClick={gamePage}>
+        Começar jogo
+      </Button>
     ) : (
       <></>
     );

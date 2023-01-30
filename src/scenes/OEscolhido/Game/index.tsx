@@ -78,7 +78,10 @@ export default function GamePage({
             ))}
           </div>
         </div>
-        <Button margin="0 auto 40px auto" isDisabled={!hasSelected} onClick={finishPage}>
+        <Button
+          margin="0 auto 40px auto"
+          isDisabled={!hasSelected}
+          onClick={finishPage}>
           Votar
         </Button>
       </div>

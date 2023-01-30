@@ -24,7 +24,9 @@ export default function HintPage({
       <Header logo={coverImg} goBackArrow={coverPage} title={title} />
       <HintPageDiv>
         <HintPageDescription>{description}</HintPageDescription>
-        <Button margin="0 auto 40px auto" onClick={gamePage}>Finalizar</Button>
+        <Button margin="0 auto 40px auto" onClick={gamePage}>
+          Finalizar
+        </Button>
       </HintPageDiv>
     </Background>
   );

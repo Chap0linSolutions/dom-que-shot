@@ -7,7 +7,6 @@ import PlayerList from './PlayerList';
 import Button from '../../../components/Button';
 import './Main.css';
 
-
 enum Visibility {
   Invisible,
   Visible,
@@ -122,7 +121,9 @@ export default function Main({
             <AlertTriangle width="20px" height="20px" color="red" />
             <p className="LobbyWarningText">Mínimo de 2 jogadores!</p>
           </div>
-          <Button margin="0 auto 40px auto" onClick={beginMatch}>Iniciar</Button>
+          <Button margin="0 auto 40px auto" onClick={beginMatch}>
+            Iniciar
+          </Button>
         </div>
       </div>
     </Background>

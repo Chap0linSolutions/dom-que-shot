@@ -52,10 +52,12 @@ export default function FinishPage({
     gsap.from('.ResultsButtons', { opacity: 0, duration: 1, delay: 2 });
   }, []);
 
-
-  const button = (turnVisibility===true)
-  ? <Button margin="0 auto 40px auto" onClick={roulettePage}>{rouletteButtonText}</Button>
-  : null;
+  const button =
+    turnVisibility === true ? (
+      <Button margin="0 auto 40px auto" onClick={roulettePage}>
+        {rouletteButtonText}
+      </Button>
+    ) : null;
 
   if (votedPlayer.at(0).votes === 0) {
     return (

@@ -39,7 +39,9 @@ export default function GamePage({
               ))}
             </div>
           </div>
-          <Button margin="0 auto 40px auto" onClick={finishPage}>Continuar</Button>
+          <Button margin="0 auto 40px auto" onClick={finishPage}>
+            Continuar
+          </Button>
         </div>
       </Background>
     );

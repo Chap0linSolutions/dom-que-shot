@@ -10,7 +10,7 @@ export const SelectGameDiv = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  @media (max-height: 740px){
+  @media (max-height: 740px) {
     margin-top: 1.2em;
   }
 `;
@@ -56,7 +56,7 @@ export const NextGameName = styled.p`
   font-weight: 700;
   margin: 25px 0 40px 0;
   text-align: center;
-  @media (max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 20px;
     font-weight: 500;
     margin-top: 20px;

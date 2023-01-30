@@ -47,10 +47,12 @@ export function RankingPage({
     noOneVoted = true;
   }
 
-  const button = (turnVisibility === true)
-  ? <Button margin="0 auto 40px auto" onClick={roulettePage}>Próximo jogo</Button>
-  : null;
-
+  const button =
+    turnVisibility === true ? (
+      <Button margin="0 auto 40px auto" onClick={roulettePage}>
+        Próximo jogo
+      </Button>
+    ) : null;
 
   return (
     <Background>
