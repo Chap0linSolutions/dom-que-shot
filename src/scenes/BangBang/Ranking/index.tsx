@@ -1,7 +1,7 @@
 import React from 'react';
 import './Ranking.css';
 import Avatar from '../../../components/Avatar';
-import BottomButton from '../../../components/Button/BottomButton';
+import Button from '../../../components/Button';
 import RankingItem from './RankingItem';
 import thumbDown from './img/thumbs-down.png';
 import crown from './img/crown.png';
@@ -46,6 +46,11 @@ export function RankingPage({
   if (count === data.length) {
     noOneVoted = true;
   }
+
+  const button = (turnVisibility === true)
+  ? <Button margin="0 auto 40px auto" onClick={roulettePage}>Próximo jogo</Button>
+  : null;
+
 
   return (
     <Background>
@@ -122,13 +127,7 @@ export function RankingPage({
             </div>
           </div>
         </div>
-        <BottomButton
-          onClick={roulettePage}
-          style={
-            turnVisibility ? { visibility: 'visible' } : { display: 'none' }
-          }>
-          Próximo jogo
-        </BottomButton>
+        {button}
       </div>
     </Background>
   );

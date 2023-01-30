@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouletteDiv, UpperDetail, LowerDetail, Center } from './styles';
+import { RouletteDiv, UpperDetail, LowerDetail, Center } from './Roulette.style';
 
 interface RouletteProps {
   width?: number;

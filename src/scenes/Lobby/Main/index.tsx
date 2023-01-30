@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { CheckCircle, Copy, AlertTriangle } from 'react-feather';
 import Header from '../../../components/Header';
 import Background from '../../../components/Background';
-import Button from '../../../components/Button';
 import PlayerList from './PlayerList';
+import Button from '../../../components/Button';
 import './Main.css';
-import BottomButton from '../../../components/Button/BottomButton';
+
 
 enum Visibility {
   Invisible,
@@ -122,7 +122,7 @@ export default function Main({
             <AlertTriangle width="20px" height="20px" color="red" />
             <p className="LobbyWarningText">Mínimo de 2 jogadores!</p>
           </div>
-          <BottomButton onClick={beginMatch}>Iniciar</BottomButton>
+          <Button margin="0 auto 40px auto" onClick={beginMatch}>Iniciar</Button>
         </div>
       </div>
     </Background>

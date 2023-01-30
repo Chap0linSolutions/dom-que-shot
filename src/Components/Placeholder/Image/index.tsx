@@ -1,4 +1,4 @@
-import { Image, Text } from './styles';
+import { Image, Text } from './Image.style';
 
 interface ImageProps {
   width?: number;

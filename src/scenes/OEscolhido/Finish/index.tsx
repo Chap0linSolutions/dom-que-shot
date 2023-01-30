@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
-import BottomButton from '../../../components/Button/BottomButton';
+import Button from '../../../components/Button';
 import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
 import noOneVoted from '../../../assets/no-votes.png';
@@ -52,6 +52,11 @@ export default function FinishPage({
     gsap.from('.ResultsButtons', { opacity: 0, duration: 1, delay: 2 });
   }, []);
 
+
+  const button = (turnVisibility===true)
+  ? <Button margin="0 auto 40px auto" onClick={roulettePage}>{rouletteButtonText}</Button>
+  : null;
+
   if (votedPlayer.at(0).votes === 0) {
     return (
       <Background noImage>
@@ -77,14 +82,7 @@ export default function FinishPage({
               TODO mundo bebe!
             </p>
           </div>
-
-          <BottomButton
-            onClick={roulettePage}
-            style={
-              turnVisibility ? { visibility: 'visible' } : { display: 'none' }
-            }>
-            {rouletteButtonText}
-          </BottomButton>
+          {button}
         </div>
       </Background>
     );
@@ -113,13 +111,7 @@ export default function FinishPage({
               } votos`}</p>
             </div>
           </div>
-          <BottomButton
-            onClick={roulettePage}
-            style={
-              turnVisibility ? { visibility: 'visible' } : { display: 'none' }
-            }>
-            {rouletteButtonText}
-          </BottomButton>
+          {button}
         </div>
       </Background>
     );
@@ -167,13 +159,7 @@ export default function FinishPage({
               Neste caso, ambos os empatados devem beber!
             </p>
           </div>
-          <BottomButton
-            onClick={roulettePage}
-            style={
-              turnVisibility ? { visibility: 'visible' } : { display: 'none' }
-            }>
-            {rouletteButtonText}
-          </BottomButton>
+          {button}
         </div>
       </Background>
     );
@@ -202,13 +188,7 @@ export default function FinishPage({
             Neste caso, todos os empatados devem beber!
           </p>
         </div>
-        <BottomButton
-          onClick={roulettePage}
-          style={
-            turnVisibility ? { visibility: 'visible' } : { display: 'none' }
-          }>
-          {rouletteButtonText}
-        </BottomButton>
+        {button}
       </div>
     </Background>
   );

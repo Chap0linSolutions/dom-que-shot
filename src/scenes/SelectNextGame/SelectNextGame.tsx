@@ -8,7 +8,7 @@ import Roulette from '../../components/Roulette';
 import RouletteCard from '../../components/Roulette/RouletteCard';
 import SocketConnection from '../../lib/socket';
 import gameList from '../../contexts/games';
-import BottomButton from '../../components/Button/BottomButton';
+import Button from '../../components/Button';
 import RouletteTriangle from '../../assets/roulette-triangle.png';
 import {
   SelectGameDiv,
@@ -309,7 +309,7 @@ export default function SelectNextGame() {
               ? { visibility: 'visible' }
               : { display: 'none' }
           }>
-          <BottomButton onClick={turnTheWheel}>Girar</BottomButton>
+          <Button margin="0 auto 40px auto" onClick={turnTheWheel}>Girar</Button>
         </ButtonDiv>
       </SelectGameDiv>
     </Background>

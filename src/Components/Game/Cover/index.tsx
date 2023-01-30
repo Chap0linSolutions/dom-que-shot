@@ -3,14 +3,14 @@ import Background from '../../Background';
 import Header from '../../Header';
 import Popup from '../../Popup';
 import gsap from 'gsap';
-import BottomButton from '../../Button/BottomButton';
+import Button from '../../Button';
 import {
   CoverDiv,
   CoverCard,
   CoverImg,
   CoverTitle,
   CoverButton,
-} from './styles';
+} from './Cover.style';
 
 interface CoverProps {
   title: string;
@@ -141,7 +141,7 @@ export default function CoverPage({
 
   const button =
     turnVisibility === true ? (
-      <BottomButton onClick={gamePage}>Começar jogo</BottomButton>
+      <Button margin="0 auto 40px auto" onClick={gamePage}>Começar jogo</Button>
     ) : (
       <></>
     );

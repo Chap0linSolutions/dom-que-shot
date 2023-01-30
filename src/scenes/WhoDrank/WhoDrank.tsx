@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import SocketConnection from '../../lib/socket';
 import Background from '../../components/Background';
 import Header from '../../components/Header';
-import BottomButton from '../../components/Button/BottomButton';
+import Button from '../../components/Button';
 import Avatar from '../../components/Avatar';
 import beer from '../../assets/beer.png';
 import gsap from 'gsap';
@@ -136,7 +136,7 @@ export default function WhoDrankPage() {
               ))}
             </div>
           </div>
-          <BottomButton onClick={backToRoulette}>{buttonText}</BottomButton>
+          <Button margin="0 auto 40px auto" onClick={backToRoulette}>{buttonText}</Button>
         </div>
       </Background>
     );

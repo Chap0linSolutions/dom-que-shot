@@ -1,7 +1,7 @@
 import React from 'react';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
-import BottomButton from '../../../components/Button/BottomButton';
+import Button from '../../../components/Button';
 import glassIcon from '../../../assets/glass-icon-yellow-background.png';
 import './Game.css';
 
@@ -39,7 +39,7 @@ export default function GamePage({
               ))}
             </div>
           </div>
-          <BottomButton onClick={finishPage}>Continuar</BottomButton>
+          <Button margin="0 auto 40px auto" onClick={finishPage}>Continuar</Button>
         </div>
       </Background>
     );

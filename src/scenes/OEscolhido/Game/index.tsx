@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
-import BottomButton from '../../../components/Button/BottomButton';
+import Button from '../../../components/Button';
 import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
 import './Game.css';
@@ -78,9 +78,9 @@ export default function GamePage({
             ))}
           </div>
         </div>
-        <BottomButton isDisabled={!hasSelected} onClick={finishPage}>
+        <Button margin="0 auto 40px auto" isDisabled={!hasSelected} onClick={finishPage}>
           Votar
-        </BottomButton>
+        </Button>
       </div>
     </Background>
   );
