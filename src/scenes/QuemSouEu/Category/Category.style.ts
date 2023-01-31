@@ -1,20 +1,18 @@
 import styled from "@emotion/styled";
 
-const smallScreen = (window.innerHeight < 740);
-const titleSize = (smallScreen)? 18 : 20;
-const titlePadding = (smallScreen)? '0 25px' : '0 50px';
-const titleMargin = (smallScreen)? '10px 0' : '20px 0';
-const categorySize = (smallScreen)?  [144, 80] : [160, 100];
-const categoryFontSize = (smallScreen)? 16 : 18;
-
 export const Title = styled.p`
-    padding: ${titlePadding};
-    margin: ${titleMargin};
+    padding: 0 50px;
+    margin: 20px 0;
     text-align: center;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 500;
-    font-size: ${titleSize}px;
+    font-size: 20px;
+    @media (max-height: 740px){
+        padding: 0 25px;
+        margin: 10px 0;
+        font-size: 18px;
+    }
 `;
 
 export const CategoryDiv = styled.div`
@@ -43,8 +41,8 @@ export const Awaiting = styled(Categories)`
 
 export const Category = styled.div`
     margin: 8px;    
-    width: ${categorySize[0]}px;
-    height: ${categorySize[1]}px;
+    width: 160px;
+    height: 100px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -53,12 +51,19 @@ export const Category = styled.div`
     background: #403A55;
     box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
+    @media (max-height: 740px){
+        width: 144px;
+        height: 80px;
+    }
 `;
 
 export const CategoryName = styled.p`
     text-align: center;
-    font-size: ${categoryFontSize}px;
+    font-size: 18px;
     font-family: 'Roboto';
     font-weight: 500;
     margin: 0;
+    @media (max-height: 740px){
+        font-size: 16px;
+    }
 `;

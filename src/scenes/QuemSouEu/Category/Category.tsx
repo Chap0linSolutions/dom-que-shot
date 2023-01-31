@@ -5,7 +5,7 @@ import beer from '../../../assets/beer.png';
 import AwaitingBanner from "../../../components/AwaitingBanner";
 import Popup from "../../../components/Popup";
 import { Categories, Category, CategoryName, Title, Awaiting, Content, CategoryDiv } from "./Category.style";
-import BottomButton from "../../../components/Button/BottomButton";
+import Button from "../../../components/Button";
 
 
 const categories: {name: string, color: string}[] = [
@@ -76,9 +76,9 @@ export default function CategoryPage({title, description, setCategory, turnVisib
                             })}
                         </Categories>
                     </Content>
-                    <BottomButton onClick={() => setCategory(selectedCategory)} isDisabled={(selectedCategory)? false : true}>
+                    <Button margin="0 auto 40px auto" onClick={() => setCategory(selectedCategory)} isDisabled={(selectedCategory)? false : true}>
                         Começar
-                    </BottomButton>
+                    </Button>
                 </CategoryDiv>
             </Background>
         );

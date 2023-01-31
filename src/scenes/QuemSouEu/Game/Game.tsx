@@ -3,7 +3,7 @@ import { ListedPlayerProps } from '../QuemSouEu';
 import { Eye, EyeOff } from 'react-feather';
 import Avatar from '../../../components/Avatar';
 import Background from '../../../components/Background';
-import BottomButton from '../../../components/Button/BottomButton';
+import Button from '../../../components/Button';
 import Header from '../../../components/Header';
 import Alert from '../../../components/Alert';
 import Popup from '../../../components/Popup';
@@ -86,13 +86,15 @@ export default function GamePage({title, description, currentPlayerNickname, cat
     const alert = <Alert message="Clique no jogador que acertar primeiro!"/>
 
     const button =
-    <BottomButton onClick={endGame} isDisabled={
+     <Button 
+        margin="0 auto 40px auto"
+        onClick={endGame} isDisabled={
         (whoPlayers.filter(player => player.selected === true).length === 0)
         ? true 
         : false
     }>
         Finalizar
-    </BottomButton>
+    </Button>
 
     return (
         <Background noImage>

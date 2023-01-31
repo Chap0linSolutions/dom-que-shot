@@ -1,11 +1,5 @@
 import styled from "@emotion/styled";
 
-const smallScreen = (window.innerHeight < 740);
-const normalTextSize = (smallScreen)? 18 : 20;      //applied on GuidanceText and PlayerNickname 
-const largeTextSize = (smallScreen)? 20 : 22;       //applied on OtherName and YourName 
-const hideIconSize = (smallScreen)? 40 : 50;
-const cardHeight = (smallScreen)? 72 : 80;
-
 export const GameDiv = styled.div`
     display: flex;
     flex-direction: column;
@@ -39,29 +33,39 @@ export const TextAndHide = styled.div`
 `;
 
 export const GuidanceText = styled.p`
-    font-size: ${normalTextSize}px;
+    font-size: 20px;
     font-weight: 500;
     margin: 0;
+    @media (max-height: 740px){
+        font-size: 18px;
+    }  
 `;
 
 export const HideNames = styled.div`
     background: #403A55;
-    width: ${hideIconSize}px;
-    height: ${hideIconSize}px;
+    width: 50px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
+    @media (max-height: 740px){
+        width: 40px;
+        height: 40px;
+    }  
 `;
 
 export const Card = styled.div`
     width: 90%;
-    height: ${cardHeight}px;
+    height: 80px;
     background-color: #403A55;
     border-radius: 10px;
     margin: 4px;
     display: flex;
     align-items: center;
+    @media (max-height: 740px){
+       height: 72px;
+    }  
 `;
 
 export const Detail = styled.div`
@@ -83,18 +87,24 @@ export const CardContent = styled.div`
 
 export const OthersName = styled.p`
     font-family: 'Roboto';
-    font-size: ${largeTextSize}px;
+    font-size: 22px;
     font-weight: 500;
     color: white;
     margin: 0;
+    @media (max-height: 740px){
+        font-size: 20px;
+    }  
 `;
 
 export const YourName = styled.p`
     font-family: 'Roboto';
-    font-size: ${largeTextSize}px;
+    font-size: 22px;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.6);
     margin: 0;
+    @media (max-height: 740px){
+        font-size: 20px;
+    }  
 `;
 
 export const WhoGotThisName = styled.div`
@@ -117,9 +127,12 @@ export const CategoryAndPlayer = styled.div`
 export const PlayerNickname = styled.p` 
     font-family: 'Roboto';
     font-weight: 500;
-    font-size: ${normalTextSize}px;
+    font-size: 20px;
     color: rgba(0, 0, 0, 0.54);
     margin: 0 8px;
+    @media (max-height: 740px){
+        font-size: 18px;
+    }  
 `;
 
 export const PlayerAvatar = styled.div`

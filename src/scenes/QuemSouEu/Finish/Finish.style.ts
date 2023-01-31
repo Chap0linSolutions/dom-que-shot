@@ -1,14 +1,5 @@
 import styled from "@emotion/styled";
 
-const smallScreen = (window.innerHeight < 740);
-
-const titleSize = (smallScreen)? 18 : 22;
-const playersListPadding = (smallScreen)? 5 : 10;
-const avatarDivSize = (smallScreen)? 80 : 105;
-const avatarDivPadding = (smallScreen)? 5 : 10;
-const playerNameSize = (smallScreen)? 21 : 24;
-const playerRoleSize = (smallScreen)? 16 : 18;
-
 export const FinishDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -43,11 +34,14 @@ export const PlayersList = styled.div`
   flex-direction: column;
   overflow-y: scroll;
   overflow-x: hidden;
-  padding: ${playersListPadding}px;
+  padding: 10px;
   width: 100%;
   ::-webkit-scrollbar {
     display: none;
   }
+  @media (max-height: 740px){
+    padding: 5px;
+  }  
 `;
 
 export const IconDiv = styled.div`
@@ -67,11 +61,14 @@ export const Icon = styled.img`
 
 export const Title = styled.p`
   margin: 10px 40px;
-  font-size: ${titleSize}px;
+  font-size: 22px;
   font-weight: 500;
   font-family: 'Roboto';
   display: flex;
   align-items: center;
+  @media (max-height: 740px){
+    font-size: 18px;
+  }  
 `;
 
 export const PlayerOuterCard = styled.div` 
@@ -84,30 +81,45 @@ export const PlayerOuterCard = styled.div`
 export const AvatarDiv = styled.div`    
   background-color: #8877df;
   border-radius: 20px;
-  padding: ${avatarDivPadding}px;
+  padding: 10px;
   margin-right: 8px;
-  width: ${avatarDivSize}px;
-  height: ${avatarDivSize}px;
+  width: 105px;
+  height: 105px;
   display: flex;
   align-items: center;
   justify-content: center;
+  @media (max-height: 740px){
+    width: 80px;
+    height: 80px;
+    padding: 7px;
+  }  
 `;
 
 export const NameAndRole = styled.div`  
   display: flex;
   flex-direction: column;
   justify-content: center;
+  max-width: calc(100% - 158px);
+  @media (max-height: 740px){
+    max-width: calc(100% - 88px);
+  }
 `;
 
 export const Name = styled.p`   
   font-family: Adumu;
-  font-size: ${playerNameSize}px;
+  font-size: 24px;
   margin: 2px 4px;
+  @media (max-height: 740px){
+    font-size: 21px;
+  }  
 `;
 
 export const Role = styled.p`
-  font-size: ${playerRoleSize}px;
+  font-size: 18px;
   margin: 2px 4px;
+  @media (max-height: 740px){
+    font-size: 16px;
+  }  
 `;
 
 export const ButtonDiv = styled.div``;

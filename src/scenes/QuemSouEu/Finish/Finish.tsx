@@ -6,7 +6,7 @@ import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
 import beer from '../../../assets/beer.png';
 import crown from '../../../assets/crown.png';
-import BottomButton from '../../../components/BottomButton';
+import Button from '../../../components/Button';
 import { AvatarDiv, Content, FinishDiv, Icon, IconDiv, LosersDiv, Name, NameAndRole, PlayerOuterCard, PlayersList, Role, Title, WinnersDiv, ButtonDiv } from './Finish.style';
 
 interface CoverProps {
@@ -126,7 +126,7 @@ export default function FinishPage({
   }
 
   const button = 
-  <BottomButton onClick={roulettePage}>{rouletteButtonText}</BottomButton>
+  <Button margin="0 auto 40px auto" onClick={roulettePage}>{rouletteButtonText}</Button>
 
   return (
     <Background>
