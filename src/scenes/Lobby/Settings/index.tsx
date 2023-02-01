@@ -3,7 +3,15 @@ import Background from '../../../components/Background';
 import GameCard from '../../../components/GameCard';
 import { AlertTriangle } from 'react-feather';
 import { Game } from '../../../contexts/games';
-import { Card, Cards, LobbySettings, SelectionText, Title, WarningDiv, WarningText } from './Settings.style';
+import {
+  Card,
+  Cards,
+  LobbySettings,
+  SelectionText,
+  Title,
+  WarningDiv,
+  WarningText,
+} from './Settings.style';
 
 interface SettingsProps {
   gameList: Game[];
@@ -48,15 +56,15 @@ export default function Settings({
 
   return (
     <Background>
-      <Header goBackArrow={mainPage} logo/>
+      <Header goBackArrow={mainPage} logo />
       <LobbySettings>
         <Title>Selecione os jogos da partida:</Title>
-  
-          <SelectionText>{selectionMessage}</SelectionText>
-          <WarningDiv className='LobbySettingsWarning'>
-            <AlertTriangle width="20px" height="20px" color="red" />
-            <WarningText>Mínimo de 3!</WarningText>
-          </WarningDiv>
+
+        <SelectionText>{selectionMessage}</SelectionText>
+        <WarningDiv className="LobbySettingsWarning">
+          <AlertTriangle width="20px" height="20px" color="red" />
+          <WarningText>Mínimo de 3!</WarningText>
+        </WarningDiv>
 
         <Cards>
           {gameList.map((card) => (
@@ -73,7 +81,6 @@ export default function Settings({
             </Card>
           ))}
         </Cards>
-                
       </LobbySettings>
     </Background>
   );
