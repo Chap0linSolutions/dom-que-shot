@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const HeaderDiv = styled.div`
   font-family: 'Adumu';
@@ -84,4 +84,3 @@ export const Logo = styled.img`
   object-fit: scale-down;
   overflow: hidden;
 `;
-

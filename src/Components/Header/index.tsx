@@ -1,7 +1,20 @@
 import { ArrowLeft, Info, Settings } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import DomQueShotLogo from '../../assets/logo-darker.png';
-import { ArrowDiv, ArrowAndTitle, HeaderDiv, TitleDiv, Title, Timer, SettingsInfoAndLogo, InfoDiv, SettingsDiv, LogoDiv, LogoBackground, Logo } from './Header.style';
+import {
+  ArrowDiv,
+  ArrowAndTitle,
+  HeaderDiv,
+  TitleDiv,
+  Title,
+  Timer,
+  SettingsInfoAndLogo,
+  InfoDiv,
+  SettingsDiv,
+  LogoDiv,
+  LogoBackground,
+  Logo,
+} from './Header.style';
 
 interface HeaderProps {
   logo?: boolean | string;
@@ -56,8 +69,7 @@ export default function Header({
   return (
     <HeaderDiv>
       <ArrowAndTitle>
-        <ArrowDiv
-          style={goBackArrow ? {} : { display: 'none' }}>
+        <ArrowDiv style={goBackArrow ? {} : { display: 'none' }}>
           <ArrowLeft width="30px" height="30px" onClick={goToPreviousPage} />
         </ArrowDiv>
 
@@ -66,8 +78,7 @@ export default function Header({
         </TitleDiv>
       </ArrowAndTitle>
 
-      <Timer
-        style={timer ? { color: timerColor } : { display: 'none' }}>
+      <Timer style={timer ? { color: timerColor } : { display: 'none' }}>
         <p style={{ margin: '0' }}>{formattedTimer}</p>
       </Timer>
 
@@ -81,16 +92,13 @@ export default function Header({
           />
         </InfoDiv>
 
-        <SettingsDiv
-          style={settingsPage ? {} : { display: 'none' }}>
+        <SettingsDiv style={settingsPage ? {} : { display: 'none' }}>
           <Settings width="22px" height="22px" onClick={goToSettingPage} />
         </SettingsDiv>
 
-        <LogoDiv
-          style={logo ? {} : { display: 'none' }}>
+        <LogoDiv style={logo ? {} : { display: 'none' }}>
           <LogoBackground>
-            <Logo
-              src={typeof logo === 'string' ? logo : DomQueShotLogo}></Logo>
+            <Logo src={typeof logo === 'string' ? logo : DomQueShotLogo}></Logo>
           </LogoBackground>
         </LogoDiv>
       </SettingsInfoAndLogo>
