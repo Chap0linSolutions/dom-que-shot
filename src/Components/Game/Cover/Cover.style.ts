@@ -14,8 +14,8 @@ export const CoverCard = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 426px;
-  height: 307px;
+  width: 326px;
+  height: 407px;
   border-radius: 10px;
   z-index: 1;
   @media (max-height: 740px) {
