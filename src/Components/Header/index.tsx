@@ -1,7 +1,7 @@
 import { ArrowLeft, Info, Settings } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import DomQueShotLogo from '../../assets/logo-darker.png';
-import './Header.css';
+import { ArrowDiv, ArrowAndTitle, HeaderDiv, TitleDiv, Title, Timer, SettingsInfoAndLogo, InfoDiv, SettingsDiv, LogoDiv, LogoBackground, Logo } from './Header.style';
 
 interface HeaderProps {
   logo?: boolean | string;
@@ -54,49 +54,46 @@ export default function Header({
   };
 
   return (
-    <div className="HeaderDiv">
-      <div className="HeaderArrowAndTitle">
-        <div
-          className="HeaderGoBackArrow"
+    <HeaderDiv>
+      <ArrowAndTitle>
+        <ArrowDiv
           style={goBackArrow ? {} : { display: 'none' }}>
           <ArrowLeft width="30px" height="30px" onClick={goToPreviousPage} />
-        </div>
+        </ArrowDiv>
 
-        <div className="HeaderTitle" style={title ? {} : { display: 'none' }}>
-          <p>{title}</p>
-        </div>
-      </div>
+        <TitleDiv style={title ? {} : { display: 'none' }}>
+          <Title>{title}</Title>
+        </TitleDiv>
+      </ArrowAndTitle>
 
-      <div
-        className="HeaderTimer"
+      <Timer
         style={timer ? { color: timerColor } : { display: 'none' }}>
         <p style={{ margin: '0' }}>{formattedTimer}</p>
-      </div>
+      </Timer>
 
-      <div className="HeaderInfoSettingsAndLogo">
-        <div className="HeaderInfo" style={infoPage ? {} : { display: 'none' }}>
+      <SettingsInfoAndLogo>
+        <InfoDiv style={infoPage ? {} : { display: 'none' }}>
           <Info
             color="#FBBC05"
             width="22px"
             height="22px"
             onClick={goToInfoPage}
           />
-        </div>
-        <div
-          className="HeaderSettings"
+        </InfoDiv>
+
+        <SettingsDiv
           style={settingsPage ? {} : { display: 'none' }}>
           <Settings width="22px" height="22px" onClick={goToSettingPage} />
-        </div>
-        <div
-          className="HeaderLogoSpace"
+        </SettingsDiv>
+
+        <LogoDiv
           style={logo ? {} : { display: 'none' }}>
-          <div className="HeaderLogo">
-            <img
-              className="HeaderLogoImage"
-              src={typeof logo === 'string' ? logo : DomQueShotLogo}></img>
-          </div>
-        </div>
-      </div>
-    </div>
+          <LogoBackground>
+            <Logo
+              src={typeof logo === 'string' ? logo : DomQueShotLogo}></Logo>
+          </LogoBackground>
+        </LogoDiv>
+      </SettingsInfoAndLogo>
+    </HeaderDiv>
   );
 }
