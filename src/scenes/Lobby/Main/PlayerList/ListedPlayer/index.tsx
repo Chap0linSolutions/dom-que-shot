@@ -27,14 +27,14 @@ export default function ListedPlayer({
   nickname,
   beers,
 }: ListedPlayerProps) {
-  const holdMyBeers = beers;
-  const twentyBeers = Math.floor(holdMyBeers / 20);
-  const tenBeers = Math.floor((holdMyBeers - 20 * twentyBeers) / 10);
+
+  const twentyBeers = Math.floor(beers / 20);
+  const tenBeers = Math.floor((beers - 20 * twentyBeers) / 10);
   const fiveBeers = Math.floor(
-    (holdMyBeers - 20 * twentyBeers - 10 * tenBeers) / 5
+    (beers - 20 * twentyBeers - 10 * tenBeers) / 5
   );
   const singleBeers =
-    holdMyBeers - 20 * twentyBeers - 10 * tenBeers - 5 * fiveBeers;
+    beers - 20 * twentyBeers - 10 * tenBeers - 5 * fiveBeers;
 
   const beerGroup: JSX.Element[] = [];
   for (let i = 0; i < singleBeers; i++) {
