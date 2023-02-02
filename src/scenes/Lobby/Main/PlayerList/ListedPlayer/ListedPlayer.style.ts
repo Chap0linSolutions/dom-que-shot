@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const ListedPlayerDiv = styled.div`
   display: flex;
@@ -38,7 +38,6 @@ export const BeerGroup = styled.div`
   }
 `;
 
-
 export const BeerBadge = styled.div`
   display: flex;
   align-items: center;
@@ -58,7 +57,7 @@ export const TenBeers = styled(BeerBadge)`
 `;
 
 export const TwentyBeers = styled(BeerBadge)`
-  background: #F9C95C;
+  background: #f9c95c;
 `;
 
 export const BeerBadgeText = styled.p`

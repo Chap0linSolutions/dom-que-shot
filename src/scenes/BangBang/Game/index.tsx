@@ -94,11 +94,11 @@ export function GamePage({ rankingPage, shot, ready }: GameProps) {
   };
 
   const shotValidation = () => {
-    if(msTimer > 0){ // queima da largada
-      console.log("False start");
+    if (msTimer > 0) {
+      // queima da largada
+      console.log('False start');
       shot(-10000 - msTimer);
-    }
-    else {
+    } else {
       shot(msTimer);
     }
   };
@@ -113,11 +113,10 @@ export function GamePage({ rankingPage, shot, ready }: GameProps) {
   const showErrorPopUp = () => {
     if (showPopUp === false) {
       setPopUp(true);
-      console.log("Changed to true");
-    }
-    else{
+      console.log('Changed to true');
+    } else {
       setPopUp(false);
-      console.log("Changed to false");
+      console.log('Changed to false');
     }
   };
 
@@ -128,16 +127,22 @@ export function GamePage({ rankingPage, shot, ready }: GameProps) {
 
         <div onClick={showErrorPopUp} className="target-image">
           <img src={targetImage} className="target-img" />
-          <div className="wrong-local-container"  style={{ visibility: showPopUp ? 'visible' : 'hidden' }}>
+          <div
+            className="wrong-local-container"
+            style={{ visibility: showPopUp ? 'visible' : 'hidden' }}>
             <div className="wrong-local-message">
-                <p>Errrroooou!!!</p>
+              <p>Errrroooou!!!</p>
             </div>
           </div>
         </div>
 
         <div className="container-baloon">
           <div className="animation-balloon">
-            <img onClick={showErrorPopUp} src={balloonImg} className="balloon-img" />
+            <img
+              onClick={showErrorPopUp}
+              src={balloonImg}
+              className="balloon-img"
+            />
           </div>
         </div>
 
@@ -145,10 +150,10 @@ export function GamePage({ rankingPage, shot, ready }: GameProps) {
           className="button-bang"
           onClick={handleClick}
           style={{
-            opacity: buttonStatus !== ButtonStatus.enabled? 0.3 : 1, 
-            cursor: buttonStatus !== ButtonStatus.enabled? "default" : "pointer" 
-          }}>
-        </button>
+            opacity: buttonStatus !== ButtonStatus.enabled ? 0.3 : 1,
+            cursor:
+              buttonStatus !== ButtonStatus.enabled ? 'default' : 'pointer',
+          }}></button>
       </div>
     </Background>
   );
