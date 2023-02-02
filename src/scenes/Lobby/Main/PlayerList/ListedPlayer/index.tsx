@@ -38,7 +38,6 @@ export default function ListedPlayer({
 
   const beerGroup: JSX.Element[] = [];
   for (let i = 0; i < singleBeers; i++) {
-    //comment
     beerGroup.push(<Beer key={i} src={BeerIcon} alt="" />);
   }
   for (let i = 0; i < fiveBeers; i++) {
@@ -79,18 +78,3 @@ export default function ListedPlayer({
     </ListedPlayerDiv>
   );
 }
-
-// <ListedPlayerDiv>
-//   <AvatarAndNickname>
-//     <AvatarDiv>
-//       <Avatar seed={seed} />
-//     </AvatarDiv>
-//     <Nickname>
-//       {nickname}
-//     </Nickname>
-//   </AvatarAndNickname>
-
-//   <BeerGroup>
-//     {beerGroup}
-//   </BeerGroup>
-// </ListedPlayerDiv>

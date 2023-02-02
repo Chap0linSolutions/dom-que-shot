@@ -49,15 +49,15 @@ export const BeerBadge = styled.div`
 `;
 
 export const FiveBeers = styled(BeerBadge)`
-  background: #664445;
+  background: #403a55;
 `;
 
 export const TenBeers = styled(BeerBadge)`
-  background: #777777;
+  background: #5f48a4;
 `;
 
 export const TwentyBeers = styled(BeerBadge)`
-  background: #f9c95c;
+  background: #800080;
 `;
 
 export const BeerBadgeText = styled.p`
@@ -74,7 +74,7 @@ export const TenText = styled(BeerBadgeText)`
 `;
 
 export const TwentyText = styled(BeerBadgeText)`
-  color: rgba(0, 0, 0, 0.54);
+color: rgba(255, 255, 255, 0.54);
 `;
 
 export const Beer = styled.img`
