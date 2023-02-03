@@ -2,18 +2,19 @@ import React from 'react';
 import Avatar from '../../../../../components/Avatar';
 import BeerIcon from '../../../../../assets/beer.png';
 import {
-  FiveText,
-  TenText,
-  TwentyText,
   AvatarAndNickname,
   AvatarDiv,
   Beer,
   BeerGroup,
-  FiveBeers,
   ListedPlayerDiv,
   Nickname,
+  FiveBeers,
   TenBeers,
   TwentyBeers,
+  TwentyFiveBeers,
+  ThirtyBeers,
+  BeerBadgeText,
+  FifteenBeers,
 } from './ListedPlayer.style';
 
 interface ListedPlayerProps {
@@ -27,42 +28,37 @@ export default function ListedPlayer({
   nickname,
   beers,
 }: ListedPlayerProps) {
-
-  const twentyBeers = Math.floor(beers / 20);
-  const tenBeers = Math.floor((beers - 20 * twentyBeers) / 10);
-  const fiveBeers = Math.floor(
-    (beers - 20 * twentyBeers - 10 * tenBeers) / 5
+  const content = (
+    <>
+      <BeerBadgeText>{beers}</BeerBadgeText>
+      <Beer src={BeerIcon} alt="" />
+    </>
   );
-  const singleBeers =
-    beers - 20 * twentyBeers - 10 * tenBeers - 5 * fiveBeers;
 
-  const beerGroup: JSX.Element[] = [];
-  for (let i = 0; i < singleBeers; i++) {
-    beerGroup.push(<Beer key={i} src={BeerIcon} alt="" />);
-  }
-  for (let i = 0; i < fiveBeers; i++) {
-    beerGroup.push(
-      <FiveBeers key={500 * (i + 1)}>
-        <FiveText>5</FiveText>
-        <Beer key={50 * (i + 1)} src={BeerIcon} alt="" />
-      </FiveBeers>
-    );
-  }
-  for (let i = 0; i < tenBeers; i++) {
-    beerGroup.push(
-      <TenBeers key={100 * (i + 1)}>
-        <TenText>10</TenText>
-        <Beer key={10 * (i + 1)} src={BeerIcon} alt="" />
-      </TenBeers>
-    );
-  }
-  for (let i = 0; i < twentyBeers; i++) {
-    beerGroup.push(
-      <TwentyBeers key={200 * (i + 1)}>
-        <TwentyText>20</TwentyText>
-        <Beer key={20 * (i + 1)} src={BeerIcon} alt="" />
-      </TwentyBeers>
-    );
+  let beerBadge: JSX.Element;
+  const badgeStyle = { width: 50 + 2 * beers };
+
+  switch (true) {
+    case beers < 5:
+      beerBadge = <FiveBeers style={badgeStyle}>{content}</FiveBeers>;
+      break;
+    case beers < 10:
+      beerBadge = <TenBeers style={badgeStyle}>{content}</TenBeers>;
+      break;
+    case beers < 15:
+      beerBadge = <FifteenBeers style={badgeStyle}>{content}</FifteenBeers>;
+      break;
+    case beers < 20:
+      beerBadge = <TwentyBeers style={badgeStyle}>{content}</TwentyBeers>;
+      break;
+    case beers < 25:
+      beerBadge = (
+        <TwentyFiveBeers style={badgeStyle}>{content}</TwentyFiveBeers>
+      );
+      break;
+    case beers >= 25:
+      beerBadge = <ThirtyBeers style={badgeStyle}>{content}</ThirtyBeers>;
+      break;
   }
 
   return (
@@ -74,7 +70,7 @@ export default function ListedPlayer({
         <Nickname>{nickname}</Nickname>
       </AvatarAndNickname>
 
-      <BeerGroup>{beerGroup}</BeerGroup>
+      <BeerGroup>{beerBadge}</BeerGroup>
     </ListedPlayerDiv>
   );
 }
