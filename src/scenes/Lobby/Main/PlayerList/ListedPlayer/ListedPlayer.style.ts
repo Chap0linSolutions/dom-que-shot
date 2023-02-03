@@ -8,8 +8,11 @@ export const ListedPlayerDiv = styled.div`
   background: #ffffff;
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  padding: 0 10px;
+  padding: 0 5px 0 10px;
   margin-bottom: 4px;
+  @media (max-height: 740px) {
+    height: 33px;
+  }
 `;
 
 export const AvatarAndNickname = styled.div`
@@ -18,8 +21,12 @@ export const AvatarAndNickname = styled.div`
 `;
 
 export const AvatarDiv = styled.div`
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
+    @media (max-height: 740px) {
+      width: 28px;
+      height: 28px;
+    }
   }
 `;
 
@@ -27,6 +34,11 @@ export const Nickname = styled.p`
   white-space: nowrap;
   color: rgba(0, 0, 0, 0.54);
   margin: 0 10px;
+  font-size: 20px;
+  font-weight: 500;
+  @media (max-height: 740px){
+    font-size: 18px;
+  }
 `;
 
 export const BeerGroup = styled.div`
@@ -114,6 +126,9 @@ export const BeerBadgeText = styled.p`
   font-weight: 500;
   color: rgba(255, 255, 255, 0.74);
   margin: 6px;
+  @media (max-height: 740px) {
+    font-size: 15px;
+  }
 `;
 
 export const Beer = styled.img`
