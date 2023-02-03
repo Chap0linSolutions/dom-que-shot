@@ -13,6 +13,10 @@
   max-height: calc(100vh - 107px - 2rem - 260px);
 }
 
+.GamePlayerListDiv::-webkit-scrollbar {
+  display: none;
+}
+
 .GamePlayerListItem {
   border-radius: 10px;
   height: 48px;
