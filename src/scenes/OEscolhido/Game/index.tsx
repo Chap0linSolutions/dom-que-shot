@@ -79,7 +79,7 @@ export default function GamePage({
           </div>
         </div>
         <Button
-          margin="0 auto 40px auto"
+          staysOnBottom
           isDisabled={!hasSelected}
           onClick={finishPage}>
           Votar
