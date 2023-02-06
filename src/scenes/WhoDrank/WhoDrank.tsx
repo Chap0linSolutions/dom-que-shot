@@ -136,7 +136,7 @@ export default function WhoDrankPage() {
               ))}
             </div>
           </div>
-          <Button margin="0 auto 40px auto" onClick={backToRoulette}>
+          <Button staysOnBottom onClick={backToRoulette}>
             {buttonText}
           </Button>
         </div>

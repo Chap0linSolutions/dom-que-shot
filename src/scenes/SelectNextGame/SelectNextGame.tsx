@@ -309,7 +309,7 @@ export default function SelectNextGame() {
               ? { visibility: 'visible' }
               : { display: 'none' }
           }>
-          <Button margin="0 auto 40px auto" onClick={turnTheWheel}>
+          <Button staysOnBottom onClick={turnTheWheel}>
             Girar
           </Button>
         </ButtonDiv>

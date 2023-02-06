@@ -49,7 +49,7 @@ export function RankingPage({
 
   const button =
     turnVisibility === true ? (
-      <Button margin="0 auto 40px auto" onClick={roulettePage}>
+      <Button staysOnBottom onClick={roulettePage}>
         Próximo jogo
       </Button>
     ) : null;

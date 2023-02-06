@@ -141,7 +141,7 @@ export default function CoverPage({
 
   const button =
     turnVisibility === true ? (
-      <Button margin="0 auto 40px auto" onClick={gamePage}>
+      <Button staysOnBottom onClick={gamePage}>
         Começar jogo
       </Button>
     ) : (
