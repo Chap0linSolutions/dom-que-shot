@@ -102,15 +102,16 @@ export function BangBang() {
     };
   }, []);
 
-  useEffect(() => {
-    if (currentGameState === Game.Game) {
-      socketConn.push('move-room-to', {
-        roomCode: userData.roomCode,
-        destination: Game.Game,
-      });
-      socketConn.pushMessage(bangBangRoom, 'player_ready', '');
-    }
-  }, [currentGameState]);
+  const startGame = () => {
+    socketConn.push('move-room-to', {
+      roomCode: userData.roomCode,
+      destination: Game.Game,
+    });
+  }
+
+  const thisPlayerIsReady = () => {
+    socketConn.pushMessage(bangBangRoom, 'player_ready', '');
+  }
 
   const handleShot = (msTimer) => {
     socketConn.pushMessage(bangBangRoom, BangBangEvents.FireEvent, {
@@ -136,13 +137,14 @@ export function BangBang() {
           turnVisibility={turnVisibility}
           ownerVisibility={ownerVisibility}
           description={description} //full game info is now loaded here
-          gamePage={() => setCurrentGameState(Game.Game)}
+          gamePage={startGame}
         />
       );
     case Game.Game:
       return (
         <GamePage
-          ready={ready}
+          everyoneIsReady={ready}
+          iAmReady={thisPlayerIsReady}
           shot={handleShot}
           rankingPage={() => setCurrentGameState(Game.Ranking)}
         />

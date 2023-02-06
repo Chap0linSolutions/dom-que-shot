@@ -56,8 +56,23 @@
 }
 
 .balloon-img {
-  width: 100%;
+  /* background: url(./img/balao.png);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat; */
+  width: 330px;
   object-fit: scale-down;
+  /* height: 330px; */
+  /* color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center; */
+}
+
+.balloon-text {
+  font-size: 32px;
+  font-family: 'Adumu';
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .target-img {
@@ -89,7 +104,7 @@
   color: #403A55
 }
 
-@media (min-height: 720px) {
+/* @media (max-height: 720px) {
   .balloon-img {
     width: 100%;
     object-fit: scale-down;
@@ -99,4 +114,4 @@
     padding: 13px;
     margin-top: -13px;
   }
-}
+} */
