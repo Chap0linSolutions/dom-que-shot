@@ -63,8 +63,16 @@ export const LogoDiv = styled.div`
   height: 107px;
   border-radius: 30px 0 0 40px;
   background: #403a55;
+  @media (max-height: 740px) {
+    width: 81px;
+    height: 85px;
+    border-radius: 24px 0 0 30px;
+  }
   @media (min-width: 500px) {
     border-radius: 30px 20px 0 40px;
+  }
+  @media (min-width: 500px) and (max-height: 740px) {
+    border-radius: 24px 20px 0 30px;
   }
 `;
 
@@ -75,6 +83,11 @@ export const LogoBackground = styled.div`
   border-radius: 28px;
   margin-right: 5px;
   margin-top: 5px;
+  @media (max-height: 740px){
+    width: 61px;
+    height: 69px;
+    border-radius: 24px;
+  }
 `;
 
 export const Logo = styled.img`
