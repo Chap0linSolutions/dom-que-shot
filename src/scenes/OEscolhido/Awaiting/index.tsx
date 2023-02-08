@@ -43,7 +43,7 @@ export default function AwaitingResults({
   return (
     <Background noImage>
       <Header timer={msTimeLeft} />
-      <div className="OEscolhidoDiv">
+      <div className="AwaitingVotesDiv">
         <p className="AwaitingTitle">Você votou!</p>
 
         <div className="AwaitingCheck">
