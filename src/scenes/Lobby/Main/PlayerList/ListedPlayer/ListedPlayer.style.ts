@@ -36,7 +36,7 @@ export const Nickname = styled.p`
   margin: 0 10px;
   font-size: 20px;
   font-weight: 500;
-  @media (max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 18px;
   }
 `;
