@@ -1,48 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PlaceholderImage from '../../Placeholder/Image';
-import './RouletteCard.css';
+import styled from '@emotion/styled';
 
 interface RouletteCardProps {
+  width?: number;
+  height?: number;
   text: string;
   src: string;
 }
 
-export default function RouletteCard({ text, src }: RouletteCardProps) {
+export default function RouletteCard({
+  width,
+  height,
+  text,
+  src,
+}: RouletteCardProps) {
   //Placeholder /////////////////////////////////////////////////////////////////////////////
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [innerHeight, setInnerHeight] = useState<number>(window.innerHeight);
-
-  const handleResize = () => {
-    setInnerHeight(window.innerHeight);
-  };
 
   const finishedLoading = () => {
     setLoaded(true);
   };
 
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-  }, []);
-
-  const placeholderSize = innerHeight <= 720 ? 110 : 140;
-
   ///////////////////////////////////////////////////////////////////////////////////////////
+
+  const imageStyle = {
+    width: width ? `${width}px` : '140px',
+    height: height ? `${height}px` : '140px',
+    display: loaded === true ? undefined : 'none',
+  };
 
   return (
     <div>
-      <img
-        style={loaded === true ? {} : { display: 'none' }}
-        className="RouletteCardImage"
-        src={src}
-        alt={text}
-        onLoad={finishedLoading}
-      />
+      <Image style={imageStyle} src={src} alt={text} onLoad={finishedLoading} />
 
       <PlaceholderImage
         loaded={loaded}
-        width={placeholderSize}
-        height={placeholderSize}
+        width={width ? width : 140}
+        height={height ? height : 140}
       />
     </div>
   );
 }
+
+const Image = styled.img`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: scale-down;
+`;

@@ -55,12 +55,9 @@ export default function FinishPage({
 
   const button =
     turnVisibility === true ? (
-      //TODO remover este div externo e deixar só o <Button> com margin="0 0 40px 0" quando a GAME-110 for anexada na master
-      <div style={{marginBottom: 40}}>  
-        <Button onClick={roulettePage}>
-          {rouletteButtonText}
-        </Button>
-      </div>
+      <Button staysOnBottom onClick={roulettePage}>
+        {rouletteButtonText}
+      </Button>
     ) : null;
 
   const votesText = votedPlayer[0].votes > 1? ' votos' : ' voto';

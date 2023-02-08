@@ -86,7 +86,7 @@
 
 .wrong-local-container p {
   text-align: center;
-  color: #403A55
+  color: #403a55;
 }
 
 @media (min-height: 720px) {

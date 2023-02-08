@@ -4,6 +4,12 @@
   font-weight: 700;
 }
 
+.EuNuncaTitleAndSuggestions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .EuNuncaSuggestionsDiv {
   background: #403a55;
   border: 3px solid #f9c95c;

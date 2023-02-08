@@ -59,31 +59,28 @@ export default function GamePage({
                 selectPlayer(player);
               }}
               className={
-                player.avatarSeed === selectedPlayer.avatarSeed &&
                 player.nickname === selectedPlayer.nickname
                   ? 'selectedItem GamePlayerListItem'
                   : 'unselectedItem GamePlayerListItem'
               }>
               <p className="GamePlayerListNickname">{player.nickname}</p>
-              <div
-                className={
-                  player.avatarSeed === selectedPlayer.avatarSeed &&
-                  player.nickname === selectedPlayer.nickname
-                    ? 'selectedAvatar GamePlayerListAvatar'
-                    : 'unselectedAvatar GamePlayerListAvatar'
+                <div className={
+                    player.nickname === selectedPlayer.nickname
+                      ? 'selectedAvatar GamePlayerListAvatar'
+                      : 'unselectedAvatar GamePlayerListAvatar'
                 }>
-                <Avatar seed={player.avatarSeed} />
-              </div>
+                  <Avatar seed={player.avatarSeed} />
+                </div>
             </div>
-          ))}
+            ))}
         </div>
       </div>
-
-      <div className="GameVoteButton">
-        <Button isDisabled={!hasSelected} onClick={finishPage}>
-          Votar
-        </Button>
-      </div>
+      <Button
+        staysOnBottom
+        isDisabled={!hasSelected}
+        onClick={finishPage}>
+        Votar
+      </Button>
     </Background>
   );
 }
