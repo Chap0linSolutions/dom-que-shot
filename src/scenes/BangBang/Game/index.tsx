@@ -10,21 +10,27 @@ const errorMsgs = [
   <>Errooooou!</>,
   <>Tu é cego?!</>,
   <>É pra apertar o BOTÃO!</>,
-  <>Isso parece um<br/>BOTÃO pra você?</>,
-  <>ISSO NÃO<br/>É UM BOTÃO!!!</>,
+  <>
+    Isso parece um
+    <br />
+    BOTÃO pra você?
+  </>,
+  <>
+    ISSO NÃO
+    <br />É UM BOTÃO!!!
+  </>,
   <>Tá brincando, só pode...</>,
-]
+];
 
 type ErrorStyle = {
-  left: string,
-  top: string, 
-}
+  left: string;
+  top: string;
+};
 
 type Error = {
-  text: JSX.Element,
-  style: ErrorStyle,
-}
-
+  text: JSX.Element;
+  style: ErrorStyle;
+};
 
 interface GameProps {
   rankingPage: () => void;
@@ -33,10 +39,14 @@ interface GameProps {
   iAmReady: () => void;
 }
 
-export function GamePage({ rankingPage, shot, everyoneIsReady, iAmReady }: GameProps) {
-
+export function GamePage({
+  rankingPage,
+  shot,
+  everyoneIsReady,
+  iAmReady,
+}: GameProps) {
   const [balloonText, setBalloonText] = useState('Prontos?');
-  const [msTimer, setMsTimer] = useState(1);    //tem de ter valor inicial > 0
+  const [msTimer, setMsTimer] = useState(1); //tem de ter valor inicial > 0
   const [errorMsg, setErrorMsg] = useState<Error[]>([]);
 
   const [timer, setTimer] = useState<NodeJS.Timer>();
@@ -45,7 +55,7 @@ export function GamePage({ rankingPage, shot, everyoneIsReady, iAmReady }: GameP
   };
 
   useEffect(() => {
-    gsap.to('.balloon-img', {opacity: 1, duration: 0});
+    gsap.to('.balloon-img', { opacity: 1, duration: 0 });
   }, []);
 
   useEffect(() => {
@@ -83,7 +93,7 @@ export function GamePage({ rankingPage, shot, everyoneIsReady, iAmReady }: GameP
       .call(() => {
         setBalloonText('3');
       })
-      .to('.balloon-text', {fontSize: 44, duration: 0})
+      .to('.balloon-text', { fontSize: 44, duration: 0 })
       .to('.animation-balloon', { opacity: 1, duration: 0, delay: 0.1 })
       .to('.animation-balloon', { opacity: 0, duration: 0.5, delay: 0.5 })
       .call(() => {
@@ -95,17 +105,21 @@ export function GamePage({ rankingPage, shot, everyoneIsReady, iAmReady }: GameP
         setBalloonText('1');
       })
       .to('.animation-balloon', { opacity: 1, duration: 0, delay: 0.1 })
-      .to('.animation-balloon, .balloon-text', { display: 'none', duration: 0, delay: 0.9 })
+      .to('.animation-balloon, .balloon-text', {
+        display: 'none',
+        duration: 0,
+        delay: 0.9,
+      })
       .to('.target-image', { opacity: 1, duration: 0.1 })
       .call(startTimer);
   };
 
   const shotValidation = () => {
-    if(msTimer > 0){ // queima da largada
-      console.log("False start");
+    if (msTimer > 0) {
+      // queima da largada
+      console.log('False start');
       shot(-10000 - msTimer);
-    }
-    else {
+    } else {
       shot(msTimer);
     }
   };
@@ -116,14 +130,13 @@ export function GamePage({ rankingPage, shot, everyoneIsReady, iAmReady }: GameP
     rankingPage();
   };
 
-
   const popNewError = () => {
     const newMsg = errorMsgs.sort(() => 0.5 - Math.random())[0];
     const newMsgPosition = {
-      left: `${Math.round(50*Math.random())}%`,
-      top: `${Math.round(50*Math.random())}%`,
-    }
-    setErrorMsg(errorMsg.concat([{text: newMsg, style: newMsgPosition}]));
+      left: `${Math.round(50 * Math.random())}%`,
+      top: `${Math.round(50 * Math.random())}%`,
+    };
+    setErrorMsg(errorMsg.concat([{ text: newMsg, style: newMsgPosition }]));
   };
 
   return (
@@ -133,26 +146,19 @@ export function GamePage({ rankingPage, shot, everyoneIsReady, iAmReady }: GameP
 
         <div onClick={popNewError} className="target-image">
           <img src={targetImage} className="target-img" />
-          {errorMsg.map((error) =>  
-              <div className='wrong-local-container' style={error.style}>
-              <p className="wrong-local-message">
-                {error.text}
-              </p>
-          </div>
-          )}
-        </div>
-  
-        <div className="animation-balloon">
-          <img src={balloon} className='balloon-img' onLoad={iAmReady}/>
-          <p className="balloon-text">
-            {balloonText}
-          </p>
+          {errorMsg.map((error) => (
+            <div className="wrong-local-container" style={error.style}>
+              <p className="wrong-local-message">{error.text}</p>
+            </div>
+          ))}
         </div>
 
-        <button
-          className="button-bang"
-          onClick={handleClick}>
-        </button>
+        <div className="animation-balloon">
+          <img src={balloon} className="balloon-img" onLoad={iAmReady} />
+          <p className="balloon-text">{balloonText}</p>
+        </div>
+
+        <button className="button-bang" onClick={handleClick}></button>
       </div>
     </Background>
   );
