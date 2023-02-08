@@ -43,13 +43,13 @@ export default function Settings({
   const defineSelectionMessage = () => {
     switch (numberOfSelectedGames) {
       case 0:
-        return `Nenhum selecionado.`;
+        return `Nenhum jogo selecionado.`;
       case 1:
-        return `1 selecionado.`;
+        return `1 jogo selecionado.`;
       case gameList.length:
-        return `Todos selecionados.`;
+        return `Todos os jogos selecionados.`;
       default:
-        return `${numberOfSelectedGames} selecionados.`;
+        return `${numberOfSelectedGames} jogos selecionados.`;
     }
   };
 
