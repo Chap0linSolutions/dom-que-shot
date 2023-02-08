@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import Header from '../../../components/Header';
 import Background from '../../../components/Background';
 import GameCard from '../../../components/GameCard';
@@ -52,20 +51,6 @@ export default function Settings({
         return `${numberOfSelectedGames} jogos selecionados.`;
     }
   };
-
-  //ajuste com o tamanho da tela/////////////////////////////////////////////////////////////
-
-  const [innerHeight, setInnerHeight] = useState<number>(window.innerHeight);
-
-  const handleResize = () => {
-    setInnerHeight(window.innerHeight);
-  };
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-  }, []);
-
-  ///////////////////////////////////////////////////////////////////////////////////////////
 
   const selectionMessage = defineSelectionMessage();
 
