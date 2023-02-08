@@ -1,6 +1,10 @@
 .OEscolhidoContainer {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
 }
 
 .OEscolhidoTitleAndList {
@@ -8,6 +12,12 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+}
+
+.OEscolhidoTitle {
+  margin: 10px;
+  margin-top: 20px;
+  font-size: 20px;
 }
 
 .GamePlayerListDiv {
@@ -53,28 +63,39 @@
 .GamePlayerListNickname {
   margin: 0;
   padding: 0 1em;
+  font-size: 16px;
 }
 
 .GamePlayerListAvatar {
   display: flex;
   align-items: center;
   width: 48px;
-  height: 100%;
-  object-fit: scale-down;
+  height: 48px;
   border-radius: 10px;
 }
 
-.GameVoteButton {
-  margin: 2em;
-  display: flex;
-  justify-content: center;
-  flex: 1;
-  margin-bottom: 48px;
-  align-items: flex-end;
-}
-
-@media (max-height: 720px) {
+@media (max-height: 740px) {
   .GamePlayerListDiv {
     max-height: calc(100vh - 107px - 2rem - 230px);
+  }
+
+  .OEscolhidoTitle {
+    margin: 8px;
+    margin-top: 16px;
+    font-size: 18px;
+  }
+
+  .GamePlayerListItem {
+    height: 44px;
+    margin-bottom: 7px;
+  }
+
+  .GamePlayerListNickname {
+    font-size: 15px;
+  }
+
+  .GamePlayerListAvatar {
+    width: 44px;
+    height: 44px;
   }
 }
