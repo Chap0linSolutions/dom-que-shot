@@ -70,12 +70,6 @@ export function GamePage({ rankingPage, shot, everyoneIsReady, iAmReady }: GameP
   };
 
   useEffect(() => {
-    if (msTimer <= 0 && buttonStatus === ButtonStatus.disabled) {
-      setButtonStatus(ButtonStatus.enabled);
-    }
-  }, [setButtonStatus, buttonStatus, msTimer]);
-
-  useEffect(() => {
     if (msTimer <= -10000) {
       clearInterval(timer);
       shot(-10000);
