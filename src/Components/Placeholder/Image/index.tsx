@@ -1,4 +1,4 @@
-import './Image.css';
+import { Image, Text } from './Image.style';
 
 interface ImageProps {
   width?: number;
@@ -25,10 +25,8 @@ export default function PlaceholderImage({
   };
 
   return (
-    <div className="ImagePlaceholder" style={divStyle}>
-      <p className="ImagePlaceholderText" style={textStyle}>
-        carregando...
-      </p>
-    </div>
+    <Image style={divStyle}>
+      <Text style={textStyle}>carregando...</Text>
+    </Image>
   );
 }
