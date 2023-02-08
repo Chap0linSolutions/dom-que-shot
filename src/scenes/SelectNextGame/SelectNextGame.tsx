@@ -1,17 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 
 import Background from '../../components/Background';
-import Button from '../../components/Button';
 import Header from '../../components/Header';
 import Roulette from '../../components/Roulette';
 import RouletteCard from '../../components/Roulette/RouletteCard';
 import SocketConnection from '../../lib/socket';
 import gameList from '../../contexts/games';
-
+import Button from '../../components/Button';
 import RouletteTriangle from '../../assets/roulette-triangle.png';
-import './SelectNextGame.css';
+import {
+  SelectGameDiv,
+  RouletteDiv,
+  SideIconSpace,
+  SideIcon,
+  Card,
+  NextGameName,
+  ButtonDiv,
+  ContentDiv,
+  WaitingMessageDiv,
+  WaitingMessage,
+} from './styles';
 
 enum Visibility {
   Invisible,
@@ -128,6 +138,46 @@ export default function SelectNextGame() {
     }
   };
 
+  //ajuste com o tamanho da tela///////////////////////////////////////////////////////////////
+
+  const sizeConstant = 1.25;
+
+  type rouletteProps = {
+    cardSize: number;
+    width: number;
+    height: number;
+  };
+
+  const [innerHeight, setInnerHeight] = useState<number>(window.innerHeight);
+  const [rouletteDimensions, setRouletteDimensions] = useState<rouletteProps>({
+    cardSize: 140,
+    width: 168,
+    height: 428,
+  });
+
+  const handleResize = () => {
+    setInnerHeight(window.innerHeight);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const baseSize = Math.round(innerHeight / 6);
+
+    setRouletteDimensions({
+      cardSize: baseSize,
+      height: 3 * baseSize + 8,
+      width: innerHeight > 740 ? baseSize + 28 : sizeConstant * baseSize + 28,
+    });
+  }, [innerHeight]);
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+
+  const rouletteButton = useRef();
+  const nextGameTitle = useRef();
+
   const spin = (id) => {
     console.log(games.map((game) => game.text));
     const selectedGame = games.find((game) => game.id === id);
@@ -135,21 +185,24 @@ export default function SelectNextGame() {
     setNextGameName(nextGame);
 
     setRouletteIsSpinning(true);
-    gsap.to('.RouletteButton', { opacity: 0, display: 'none', duration: 0.25 });
+    gsap.to(rouletteButton.current, {
+      opacity: 0,
+      display: 'none',
+      duration: 0.25,
+    });
     const timeline = gsap.timeline();
-    const heightOffset = window.innerHeight < 720 ? 112 : 142;
     timeline
-      .to('.RouletteCard', {
-        y: `-${3 * (games.length - 2) * heightOffset}px`,
+      .to('.rouletteCard', {
+        y: `-${3 * (games.length - 2) * (rouletteDimensions.cardSize + 2)}px`,
         duration: 1,
         ease: 'linear',
       })
-      .to('.RouletteCard', {
-        y: `-${(games.length - 1 + id) * heightOffset}px`,
+      .to('.rouletteCard', {
+        y: `-${(games.length - 1 + id) * (rouletteDimensions.cardSize + 2)}px`,
         duration: 2,
         ease: 'elastic',
       })
-      .to('.NextGameName', {
+      .to(nextGameTitle.current, {
         opacity: 1,
         duration: 1,
         ease: 'power2',
@@ -178,55 +231,89 @@ export default function SelectNextGame() {
   return (
     <Background>
       {header}
-      <div className="SelectGameSection" id="RoulettePage">
-        <div className="RouletteDiv">
-          <div className="RouletteSideIconSpace" />
-          <Roulette>
-            {games.map((rouletteCard, index) => (
-              <div key={index} className="RouletteCard">
-                <RouletteCard text={rouletteCard.text} src={rouletteCard.src} />
-              </div>
-            ))}
-            {games.map((rouletteCard, index) => (
-              <div key={index} className="RouletteCard">
-                <RouletteCard text={rouletteCard.text} src={rouletteCard.src} />
-              </div>
-            ))}
-            {games.map((rouletteCard, index) => (
-              <div key={index} className="RouletteCard">
-                <RouletteCard text={rouletteCard.text} src={rouletteCard.src} />
-              </div>
-            ))}
-          </Roulette>
+      <SelectGameDiv>
+        <ContentDiv>
+          <RouletteDiv>
+            <SideIconSpace>&nbsp;</SideIconSpace>
+            <Roulette
+              width={rouletteDimensions.width}
+              height={rouletteDimensions.height}>
+              {games.map((rouletteCard, index) => (
+                <Card key={index} className="rouletteCard">
+                  <RouletteCard
+                    width={
+                      innerHeight > 740
+                        ? rouletteDimensions.cardSize
+                        : sizeConstant * rouletteDimensions.cardSize
+                    }
+                    height={rouletteDimensions.cardSize}
+                    text={rouletteCard.text}
+                    src={rouletteCard.src}
+                  />
+                </Card>
+              ))}
+              {games.map((rouletteCard, index) => (
+                <Card key={index} className="rouletteCard">
+                  <RouletteCard
+                    width={
+                      innerHeight > 740
+                        ? rouletteDimensions.cardSize
+                        : sizeConstant * rouletteDimensions.cardSize
+                    }
+                    height={rouletteDimensions.cardSize}
+                    text={rouletteCard.text}
+                    src={rouletteCard.src}
+                  />
+                </Card>
+              ))}
+              {games.map((rouletteCard, index) => (
+                <Card key={index} className="rouletteCard">
+                  <RouletteCard
+                    width={
+                      innerHeight > 740
+                        ? rouletteDimensions.cardSize
+                        : sizeConstant * rouletteDimensions.cardSize
+                    }
+                    height={rouletteDimensions.cardSize}
+                    text={rouletteCard.text}
+                    src={rouletteCard.src}
+                  />
+                </Card>
+              ))}
+            </Roulette>
 
-          <div className="RouletteSideIconSpace">
-            <img src={RouletteTriangle} width="40px" height="44px" />
-          </div>
-        </div>
-        <div
-          className="WaitingMessageDiv"
-          style={
-            turnVisibility === Visibility.Invisible && !rouletteIsSpinning
-              ? { visibility: 'visible' }
-              : { display: 'none', height: 0, margin: 0 }
-          }>
-          <p className="WaitingMessage">
-            Aguardando {currentPlayer}
-            <br />
-            girar a roleta...
-          </p>
-        </div>
-        <p className="NextGameName">{nextGameName}</p>
-        <div
-          className="RouletteButton"
+            <SideIconSpace>
+              <SideIcon src={RouletteTriangle} />
+            </SideIconSpace>
+          </RouletteDiv>
+
+          <WaitingMessageDiv
+            style={
+              turnVisibility === Visibility.Invisible && !rouletteIsSpinning
+                ? { visibility: 'visible' }
+                : { display: 'none' }
+            }>
+            <WaitingMessage>
+              Aguardando {currentPlayer}
+              <br />
+              girar a roleta...
+            </WaitingMessage>
+          </WaitingMessageDiv>
+          <NextGameName ref={nextGameTitle}>{nextGameName}</NextGameName>
+        </ContentDiv>
+
+        <ButtonDiv
+          ref={rouletteButton}
           style={
             turnVisibility === Visibility.Visible
               ? { visibility: 'visible' }
-              : { visibility: 'hidden', height: 0, margin: 0 }
+              : { display: 'none' }
           }>
-          <Button onClick={turnTheWheel}>Girar</Button>
-        </div>
-      </div>
+          <Button staysOnBottom onClick={turnTheWheel}>
+            Girar
+          </Button>
+        </ButtonDiv>
+      </SelectGameDiv>
     </Background>
   );
 }
