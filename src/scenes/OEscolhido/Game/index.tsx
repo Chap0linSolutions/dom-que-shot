@@ -49,9 +49,9 @@ export default function GamePage({
   return (
     <Background noImage>
       <Header timer={msTimeLeft} />
-      <div className='OEscolhidoContainer'>
-        <div className='OEscolhidoTitleAndList'>
-          <p className='OEscolhidoTitle'>Vote em quem deve beber:</p>
+      <div className="OEscolhidoContainer">
+        <div className="OEscolhidoTitleAndList">
+          <p className="OEscolhidoTitle">Vote em quem deve beber:</p>
           <div className="GamePlayerListDiv">
             {players.current.map((player, i) => (
               <div
@@ -65,24 +65,21 @@ export default function GamePage({
                     : 'unselectedItem GamePlayerListItem'
                 }>
                 <p className="GamePlayerListNickname">{player.nickname}</p>
-                  <div className={
-                      player.nickname === selectedPlayer.nickname
-                        ? 'selectedAvatar GamePlayerListAvatar'
-                        : 'unselectedAvatar GamePlayerListAvatar'
+                <div
+                  className={
+                    player.nickname === selectedPlayer.nickname
+                      ? 'selectedAvatar GamePlayerListAvatar'
+                      : 'unselectedAvatar GamePlayerListAvatar'
                   }>
-                    <Avatar seed={player.avatarSeed} />
-                  </div>
+                  <Avatar seed={player.avatarSeed} />
+                </div>
               </div>
-              ))}
+            ))}
           </div>
         </div>
 
-        <Button
-          staysOnBottom
-          isDisabled={!hasSelected}
-          onClick={finishPage}
-        >
-          Votar 
+        <Button staysOnBottom isDisabled={!hasSelected} onClick={finishPage}>
+          Votar
         </Button>
       </div>
     </Background>

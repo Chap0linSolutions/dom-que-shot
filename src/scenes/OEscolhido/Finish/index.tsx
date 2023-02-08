@@ -6,7 +6,32 @@ import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
 import noOneVoted from '../../../assets/no-votes.png';
 import './Finish.style';
-import { Finish, Content, Title, Text, NoVotesText, TieText, TieTitle, NoVotesOuter, NoVotesInner, AvatarDiv, NoVotesImg, OuterCard, InnerCard, Tie, TieOuter, TieInner, TieAvatar, MultipleTies, MultipleTiesInner, MultipleTiesOuter, MultipleTiesTextDiv, MultipleTiesText, MultipleTiesTitle, MultipleTiesAvatar } from './Finish.style';
+import {
+  Finish,
+  Content,
+  Title,
+  Text,
+  NoVotesText,
+  TieText,
+  TieTitle,
+  NoVotesOuter,
+  NoVotesInner,
+  AvatarDiv,
+  NoVotesImg,
+  OuterCard,
+  InnerCard,
+  Tie,
+  TieOuter,
+  TieInner,
+  TieAvatar,
+  MultipleTies,
+  MultipleTiesInner,
+  MultipleTiesOuter,
+  MultipleTiesTextDiv,
+  MultipleTiesText,
+  MultipleTiesTitle,
+  MultipleTiesAvatar,
+} from './Finish.style';
 
 interface VotedPlayerProps {
   nickname: string;
@@ -60,7 +85,7 @@ export default function FinishPage({
       </Button>
     ) : null;
 
-  const votesText = votedPlayer[0].votes > 1? ' votos' : ' voto';
+  const votesText = votedPlayer[0].votes > 1 ? ' votos' : ' voto';
 
   if (votedPlayer.at(0).votes === 0) {
     return (
@@ -70,15 +95,13 @@ export default function FinishPage({
           <Content>
             <Title>POXA! Ninguém votou?</Title>
             <Text>&#40;É sério isso?&#41;</Text>
-            <NoVotesOuter className='OuterCard'>
-              <NoVotesInner className='InnerCard'>
+            <NoVotesOuter className="OuterCard">
+              <NoVotesInner className="InnerCard">
                 <Text />
-                <AvatarDiv className='Avatar'>
+                <AvatarDiv className="Avatar">
                   <NoVotesImg src={noOneVoted} />
                 </AvatarDiv>
-                <Text className='Nickname'>
-                  R.I.P. Votação
-                </Text>
+                <Text className="Nickname">R.I.P. Votação</Text>
               </NoVotesInner>
             </NoVotesOuter>
             <NoVotesText>
@@ -100,16 +123,14 @@ export default function FinishPage({
         <Finish>
           <Content>
             <Title>E o mais votado foi:</Title>
-            <OuterCard className='OuterCard'>
+            <OuterCard className="OuterCard">
               <Text />
-              <InnerCard className='InnerCard'>
+              <InnerCard className="InnerCard">
                 <Text />
-                <AvatarDiv className='Avatar'>
+                <AvatarDiv className="Avatar">
                   <Avatar seed={votedPlayer.at(0).avatarSeed} />
                 </AvatarDiv>
-                <Text className='Nickname'>
-                  {votedPlayer.at(0).nickname}
-                </Text>
+                <Text className="Nickname">{votedPlayer.at(0).nickname}</Text>
               </InnerCard>
               <Text>
                 {votedPlayer.at(0).votes} {votesText}
@@ -122,7 +143,6 @@ export default function FinishPage({
     );
   }
 
-
   if (votedPlayer.length == 2) {
     return (
       <Background noImage>
@@ -131,27 +151,28 @@ export default function FinishPage({
           <Content>
             <Title>Tivemos um empate!</Title>
             <Tie>
-              <TieOuter className='OuterCard'>
+              <TieOuter className="OuterCard">
                 <TieText />
-                <TieInner className='InnerCard'>
-                  <TieAvatar className='Avatar'>
+                <TieInner className="InnerCard">
+                  <TieAvatar className="Avatar">
                     <Avatar seed={votedPlayer.at(0).avatarSeed} />
                   </TieAvatar>
                   <TieText className="Nickname">
                     {votedPlayer.at(0).nickname}
                   </TieText>
                 </TieInner>
-                <TieText>{
-                  votedPlayer.at(0).votes}
-                  {votesText}</TieText>
+                <TieText>
+                  {votedPlayer.at(0).votes}
+                  {votesText}
+                </TieText>
               </TieOuter>
-              <TieOuter className='OuterCard'>
+              <TieOuter className="OuterCard">
                 <TieText />
-                <TieInner className='InnerCard'>
-                  <TieAvatar className='Avatar'>
+                <TieInner className="InnerCard">
+                  <TieAvatar className="Avatar">
                     <Avatar seed={votedPlayer.at(1).avatarSeed} />
                   </TieAvatar>
-                  <TieText className='Nickname'>
+                  <TieText className="Nickname">
                     {votedPlayer.at(1).nickname}
                   </TieText>
                 </TieInner>
@@ -161,7 +182,8 @@ export default function FinishPage({
               </TieOuter>
             </Tie>
             <TieTitle>
-              Neste caso, todos os<br/>
+              Neste caso, todos os
+              <br />
               empatados devem beber!
             </TieTitle>
           </Content>
@@ -178,23 +200,24 @@ export default function FinishPage({
           <MultipleTiesTitle>Tivemos um empate!</MultipleTiesTitle>
           <MultipleTies>
             {votedPlayer.map((player) => (
-              <MultipleTiesOuter className='OuterCard'>
-                <MultipleTiesInner className='InnerCard'>
-                  <MultipleTiesAvatar className='Avatar'>
+              <MultipleTiesOuter className="OuterCard">
+                <MultipleTiesInner className="InnerCard">
+                  <MultipleTiesAvatar className="Avatar">
                     <Avatar seed={player.avatarSeed} />
                   </MultipleTiesAvatar>
                 </MultipleTiesInner>
-                <MultipleTiesTextDiv className='Nickname'>
-                  <MultipleTiesText>
-                    {player.nickname}
-                  </MultipleTiesText>
-                  <Text>{player.votes} {votesText}</Text>
+                <MultipleTiesTextDiv className="Nickname">
+                  <MultipleTiesText>{player.nickname}</MultipleTiesText>
+                  <Text>
+                    {player.votes} {votesText}
+                  </Text>
                 </MultipleTiesTextDiv>
               </MultipleTiesOuter>
             ))}
           </MultipleTies>
           <TieTitle>
-            Neste caso, todos os<br/>
+            Neste caso, todos os
+            <br />
             empatados devem beber!
           </TieTitle>
         </Content>
