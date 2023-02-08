@@ -136,9 +136,9 @@ export default function WhoDrankPage() {
               ))}
             </div>
           </div>
-          <div className="WhoDrankVoteButton">
-            <Button onClick={backToRoulette}>{buttonText}</Button>
-          </div>
+          <Button staysOnBottom onClick={backToRoulette}>
+            {buttonText}
+          </Button>
         </div>
       </Background>
     );
