@@ -1,4 +1,4 @@
-import './GameCard.css';
+import { CardBackground, CardImage, CardTitle } from './GameCard';
 
 interface GameCardProps {
   onClick?: () => void;
@@ -16,13 +16,12 @@ export default function GameCard({
   backgroundColor,
 }: GameCardProps) {
   return (
-    <div
+    <CardBackground
       onClick={onClick}
       key={id}
-      className="CardBackground"
       style={{ background: backgroundColor }}>
-      <img className="CardImage" src={image} alt={title} />
-      <p className="CardTitle">{title}</p>
-    </div>
+      <CardImage src={image} alt={title} />
+      <CardTitle>{title}</CardTitle>
+    </CardBackground>
   );
 }

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Header from '../../../components/Header';
 import Background from '../../../components/Background';
 import GameCard from '../../../components/GameCard';
@@ -52,6 +53,20 @@ export default function Settings({
     }
   };
 
+  //ajuste com o tamanho da tela/////////////////////////////////////////////////////////////
+
+  const [innerHeight, setInnerHeight] = useState<number>(window.innerHeight);
+
+  const handleResize = () => {
+    setInnerHeight(window.innerHeight);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+  }, []);
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+
   const selectionMessage = defineSelectionMessage();
 
   return (
@@ -63,7 +78,7 @@ export default function Settings({
         <SelectionText>{selectionMessage}</SelectionText>
         <WarningDiv className="LobbySettingsWarning">
           <AlertTriangle width="20px" height="20px" color="red" />
-          <WarningText>Mínimo de 3!</WarningText>
+          <WarningText>Selecione no mínimo 3 jogos.</WarningText>
         </WarningDiv>
 
         <Cards>
