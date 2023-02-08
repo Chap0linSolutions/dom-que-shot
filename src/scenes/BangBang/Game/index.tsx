@@ -12,6 +12,26 @@ enum ButtonStatus {
   used = -1,
 }
 
+const errorMsgs = [
+  <>Errooooou!</>,
+  <>Tu é cego?!</>,
+  <>É pra apertar o BOTÃO!</>,
+  <>Isso parece um<br/>BOTÃO pra você?</>,
+  <>ISSO NÃO<br/>É UM BOTÃO!!!</>,
+  <>Tá brincando, só pode...</>,
+]
+
+type ErrorStyle = {
+  left: string,
+  top: string, 
+}
+
+type Error = {
+  text: JSX.Element,
+  style: ErrorStyle,
+}
+
+
 interface GameProps {
   rankingPage: () => void;
   shot: (ms: number) => void;
@@ -21,16 +41,14 @@ interface GameProps {
 
 export function GamePage({ rankingPage, shot, everyoneIsReady, iAmReady }: GameProps) {
 
-  const balloonImg = useRef();
   const [balloonText, setBalloonText] = useState('Prontos?');
-
-  const [msTimer, setMsTimer] = useState(0);
-  const [showPopUp, setPopUp] = useState(false);
+  const [msTimer, setMsTimer] = useState(1);    //tem de ter valor inicial > 0
+  const [errorMsg, setErrorMsg] = useState<Error[]>([]);
   const [buttonStatus, setButtonStatus] = useState<ButtonStatus>(
     ButtonStatus.disabled
   );
-  const [timer, setTimer] = useState<NodeJS.Timer>();
 
+  const [timer, setTimer] = useState<NodeJS.Timer>();
   const startTimer = () => {
     setTimer(setInterval(run, 10));
   };
@@ -80,6 +98,7 @@ export function GamePage({ rankingPage, shot, everyoneIsReady, iAmReady }: GameP
       .call(() => {
         setBalloonText('3');
       })
+      .to('.balloon-text', {fontSize: 44, duration: 0})
       .to('.animation-balloon', { opacity: 1, duration: 0, delay: 0.1 })
       .to('.animation-balloon', { opacity: 0, duration: 0.5, delay: 0.5 })
       .call(() => {
@@ -91,7 +110,7 @@ export function GamePage({ rankingPage, shot, everyoneIsReady, iAmReady }: GameP
         setBalloonText('1');
       })
       .to('.animation-balloon', { opacity: 1, duration: 0, delay: 0.1 })
-      .to('.animation-balloon', { opacity: 0, duration: 0, delay: 0.9 })
+      .to('.animation-balloon, .balloon-text', { display: 'none', duration: 0, delay: 0.9 })
       .to('.target-image', { opacity: 1, duration: 0.1 })
       .call(startTimer);
     ;
@@ -114,15 +133,14 @@ export function GamePage({ rankingPage, shot, everyoneIsReady, iAmReady }: GameP
     rankingPage();
   };
 
-  const showErrorPopUp = () => {
-    if (showPopUp === false) {
-      setPopUp(true);
-      console.log("Changed to true");
+
+  const popNewError = () => {
+    const newMsg = errorMsgs.sort(() => 0.5 - Math.random())[0];
+    const newMsgPosition = {
+      left: `${Math.round(50*Math.random())}%`,
+      top: `${Math.round(50*Math.random())}%`,
     }
-    else{
-      setPopUp(false);
-      console.log("Changed to false");
-    }
+    setErrorMsg(errorMsg.concat([{text: newMsg, style: newMsgPosition}]));
   };
 
   return (
@@ -130,33 +148,27 @@ export function GamePage({ rankingPage, shot, everyoneIsReady, iAmReady }: GameP
       <div id="game-bang-bang" className="game-bang-bang">
         <Header timer={formatedTime()} />
 
-        <div onClick={showErrorPopUp} className="target-image">
+        <div onClick={popNewError} className="target-image">
           <img src={targetImage} className="target-img" />
-          <div className="wrong-local-container"  style={{ visibility: showPopUp ? 'visible' : 'hidden' }}>
-            <div className="wrong-local-message">
-                <p>Errrroooou!!!</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="container-baloon">
-          <div className="animation-balloon">
-            <img src={balloon} className='balloon-img' onLoad={iAmReady}/>
-            {/* <div onClick={showErrorPopUp} className="balloon-img" ref={balloonImg} onLoad={() => alert('carregou!')}>
-              <p className='balloon-text'>
-                {balloonText}
+          {errorMsg.map((error) =>  
+              <div className='wrong-local-container' style={error.style}>
+              <p className="wrong-local-message">
+                {error.text}
               </p>
-            </div> */}
           </div>
+          )}
+        </div>
+  
+        <div className="animation-balloon">
+          <img src={balloon} className='balloon-img' onLoad={iAmReady}/>
+          <p className="balloon-text">
+            {balloonText}
+          </p>
         </div>
 
         <button
           className="button-bang"
-          onClick={handleClick}
-          style={{
-            opacity: buttonStatus !== ButtonStatus.enabled? 0.3 : 1, 
-            cursor: buttonStatus !== ButtonStatus.enabled? "default" : "pointer" 
-          }}>
+          onClick={handleClick}>
         </button>
       </div>
     </Background>

@@ -41,12 +41,12 @@ export function BangBang() {
       Neste jogo, cada participante vai jogar com o seu aparelho.
       <br />
       <br />
-      Iniciada a partida, todos os jogadores devem atirar no alvo dentro do
-      tempo de 10 segundos.
+      3, 2, 1, BANG! Um botão vermelho vai aparecer na tela, e após a contagem, todos
+      devem tentar pressioná-lo o mais rápido que conseguirem. 
       <br />
       <br />
-      Quem atirar por último, ou não atirar dentro do tempo de 10 segundos, bebe
-      uma dose.
+      Quem queimar a largada, apertar por último ou não apertar dentro do tempo
+      máximo de 10 segundos deve virar uma dose.
     </>
   );
 
