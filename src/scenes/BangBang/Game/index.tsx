@@ -1,16 +1,10 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../../../components/Header';
 import targetImage from './img/target.png';
 import Background from '../../../components/Background';
 import balloon from './img/balao.png';
 import gsap from 'gsap';
 import './Game.css';
-
-enum ButtonStatus {
-  enabled = 1,
-  disabled = 0,
-  used = -1,
-}
 
 const errorMsgs = [
   <>Errooooou!</>,
@@ -44,9 +38,6 @@ export function GamePage({ rankingPage, shot, everyoneIsReady, iAmReady }: GameP
   const [balloonText, setBalloonText] = useState('Prontos?');
   const [msTimer, setMsTimer] = useState(1);    //tem de ter valor inicial > 0
   const [errorMsg, setErrorMsg] = useState<Error[]>([]);
-  const [buttonStatus, setButtonStatus] = useState<ButtonStatus>(
-    ButtonStatus.disabled
-  );
 
   const [timer, setTimer] = useState<NodeJS.Timer>();
   const startTimer = () => {
@@ -107,7 +98,6 @@ export function GamePage({ rankingPage, shot, everyoneIsReady, iAmReady }: GameP
       .to('.animation-balloon, .balloon-text', { display: 'none', duration: 0, delay: 0.9 })
       .to('.target-image', { opacity: 1, duration: 0.1 })
       .call(startTimer);
-    ;
   };
 
   const shotValidation = () => {
@@ -123,7 +113,6 @@ export function GamePage({ rankingPage, shot, everyoneIsReady, iAmReady }: GameP
   const handleClick = () => {
     shotValidation();
     clearInterval(timer);
-    setButtonStatus(ButtonStatus.used);
     rankingPage();
   };
 
