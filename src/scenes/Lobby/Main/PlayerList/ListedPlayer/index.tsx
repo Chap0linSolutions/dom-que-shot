@@ -28,41 +28,32 @@ export default function ListedPlayer({
   nickname,
   beers,
 }: ListedPlayerProps) {
-  const content = (
-    <>
-      <BeerBadgeText>{beers}</BeerBadgeText>
-      <Beer src={BeerIcon} alt="" />
-    </>
+  const content = useMemo(
+    () => (
+      <>
+        <BeerBadgeText>{beers}</BeerBadgeText>
+        <Beer src={BeerIcon} alt="" />
+      </>
+    ),
+    [beers]
   );
-
-  let beerBadge: JSX.Element;
 
   const badgeStyle = useMemo(() => {
     return { width: 50 + 2 * beers };
   }, [beers]);
 
-  switch (true) {
-    case beers < 5:
-      beerBadge = <FiveBeers style={badgeStyle}>{content}</FiveBeers>;
-      break;
-    case beers < 10:
-      beerBadge = <TenBeers style={badgeStyle}>{content}</TenBeers>;
-      break;
-    case beers < 15:
-      beerBadge = <FifteenBeers style={badgeStyle}>{content}</FifteenBeers>;
-      break;
-    case beers < 20:
-      beerBadge = <TwentyBeers style={badgeStyle}>{content}</TwentyBeers>;
-      break;
-    case beers < 25:
-      beerBadge = (
-        <TwentyFiveBeers style={badgeStyle}>{content}</TwentyFiveBeers>
-      );
-      break;
-    case beers >= 25:
-      beerBadge = <ThirtyBeers style={badgeStyle}>{content}</ThirtyBeers>;
-      break;
-  }
+  const beerBadge = useMemo(() => {
+    if (beers < 5) return <FiveBeers style={badgeStyle}>{content}</FiveBeers>;
+    if (beers < 10) return <TenBeers style={badgeStyle}>{content}</TenBeers>;
+    if (beers < 15)
+      return <FifteenBeers style={badgeStyle}>{content}</FifteenBeers>;
+    if (beers < 20)
+      return <TwentyBeers style={badgeStyle}>{content}</TwentyBeers>;
+    if (beers < 25)
+      return <TwentyFiveBeers style={badgeStyle}>{content}</TwentyFiveBeers>;
+
+    return <ThirtyBeers style={badgeStyle}>{content}</ThirtyBeers>;
+  }, [beers]);
 
   return (
     <ListedPlayerDiv>
