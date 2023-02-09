@@ -1,13 +1,8 @@
 import styled from '@emotion/styled';
 
-const screenWidth = window.innerWidth;
-const desktop = screenWidth >= 500;
-const backgroundWidth = desktop ? '408px' : '100vw';
-const backgroundBorderRadius = desktop ? 20 : 0;
-
 export const Background = styled.div`
   opacity: 0;
-  width: ${backgroundWidth};
+  width: 100vw;
   min-height: 100vh;
   position: fixed;
   z-index: 6;
@@ -16,7 +11,11 @@ export const Background = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: ${backgroundBorderRadius}px;
+  border-radius: 0;
+  @media (min-width: 500px) {
+    width: 408px;
+    border-radius: 20px;
+  }
 `;
 
 export const AlertDiv = styled.div`
