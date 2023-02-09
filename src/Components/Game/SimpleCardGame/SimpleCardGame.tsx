@@ -50,7 +50,6 @@ export default function SimpleCardGame({
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.connect();
     socket.addEventListener('room-is-moving-to', (destination) => {
       navigate(destination, {
         state: {
