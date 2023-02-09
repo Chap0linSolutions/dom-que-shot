@@ -104,6 +104,7 @@ export const YourName = styled.p`
   margin: 0;
   @media (max-height: 740px) {
     font-size: 20px;
+    margin-bottom: 2px;
   }
 `;
 

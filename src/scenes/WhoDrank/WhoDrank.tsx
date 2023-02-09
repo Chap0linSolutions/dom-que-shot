@@ -90,10 +90,12 @@ export default function WhoDrankPage() {
     });
   };
 
+  const header = (coverImg)? <Header logo={coverImg} /> : <Header logo />;
+
   if (turnVisibility === true) {
     return (
       <Background>
-        <Header logo={coverImg} />
+        {header}
         <div className="WhoDrankContainer">
           <div className="WhoDrankDiv">
             <p className="WhoDrankTitle">E aí, quem perdeu?</p>
@@ -136,16 +138,14 @@ export default function WhoDrankPage() {
     );
   }
 
-  const header = coverImg ? <Header logo={coverImg} /> : <Header logo />;
-
   return (
     <Background>
       {header}
-      <div className="WhoDrankContainer" style={{ marginTop: '3em' }}>
+      <div className='WhoDrankContainer' style={{marginTop: '3em'}}>
         <AwaitingBanner
-          icon={beer}
-          firstText="Aguardando o jogador da vez escolher quem bebeu entre vocês..."
-          secondText="vamos torcer que ele não durma no processo."
+            icon={beer}
+            firstText="Aguardando o jogador da vez escolher quem bebeu entre vocês..."
+            secondText="vamos torcer que ele não durma no processo."
         />
       </div>
     </Background>

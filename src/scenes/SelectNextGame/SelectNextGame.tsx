@@ -99,7 +99,6 @@ export default function SelectNextGame() {
   const updateGameList = (newGames: string[]) => {
     let id = -1;
     const rouletteGames = games.filter((game) => newGames.includes(game.title));
-    //console.log(rouletteGames.map((game) => game.title));
 
     updateGames(
       rouletteGames.map((game) => {
@@ -122,7 +121,7 @@ export default function SelectNextGame() {
       setTimeout(() => {
         socket.push('start-game', {
           roomCode: userData.roomCode,
-          nextGame: 'Quem Sou Eu', //nextGame,
+          nextGame: nextGame,
         });
       }, 1000);
     }
