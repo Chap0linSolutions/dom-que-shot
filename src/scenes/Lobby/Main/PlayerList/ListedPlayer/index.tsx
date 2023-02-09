@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Avatar from '../../../../../components/Avatar';
 import BeerIcon from '../../../../../assets/beer.png';
 import {
@@ -36,7 +36,11 @@ export default function ListedPlayer({
   );
 
   let beerBadge: JSX.Element;
-  const badgeStyle = { width: 50 + 2 * beers };
+
+  const badgeStyle = useMemo(() => {
+    return { width: 50 + 2 * beers }
+  }, [beers]);
+
 
   switch (true) {
     case beers < 5:
