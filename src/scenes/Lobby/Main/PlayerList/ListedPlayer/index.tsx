@@ -38,9 +38,8 @@ export default function ListedPlayer({
   let beerBadge: JSX.Element;
 
   const badgeStyle = useMemo(() => {
-    return { width: 50 + 2 * beers }
+    return { width: 50 + 2 * beers };
   }, [beers]);
-
 
   switch (true) {
     case beers < 5:
