@@ -51,6 +51,7 @@ export default function DireitaEsquerda() {
       title={title}
       description={description}
       coverImg={coverImg}
+      hint={''}
     />
   );
 }

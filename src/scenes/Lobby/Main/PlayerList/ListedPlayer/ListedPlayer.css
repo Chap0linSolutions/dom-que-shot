@@ -31,3 +31,9 @@
   width: 16px;
   height: 16px;
 }
+
+@media (max-height: 720px) {
+  .ListedPlayerNickname {
+    font-size: 18px;
+  }
+}
