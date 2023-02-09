@@ -41,11 +41,12 @@ export function BangBang() {
       Neste jogo, cada participante vai jogar com o seu aparelho.
       <br />
       <br />
-      Iniciada a partida, todos os jogadores devem apertar o botão dentro do
-      tempo de 10 segundos.
+      3, 2, 1, BANG! Um botão vermelho vai aparecer na tela, e após a contagem,
+      todos devem tentar pressioná-lo o mais rápido que conseguirem.
       <br />
       <br />
-      Quem apertar por último ou não apertar a tempo bebe uma dose.
+      Quem queimar a largada, apertar por último ou não apertar dentro do tempo
+      máximo de 10 segundos deve virar uma dose.
     </>
   );
 
@@ -101,15 +102,16 @@ export function BangBang() {
     };
   }, []);
 
-  useEffect(() => {
-    if (currentGameState === Game.Game) {
-      socketConn.push('move-room-to', {
-        roomCode: userData.roomCode,
-        destination: Game.Game,
-      });
-      socketConn.pushMessage(bangBangRoom, 'player_ready', '');
-    }
-  }, [currentGameState]);
+  const startGame = () => {
+    socketConn.push('move-room-to', {
+      roomCode: userData.roomCode,
+      destination: Game.Game,
+    });
+  };
+
+  const thisPlayerIsReady = () => {
+    socketConn.pushMessage(bangBangRoom, 'player_ready', '');
+  };
 
   const handleShot = (msTimer) => {
     socketConn.pushMessage(bangBangRoom, BangBangEvents.FireEvent, {
@@ -135,13 +137,14 @@ export function BangBang() {
           turnVisibility={turnVisibility}
           ownerVisibility={ownerVisibility}
           description={description} //full game info is now loaded here
-          gamePage={() => setCurrentGameState(Game.Game)}
+          gamePage={startGame}
         />
       );
     case Game.Game:
       return (
         <GamePage
-          ready={ready}
+          everyoneIsReady={ready}
+          iAmReady={thisPlayerIsReady}
           shot={handleShot}
           rankingPage={() => setCurrentGameState(Game.Ranking)}
         />
