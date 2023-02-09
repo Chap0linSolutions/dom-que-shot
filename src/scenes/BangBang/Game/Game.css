@@ -19,16 +19,6 @@
   z-index: 1;
 }
 
-.button-bang:hover {
-  border-color: darkgray;
-  z-index: 1;
-}
-
-.button-bang:disabled {
-  z-index: 1;
-  opacity: 0.5;
-}
-
 #game-bang-bang .target-image {
   opacity: 0.4;
   height: 60%;
@@ -37,27 +27,30 @@
   position: relative;
 }
 
-#game-bang-bang .container-baloon {
+.animation-balloon {
   width: 100%;
   height: 100%;
+  padding-bottom: 20px;
   position: absolute;
   top: 0;
   left: 0;
-  position: absolute;
   z-index: 0;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.animation-balloon {
-  padding: 17px;
-  margin-top: -13px;
+.balloon-img {
+  width: 360px;
+  object-fit: scale-down;
 }
 
-.balloon-img {
-  width: 100%;
-  object-fit: scale-down;
+.balloon-text {
+  font-size: 36px;
+  font-family: 'Adumu';
+  color: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  margin: 0;
 }
 
 .target-img {
@@ -66,37 +59,56 @@
 }
 
 .wrong-local-container {
+  background: url(./img/erro.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
   position: absolute;
   z-index: 1;
+  display: flex;
   justify-content: center;
   align-items: center;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
+  width: 200px;
+  height: 200px;
 }
 
 .wrong-local-message {
-  border: solid 2px orangered;
-  border-radius: 30%;
-  background-color: white;
-  padding: 10px;
-}
-
-.wrong-local-container p {
   text-align: center;
-  color: #403A55
+  color: #8877df;
+  font-family: 'Adumu';
+  font-size: 18px;
 }
 
-@media (min-height: 720px) {
-  .balloon-img {
-    width: 100%;
-    object-fit: scale-down;
+@media (max-height: 740px) {
+  .button-bang {
+    width: 44px;
+    margin-bottom: 10%;
+    z-index: 1;
+  }
+
+  #game-bang-bang .target-image {
+    height: 54%;
   }
 
   .animation-balloon {
-    padding: 13px;
-    margin-top: -13px;
+    padding-bottom: 10px;
+  }
+
+  .balloon-img {
+    width: 330px;
+    object-fit: scale-down;
+  }
+
+  .balloon-text {
+    font-size: 30px;
+    font-family: 'Adumu';
+    color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    margin: 0;
+  }
+
+  .target-img {
+    width: 72%;
+    object-fit: scale-down;
   }
 }

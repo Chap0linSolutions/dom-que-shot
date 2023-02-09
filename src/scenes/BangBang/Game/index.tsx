@@ -1,58 +1,74 @@
 import { useState, useEffect } from 'react';
 import Header from '../../../components/Header';
 import targetImage from './img/target.png';
-import balloon1 from './img/balao1.png';
-import balloon2 from './img/balao2.png';
-import balloon3 from './img/balao3.png';
-import balloonReady from './img/balao-prontos.png';
 import Background from '../../../components/Background';
+import balloon from './img/balao.png';
 import gsap from 'gsap';
 import './Game.css';
 
-enum ButtonStatus {
-  enabled = 1,
-  disabled = 0,
-  used = -1,
-}
+const errorMsgs = [
+  <>Errooooou!</>,
+  <>Tu é cego?!</>,
+  <>É pra apertar o BOTÃO!</>,
+  <>
+    Isso parece um
+    <br />
+    BOTÃO pra você?
+  </>,
+  <>
+    ISSO NÃO
+    <br />É UM BOTÃO!!!
+  </>,
+  <>Tá brincando, só pode...</>,
+];
+
+type ErrorStyle = {
+  left: string;
+  top: string;
+};
+
+type Error = {
+  text: JSX.Element;
+  style: ErrorStyle;
+};
 
 interface GameProps {
   rankingPage: () => void;
   shot: (ms: number) => void;
-  ready: boolean;
+  everyoneIsReady: boolean;
+  iAmReady: () => void;
 }
 
-export function GamePage({ rankingPage, shot, ready }: GameProps) {
-  const [msTimer, setMsTimer] = useState(4600);
-  const [showPopUp, setPopUp] = useState(false);
-  const [buttonStatus, setButtonStatus] = useState<ButtonStatus>(
-    ButtonStatus.disabled
-  );
+export function GamePage({
+  rankingPage,
+  shot,
+  everyoneIsReady,
+  iAmReady,
+}: GameProps) {
+  const [balloonText, setBalloonText] = useState('Prontos?');
+  const [msTimer, setMsTimer] = useState(1); //tem de ter valor inicial > 0
+  const [errorMsg, setErrorMsg] = useState<Error[]>([]);
+
   const [timer, setTimer] = useState<NodeJS.Timer>();
-
-  const [balloonImg, setBalloonImg] = useState(balloonReady);
-
   const startTimer = () => {
     setTimer(setInterval(run, 10));
   };
 
   useEffect(() => {
-    if (ready) {
-      startTimer();
+    gsap.to('.balloon-img', { opacity: 1, duration: 0 });
+  }, []);
+
+  useEffect(() => {
+    if (everyoneIsReady) {
       animationBalloon();
     }
-  }, [ready]);
+  }, [everyoneIsReady]);
 
   let updatedMs = msTimer;
   const run = () => {
     updatedMs -= 10;
     return setMsTimer(updatedMs);
   };
-
-  useEffect(() => {
-    if (msTimer <= 0 && buttonStatus === ButtonStatus.disabled) {
-      setButtonStatus(ButtonStatus.enabled);
-    }
-  }, [setButtonStatus, buttonStatus, msTimer]);
 
   useEffect(() => {
     if (msTimer <= -10000) {
@@ -75,30 +91,35 @@ export function GamePage({ rankingPage, shot, ready }: GameProps) {
       .to('.animation-balloon', { opacity: 1, duration: 0 })
       .to('.animation-balloon', { opacity: 0, duration: 0.5, delay: 1 })
       .call(() => {
-        setBalloonImg(balloon3);
+        setBalloonText('3');
       })
-      .to('.animation-balloon', { opacity: 1, duration: 0 })
+      .to('.balloon-text', { fontSize: 44, duration: 0 })
+      .to('.animation-balloon', { opacity: 1, duration: 0, delay: 0.1 })
       .to('.animation-balloon', { opacity: 0, duration: 0.5, delay: 0.5 })
       .call(() => {
-        setBalloonImg(balloon2);
+        setBalloonText('2');
       })
-      .to('.animation-balloon', { opacity: 1, duration: 0 })
+      .to('.animation-balloon', { opacity: 1, duration: 0, delay: 0.1 })
       .to('.animation-balloon', { opacity: 0, duration: 0.5, delay: 0.5 })
       .call(() => {
-        setBalloonImg(balloon1);
+        setBalloonText('1');
       })
-      .to('.animation-balloon', { opacity: 1, duration: 0 })
-      .to('.animation-balloon', { opacity: 0, duration: 0.5, delay: 0.5 })
-      .to('.target-image', { opacity: 1, duration: 0.1 });
-    setBalloonImg(balloonReady);
+      .to('.animation-balloon', { opacity: 1, duration: 0, delay: 0.1 })
+      .to('.animation-balloon, .balloon-text', {
+        display: 'none',
+        duration: 0,
+        delay: 0.9,
+      })
+      .to('.target-image', { opacity: 1, duration: 0.1 })
+      .call(startTimer);
   };
 
   const shotValidation = () => {
-    if(msTimer > 0){ // queima da largada
-      console.log("False start");
+    if (msTimer > 0) {
+      // queima da largada
+      console.log('False start');
       shot(-10000 - msTimer);
-    }
-    else {
+    } else {
       shot(msTimer);
     }
   };
@@ -106,19 +127,16 @@ export function GamePage({ rankingPage, shot, ready }: GameProps) {
   const handleClick = () => {
     shotValidation();
     clearInterval(timer);
-    setButtonStatus(ButtonStatus.used);
     rankingPage();
   };
 
-  const showErrorPopUp = () => {
-    if (showPopUp === false) {
-      setPopUp(true);
-      console.log("Changed to true");
-    }
-    else{
-      setPopUp(false);
-      console.log("Changed to false");
-    }
+  const popNewError = () => {
+    const newMsg = errorMsgs.sort(() => 0.5 - Math.random())[0];
+    const newMsgPosition = {
+      left: `${Math.round(50 * Math.random())}%`,
+      top: `${Math.round(50 * Math.random())}%`,
+    };
+    setErrorMsg(errorMsg.concat([{ text: newMsg, style: newMsgPosition }]));
   };
 
   return (
@@ -126,29 +144,21 @@ export function GamePage({ rankingPage, shot, ready }: GameProps) {
       <div id="game-bang-bang" className="game-bang-bang">
         <Header timer={formatedTime()} />
 
-        <div onClick={showErrorPopUp} className="target-image">
+        <div onClick={popNewError} className="target-image">
           <img src={targetImage} className="target-img" />
-          <div className="wrong-local-container"  style={{ visibility: showPopUp ? 'visible' : 'hidden' }}>
-            <div className="wrong-local-message">
-                <p>Errrroooou!!!</p>
+          {errorMsg.map((error) => (
+            <div className="wrong-local-container" style={error.style}>
+              <p className="wrong-local-message">{error.text}</p>
             </div>
-          </div>
+          ))}
         </div>
 
-        <div className="container-baloon">
-          <div className="animation-balloon">
-            <img onClick={showErrorPopUp} src={balloonImg} className="balloon-img" />
-          </div>
+        <div className="animation-balloon">
+          <img src={balloon} className="balloon-img" onLoad={iAmReady} onError={iAmReady} />
+          <p className="balloon-text">{balloonText}</p>
         </div>
 
-        <button
-          className="button-bang"
-          onClick={handleClick}
-          style={{
-            opacity: buttonStatus !== ButtonStatus.enabled? 0.3 : 1, 
-            cursor: buttonStatus !== ButtonStatus.enabled? "default" : "pointer" 
-          }}>
-        </button>
+        <button className="button-bang" onClick={handleClick}></button>
       </div>
     </Background>
   );

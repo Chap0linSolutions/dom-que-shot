@@ -3,7 +3,15 @@ import Background from '../../../components/Background';
 import GameCard from '../../../components/GameCard';
 import { AlertTriangle } from 'react-feather';
 import { Game } from '../../../contexts/games';
-import './Settings.css';
+import {
+  Card,
+  Cards,
+  LobbySettings,
+  SelectionText,
+  Title,
+  WarningDiv,
+  WarningText,
+} from './Settings.style';
 
 interface SettingsProps {
   gameList: Game[];
@@ -48,15 +56,20 @@ export default function Settings({
 
   return (
     <Background>
-      <Header goBackArrow={mainPage} />
-      <div className="LobbySettingsDiv">
-        <p className="LobbySettingsTitle">Selecione os jogos da partida:</p>
+      <Header goBackArrow={mainPage} logo />
+      <LobbySettings>
+        <Title>Selecione os jogos da partida:</Title>
 
-        <div className="LobbySettingsGameCardsDiv">
+        <SelectionText>{selectionMessage}</SelectionText>
+        <WarningDiv className="LobbySettingsWarning">
+          <AlertTriangle width="20px" height="20px" color="red" />
+          <WarningText>Selecione no mínimo 3 jogos.</WarningText>
+        </WarningDiv>
+
+        <Cards>
           {gameList.map((card) => (
-            <div
+            <Card
               key={card.id}
-              className="LobbySettingsGameCard"
               style={card.id >= 1000 ? { opacity: 0.2 } : { opacity: 1 }}>
               <GameCard
                 onClick={() => updateSelection(card.id)}
@@ -65,15 +78,10 @@ export default function Settings({
                 image={card.src}
                 backgroundColor={card.backgroundColor}
               />
-            </div>
+            </Card>
           ))}
-        </div>
-        <div className="LobbySettingsSelectedText">{selectionMessage}</div>
-        <div className="LobbySettingsWarning">
-          <AlertTriangle width="20px" height="20px" color="red" />
-          <p className="LobbyWarningText">Mínimo de 3 jogos!</p>
-        </div>
-      </div>
+        </Cards>
+      </LobbySettings>
     </Background>
   );
 }

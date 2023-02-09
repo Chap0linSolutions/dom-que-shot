@@ -3,7 +3,7 @@ import { io, Socket } from 'socket.io-client';
 class SocketConnection {
   private static instance;
   socket: Socket;
-  serverAddress = 'http://localhost:3000';
+  serverAddress = import.meta.env.VITE_REACT_APP_SERVER_ADRESS;
 
   connect() {
     if (!this.socket) {

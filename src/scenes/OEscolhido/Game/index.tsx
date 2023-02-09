@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useLayoutEffect, useRef } from 'react';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
 import Button from '../../../components/Button';
@@ -28,7 +28,7 @@ export default function GamePage({
     id: 0,
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (selectedPlayer) {
       gsap.to('.selectedItem', { scale: 1.08, duration: 0.5 });
       gsap.to('.unselectedItem', { scale: 1, duration: 0.5 });
@@ -43,43 +43,41 @@ export default function GamePage({
     setSelectedPlayer(player);
   };
 
+  const players = useRef(playerList);
   const hasSelected = selectedPlayer.nickname != '';
 
   return (
     <Background noImage>
       <Header timer={msTimeLeft} />
-      <div className="OEscolhidoDiv">
-        <p>Vote em quem deve beber:</p>
-        <div className="GamePlayerListDiv">
-          {playerList.map((player, i) => (
-            <div
-              key={`${i}`}
-              onClick={() => {
-                selectPlayer(player);
-              }}
-              className={
-                player.avatarSeed === selectedPlayer.avatarSeed &&
-                player.nickname === selectedPlayer.nickname
-                  ? 'selectedItem GamePlayerListItem'
-                  : 'unselectedItem GamePlayerListItem'
-              }>
-              <p className="GamePlayerListNickname">{player.nickname}</p>
+      <div className="OEscolhidoContainer">
+        <div className="OEscolhidoTitleAndList">
+          <p className="OEscolhidoTitle">Vote em quem deve beber:</p>
+          <div className="GamePlayerListDiv">
+            {players.current.map((player, i) => (
               <div
+                key={`${i}`}
+                onClick={() => {
+                  selectPlayer(player);
+                }}
                 className={
-                  player.avatarSeed === selectedPlayer.avatarSeed &&
                   player.nickname === selectedPlayer.nickname
-                    ? 'selectedAvatar GamePlayerListAvatar'
-                    : 'unselectedAvatar GamePlayerListAvatar'
+                    ? 'selectedItem GamePlayerListItem'
+                    : 'unselectedItem GamePlayerListItem'
                 }>
-                <Avatar seed={player.avatarSeed} />
+                <p className="GamePlayerListNickname">{player.nickname}</p>
+                <div
+                  className={
+                    player.nickname === selectedPlayer.nickname
+                      ? 'selectedAvatar GamePlayerListAvatar'
+                      : 'unselectedAvatar GamePlayerListAvatar'
+                  }>
+                  <Avatar seed={player.avatarSeed} />
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-
-      <div className="GameVoteButton">
-        <Button isDisabled={!hasSelected} onClick={finishPage}>
+        <Button staysOnBottom isDisabled={!hasSelected} onClick={finishPage}>
           Votar
         </Button>
       </div>
