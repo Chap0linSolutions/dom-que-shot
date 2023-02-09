@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 
 export const Background = styled.div`
   opacity: 0;
-  width: 100vw;
-  min-height: 100vh;
+  width: 100%;
+  height: 100%;
   position: fixed;
   z-index: 6;
   background: rgba(0, 0, 0, 0.4);
@@ -31,6 +31,9 @@ export const AlertDiv = styled.div`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 15px;
   z-index: 6;
+  @media (max-height: 740px) {
+    max-width: 220px;
+  }
 `;
 
 export const Image = styled.img`
@@ -45,6 +48,9 @@ export const Message = styled.p`
   text-align: center;
   color: rgba(0, 0, 0, 0.6);
   z-index: 6;
+  @media (max-height: 740px) {
+    font-size: 16px;
+  }
 `;
 
 export const Button = styled.button`
@@ -59,4 +65,7 @@ export const Button = styled.button`
   justify-content: center;
   align-items: center;
   z-index: 6;
+  @media (max-height: 740px) {
+    font-size: 16px;
+  }
 `;
