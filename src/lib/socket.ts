@@ -5,21 +5,12 @@ class SocketConnection {
   socket: Socket;
   serverAddress = 'http://localhost:3000';
 
-  connect(isLobby = false) {
+  connect() {
     if (!this.socket) {
       this.socket = io(this.serverAddress);
-      this.socket.on('connection', () => {
-        if (!isLobby) {
-          this.addEventListener('connection-ping-teste', () => {
-            alert('Conexão perdida! Reconectando...');
-            window.location.reload();
-          });
-          const userData = JSON.parse(window.localStorage.getItem('userData'));
-          this.socket.emit('game-is-running', userData.roomCode);
-        }
-        console.log(
-          `conectado ao backend do DomQueShot (${this.serverAddress})!`
-        );
+      this.socket.io.on("reconnect", () => {
+        alert('Conexão perdida! Reconectando...');
+        window.location.reload();
       });
     }
   }

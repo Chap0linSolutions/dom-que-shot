@@ -34,7 +34,7 @@ function ChooseAvatar() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.connect(true);
+    socket.connect();
     console.log(socket);
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (destination === '/SelectNextGame') {

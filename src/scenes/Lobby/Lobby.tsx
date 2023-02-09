@@ -53,7 +53,7 @@ export default function Lobby() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.connect(true);
+    socket.connect();
     socket.joinRoom(userData, () => navigate('/Home'));
     socket.setLobbyUpdateListener(updatePlayerList);
 
