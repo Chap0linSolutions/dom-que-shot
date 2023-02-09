@@ -112,7 +112,7 @@ export default function GamePage({
 
   const button = (
     <Button
-      margin="0 auto 40px auto"
+      staysOnBottom
       onClick={endGame}
       isDisabled={
         whoPlayers.filter((player) => player.selected === true).length === 0

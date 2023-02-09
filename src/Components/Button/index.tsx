@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 interface ButtonProps {
   width?: string;
   height?: string;
-  margin?: string;
+  staysOnBottom?: boolean;
   onClick?: () => void;
   isDisabled?: boolean;
   children: React.ReactNode | React.ReactNode[];
@@ -13,7 +13,7 @@ interface ButtonProps {
 export default function Button({
   width,
   height,
-  margin,
+  staysOnBottom,
   onClick,
   children,
   isDisabled = false,
@@ -21,7 +21,7 @@ export default function Button({
   const buttonStyle = {
     width: width ? width : undefined,
     height: height ? height : undefined,
-    margin: margin ? margin : undefined,
+    margin: staysOnBottom ? '0 auto 40px auto' : undefined,
   };
 
   return (

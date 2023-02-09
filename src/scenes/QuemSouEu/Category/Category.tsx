@@ -84,7 +84,7 @@ export default function CategoryPage({
             </Categories>
           </Content>
           <Button
-            margin="0 auto 40px auto"
+            staysOnBottom
             onClick={() => setCategory(selectedCategory)}
             isDisabled={selectedCategory ? false : true}>
             Começar

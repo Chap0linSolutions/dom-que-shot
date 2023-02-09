@@ -149,7 +149,7 @@ export default function FinishPage({
   };
 
   const button = (
-    <Button margin="0 auto 40px auto" onClick={roulettePage}>
+    <Button staysOnBottom onClick={roulettePage}>
       {rouletteButtonText}
     </Button>
   );
