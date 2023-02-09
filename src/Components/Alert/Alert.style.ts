@@ -12,7 +12,7 @@ export const Background = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 0;
-  @media (min-width: 500px){
+  @media (min-width: 500px) {
     width: 408px;
     border-radius: 20px;
   }
