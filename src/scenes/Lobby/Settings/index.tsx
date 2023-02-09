@@ -1,10 +1,17 @@
-import { useState, useEffect } from 'react';
 import Header from '../../../components/Header';
 import Background from '../../../components/Background';
 import GameCard from '../../../components/GameCard';
 import { AlertTriangle } from 'react-feather';
 import { Game } from '../../../contexts/games';
-import './Settings.css';
+import {
+  Card,
+  Cards,
+  LobbySettings,
+  SelectionText,
+  Title,
+  WarningDiv,
+  WarningText,
+} from './Settings.style';
 
 interface SettingsProps {
   gameList: Game[];
@@ -45,59 +52,36 @@ export default function Settings({
     }
   };
 
-  //ajuste com o tamanho da tela/////////////////////////////////////////////////////////////
-
-  const [innerHeight, setInnerHeight] = useState<number>(window.innerHeight);
-
-  const handleResize = () => {
-    setInnerHeight(window.innerHeight);
-  };
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-  }, []);
-
-  ///////////////////////////////////////////////////////////////////////////////////////////
-
   const selectionMessage = defineSelectionMessage();
 
   return (
     <Background>
-      <Header goBackArrow={mainPage} />
-      <div className="LobbySettingsDiv">
-        <div>
-          <p className="LobbySettingsTitle">Selecione os jogos da partida:</p>
+      <Header goBackArrow={mainPage} logo />
+      <LobbySettings>
+        <Title>Selecione os jogos da partida:</Title>
 
-          <div
-            className="LobbySettingsGameCardsDiv"
-            style={{
-              height: 0.66 * innerHeight,
-            }}>
-            {gameList.map((card) => (
-              <div
-                key={card.id}
-                className="LobbySettingsGameCard"
-                style={card.id >= 1000 ? { opacity: 0.2 } : { opacity: 1 }}>
-                <GameCard
-                  onClick={() => updateSelection(card.id)}
-                  id={card.id}
-                  title={card.text}
-                  image={card.src}
-                  backgroundColor={card.backgroundColor}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+        <SelectionText>{selectionMessage}</SelectionText>
+        <WarningDiv className="LobbySettingsWarning">
+          <AlertTriangle width="20px" height="20px" color="red" />
+          <WarningText>Selecione no mínimo 3 jogos.</WarningText>
+        </WarningDiv>
 
-        <div>
-          <div className="LobbySettingsSelectedText">{selectionMessage}</div>
-          <div className="LobbySettingsWarning">
-            <AlertTriangle width="20px" height="20px" color="red" />
-            <p className="LobbyWarningText">Mínimo de 3 jogos!</p>
-          </div>
-        </div>
-      </div>
+        <Cards>
+          {gameList.map((card) => (
+            <Card
+              key={card.id}
+              style={card.id >= 1000 ? { opacity: 0.2 } : { opacity: 1 }}>
+              <GameCard
+                onClick={() => updateSelection(card.id)}
+                id={card.id}
+                title={card.text}
+                image={card.src}
+                backgroundColor={card.backgroundColor}
+              />
+            </Card>
+          ))}
+        </Cards>
+      </LobbySettings>
     </Background>
   );
 }

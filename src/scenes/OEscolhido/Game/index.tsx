@@ -77,7 +77,6 @@ export default function GamePage({
             ))}
           </div>
         </div>
-
         <Button staysOnBottom isDisabled={!hasSelected} onClick={finishPage}>
           Votar
         </Button>
