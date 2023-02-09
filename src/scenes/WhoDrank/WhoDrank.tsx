@@ -136,14 +136,16 @@ export default function WhoDrankPage() {
     );
   }
 
+  const header = coverImg ? <Header logo={coverImg} /> : <Header logo />;
+
   return (
     <Background>
-      <Header logo={coverImg} />
-      <div className='WhoDrankContainer' style={{marginTop: '3em'}}>
+      {header}
+      <div className="WhoDrankContainer" style={{ marginTop: '3em' }}>
         <AwaitingBanner
-            icon={beer}
-            firstText="Aguardando o jogador da vez escolher quem bebeu entre vocês..."
-            secondText="vamos torcer que ele não durma no processo."
+          icon={beer}
+          firstText="Aguardando o jogador da vez escolher quem bebeu entre vocês..."
+          secondText="vamos torcer que ele não durma no processo."
         />
       </div>
     </Background>

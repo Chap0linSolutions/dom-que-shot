@@ -1,2 +1,2 @@
-import AwaitingBanner from "./AwaitingBanner";
+import AwaitingBanner from './AwaitingBanner';
 export default AwaitingBanner;

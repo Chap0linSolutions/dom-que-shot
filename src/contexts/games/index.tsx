@@ -102,23 +102,42 @@ const games: Game[] = [
     title: 'Buzz',
     id: 8,
     backgroundColor: GameTypes.Simple,
-    description: <>É um jogo de contagem coletiva - o jogador da vez começa com '1' e cada um na sua vez
-    vai dizendo o próximo número &#40;2, 3, 4...&#41;. <br/><br/>Mas atenção! Se o número for múltiplo de 7 ou tiver 7 no meio - por
-    exemplo, 14 ou 17 - o jogador deve falar 'BUZZ' no lugar. Quem falar errado deve virar uma dose.</>,
+    description: (
+      <>
+        É um jogo de contagem coletiva - o jogador da vez começa com '1' e cada
+        um na sua vez vai dizendo o próximo número &#40;2, 3, 4...&#41;. <br />
+        <br />
+        Mas atenção! Se o número for múltiplo de 7 ou tiver 7 no meio - por
+        exemplo, 14 ou 17 - o jogador deve falar 'BUZZ' no lugar. Quem falar
+        errado deve virar uma dose.
+      </>
+    ),
   },
   {
     src: BichoBebe,
     title: 'Bicho Bebe',
     id: 9,
     backgroundColor: GameTypes.Simple,
-    description: <>Cada jogador vai pensar em um animal que o represente e falar em voz alta. O jogador da
-    vez, então, vai escolher um animal - digamos, cachorro - e perguntar:
-    <br/><br/>-Cachorro bebe?
-    <br/><br/>O jogador que escolheu o cachorro responde:
-    <br/><br/>-Cachorro não bebe, quem bebe é o tatu!
-    <br/><br/>O jogador que escolher o tatu responde da mesma maneira, perguntando se outro animal bebe, e assim o
-    jogo segue até alguém errar &#40;falando um animal que ninguém escolheu ou respondendo por outro bicho&#41;. Quem errar
-    vira uma dose. </>,
+    description: (
+      <>
+        Cada jogador vai pensar em um animal que o represente e falar em voz
+        alta. O jogador da vez, então, vai escolher um animal - digamos,
+        cachorro - e perguntar:
+        <br />
+        <br />
+        -Cachorro bebe?
+        <br />
+        <br />O jogador que escolheu o cachorro responde:
+        <br />
+        <br />
+        -Cachorro não bebe, quem bebe é o tatu!
+        <br />
+        <br />O jogador que escolher o tatu responde da mesma maneira,
+        perguntando se outro animal bebe, e assim o jogo segue até alguém errar
+        &#40;falando um animal que ninguém escolheu ou respondendo por outro
+        bicho&#41;. Quem errar vira uma dose.{' '}
+      </>
+    ),
   },
 ];
 

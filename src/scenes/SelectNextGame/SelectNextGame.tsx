@@ -122,7 +122,7 @@ export default function SelectNextGame() {
       setTimeout(() => {
         socket.push('start-game', {
           roomCode: userData.roomCode,
-        nextGame: 'Quem Sou Eu' //nextGame,
+          nextGame: 'Quem Sou Eu', //nextGame,
         });
       }, 1000);
     }
@@ -184,17 +184,26 @@ export default function SelectNextGame() {
           <Roulette>
             {games.map((rouletteCard, index) => (
               <div key={index} className="RouletteCard">
-                <RouletteCard text={rouletteCard.title} src={rouletteCard.src} />
+                <RouletteCard
+                  text={rouletteCard.title}
+                  src={rouletteCard.src}
+                />
               </div>
             ))}
             {games.map((rouletteCard, index) => (
               <div key={index} className="RouletteCard">
-                <RouletteCard text={rouletteCard.title} src={rouletteCard.src} />
+                <RouletteCard
+                  text={rouletteCard.title}
+                  src={rouletteCard.src}
+                />
               </div>
             ))}
             {games.map((rouletteCard, index) => (
               <div key={index} className="RouletteCard">
-                <RouletteCard text={rouletteCard.title} src={rouletteCard.src} />
+                <RouletteCard
+                  text={rouletteCard.title}
+                  src={rouletteCard.src}
+                />
               </div>
             ))}
           </Roulette>

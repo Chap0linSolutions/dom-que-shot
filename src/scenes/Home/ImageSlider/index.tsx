@@ -3,7 +3,6 @@ import PlaceholderImage from '../../../components/Placeholder/Image';
 import { Game } from '../../../contexts/games';
 import './ImageSlider.css';
 
-
 type GameInformation = {
   title: string;
   description: string | JSX.Element;

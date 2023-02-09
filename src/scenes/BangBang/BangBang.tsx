@@ -45,8 +45,7 @@ export function BangBang() {
       tempo de 10 segundos.
       <br />
       <br />
-      Quem apertar por último ou não apertar a tempo bebe
-      uma dose.
+      Quem apertar por último ou não apertar a tempo bebe uma dose.
     </>
   );
 

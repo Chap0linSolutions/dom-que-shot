@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
 import Button from '../../../components/Button';
@@ -20,7 +20,6 @@ export default function GamePage({
   coverImg,
   turnVisibility,
 }: GameProps) {
-
   useEffect(() => {
     gsap.to('.EuNuncaSuggestionIcon', {
       rotate: -360,
@@ -60,13 +59,15 @@ export default function GamePage({
   return (
     <Background>
       <Header logo={coverImg} />
-      <div className='WhoDrankContainer' style={{marginTop: '3em'}}>
+      <div className="WhoDrankContainer" style={{ marginTop: '3em' }}>
         <AwaitingBanner
-            icon={glassIcon}
-            firstText={`Aguardando o jogador da vez falar uma frase começada por "EU NUNCA"...`}
-            secondText={"Se ele demorar a falar, pode dar um pescotapa. Eu deixo."}
-            background="#403a55"
-            border={"3px solid #f9c95c"}
+          icon={glassIcon}
+          firstText={`Aguardando o jogador da vez falar uma frase começada por "EU NUNCA"...`}
+          secondText={
+            'Se ele demorar a falar, pode dar um pescotapa. Eu deixo.'
+          }
+          background="#403a55"
+          border={'3px solid #f9c95c'}
         />
       </div>
     </Background>

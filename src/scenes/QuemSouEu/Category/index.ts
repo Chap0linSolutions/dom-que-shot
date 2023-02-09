@@ -1,2 +1,2 @@
-import CategoryPage from "./Category";
+import CategoryPage from './Category';
 export default CategoryPage;

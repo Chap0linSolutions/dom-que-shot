@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const FinishDiv = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ const PlayersDiv = styled.div`
 `;
 
 export const WinnersDiv = styled(PlayersDiv)`
-  border: 2px solid #F9C95C;
+  border: 2px solid #f9c95c;
 `;
 
 export const LosersDiv = styled(PlayersDiv)`
@@ -39,9 +39,9 @@ export const PlayersList = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
-  @media (max-height: 740px){
+  @media (max-height: 740px) {
     padding: 5px;
-  }  
+  }
 `;
 
 export const IconDiv = styled.div`
@@ -66,19 +66,19 @@ export const Title = styled.p`
   font-family: 'Roboto';
   display: flex;
   align-items: center;
-  @media (max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 18px;
-  }  
+  }
 `;
 
-export const PlayerOuterCard = styled.div` 
+export const PlayerOuterCard = styled.div`
   border-radius: 20px;
   display: flex;
   align-items: center;
   padding: 8px;
 `;
 
-export const AvatarDiv = styled.div`    
+export const AvatarDiv = styled.div`
   background-color: #8877df;
   border-radius: 20px;
   padding: 10px;
@@ -88,38 +88,38 @@ export const AvatarDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  @media (max-height: 740px){
+  @media (max-height: 740px) {
     width: 80px;
     height: 80px;
     padding: 7px;
-  }  
+  }
 `;
 
-export const NameAndRole = styled.div`  
+export const NameAndRole = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   max-width: calc(100% - 158px);
-  @media (max-height: 740px){
+  @media (max-height: 740px) {
     max-width: calc(100% - 88px);
   }
 `;
 
-export const Name = styled.p`   
+export const Name = styled.p`
   font-family: Adumu;
   font-size: 24px;
   margin: 2px 4px;
-  @media (max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 21px;
-  }  
+  }
 `;
 
 export const Role = styled.p`
   font-size: 18px;
   margin: 2px 4px;
-  @media (max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 16px;
-  }  
+  }
 `;
 
 export const ButtonDiv = styled.div``;
