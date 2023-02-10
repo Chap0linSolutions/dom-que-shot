@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SocketConnection from '../../lib/socket';
 import games, { Game } from '../../contexts/games';
 import gsap from 'gsap';
@@ -28,6 +28,7 @@ type Player = {
 export default function Lobby() {
   const navigate = useNavigate();
   const userData = JSON.parse(window.localStorage.getItem('userData'));
+  const returningPlayer = useLocation().state?.returningPlayer ? true : false;
 
   const [ownerVisibility, setOwnerVisibility] = useState<Visibility>(
     Visibility.Invisible
@@ -37,6 +38,8 @@ export default function Lobby() {
   const [currentLobbyState, setCurrentLobbyState] = useState<LobbyStates>(
     LobbyStates.Main
   );
+
+  const [alertMessage, setAlertMessage] = useState<string>(undefined);
 
   const [gameList, updateGameList] = useState<Game[]>(games);
   const [playerList, updatePlayerList] = useState<Player[]>([
@@ -96,6 +99,24 @@ export default function Lobby() {
       }
     });
 
+    if (returningPlayer) {
+      socket.addEventListener('current-game-is', (currentGame) => {
+        if (currentGame == 'BangBang' || currentGame == 'OEscolhido') {
+          setAlertMessage('Aguardando finalizar jogo em andamento.');
+        } else {
+          setAlertMessage('Reconectando...');
+          return navigate(`/${currentGame}`, {
+            state: {
+              isYourTurn: false,
+              isOwner: false,
+            },
+          });
+        }
+      });
+
+      socket.push('get-current-game-by-room', userData.roomCode);
+    }
+
     return () => {
       socket.removeAllListeners();
     };
@@ -147,6 +168,7 @@ export default function Lobby() {
       return (
         <MainPage
           ownerVisibility={ownerVisibility}
+          alertMessage={alertMessage}
           currentOwner={currentOwner}
           roomCode={userData.roomCode}
           copyToClipboard={copyToClipboard}
