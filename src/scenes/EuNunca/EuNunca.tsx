@@ -68,7 +68,6 @@ export default function EuNunca() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.connect();
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
         return navigate(destination, {

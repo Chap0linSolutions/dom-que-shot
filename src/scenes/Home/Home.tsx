@@ -141,7 +141,7 @@ function Home() {
       </div>
 
       <div className="ChooseGameDiv">
-        <p>Já conhece nossos jogos?</p>
+        <p className="ChooseGameText">Já conhece nossos jogos?</p>
         <ImageSlider
           content={games}
           show={() => setPopupVisibility(true)}

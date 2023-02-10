@@ -34,7 +34,6 @@ export default function WhoDrankPage() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.connect();
     socket.setLobbyUpdateListener(updatePlayerList);
     socket.push('lobby-update', userData.roomCode);
 

@@ -8,10 +8,9 @@ class SocketConnection {
   connect() {
     if (!this.socket) {
       this.socket = io(this.serverAddress);
-      this.socket.on('connection', () => {
-        console.log(
-          `conectado ao backend do DomQueShot (${this.serverAddress})!`
-        );
+      this.socket.io.on("reconnect", () => {
+        alert('Conexão perdida! Reconectando...');
+        window.location.reload();
       });
     }
   }
@@ -71,12 +70,8 @@ class SocketConnection {
 
   //abaixo, as funções originalmente desenvolvidas pelo Carlos para esta classe
 
-  static getInstance(isLobby = false) {
+  static getInstance() {
     if (!SocketConnection.instance) {
-      if (!isLobby) {
-        alert('Conexão perdida! Reconectando...'); //TODO: remover alerta antes da release do Beta
-        window.location.reload();
-      }
       SocketConnection.instance = new SocketConnection();
     }
     return SocketConnection.instance;
