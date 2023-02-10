@@ -27,6 +27,7 @@
   text-align: justify;
   text-justify: inter-word;
   max-height: 600px;
+  margin: 20px 0;
 }
 
 .PopupDescription::-webkit-scrollbar {
