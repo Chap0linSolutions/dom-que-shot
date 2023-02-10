@@ -103,7 +103,7 @@ export default function Lobby() {
       socket.addEventListener('current-game-is', (currentGame) => {
         if (currentGame == 'BangBang' || currentGame == 'OEscolhido') {
           setAlertMessage('Aguardando finalizar jogo em andamento.');
-        } else {
+        } else if(currentGame !== null) {
           setAlertMessage('Reconectando...');
           return navigate(`/${currentGame}`, {
             state: {
