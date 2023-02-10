@@ -32,6 +32,7 @@ export default function SimpleCardGame({
   const navigate = useNavigate();
 
   const endOfGame = () => {
+    socket.pushMessage(userData.roomCode, 'end-game', coverImg);
     socket.push('move-room-to', {
       roomCode: userData.roomCode,
       destination: '/WhoDrank',

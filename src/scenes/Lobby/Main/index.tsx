@@ -6,6 +6,7 @@ import Background from '../../../components/Background';
 import PlayerList from './PlayerList';
 import Button from '../../../components/Button';
 import './Main.css';
+import Alert from '../../../Components/Alert';
 
 enum Visibility {
   Invisible,
@@ -22,6 +23,7 @@ type Player = {
 interface MainProps {
   ownerVisibility: Visibility;
   currentOwner: string;
+  alertMessage: string | undefined;
   roomCode: string;
   beginMatch: () => void;
   copyToClipboard: () => void;
@@ -32,12 +34,14 @@ interface MainProps {
 export default function Main({
   ownerVisibility,
   currentOwner,
+  alertMessage,
   roomCode,
   beginMatch,
   copyToClipboard,
   settingsPage,
   playerList,
 }: MainProps) {
+  console.log(alertMessage);
   const navigate = useNavigate();
   const [copyColor, setCopyColor] = useState('#8877DF');
 
@@ -64,9 +68,20 @@ export default function Main({
       />
     );
 
+  const alertBox = alertMessage ? (
+    <Alert
+      message={alertMessage}
+      noButton={true}
+      icon={'src/assets/beer.png'}
+    />
+  ) : (
+    <></>
+  );
+
   return (
     <Background>
       {header}
+      {alertBox}
       <div className="LobbyDiv">
         <div className="LobbyContent">
           <div className="RoomCodeTitleSpace">
@@ -109,7 +124,6 @@ export default function Main({
             </p>
           </div>
         </div>
-
         <div
           className="BeginButton"
           style={
