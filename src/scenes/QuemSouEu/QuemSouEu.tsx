@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SocketConnection from '../../lib/socket';
-import Background from '../../components/Background';
 import CoverPage from '../../components/Game/Cover';
 import coverImg from '../../assets/game-covers/quem-sou-eu.png';
 import CategoryPage from './Category';
@@ -260,13 +259,6 @@ export default function OEscolhido() {
           turnVisibility={turnVisibility}
           roulettePage={backToRoulette}
         />
-      );
-
-    default:
-      return (
-        <Background>
-          <div>Erro!</div>
-        </Background>
       );
   }
 }

@@ -108,6 +108,10 @@ export const YourName = styled.p`
   }
 `;
 
+export const HiddenName = styled(YourName)`
+  padding-left: 12px;
+`;
+
 export const WhoGotThisName = styled.div`
   align-self: flex-end;
   display: flex;

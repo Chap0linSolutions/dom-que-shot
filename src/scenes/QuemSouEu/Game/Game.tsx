@@ -16,6 +16,7 @@ import {
   HideNames,
   OthersName,
   YourName,
+  HiddenName,
   PlayerList,
   TextAndHide,
   WhoGotThisName,
@@ -97,7 +98,7 @@ export default function GamePage({
     );
   }, [players]);
 
-  const secretText = <>&nbsp;&nbsp;?</>;
+  const secretText = <>?</>;
 
   const guidanceText =
     turnVisibility === true
@@ -146,7 +147,7 @@ export default function GamePage({
             {whoPlayers.map((player) => {
               const playerName =
                 player.nickname === currentPlayerNickname ? (
-                  <YourName>&#40;você&#41;</YourName>
+                  <YourName>{`(você)`}</YourName>
                 ) : (
                   <OthersName>{player.whoYouAre}</OthersName>
                 );
@@ -160,7 +161,7 @@ export default function GamePage({
                     {areNamesVisible === true ? (
                       playerName
                     ) : (
-                      <YourName>{secretText}</YourName>
+                      <HiddenName>{secretText}</HiddenName>
                     )}
                     <CategoryAndPlayer>
                       <Category>{category}</Category>
