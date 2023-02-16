@@ -23,6 +23,7 @@ class SocketConnection {
     }
   }
 
+  //userData: {nickname, avatarSeed, roomCode}
   joinRoom(userData, onError = null) {
     this.socket.emit('join-room', userData.roomCode, (reply) => {
       if (reply === `ingressou na sala ${userData.roomCode}.`) {
@@ -53,13 +54,19 @@ class SocketConnection {
   addPlayer(userData) {
     this.socket.emit(
       'add-player',
-      JSON.stringify({ ...userData, beers: Math.round(5 * Math.random()) })
+      JSON.stringify({ ...userData, beers: 0})
     );
+  }
+
+  setGamesUpdateListener(useState) {
+    this.socket.on('games-update', (reply) => {
+      useState(reply);    //reply: string[] com nomes dos jogos
+    });
   }
 
   setLobbyUpdateListener(useState) {
     this.socket.on('lobby-update', (reply) => {
-      console.log('A lista de jogadores foi atualizada.');
+      //console.log('A lista de jogadores foi atualizada.');
       useState(JSON.parse(reply));
     });
   }

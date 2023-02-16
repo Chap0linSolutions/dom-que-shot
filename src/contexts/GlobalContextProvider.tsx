@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useState, useEffect } from 'react';
 import { Game } from './games';
 
 export type Player = {
@@ -69,6 +69,16 @@ export function useGlobalContextUpdater(){
 export default function GlobalProvider(props: GlobalProviderProps) {
   const { children } = props;
   const [globalData, setGlobalData] = useState<GlobalContextValue>(initialValues);
+
+  useEffect(() => {
+    console.log('Dados globais do usuário alterados.');
+    console.log(globalData.user);
+  }, [globalData.user]);
+
+  useEffect(() => {
+    console.log('Dados da sala alterados.');
+    console.log(globalData.room);
+  }, [globalData.room]);
 
   return (
     <GlobalContext.Provider value={globalData}> {/* nos permite ler os dados */}              

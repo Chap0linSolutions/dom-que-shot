@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import Header from '../../../components/Header';
 import Background from '../../../components/Background';
 import GameCard from '../../../components/GameCard';
 import { AlertTriangle } from 'react-feather';
-import { Game } from '../../../contexts/games';
+import game, { Game } from '../../../contexts/games';
 import {
   Card,
   Cards,
@@ -14,28 +15,36 @@ import {
 } from './Settings.style';
 
 interface SettingsProps {
-  gameList: Game[];
-  mainPage: () => void;
-  updateGameList: React.Dispatch<React.SetStateAction<Game[]>>;
+  previousGameSelection: Game[];
+  mainPage: (value: Game[]) => void;
 }
 
 export default function Settings({
-  gameList,
+  previousGameSelection,
   mainPage,
-  updateGameList,
 }: SettingsProps) {
-  const updateSelection = (id) => {
-    console.log(id);
-    const newID = id < 1000 ? id + 1000 : id - 1000;
 
-    updateGameList(
-      gameList.map((game) =>
-        game.id === id ? { ...game, id: newID } : { ...game }
-      )
-    );
+  const previousGameNames = previousGameSelection.map(p => p.text);
+  const [gameCards, setGameCards] = useState<Game[]>(game.map(g => {
+    return {
+      ...g, 
+      id: (previousGameNames.includes(g.text))
+      ? g.id 
+      : g.id + 1000,
+    }
+  }));
+
+
+  const updateSelection = (id) => {
+    const newID = id < 1000 ? id + 1000 : id - 1000;
+    setGameCards(gameCards.map((game) =>
+      game.id === id
+      ? { ...game, id: newID }
+      : { ...game }
+    ));
   };
 
-  const numberOfSelectedGames = gameList.filter(
+  const numberOfSelectedGames = gameCards.filter(
     (game) => game.id < 1000
   ).length;
 
@@ -45,7 +54,7 @@ export default function Settings({
         return `Nenhum jogo selecionado.`;
       case 1:
         return `1 jogo selecionado.`;
-      case gameList.length:
+      case game.length:
         return `Todos os jogos selecionados.`;
       default:
         return `${numberOfSelectedGames} jogos selecionados.`;
@@ -56,7 +65,7 @@ export default function Settings({
 
   return (
     <Background>
-      <Header goBackArrow={mainPage} logo />
+      <Header goBackArrow={() => mainPage(gameCards.filter((game) => game.id < 1000))} logo />
       <LobbySettings>
         <Title>Selecione os jogos da partida:</Title>
 
@@ -67,7 +76,7 @@ export default function Settings({
         </WarningDiv>
 
         <Cards>
-          {gameList.map((card) => (
+          {gameCards.map((card) => (
             <Card
               key={card.id}
               style={card.id >= 1000 ? { opacity: 0.2 } : { opacity: 1 }}>

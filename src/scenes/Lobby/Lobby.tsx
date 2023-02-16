@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useGlobalContext, useGlobalContextUpdater } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
 import games, { Game } from '../../contexts/games';
 import gsap from 'gsap';
@@ -26,8 +27,28 @@ type Player = {
 };
 
 export default function Lobby() {
+
+  //GLOBAL CONTEXT//////////////////////////////////////////////////////////////////////////////////////////////
+  
+  const globalData = useGlobalContext();
+  const setGlobalData = useGlobalContextUpdater();
+
+  const saveOnGlobalContext = (gameList: Game[], playerList: Player[], nextScreen: string) => {
+    setGlobalData({   
+      ...globalData,
+      room: {
+        ...globalData.room,
+        gameList: gameList,
+        playerList: playerList,
+        currentScreen: nextScreen,
+      }
+    });
+  };
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
   const navigate = useNavigate();
-  const userData = JSON.parse(window.localStorage.getItem('userData'));
   const returningPlayer = useLocation().state?.returningPlayer ? true : false;
 
   const [ownerVisibility, setOwnerVisibility] = useState<Visibility>(
@@ -41,15 +62,47 @@ export default function Lobby() {
 
   const [alertMessage, setAlertMessage] = useState<string>(undefined);
 
-  const [gameList, updateGameList] = useState<Game[]>(games);
-  const [playerList, updatePlayerList] = useState<Player[]>([
+  const [gameList, setGameList] = useState<string[]>([]);
+  const [playerList, setPlayerList] = useState<Player[]>([
     {
-      avatarSeed: userData.avatarSeed,
-      nickname: userData.nickname,
+      avatarSeed: globalData.user.avatarSeed,
+      nickname: globalData.user.nickname,
       beers: 0,
-      playerID: 5,
+      playerID: 0,
     },
   ]);
+
+
+  useEffect(() => {
+    // const selectedGames = games.map((game) => {
+    //   if(gameList.find(gameName => gameName === game.text)){
+    //     return game;
+    //   } return {
+    //     ...game,
+    //     id: game.id + 1000
+    //   }
+    // });
+
+    const selectedGames = games.filter(game => gameList.includes(game.text));
+    setGlobalData({
+      ...globalData,
+      room: {
+        ...globalData.room,
+        gameList: selectedGames,
+      }
+    });
+  }, [gameList]);
+
+
+  useEffect(() => {
+    const players = playerList;                       //lista atualizada de jogadores
+    const games = globalData.room.gameList;      
+    const screen = globalData.room.currentScreen;
+    saveOnGlobalContext(games, players, screen);
+  }, [playerList]);
+
+
+
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
@@ -57,33 +110,24 @@ export default function Lobby() {
 
   useEffect(() => {
     socket.connect();
-    socket.joinRoom(userData, () => navigate('/Home'));
-    socket.setLobbyUpdateListener(updatePlayerList);
+    socket.joinRoom({
+      nickname: globalData.user.nickname,
+      avatarSeed: globalData.user.avatarSeed,
+      roomCode: globalData.room.code,
+    }, () => navigate('/Home'));
 
-    socket.addEventListener('games-update', (newGames: string[]) => {
-      const updatedGames = gameList.map((game) => {
-        if (newGames.find((gameName) => gameName === game.text)) {
-          if (game.id >= 1000) {
-            return { ...game, id: game.id - 1000 };
-          } else {
-            return { ...game };
-          }
-        } else if (game.id < 1000) {
-          return { ...game, id: game.id + 1000 };
-        }
-        return { ...game };
-      });
+    socket.setLobbyUpdateListener(setPlayerList);
+    socket.setGamesUpdateListener(setGameList);
+      
 
-      console.log('A lista de jogos foi atualizada.');
-      console.log(newGames);
-      updateGameList(updatedGames);
-    });
+    if(globalData.room.gameList.length === 0){            //se for a primeira vez que o jogador está ingressando na partida, ele pede a lista de jogos ao servidor
+      socket.push('games-update', globalData.room.code);  //saberemos se esse for o caso porque a lista de jogos começa vazia.
+    }
 
     socket.addEventListener('room-owner-is', (ownerID) => {
       socket.push('get-player-name-by-id', ownerID);
       if (ownerID === socket.socket.id) {
         setOwnerVisibility(Visibility.Visible);
-        socket.push('games-update', userData.roomCode);
         return;
       }
     });
@@ -114,7 +158,7 @@ export default function Lobby() {
         }
       });
 
-      socket.push('get-current-game-by-room', userData.roomCode);
+      socket.push('get-current-game-by-room', globalData.room.code);
     }
 
     return () => {
@@ -131,12 +175,12 @@ export default function Lobby() {
     }, 2000);
   };
 
-  const finishSettings = () => {
-    const selectedGames = gameList.filter((game) => game.id < 1000);
+
+  const finishSettings = (selectedGames: Game[]) => {
     if (selectedGames.length >= 3) {
       const selection = selectedGames.map((game) => game.text);
       socket.push('selected-games-are', {
-        roomCode: userData.roomCode,
+        roomCode: globalData.room.code,
         selectedGames: JSON.stringify(selection),
       });
       return setCurrentLobbyState(LobbyStates.Main);
@@ -144,24 +188,27 @@ export default function Lobby() {
     popWarning('.LobbySettingsWarning');
   };
 
+
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(userData.roomCode);
+    navigator.clipboard.writeText(globalData.room.code);
     console.log('código da sala copiado para a área de transferência');
     popWarning('.CopyWarning');
   };
 
+
   const beginMatch = () => {
-    if (playerList.length >= 2) {
+    if (globalData.room.playerList.length >= 2) {
       console.log('Iniciando a partida.');
-      socket.push('set-turn', userData.roomCode);
+      socket.push('set-turn', globalData.room.code);
       socket.push('move-room-to', {
-        roomCode: userData.roomCode,
+        roomCode: globalData.room.code,
         destination: '/SelectNextGame',
       });
       return;
     }
     popWarning('.LobbyWarning');
   };
+
 
   switch (currentLobbyState) {
     case LobbyStates.Main:
@@ -170,20 +217,19 @@ export default function Lobby() {
           ownerVisibility={ownerVisibility}
           alertMessage={alertMessage}
           currentOwner={currentOwner}
-          roomCode={userData.roomCode}
+          roomCode={globalData.room.code}
           copyToClipboard={copyToClipboard}
           beginMatch={beginMatch}
           settingsPage={() => setCurrentLobbyState(LobbyStates.Settings)}
-          playerList={playerList}
+          playerList={globalData.room.playerList}
         />
       );
 
     case LobbyStates.Settings:
       return (
         <SettingsPage
+          previousGameSelection={globalData.room.gameList}
           mainPage={finishSettings}
-          gameList={gameList}
-          updateGameList={updateGameList}
         />
       );
   }
