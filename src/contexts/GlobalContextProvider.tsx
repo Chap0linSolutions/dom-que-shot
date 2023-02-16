@@ -11,7 +11,6 @@ export type Player = {
 export type User = {
   nickname: string | undefined; 
   avatarSeed: string | undefined;
-  //useStates removidos (ver comentário nas linhas 26 e 27, mais abaixo)
 }
 
 export type Room = {
@@ -24,17 +23,11 @@ export type Room = {
 interface GlobalContextValue {
   user: User,
   room: Room,
-  // setUser: React.Dispatch<React.SetStateAction<User>>,   //TODO acredito que não é necessário trazer os useStates aqui pra dentro.
-  // setRoom: React.Dispatch<React.SetStateAction<Room>>,   //Verificar se rola de deixar sem mesmo, e em caso afirmativo remover estas duas linhas comentadas
 }
 
 interface GlobalProviderProps {
   children: ReactNode;
-}
-
-//para abastecer os dados iniciais recorremos ao localStorage
-//TODO: verificar a possibilidade de usar cookies no lugar)
-const userData = JSON.parse(window.localStorage.getItem('userData'));   
+}  
 
 const initialValues: GlobalContextValue = {
   user: {

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalContext, useGlobalUserUpdater, useGlobalRoomUpdater } from '../../contexts/GlobalContextProvider';
 import logo from '../../assets/logo-darker.png';
 import Background from '../../components/Background';
 import Button from '../../components/Button';
@@ -8,6 +9,9 @@ import './Welcome.css';
 
 function Welcome() {
   const navigate = useNavigate();
+  const globalData = useGlobalContext();
+  const setGlobalUserData = useGlobalUserUpdater();
+  const setGlobalRoomData = useGlobalRoomUpdater();
 
   useEffect(() => {
     const userData = JSON.parse(window.localStorage.getItem('userData'));
@@ -18,6 +22,8 @@ function Welcome() {
         )
         .then(() => {
           console.log('OK');
+          setGlobalUserData({nickname: userData.nickname, avatarSeed: userData.avatarSeed});
+          setGlobalRoomData({...globalData.room, code: userData.roomCode})
           navigate('/Lobby', { state: { returningPlayer: true } });
         })
         .catch(() => {
