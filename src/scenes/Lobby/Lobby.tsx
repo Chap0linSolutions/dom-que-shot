@@ -74,15 +74,6 @@ export default function Lobby() {
 
 
   useEffect(() => {
-    // const selectedGames = games.map((game) => {
-    //   if(gameList.find(gameName => gameName === game.text)){
-    //     return game;
-    //   } return {
-    //     ...game,
-    //     id: game.id + 1000
-    //   }
-    // });
-
     const selectedGames = games.filter(game => gameList.includes(game.text));
     setGlobalData({
       ...globalData,
