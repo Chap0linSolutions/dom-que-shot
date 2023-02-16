@@ -50,19 +50,17 @@ export default function Lobby() {
 
   const navigate = useNavigate();
   const returningPlayer = useLocation().state?.returningPlayer ? true : false;
-
   const [ownerVisibility, setOwnerVisibility] = useState<Visibility>(
     Visibility.Invisible
   );
   const [currentOwner, setCurrentOwner] = useState<string>();
-
   const [currentLobbyState, setCurrentLobbyState] = useState<LobbyStates>(
     LobbyStates.Main
   );
 
   const [alertMessage, setAlertMessage] = useState<string>(undefined);
 
-  const [gameList, setGameList] = useState<string[]>([]);
+  const [gameList, setGameList] = useState<string[]>([]);   //idealmente, agora que temos um useState global eu não queria nenhum desses dois auxiliares aqui
   const [playerList, setPlayerList] = useState<Player[]>([
     {
       avatarSeed: globalData.user.avatarSeed,
@@ -83,7 +81,6 @@ export default function Lobby() {
       }
     });
   }, [gameList]);
-
 
   useEffect(() => {
     const players = playerList;                       //lista atualizada de jogadores
@@ -108,11 +105,22 @@ export default function Lobby() {
     }, () => navigate('/Home'));
 
     socket.setLobbyUpdateListener(setPlayerList);
-    socket.setGamesUpdateListener(setGameList);
-      
+    socket.setGamesUpdateListener(setGameList);               //só consegui fazer funcionar desse jeito, com um useState auxiliar
+
+    // socket.addEventListener('lobby-update', (reply) => {   //mas preferia ter implementado desse jeito
+    //   const newPlayerList = JSON.parse(reply);
+    //   setGlobalData({
+    //     ...globalData,
+    //     room: {
+    //       ...globalData.room,
+    //       playerList: newPlayerList,
+    //     }
+    //   });
+    // });
+
 
     if(globalData.room.gameList.length === 0){            //se for a primeira vez que o jogador está ingressando na partida, ele pede a lista de jogos ao servidor
-      socket.push('games-update', globalData.room.code);  //saberemos se esse for o caso porque a lista de jogos começa vazia.
+      socket.push('games-update', globalData.room.code);  //saberemos se esse for o caso porque a lista de jogos começa vazia
     }
 
     socket.addEventListener('room-owner-is', (ownerID) => {

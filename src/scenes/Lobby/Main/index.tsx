@@ -42,6 +42,7 @@ export default function Main({
   playerList,
 }: MainProps) {
   //console.log(alertMessage);
+  console.log(playerList);
   const navigate = useNavigate();
   const [copyColor, setCopyColor] = useState('#8877DF');
 
