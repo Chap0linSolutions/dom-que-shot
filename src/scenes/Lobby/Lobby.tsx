@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useGlobalContext, useGlobalContextUpdater } from '../../contexts/GlobalContextProvider';
+import { useGlobalContext, useGlobalRoomUpdater } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
 import games, { Game } from '../../contexts/games';
 import gsap from 'gsap';
@@ -31,19 +31,16 @@ export default function Lobby() {
   //GLOBAL CONTEXT//////////////////////////////////////////////////////////////////////////////////////////////
   
   const globalData = useGlobalContext();
-  const setGlobalData = useGlobalContextUpdater();
+  const setGlobalRoomData = useGlobalRoomUpdater();
 
-  const saveOnGlobalContext = (gameList: Game[], playerList: Player[], nextScreen: string) => {
-    setGlobalData({   
-      ...globalData,
-      room: {
-        ...globalData.room,
-        gameList: gameList,
-        playerList: playerList,
-        currentScreen: nextScreen,
-      }
-    });
-  };
+  const updateGlobalRoomData = (gameList: Game[], playerList: Player[], nextScreen: string) => {
+    setGlobalRoomData({
+      ...globalData.room,
+      gameList: gameList,
+      playerList: playerList,
+      currentScreen: nextScreen,
+    })  
+  }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -73,20 +70,17 @@ export default function Lobby() {
 
   useEffect(() => {
     const selectedGames = games.filter(game => gameList.includes(game.text));
-    setGlobalData({
-      ...globalData,
-      room: {
-        ...globalData.room,
-        gameList: selectedGames,
-      }
+    setGlobalRoomData({
+      ...globalData.room,
+      gameList: selectedGames,
     });
   }, [gameList]);
 
   useEffect(() => {
     const players = playerList;                       //lista atualizada de jogadores
-    const games = globalData.room.gameList;      
-    const screen = globalData.room.currentScreen;
-    saveOnGlobalContext(games, players, screen);
+    const games = globalData.room.gameList;
+    const screen = globalData.room.currentScreen; 
+    updateGlobalRoomData(games, players, screen);
   }, [playerList]);
 
 
@@ -109,12 +103,9 @@ export default function Lobby() {
 
     // socket.addEventListener('lobby-update', (reply) => {   //mas preferia ter implementado desse jeito
     //   const newPlayerList = JSON.parse(reply);
-    //   setGlobalData({
-    //     ...globalData,
-    //     room: {
-    //       ...globalData.room,
+    //   setGlobalRoomData({
+    //     ...globalData.room,
     //       playerList: newPlayerList,
-    //     }
     //   });
     // });
 

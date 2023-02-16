@@ -51,7 +51,8 @@ const initialValues: GlobalContextValue = {
 
 
 const GlobalContext = createContext<GlobalContextValue>(initialValues);
-const GlobalContextUpdater = createContext<(value: React.SetStateAction<GlobalContextValue>) => void>(undefined); 
+const GlobalUserUpdater = createContext<(value: React.SetStateAction<User>) => void>(undefined);
+const GlobalRoomUpdater = createContext<(value: React.SetStateAction<Room>) => void>(undefined); 
 
 
 export function useGlobalContext() {
@@ -61,30 +62,42 @@ export function useGlobalContext() {
   } throw new Error(`useGlobalContext must be used within a GlobalContext`)
 }
 
-export function useGlobalContextUpdater(){
-  return useContext(GlobalContextUpdater);  
+export function useGlobalUserUpdater(){
+  return useContext(GlobalUserUpdater);  
 }
 
+export function useGlobalRoomUpdater(){
+  return useContext(GlobalRoomUpdater);  
+}
 
 export default function GlobalProvider(props: GlobalProviderProps) {
-  const { children } = props;
-  const [globalData, setGlobalData] = useState<GlobalContextValue>(initialValues);
+  const [user, setUser] = useState<User>(initialValues.user);
+  const [room, setRoom] = useState<Room>(initialValues.room);
 
   useEffect(() => {
     console.log('Dados globais do usuário alterados.');
-    console.log(globalData.user);
-  }, [globalData.user]);
+    console.log(user);
+  }, [user]);
 
   useEffect(() => {
-    console.log('Dados da sala alterados.');
-    console.log(globalData.room);
-  }, [globalData.room]);
+    console.log('Dados globais da sala alterados.');
+    console.log(room);
+  }, [room]);
+
+  const { children } = props;
+
+  const value:GlobalContextValue = {
+    user: user,
+    room: room,
+  }
 
   return (
-    <GlobalContext.Provider value={globalData}> {/* nos permite ler os dados */}              
-      <GlobalContextUpdater.Provider value={setGlobalData}>   {/* nos permite alterar os dados */}
-        {children}
-      </GlobalContextUpdater.Provider>
+    <GlobalContext.Provider value={value}> {/* nos permite ler os dados */}              
+      <GlobalUserUpdater.Provider value={setUser}>   {/* nos permite alterar os dados de usuário */}
+        <GlobalRoomUpdater.Provider value={setRoom}>   {/* nos permite alterar os dados da sala */}
+          {children}
+        </GlobalRoomUpdater.Provider>
+      </GlobalUserUpdater.Provider>
     </GlobalContext.Provider>
   );
 }

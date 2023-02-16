@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RotateCcw, AlertTriangle } from 'react-feather';
-import { useGlobalContext, useGlobalContextUpdater } from '../../contexts/GlobalContextProvider';
+import { useGlobalContext, useGlobalUserUpdater, useGlobalRoomUpdater } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
 import Background from '../../components/Background';
 import Button from '../../components/Button';
@@ -15,22 +15,23 @@ function ChooseAvatar() {
   //GLOBAL CONTEXT/////////////////////////////////////////////////////////////////////////////
 
   const globalData = useGlobalContext();
-  const setGlobalData = useGlobalContextUpdater();
+  const setGlobalUserData = useGlobalUserUpdater();
+  const setGlobalRoomData = useGlobalRoomUpdater();
 
-  const saveOnGlobalContext = (roomCode: string | undefined, nextScreen: string) => {
-    setGlobalData({   
-      ...globalData,
-      user: {
-        nickname: userName,      
-        avatarSeed: avatarSeed,
-      },
-      room: {
-        ...globalData.room,
-        code: roomCode,
-        currentScreen: nextScreen? nextScreen : globalData.room.currentScreen,
-      }
-    });
-  };
+  const updateGlobalUserData = (nickname: string, avatarSeed: string) => {
+    setGlobalUserData({
+      nickname: nickname,
+      avatarSeed: avatarSeed,
+    })
+  }
+
+  const updateGlobalRoomData = (roomCode: string, nextScreen: string) => {
+    setGlobalRoomData({
+      ...globalData.room,
+      code: roomCode,
+      currentScreen: nextScreen,
+    })  
+  }
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -147,7 +148,7 @@ function ChooseAvatar() {
   }
 
   const proceedTo = (nextScreen) => {
-    saveOnGlobalContext(globalData.room.code, nextScreen);
+    updateGlobalRoomData(globalData.room.code, nextScreen);
     navigate(nextScreen);
   };
 
@@ -160,6 +161,7 @@ function ChooseAvatar() {
     window.localStorage.setItem('userData', JSON.stringify(newUserData));
     //o localStorage provavelmente irá ser trocado por cookies.
     //por ora vou deixar ele aí para o propósito de reconexão de quem fechou o navegador.
+    updateGlobalUserData(userName, avatarSeed);
     redirect();
   };
 
@@ -186,7 +188,7 @@ function ChooseAvatar() {
   const leaveMatch = () => {
     socket && socket.disconnect();
     const nextScreen = '/Home';
-    saveOnGlobalContext(undefined, nextScreen);
+    updateGlobalRoomData(undefined, nextScreen);
     navigate('/Home');
   };
 

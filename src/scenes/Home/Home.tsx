@@ -9,7 +9,7 @@ import Button from '../../components/Button';
 import Popup from '../../components/Popup';
 import api from '../../services/api';
 import './Home.css';
-import { useGlobalContext, useGlobalContextUpdater } from '../../contexts/GlobalContextProvider';
+import { useGlobalContext, useGlobalUserUpdater, useGlobalRoomUpdater } from '../../contexts/GlobalContextProvider';
 
 type GameInformation = {
   title: string;
@@ -21,22 +21,24 @@ function Home() {
   //GLOBAL CONTEXT/////////////////////////////////////////////////////////////////////////////////
   
   const globalData = useGlobalContext();
-  const setGlobalData = useGlobalContextUpdater();
+  const setGlobalUserData = useGlobalUserUpdater();
+  const setGlobalRoomData = useGlobalRoomUpdater();
 
-  const saveOnGlobalContext = (roomCode: string, nextScreen: string) => {
-    setGlobalData({   
-      ...globalData,
-      user: {
-        nickname: undefined,      //o nome do usuário sempre deve começar undefined quando sai dessa tela em direção a Home
-        avatarSeed: undefined,
-      },
-      room: {
-        ...globalData.room,
-        code: roomCode,
-        currentScreen: nextScreen,
-      }
-    });
-  };
+  const resetGlobalUserData = () => {
+    setGlobalUserData({
+      nickname: undefined,
+      avatarSeed: undefined,
+    })
+  }
+
+  const updateGlobalRoomData = (roomCode: string, nextScreen: string) => {
+    setGlobalRoomData({
+      ...globalData.room,
+      code: roomCode,
+      currentScreen: nextScreen,
+    })  
+  }
+
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -102,7 +104,8 @@ function Home() {
 
   const enterRoom = (roomCode: string, option: string) => {
     const nextScreen = '/ChooseAvatar';
-    saveOnGlobalContext(roomCode, nextScreen);
+    resetGlobalUserData();
+    updateGlobalRoomData(roomCode, nextScreen);
     navigate(nextScreen, {
       state: { option: option}
     });
