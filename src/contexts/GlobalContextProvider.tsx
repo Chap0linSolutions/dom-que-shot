@@ -17,7 +17,8 @@ export type Room = {
   code: string | undefined;
   gameList: Game[];
   playerList: Player[];
-  currentScreen: string | undefined;
+  URL: string | undefined;
+  page: any;   //typeof enum lol
 }
 
 interface GlobalContextValue {
@@ -40,7 +41,8 @@ const initialValues: GlobalContextValue = {
     code: undefined,
     gameList: [],
     playerList: [],
-    currentScreen: undefined,
+    URL: '/Welcome',
+    page: undefined,
   },
   setUser: () => null,
   setRoom: () => null,

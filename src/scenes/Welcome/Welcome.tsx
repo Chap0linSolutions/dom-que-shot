@@ -20,12 +20,14 @@ function Welcome() {
         )
         .then(() => {
           console.log('OK');
+          const nextURL = '/Lobby';
           setUser({nickname: userData.nickname, avatarSeed: userData.avatarSeed});
           setRoom(previous => {return {
             ...previous,
             code: userData.roomCode,
+            URL: nextURL,
           }});
-          navigate('/Lobby', { state: { returningPlayer: true } });
+          navigate(nextURL, { state: { returningPlayer: true } });
         })
         .catch(() => {
           console.log('Acesso negado.');
@@ -34,11 +36,20 @@ function Welcome() {
     }
   }, []);
 
+  const goHome = () => {
+    const nextURL = '/Home';
+    setRoom(previous => {return {
+      ...previous,
+      URL: nextURL,
+    }});
+    navigate(nextURL);
+  }
+
   return (
     <Background>
       <div className="WelcomePage">
         <img className="WelcomeImage" src={logo} />
-        <Button onClick={() => navigate('/Home')}>Entrar</Button>
+        <Button onClick={goHome}>Entrar</Button>
       </div>
     </Background>
   );

@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle, Copy, AlertTriangle } from 'react-feather';
+import { useGlobalContext } from '../../../contexts/GlobalContextProvider';
 import Header from '../../../components/Header';
 import Background from '../../../components/Background';
 import PlayerList from './PlayerList';
 import Button from '../../../components/Button';
+import Alert from '../../../components/Alert';
 import './Main.css';
-import Alert from '../../../Components/Alert';
 
 enum Visibility {
   Invisible,
@@ -41,18 +42,28 @@ export default function Main({
   settingsPage,
   playerList,
 }: MainProps) {
-  //console.log(alertMessage);
+  const { setRoom } = useGlobalContext();
   const navigate = useNavigate();
   const [copyColor, setCopyColor] = useState('#8877DF');
+
+  const backToChooseAvatar = () => {
+    const destination = '/ChooseAvatar';
+    setRoom(previous => {
+      return {
+        ...previous,
+        URL: destination,
+        page: undefined,
+      }
+    })
+    navigate('/ChooseAvatar', {
+      state: { option: 'update', roomCode: roomCode },
+    });
+  }
 
   const header =
     ownerVisibility === Visibility.Visible ? (
       <Header
-        goBackArrow={() => {
-          navigate('/ChooseAvatar', {
-            state: { option: 'update', roomCode: roomCode },
-          });
-        }}
+        goBackArrow={backToChooseAvatar}
         settingsPage={() => {
           settingsPage();
         }}
@@ -60,11 +71,7 @@ export default function Main({
     ) : (
       <Header
         logo
-        goBackArrow={() => {
-          navigate('/ChooseAvatar', {
-            state: { option: 'update', roomCode: roomCode },
-          });
-        }}
+        goBackArrow={backToChooseAvatar}
       />
     );
 

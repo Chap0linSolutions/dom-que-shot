@@ -82,7 +82,7 @@ export default function SelectNextGame() {
       setRoom(previous => {
         return {
           ...previous,
-          currentScreen: destination
+          URL: destination
         }
       });
       navigate(destination, {
@@ -200,7 +200,7 @@ export default function SelectNextGame() {
     setRoom(previous => {
       return {
         ...previous,
-        currentScreen: destination
+        URL: destination
       }
     });
     socket.push('move-room-to', {

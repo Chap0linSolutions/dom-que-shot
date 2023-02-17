@@ -35,10 +35,6 @@ export default function Lobby() {
     Visibility.Invisible
   );
   const [currentOwner, setCurrentOwner] = useState<string>();
-  const [currentLobbyState, setCurrentLobbyState] = useState<LobbyStates>(
-    LobbyStates.Main
-  );
-
   const [alertMessage, setAlertMessage] = useState<string>(undefined);
 
   useEffect(() => {
@@ -72,7 +68,6 @@ export default function Lobby() {
       const errorScreen = '/Home';
       navigate(errorScreen);
     });
-
 
     socket.addEventListener('lobby-update', (reply) => { 
       const newPlayerList = JSON.parse(reply);                  //newPlayerList = Player[]
@@ -118,7 +113,8 @@ export default function Lobby() {
         setRoom(previous => {
           return {
             ...previous,
-            currentScreen: destination,
+            URL: destination,
+            page: undefined,
           }
         });
         return navigate(destination);
@@ -150,6 +146,10 @@ export default function Lobby() {
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
+  const setGlobalRoomPage = (newPage: LobbyStates) => {
+    setRoom(previous => {return {...previous, page: newPage}})
+  }
+
   const popWarning = (warning) => {
     gsap.to(warning, { opacity: 1, duration: 0 });
     setTimeout(() => {
@@ -165,7 +165,7 @@ export default function Lobby() {
         roomCode: room.code,
         selectedGames: JSON.stringify(selection),
       });
-      return setCurrentLobbyState(LobbyStates.Main);
+      return setGlobalRoomPage(LobbyStates.Main);
     }
     popWarning('.LobbySettingsWarning');
   };
@@ -192,8 +192,15 @@ export default function Lobby() {
   };
 
 
-  switch (currentLobbyState) {
-    case LobbyStates.Main:
+  switch (room.page) {
+    case LobbyStates.Settings:
+      return (
+        <SettingsPage
+          previousGameSelection={room.gameList}
+          mainPage={finishSettings}
+        />
+      );
+    default:
       return (
         <MainPage
           ownerVisibility={ownerVisibility}
@@ -202,16 +209,8 @@ export default function Lobby() {
           roomCode={room.code}
           copyToClipboard={copyToClipboard}
           beginMatch={beginMatch}
-          settingsPage={() => setCurrentLobbyState(LobbyStates.Settings)}
+          settingsPage={() => setGlobalRoomPage(LobbyStates.Settings)}
           playerList={room.playerList}
-        />
-      );
-
-    case LobbyStates.Settings:
-      return (
-        <SettingsPage
-          previousGameSelection={room.gameList}
-          mainPage={finishSettings}
         />
       );
   }

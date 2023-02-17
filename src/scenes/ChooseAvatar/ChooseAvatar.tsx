@@ -2,13 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RotateCcw, AlertTriangle } from 'react-feather';
 import { useGlobalContext } from '../../contexts/GlobalContextProvider';
+import games, { Game } from '../../contexts/games';
 import SocketConnection from '../../lib/socket';
 import Background from '../../components/Background';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
 import Avatar from '../../components/Avatar';
-import './ChooseAvatar.css';
 import api from '../../services/api';
+import './ChooseAvatar.css';
 
 function ChooseAvatar() {
   const {user, room, setUser, setRoom} = useGlobalContext();
@@ -124,14 +125,14 @@ function ChooseAvatar() {
     });
   }
 
-  const proceedTo = (nextScreen) => {
+  const proceedTo = (nextURL) => {
     setRoom(previous => {
       return {
         ...previous,
-        currentScreen: nextScreen,
+        URL: nextURL,
       }
     });
-    navigate(nextScreen);
+    navigate(nextURL);
   };
 
   const saveStuff = () => {
@@ -169,13 +170,13 @@ function ChooseAvatar() {
 
   const leaveMatch = () => {
     socket && socket.disconnect();
-    const nextScreen = '/Home';
+    const nextURL = '/Home';
     setRoom(previous => {return {
       ...previous,
       code: undefined,
-      currentScreen: nextScreen,
+      URL: nextURL,
     }});
-    navigate(nextScreen);
+    navigate(nextURL);
   };
 
   return (

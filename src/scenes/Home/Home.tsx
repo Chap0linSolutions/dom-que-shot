@@ -8,8 +8,9 @@ import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Popup from '../../components/Popup';
 import api from '../../services/api';
-import './Home.css';
 import { useGlobalContext } from '../../contexts/GlobalContextProvider';
+import './Home.css';
+
 
 type GameInformation = {
   title: string;
@@ -50,7 +51,6 @@ function Home() {
     const newRoom: string = e.target.value.trim().toUpperCase();
     if (newRoom.length !== 0) {
       setRoomCode(newRoom);
-      //room = newRoom;
       setInputErrorMsg({ msg: '', visibility: 'hidden' });
       return;
     }
@@ -80,16 +80,16 @@ function Home() {
   };
 
   const enterRoom = (roomCode: string, option: string) => {
-    const nextScreen = '/ChooseAvatar';
+    const nextURL = '/ChooseAvatar';
     setUser({nickname: undefined, avatarSeed: undefined});
     setRoom((previous) => {
       return {
         ...previous, 
         code: roomCode,
-        currentScreen: nextScreen
+        URL: nextURL,
       }
     });
-    navigate(nextScreen, {
+    navigate(nextURL, {
       state: { option: option}
     });
   };
