@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Player } from '../../../contexts/GlobalContextProvider';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
 import Button from '../../../components/Button';
@@ -33,14 +34,10 @@ import {
   MultipleTiesAvatar,
 } from './Finish.style';
 
-interface VotedPlayerProps {
-  nickname: string;
-  avatarSeed: string;
-  votes: number;
-}
 
 interface CoverProps {
-  votedPlayer: VotedPlayerProps[];
+  votedPlayer: Player[];
+  numberOfVotes: number;
   turnVisibility: boolean;
   roulettePage: () => void;
 }
@@ -49,6 +46,7 @@ export default function FinishPage({
   votedPlayer,
   roulettePage,
   turnVisibility,
+  numberOfVotes,
 }: CoverProps) {
   const rouletteButtonText = 'Próximo jogo';
 
@@ -85,9 +83,9 @@ export default function FinishPage({
       </Button>
     ) : null;
 
-  const votesText = votedPlayer[0].votes > 1 ? ' votos' : ' voto';
+  const votesText = numberOfVotes > 1 ? ' votos' : ' voto';
 
-  if (votedPlayer.at(0).votes === 0) {
+  if (numberOfVotes === 0) {
     return (
       <Background noImage>
         <Header />
@@ -133,7 +131,7 @@ export default function FinishPage({
                 <Text className="Nickname">{votedPlayer.at(0).nickname}</Text>
               </InnerCard>
               <Text>
-                {votedPlayer.at(0).votes} {votesText}
+                {numberOfVotes} {votesText}
               </Text>
             </OuterCard>
           </Content>
@@ -162,7 +160,7 @@ export default function FinishPage({
                   </TieText>
                 </TieInner>
                 <TieText>
-                  {votedPlayer.at(0).votes}
+                  {numberOfVotes}
                   {votesText}
                 </TieText>
               </TieOuter>
@@ -177,7 +175,7 @@ export default function FinishPage({
                   </TieText>
                 </TieInner>
                 <TieText>
-                  {votedPlayer.at(1).votes} {votesText}
+                  {numberOfVotes} {votesText}
                 </TieText>
               </TieOuter>
             </Tie>
@@ -209,7 +207,7 @@ export default function FinishPage({
                 <MultipleTiesTextDiv className="Nickname">
                   <MultipleTiesText>{player.nickname}</MultipleTiesText>
                   <Text>
-                    {player.votes} {votesText}
+                    {numberOfVotes} {votesText}
                   </Text>
                 </MultipleTiesTextDiv>
               </MultipleTiesOuter>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useGlobalContext } from '../../../contexts/GlobalContextProvider';
 import SocketConnection from '../../../lib/socket';
 import CoverPage from '../Cover';
 import HintPage from '../Hint';
@@ -25,6 +26,8 @@ export default function SimpleCardGame({
   sizeOfDescription,
   coverImg,
 }: SimpleCardGameProps) {
+
+  const {setRoom} = useGlobalContext();
   const userData = JSON.parse(window.localStorage.getItem('userData'));
   const [currentGameState, setCurrentGameState] = useState<Game>(Game.Cover);
   const turnVisibility = useLocation().state.isYourTurn;
@@ -52,6 +55,13 @@ export default function SimpleCardGame({
 
   useEffect(() => {
     socket.addEventListener('room-is-moving-to', (destination) => {
+      setRoom(previous => {
+        return {
+          ...previous,
+          URL: destination,
+          page: undefined,
+        }
+      });
       navigate(destination, {
         state: {
           coverImg: coverImg,

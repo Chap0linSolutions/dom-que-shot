@@ -1,24 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SocketConnection from '../../lib/socket';
-import Background from '../../components/Background';
 import CoverPage from '../../components/Game/Cover';
 import GamePage from './Game';
 import FinishPage from './Finish';
 import AwaitingResults from './Awaiting';
 import coverImg from '../../assets/game-covers/o-escolhido.png';
+import { Player, useGlobalContext } from '../../contexts/GlobalContextProvider';
 import './OEscolhido.css';
 
-interface ListedPlayerProps {
-  nickname: string;
-  avatarSeed: string;
-  id: number;
-}
-
-interface VotedPlayerProps {
-  nickname: string;
-  avatarSeed: string;
-  votes: number;
+type VoteResults = {
+  players: Player[],
+  numberOfVotes: number,
 }
 
 enum Game {
@@ -29,6 +22,8 @@ enum Game {
 }
 
 export default function OEscolhido() {
+
+  const {room, setRoom} = useGlobalContext();
   const title = 'O Escolhido';
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////////
@@ -48,7 +43,7 @@ export default function OEscolhido() {
       updatedMs -= 10;
       if (updatedMs === 0) {
         console.log('Acabou o tempo.');
-        socket.pushMessage(userData.roomCode, 'vote-results', null);
+        socket.pushMessage(room.code, 'vote-results', null);
       }
       setMsTimer(updatedMs);
     }
@@ -59,10 +54,8 @@ export default function OEscolhido() {
   const navigate = useNavigate();
   const ownerVisibility = useLocation().state.isOwner;
   const turnVisibility = useLocation().state.isYourTurn;
-  const userData = JSON.parse(window.localStorage.getItem('userData'));
-  const [currentGameState, setCurrentGameState] = useState<Game>(Game.Cover);
-  const [votedPlayers, setVotedPlayers] = useState<VotedPlayerProps[]>([]);
-  const [playerList, updatePlayerList] = useState<ListedPlayerProps[]>([]);
+  const [userVote, setUserVote] = useState<Player>(undefined);
+  const [voteResults, setVoteResults] = useState<VoteResults>(undefined);
 
   const description = (
     <>
@@ -77,18 +70,22 @@ export default function OEscolhido() {
     </>
   );
 
+  const setGlobalRoomPage = (newPage: Game) => {
+    setRoom(previous => {return {...previous, page: newPage}})
+  }
+
   const startGame = () => {
     socket.push('move-room-to', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       destination: Game.Game,
     });
   };
 
   const nextRound = () => {
-    socket.push('update-turn', userData.roomCode);
+    socket.push('update-turn', room.code);
     clearInterval(timer);
     socket.push('move-room-to', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       destination: '/SelectNextGame',
     });
   };
@@ -97,7 +94,7 @@ export default function OEscolhido() {
     console.log('O usuário desejou voltar ao lobby');
     clearInterval(timer);
     socket.push('move-room-to', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       destination: '/Lobby',
     });
   };
@@ -107,28 +104,30 @@ export default function OEscolhido() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.setLobbyUpdateListener(updatePlayerList);
-    socket.push('lobby-update', userData.roomCode);
-
-    socket.addEventListener('vote-results', (mostVotedPlayers) => {
-      console.log(
-        'resultados da votação disponíveis. Jogadores mais votados: '
-      );
-      const result = JSON.parse(mostVotedPlayers);
-      console.log(result);
-      setCurrentGameState(Game.Finish);
-      setVotedPlayers(result);
+    socket.addEventListener('vote-results', (mostVoted) => {
+      const results = JSON.parse(mostVoted);
+      const amount = results.at(0).votesReceived;
+      const votedNames = results.map(p => p.nickname);
+      const votedPlayers = room.playerList.filter(p => votedNames.includes(p.nickname));
+      setVoteResults({
+        players: votedPlayers,
+        numberOfVotes: amount,
+      });
+      setGlobalRoomPage(Game.Finish);
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
-        if (destination === '/OEscolhido') {
-          updatedMs = msTimer;
-          return setCurrentGameState(Game.Cover);
-        }
+        setRoom(previous => {
+          return {
+            ...previous,
+            URL: destination,
+            page: undefined,
+          }
+        });
         return navigate(destination);
       }
-      setCurrentGameState(destination);
+      setGlobalRoomPage(destination);
     });
 
     return () => {
@@ -139,23 +138,55 @@ export default function OEscolhido() {
   //////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    if (currentGameState === Game.Game) {
-      startTimer();
-    } else if (currentGameState === Game.AwaitingResults) {
-      const votedPlayer = window.localStorage.getItem('voted-player');
+    if(userVote){
+      setGlobalRoomPage(Game.AwaitingResults);
+      socket.pushMessage(room.code, 'voted-player', {
+          roomCode: room.code,
+          player: JSON.stringify(userVote),
+        });
+      } 
+  }, [userVote]);
 
-      socket.pushMessage(userData.roomCode, 'voted-player', {
-        roomCode: userData.roomCode,
-        player: votedPlayer,
-      });
-    } else if (currentGameState === Game.Finish) {
+  useEffect(() => {
+    if (room.page === Game.Game) {
+      startTimer();
+    } else if (room.page === Game.Finish) {
       clearInterval(timer);
       setMsTimer(gameTime);
     }
-  }, [currentGameState]);
+  }, [room.page]);
 
-  switch (currentGameState) {
-    case Game.Cover:
+  switch (room.page) {
+    case Game.Game:
+      return (
+        <GamePage
+          msTimeLeft={msTimer}
+          playerList={room.playerList}
+          vote={setUserVote}
+        />
+      );
+
+    case Game.AwaitingResults:
+      return (
+        <AwaitingResults
+          votedPlayer={userVote}
+          msTimeLeft={msTimer}
+          gamePage={() => setGlobalRoomPage(Game.Game)}
+          finishPage={() => setGlobalRoomPage(Game.Finish)}
+        />
+      );
+
+    case Game.Finish:
+      return (
+        <FinishPage
+          numberOfVotes={voteResults.numberOfVotes}
+          votedPlayer={voteResults.players}
+          turnVisibility={turnVisibility}
+          roulettePage={() => nextRound()}
+        />
+      );
+    
+    default:
       return (
         <CoverPage
           type="round"
@@ -164,43 +195,9 @@ export default function OEscolhido() {
           goBackPage={backToLobby}
           turnVisibility={turnVisibility}
           ownerVisibility={ownerVisibility}
-          description={description} //full game info is now loaded here
+          description={description}
           gamePage={startGame}
         />
-      );
-
-    case Game.Game:
-      return (
-        <GamePage
-          msTimeLeft={msTimer}
-          playerList={playerList}
-          finishPage={() => setCurrentGameState(Game.AwaitingResults)}
-        />
-      );
-
-    case Game.AwaitingResults:
-      return (
-        <AwaitingResults
-          msTimeLeft={msTimer}
-          gamePage={() => setCurrentGameState(Game.Game)}
-          finishPage={() => setCurrentGameState(Game.Finish)}
-        />
-      );
-
-    case Game.Finish:
-      return (
-        <FinishPage
-          votedPlayer={votedPlayers}
-          turnVisibility={turnVisibility}
-          roulettePage={() => nextRound()}
-        />
-      );
-
-    default:
-      return (
-        <Background>
-          <div>Erro!</div>
-        </Background>
       );
   }
 }

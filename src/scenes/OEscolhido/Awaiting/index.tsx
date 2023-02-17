@@ -6,17 +6,19 @@ import Button from '../../../components/Button';
 import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
 import './Awaiting.css';
+import { Player } from '../../../contexts/GlobalContextProvider';
 interface AwaitingProps {
+  votedPlayer: Player,
   msTimeLeft: number;
   gamePage: () => void;
   finishPage: () => void;
 }
 
 export default function AwaitingResults({
+  votedPlayer,
   gamePage,
   msTimeLeft,
 }: AwaitingProps) {
-  const votedPlayer = JSON.parse(window.localStorage.getItem('voted-player'));
 
   useEffect(() => {
     gsap.from('.AwaitingTitle, .AwaitingCheck', {

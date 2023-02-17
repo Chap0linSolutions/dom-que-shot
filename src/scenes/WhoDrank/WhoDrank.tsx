@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
+import { Player } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
 import Background from '../../components/Background';
 import Header from '../../components/Header';
@@ -9,22 +11,18 @@ import beer from '../../assets/beer.png';
 import gsap from 'gsap';
 import './WhoDrank.css';
 
-interface PlayerProps {
-  nickname: string;
-  avatarSeed: string;
-  id: number;
-}
 
 export default function WhoDrankPage() {
+  const {room, setRoom} = useGlobalContext();
+
   const navigate = useNavigate();
   const location = useLocation();
   const coverImg = location.state.coverImg;
 
   const turnVisibility = useLocation().state.isYourTurn;
   const userData = JSON.parse(window.localStorage.getItem('userData'));
-  const [playerList, updatePlayerList] = useState<PlayerProps[]>([]);
 
-  const [selectedPlayers, setSelectedPlayers] = useState<PlayerProps[]>([]);
+  const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [SP, setSP] = useState<number>(Math.random());
   const [buttonText, setButtonText] = useState('Ninguém bebeu');
 
@@ -33,10 +31,14 @@ export default function WhoDrankPage() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.setLobbyUpdateListener(updatePlayerList);
-    socket.push('lobby-update', userData.roomCode);
-
     socket.addEventListener('room-is-moving-to', (destination) => {
+      setRoom(previous => {
+        return {
+          ...previous,
+          URL: destination,
+          page: undefined,
+        }
+      });
       navigate(destination);
     });
 
@@ -66,7 +68,7 @@ export default function WhoDrankPage() {
     });
   });
 
-  const selectPlayer = (player: PlayerProps) => {
+  const selectPlayer = (player: Player) => {
     const selectedOnes = selectedPlayers;
     const index = selectedPlayers.findIndex(
       (p) => p.nickname === player.nickname
@@ -106,10 +108,9 @@ export default function WhoDrankPage() {
             <p className="WhoDrankTitle">E aí, quem perdeu?</p>
             <p style={{ margin: 0 }}>Selecione quem bebeu uma dose:</p>
             <div className="WhoDrankPlayerListDiv">
-              {playerList.map((player) => (
+              {room.playerList.map((player) => (
                 <div
                   onClick={() => {
-                    console.log('aaah');
                     selectPlayer(player);
                   }}
                   className={
@@ -117,7 +118,7 @@ export default function WhoDrankPage() {
                       ? 'WhoDrankSelectedItem WhoDrankPlayerListItem'
                       : 'WhoDrankUnselectedItem WhoDrankPlayerListItem'
                   }
-                  key={player.id}>
+                  key={player.playerID}>
                   <p className="WhoDrankPlayerListNickname">
                     {player.nickname}
                   </p>
