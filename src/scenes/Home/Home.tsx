@@ -9,7 +9,7 @@ import Button from '../../components/Button';
 import Popup from '../../components/Popup';
 import api from '../../services/api';
 import './Home.css';
-import { useGlobalContext, useGlobalUserUpdater, useGlobalRoomUpdater } from '../../contexts/GlobalContextProvider';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 
 type GameInformation = {
   title: string;
@@ -17,31 +17,8 @@ type GameInformation = {
 };
 
 function Home() {
-
-  //GLOBAL CONTEXT/////////////////////////////////////////////////////////////////////////////////
   
-  const globalData = useGlobalContext();
-  const setGlobalUserData = useGlobalUserUpdater();
-  const setGlobalRoomData = useGlobalRoomUpdater();
-
-  const resetGlobalUserData = () => {
-    setGlobalUserData({
-      nickname: undefined,
-      avatarSeed: undefined,
-    })
-  }
-
-  const updateGlobalRoomData = (roomCode: string, nextScreen: string) => {
-    setGlobalRoomData({
-      ...globalData.room,
-      code: roomCode,
-      currentScreen: nextScreen,
-    })  
-  }
-
-
-  //////////////////////////////////////////////////////////////////////////////////////////////
-
+  const {setUser, setRoom} = useGlobalContext();
   const navigate = useNavigate();
 
   const [gameInfo, setGameInfo] = useState<GameInformation>({
@@ -104,8 +81,14 @@ function Home() {
 
   const enterRoom = (roomCode: string, option: string) => {
     const nextScreen = '/ChooseAvatar';
-    resetGlobalUserData();
-    updateGlobalRoomData(roomCode, nextScreen);
+    setUser({nickname: undefined, avatarSeed: undefined});
+    setRoom((previous) => {
+      return {
+        ...previous, 
+        code: roomCode,
+        currentScreen: nextScreen
+      }
+    });
     navigate(nextScreen, {
       state: { option: option}
     });

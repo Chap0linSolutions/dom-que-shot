@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useGlobalContext, useGlobalRoomUpdater } from '../../contexts/GlobalContextProvider';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
 import games, { Game } from '../../contexts/games';
 import gsap from 'gsap';
@@ -28,23 +28,7 @@ type Player = {
 
 export default function Lobby() {
 
-  //GLOBAL CONTEXT//////////////////////////////////////////////////////////////////////////////////////////////
-  
-  const globalData = useGlobalContext();
-  const setGlobalRoomData = useGlobalRoomUpdater();
-
-  const updateGlobalRoomData = (gameList: Game[], playerList: Player[], nextScreen: string) => {
-    setGlobalRoomData({
-      ...globalData.room,
-      gameList: gameList,
-      playerList: playerList,
-      currentScreen: nextScreen,
-    })  
-  }
-
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+  const {user, room, setRoom} = useGlobalContext();
   const navigate = useNavigate();
   const returningPlayer = useLocation().state?.returningPlayer ? true : false;
   const [ownerVisibility, setOwnerVisibility] = useState<Visibility>(
@@ -57,33 +41,21 @@ export default function Lobby() {
 
   const [alertMessage, setAlertMessage] = useState<string>(undefined);
 
-  const [gameList, setGameList] = useState<string[]>([]);   //idealmente, agora que temos um useState global eu não queria nenhum desses dois auxiliares aqui
-  const [playerList, setPlayerList] = useState<Player[]>([
-    {
-      avatarSeed: globalData.user.avatarSeed,
-      nickname: globalData.user.nickname,
-      beers: 0,
-      playerID: 0,
-    },
-  ]);
-
-
   useEffect(() => {
-    const selectedGames = games.filter(game => gameList.includes(game.text));
-    setGlobalRoomData({
-      ...globalData.room,
-      gameList: selectedGames,
-    });
-  }, [gameList]);
-
-  useEffect(() => {
-    const players = playerList;                       //lista atualizada de jogadores
-    const games = globalData.room.gameList;
-    const screen = globalData.room.currentScreen; 
-    updateGlobalRoomData(games, players, screen);
-  }, [playerList]);
-
-
+    if(room.playerList.length === 0){
+      setRoom(previous => {
+        return {
+          ...previous,
+          playerList: [{
+            nickname: user.nickname,
+            avatarSeed: user.avatarSeed,
+            beers: 0,
+            playerID: 0,
+          }]
+        }
+      });
+    }
+  }, [])
 
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
@@ -93,25 +65,39 @@ export default function Lobby() {
   useEffect(() => {
     socket.connect();
     socket.joinRoom({
-      nickname: globalData.user.nickname,
-      avatarSeed: globalData.user.avatarSeed,
-      roomCode: globalData.room.code,
-    }, () => navigate('/Home'));
-
-    socket.setLobbyUpdateListener(setPlayerList);
-    socket.setGamesUpdateListener(setGameList);               //só consegui fazer funcionar desse jeito, com um useState auxiliar
-
-    // socket.addEventListener('lobby-update', (reply) => {   //mas preferia ter implementado desse jeito
-    //   const newPlayerList = JSON.parse(reply);
-    //   setGlobalRoomData({
-    //     ...globalData.room,
-    //       playerList: newPlayerList,
-    //   });
-    // });
+      nickname: user.nickname,
+      avatarSeed: user.avatarSeed,
+      roomCode: room.code,
+    }, () => {
+      const errorScreen = '/Home';
+      navigate(errorScreen);
+    });
 
 
-    if(globalData.room.gameList.length === 0){            //se for a primeira vez que o jogador está ingressando na partida, ele pede a lista de jogos ao servidor
-      socket.push('games-update', globalData.room.code);  //saberemos se esse for o caso porque a lista de jogos começa vazia
+    socket.addEventListener('lobby-update', (reply) => { 
+      const newPlayerList = JSON.parse(reply);                  //newPlayerList = Player[]
+      setRoom(previous => {
+        return {
+          ...previous,
+          playerList: newPlayerList,
+        }
+      });
+    });
+
+    socket.addEventListener('games-update', (newGameList) => {    //reply = string[] com o nome dos jogos da partida
+      const selectedGames = games.filter(game => newGameList.includes(game.text));
+      const orderedSelection = selectedGames.map((game, index) => {return {...game, id: index}})
+      setRoom(previous => {
+        return {
+          ...previous,
+          gameList: orderedSelection,
+        }
+      });
+    })
+
+
+    if(room.gameList.length === 0){            //se for a primeira vez que o jogador está ingressando na partida, ele pede a lista de jogos ao servidor
+      socket.push('games-update', room.code);  //saberemos se esse for o caso porque a lista de jogos começa vazia
     }
 
     socket.addEventListener('room-owner-is', (ownerID) => {
@@ -129,6 +115,12 @@ export default function Lobby() {
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (destination === '/SelectNextGame') {
         console.log(`Movendo a sala para ${destination}.`);
+        setRoom(previous => {
+          return {
+            ...previous,
+            currentScreen: destination,
+          }
+        });
         return navigate(destination);
       }
     });
@@ -148,7 +140,7 @@ export default function Lobby() {
         }
       });
 
-      socket.push('get-current-game-by-room', globalData.room.code);
+      socket.push('get-current-game-by-room', room.code);
     }
 
     return () => {
@@ -170,7 +162,7 @@ export default function Lobby() {
     if (selectedGames.length >= 3) {
       const selection = selectedGames.map((game) => game.text);
       socket.push('selected-games-are', {
-        roomCode: globalData.room.code,
+        roomCode: room.code,
         selectedGames: JSON.stringify(selection),
       });
       return setCurrentLobbyState(LobbyStates.Main);
@@ -180,18 +172,18 @@ export default function Lobby() {
 
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(globalData.room.code);
+    navigator.clipboard.writeText(room.code);
     console.log('código da sala copiado para a área de transferência');
     popWarning('.CopyWarning');
   };
 
 
   const beginMatch = () => {
-    if (globalData.room.playerList.length >= 2) {
+    if (room.playerList.length >= 2) {
       console.log('Iniciando a partida.');
-      socket.push('set-turn', globalData.room.code);
+      socket.push('set-turn', room.code);
       socket.push('move-room-to', {
-        roomCode: globalData.room.code,
+        roomCode: room.code,
         destination: '/SelectNextGame',
       });
       return;
@@ -207,18 +199,18 @@ export default function Lobby() {
           ownerVisibility={ownerVisibility}
           alertMessage={alertMessage}
           currentOwner={currentOwner}
-          roomCode={globalData.room.code}
+          roomCode={room.code}
           copyToClipboard={copyToClipboard}
           beginMatch={beginMatch}
           settingsPage={() => setCurrentLobbyState(LobbyStates.Settings)}
-          playerList={globalData.room.playerList}
+          playerList={room.playerList}
         />
       );
 
     case LobbyStates.Settings:
       return (
         <SettingsPage
-          previousGameSelection={globalData.room.gameList}
+          previousGameSelection={room.gameList}
           mainPage={finishSettings}
         />
       );

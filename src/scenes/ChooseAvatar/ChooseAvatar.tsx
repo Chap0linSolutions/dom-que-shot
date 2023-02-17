@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RotateCcw, AlertTriangle } from 'react-feather';
-import { useGlobalContext, useGlobalUserUpdater, useGlobalRoomUpdater } from '../../contexts/GlobalContextProvider';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
 import Background from '../../components/Background';
 import Button from '../../components/Button';
@@ -11,30 +11,7 @@ import './ChooseAvatar.css';
 import api from '../../services/api';
 
 function ChooseAvatar() {
-
-  //GLOBAL CONTEXT/////////////////////////////////////////////////////////////////////////////
-
-  const globalData = useGlobalContext();
-  const setGlobalUserData = useGlobalUserUpdater();
-  const setGlobalRoomData = useGlobalRoomUpdater();
-
-  const updateGlobalUserData = (nickname: string, avatarSeed: string) => {
-    setGlobalUserData({
-      nickname: nickname,
-      avatarSeed: avatarSeed,
-    })
-  }
-
-  const updateGlobalRoomData = (roomCode: string, nextScreen: string) => {
-    setGlobalRoomData({
-      ...globalData.room,
-      code: roomCode,
-      currentScreen: nextScreen,
-    })  
-  }
-
-  //////////////////////////////////////////////////////////////////////////////////////////////
-
+  const {user, room, setUser, setRoom} = useGlobalContext();
   const navigate = useNavigate();
   const location = useLocation();
   const { option } = location.state;
@@ -45,8 +22,8 @@ function ChooseAvatar() {
       ? 'Criar sala'
       : 'Atualizar';
 
-  const roomCode = globalData.room.code;
-  const oldNickname = globalData.user.nickname;
+  const roomCode = room.code;
+  const oldNickname = user.nickname;
   const [inputText, setInputText] = useState(oldNickname? oldNickname : '');
   const [userName, setUserName] = useState(oldNickname? oldNickname : '');
   const [inputErrorMsg, setInputErrorMsg] = useState({
@@ -87,8 +64,8 @@ function ChooseAvatar() {
   };
 
   const [avatarSeed, changeAvatarSeed] = useState(
-    globalData.user.avatarSeed
-      ? globalData.user.avatarSeed
+    user.avatarSeed
+      ? user.avatarSeed
       : Math.random().toString(36).substring(2, 6)
   );
 
@@ -148,7 +125,12 @@ function ChooseAvatar() {
   }
 
   const proceedTo = (nextScreen) => {
-    updateGlobalRoomData(globalData.room.code, nextScreen);
+    setRoom(previous => {
+      return {
+        ...previous,
+        currentScreen: nextScreen,
+      }
+    });
     navigate(nextScreen);
   };
 
@@ -161,7 +143,7 @@ function ChooseAvatar() {
     window.localStorage.setItem('userData', JSON.stringify(newUserData));
     //o localStorage provavelmente irá ser trocado por cookies.
     //por ora vou deixar ele aí para o propósito de reconexão de quem fechou o navegador.
-    updateGlobalUserData(userName, avatarSeed);
+    setUser({nickname: userName, avatarSeed: avatarSeed});
     redirect();
   };
 
@@ -188,8 +170,12 @@ function ChooseAvatar() {
   const leaveMatch = () => {
     socket && socket.disconnect();
     const nextScreen = '/Home';
-    updateGlobalRoomData(undefined, nextScreen);
-    navigate('/Home');
+    setRoom(previous => {return {
+      ...previous,
+      code: undefined,
+      currentScreen: nextScreen,
+    }});
+    navigate(nextScreen);
   };
 
   return (

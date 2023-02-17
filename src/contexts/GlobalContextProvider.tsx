@@ -23,6 +23,8 @@ export type Room = {
 interface GlobalContextValue {
   user: User,
   room: Room,
+  setUser: React.Dispatch<React.SetStateAction<User>>,
+  setRoom: React.Dispatch<React.SetStateAction<Room>>,
 }
 
 interface GlobalProviderProps {
@@ -40,27 +42,18 @@ const initialValues: GlobalContextValue = {
     playerList: [],
     currentScreen: undefined,
   },
+  setUser: () => null,
+  setRoom: () => null,
 };
 
 
 const GlobalContext = createContext<GlobalContextValue>(initialValues);
-const GlobalUserUpdater = createContext<(value: React.SetStateAction<User>) => void>(undefined);
-const GlobalRoomUpdater = createContext<(value: React.SetStateAction<Room>) => void>(undefined); 
-
 
 export function useGlobalContext() {
   const context = useContext(GlobalContext);
   if (typeof context !== 'undefined'){
     return context;
   } throw new Error(`useGlobalContext must be used within a GlobalContext`)
-}
-
-export function useGlobalUserUpdater(){
-  return useContext(GlobalUserUpdater);  
-}
-
-export function useGlobalRoomUpdater(){
-  return useContext(GlobalRoomUpdater);  
 }
 
 export default function GlobalProvider(props: GlobalProviderProps) {
@@ -80,17 +73,15 @@ export default function GlobalProvider(props: GlobalProviderProps) {
   const { children } = props;
 
   const value:GlobalContextValue = {
-    user: user,
-    room: room,
+    user,
+    room,
+    setUser,
+    setRoom,
   }
 
   return (
     <GlobalContext.Provider value={value}> {/* nos permite ler os dados */}              
-      <GlobalUserUpdater.Provider value={setUser}>   {/* nos permite alterar os dados de usuário */}
-        <GlobalRoomUpdater.Provider value={setRoom}>   {/* nos permite alterar os dados da sala */}
           {children}
-        </GlobalRoomUpdater.Provider>
-      </GlobalUserUpdater.Provider>
     </GlobalContext.Provider>
   );
 }

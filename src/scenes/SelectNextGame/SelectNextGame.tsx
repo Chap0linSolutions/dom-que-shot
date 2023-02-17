@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import gsap from 'gsap';
 
 import Background from '../../components/Background';
@@ -7,7 +8,6 @@ import Header from '../../components/Header';
 import Roulette from '../../components/Roulette';
 import RouletteCard from '../../components/Roulette/RouletteCard';
 import SocketConnection from '../../lib/socket';
-import gameList from '../../contexts/games';
 import Button from '../../components/Button';
 import RouletteTriangle from '../../assets/roulette-triangle.png';
 import {
@@ -28,19 +28,12 @@ enum Visibility {
   Visible,
 }
 
-interface GameCard {
-  id: number;
-  text: string;
-  src: string;
-}
-
 export default function SelectNextGame() {
-  const userData = JSON.parse(window.localStorage.getItem('userData'));
+  const {room, setRoom} = useGlobalContext();
   let nextGame = '';
 
   const navigate = useNavigate();
   const [nextGameName, setNextGameName] = useState('');
-  const [games, updateGames] = useState<GameCard[]>(gameList);
   const [number, setNumber] = useState<number>(-1);
 
   const [turnVisibility, setTurnVisibility] = useState<Visibility>(
@@ -65,7 +58,7 @@ export default function SelectNextGame() {
         isMyTurn = true;
       }
     });
-    socket.push('player-turn', userData.roomCode);
+    socket.push('player-turn', room.code);
 
     socket.addEventListener('room-owner-is', (ownerID) => {
       console.log();
@@ -73,14 +66,10 @@ export default function SelectNextGame() {
         setOwnerVisibility(Visibility.Visible);
       }
     });
-    socket.push('room-owner-is', userData.roomCode);
+    socket.push('room-owner-is', room.code);
 
     socket.addEventListener('player-name', (playerName) => {
       setCurrentPlayer(playerName);
-    });
-
-    socket.addEventListener('games-update', (newGames) => {
-      updateGameList(newGames);
     });
 
     socket.addEventListener('roulette-number-is', (number) => {
@@ -90,6 +79,12 @@ export default function SelectNextGame() {
 
     socket.addEventListener('room-is-moving-to', (destination) => {
       console.log(`Movendo a sala para ${destination}.`);
+      setRoom(previous => {
+        return {
+          ...previous,
+          currentScreen: destination
+        }
+      });
       navigate(destination, {
         state: {
           isYourTurn: isMyTurn,
@@ -97,7 +92,6 @@ export default function SelectNextGame() {
         },
       });
     });
-    socket.push('games-update', userData.roomCode);
 
     return () => {
       socket.removeAllListeners();
@@ -106,22 +100,9 @@ export default function SelectNextGame() {
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
-  const updateGameList = (newGames: string[]) => {
-    let id = -1;
-    const rouletteGames = games.filter((game) => newGames.includes(game.text));
-    //console.log(rouletteGames.map((game) => game.text));
-
-    updateGames(
-      rouletteGames.map((game) => {
-        id += 1;
-        return { ...game, id: id };
-      })
-    );
-  };
-
   useEffect(() => {
     if (number >= 0) {
-      console.log(games.map((game) => game.text));
+      //console.log(games.map((game) => game.text));
       console.log(number);
       spin(number);
     }
@@ -131,7 +112,7 @@ export default function SelectNextGame() {
     if (ownerVisibility === Visibility.Visible) {
       setTimeout(() => {
         socket.push('start-game', {
-          roomCode: userData.roomCode,
+          roomCode: room.code,
           nextGame: nextGame,
         });
       }, 1000);
@@ -179,8 +160,8 @@ export default function SelectNextGame() {
   const nextGameTitle = useRef();
 
   const spin = (id) => {
-    console.log(games.map((game) => game.text));
-    const selectedGame = games.find((game) => game.id === id);
+    //console.log(games.map((game) => game.text));
+    const selectedGame = room.gameList.find((game) => game.id === id);
     nextGame = selectedGame.text;
     setNextGameName(nextGame);
 
@@ -193,12 +174,12 @@ export default function SelectNextGame() {
     const timeline = gsap.timeline();
     timeline
       .to('.rouletteCard', {
-        y: `-${3 * (games.length - 2) * (rouletteDimensions.cardSize + 2)}px`,
+        y: `-${3 * (room.gameList.length - 2) * (rouletteDimensions.cardSize + 2)}px`,
         duration: 1,
         ease: 'linear',
       })
       .to('.rouletteCard', {
-        y: `-${(games.length - 1 + id) * (rouletteDimensions.cardSize + 2)}px`,
+        y: `-${(room.gameList.length - 1 + id) * (rouletteDimensions.cardSize + 2)}px`,
         duration: 2,
         ease: 'elastic',
       })
@@ -211,13 +192,20 @@ export default function SelectNextGame() {
   };
 
   const turnTheWheel = () => {
-    socket.push('roulette-number-is', userData.roomCode);
+    socket.push('roulette-number-is', room.code);
   };
 
   const backToLobby = () => {
+    const destination = '/Lobby';
+    setRoom(previous => {
+      return {
+        ...previous,
+        currentScreen: destination
+      }
+    });
     socket.push('move-room-to', {
-      roomCode: userData.roomCode,
-      destination: '/Lobby',
+      roomCode: room.code,
+      destination: destination,
     });
   };
 
@@ -238,7 +226,7 @@ export default function SelectNextGame() {
             <Roulette
               width={rouletteDimensions.width}
               height={rouletteDimensions.height}>
-              {games.map((rouletteCard, index) => (
+              {room.gameList.map((rouletteCard, index) => (
                 <Card key={index} className="rouletteCard">
                   <RouletteCard
                     width={
@@ -252,7 +240,7 @@ export default function SelectNextGame() {
                   />
                 </Card>
               ))}
-              {games.map((rouletteCard, index) => (
+              {room.gameList.map((rouletteCard, index) => (
                 <Card key={index} className="rouletteCard">
                   <RouletteCard
                     width={
@@ -266,7 +254,7 @@ export default function SelectNextGame() {
                   />
                 </Card>
               ))}
-              {games.map((rouletteCard, index) => (
+              {room.gameList.map((rouletteCard, index) => (
                 <Card key={index} className="rouletteCard">
                   <RouletteCard
                     width={
