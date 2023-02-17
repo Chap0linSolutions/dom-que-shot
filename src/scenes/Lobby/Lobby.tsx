@@ -100,12 +100,16 @@ export default function Lobby() {
     });
 
     if (returningPlayer) {
-      socket.addEventListener('current-game-is', (currentGame) => {
-        if (currentGame == 'BangBang' || currentGame == 'OEscolhido') {
+      socket.addEventListener('current-game-state-is', (currentGameState) => {
+        if (
+          currentGameState == 'BangBang' ||
+          currentGameState == 'OEscolhido' ||
+          currentGameState == 'EuNunca'
+        ) {
           setAlertMessage('Aguardando finalizar jogo em andamento.');
-        } else if(currentGame !== null) {
+        } else if (currentGameState !== 'Lobby') {
           setAlertMessage('Reconectando...');
-          return navigate(`/${currentGame}`, {
+          return navigate(`/${currentGameState}`, {
             state: {
               isYourTurn: false,
               isOwner: false,
@@ -114,7 +118,7 @@ export default function Lobby() {
         }
       });
 
-      socket.push('get-current-game-by-room', userData.roomCode);
+      socket.push('get-current-game-state-by-room', userData.roomCode);
     }
 
     return () => {
