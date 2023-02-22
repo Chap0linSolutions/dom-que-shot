@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import SocketConnection from '../../lib/socket';
 import CoverPage from '../../components/Game/Cover';
 import GamePage from './Game';
@@ -23,7 +23,7 @@ enum Game {
 
 export default function OEscolhido() {
 
-  const {room, setRoom} = useGlobalContext();
+  const {user, room, setRoom} = useGlobalContext();
   const title = 'O Escolhido';
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////////
@@ -52,8 +52,6 @@ export default function OEscolhido() {
   ///////////////////////////////////////////////////////////////////////////////////////////////
 
   const navigate = useNavigate();
-  const ownerVisibility = useLocation().state.isOwner;
-  const turnVisibility = useLocation().state.isYourTurn;
   const [userVote, setUserVote] = useState<Player>(undefined);
   const [voteResults, setVoteResults] = useState<VoteResults>(undefined);
 
@@ -181,7 +179,7 @@ export default function OEscolhido() {
         <FinishPage
           numberOfVotes={voteResults.numberOfVotes}
           votedPlayer={voteResults.players}
-          turnVisibility={turnVisibility}
+          turnVisibility={user.isCurrentTurn}
           roulettePage={() => nextRound()}
         />
       );
@@ -193,8 +191,8 @@ export default function OEscolhido() {
           title={title}
           coverImg={coverImg}
           goBackPage={backToLobby}
-          turnVisibility={turnVisibility}
-          ownerVisibility={ownerVisibility}
+          turnVisibility={user.isCurrentTurn}
+          ownerVisibility={user.isOwner}
           description={description}
           gamePage={startGame}
         />

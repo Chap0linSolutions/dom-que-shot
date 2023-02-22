@@ -23,74 +23,55 @@ import {
   WaitingMessage,
 } from './styles';
 
-enum Visibility {
-  Invisible,
-  Visible,
-}
-
 export default function SelectNextGame() {
-  const {room, setRoom} = useGlobalContext();
+  const {user, setUser, room, setRoom} = useGlobalContext();
   let nextGame = '';
 
   const navigate = useNavigate();
   const [nextGameName, setNextGameName] = useState('');
   const [number, setNumber] = useState<number>(-1);
 
-  const [turnVisibility, setTurnVisibility] = useState<Visibility>(
-    Visibility.Invisible
-  );
-  const [ownerVisibility, setOwnerVisibility] = useState<Visibility>(
-    Visibility.Invisible
-  );
   const [rouletteIsSpinning, setRouletteIsSpinning] = useState<boolean>(false);
   const [currentPlayer, setCurrentPlayer] = useState<string>();
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
   const socket = SocketConnection.getInstance();
-  let isMyTurn = false;
 
   useEffect(() => {
-    socket.addEventListener('player-turn', (turnID) => {
-      socket.push('get-player-name-by-id', turnID);
-      if (turnID === socket.socket.id) {
-        setTurnVisibility(Visibility.Visible);
-        isMyTurn = true;
-      }
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser(previous => {
+        return {
+          ...previous,
+          isCurrentTurn: (user.nickname === turnName),
+        }
+      });
+      setCurrentPlayer(turnName);
     });
-    socket.push('player-turn', room.code);
+    socket.push('player-turn-is', room.code);
 
-    socket.addEventListener('room-owner-is', (ownerID) => {
-      console.log();
-      if (ownerID === socket.socket.id) {
-        setOwnerVisibility(Visibility.Visible);
-      }
-    });
-    socket.push('room-owner-is', room.code);
-
-    socket.addEventListener('player-name', (playerName) => {
-      setCurrentPlayer(playerName);
+    socket.addEventListener('room-owner-is', (ownerName) => {
+      setUser(previous => {
+        return {
+          ...previous,
+          isOwner: (user.nickname === ownerName),
+        }
+      });
     });
 
     socket.addEventListener('roulette-number-is', (number) => {
-      console.log(`A roleta sorteou o número ${number}`);
+      console.log(`A roleta sorteou o número ${number}.`);
       setNumber(number);
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
-      console.log(`Movendo a sala para ${destination}.`);
       setRoom(previous => {
         return {
           ...previous,
-          URL: destination
+          URL: destination,
         }
       });
-      navigate(destination, {
-        state: {
-          isYourTurn: isMyTurn,
-          isOwner: ownerVisibility === Visibility.Visible ? true : false,
-        },
-      });
+      navigate(destination);
     });
 
     return () => {
@@ -102,14 +83,12 @@ export default function SelectNextGame() {
 
   useEffect(() => {
     if (number >= 0) {
-      //console.log(games.map((game) => game.text));
-      console.log(number);
       spin(number);
     }
   }, [number]);
 
   const startSelectedGame = () => {
-    if (ownerVisibility === Visibility.Visible) {
+    if (user.isOwner === true) {
       setTimeout(() => {
         socket.push('start-game', {
           roomCode: room.code,
@@ -196,21 +175,14 @@ export default function SelectNextGame() {
   };
 
   const backToLobby = () => {
-    const destination = '/Lobby';
-    setRoom(previous => {
-      return {
-        ...previous,
-        URL: destination
-      }
-    });
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: destination,
+      destination: '/Lobby',
     });
   };
 
   const header =
-    ownerVisibility === Visibility.Visible ? (
+    user.isOwner === true ? (
       <Header goBackArrow={backToLobby} logo />
     ) : (
       <Header logo />
@@ -277,7 +249,7 @@ export default function SelectNextGame() {
 
           <WaitingMessageDiv
             style={
-              turnVisibility === Visibility.Invisible && !rouletteIsSpinning
+              ((currentPlayer !== user.nickname) && (!rouletteIsSpinning))
                 ? { visibility: 'visible' }
                 : { display: 'none' }
             }>
@@ -293,7 +265,7 @@ export default function SelectNextGame() {
         <ButtonDiv
           ref={rouletteButton}
           style={
-            turnVisibility === Visibility.Visible
+            currentPlayer === user.nickname
               ? { visibility: 'visible' }
               : { display: 'none' }
           }>

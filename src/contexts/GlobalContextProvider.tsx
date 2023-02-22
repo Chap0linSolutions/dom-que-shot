@@ -11,6 +11,13 @@ export type Player = {
 export type User = {
   nickname: string | undefined; 
   avatarSeed: string | undefined;
+  isOwner: boolean;
+  isCurrentTurn: boolean;
+}
+
+export enum Visibility {
+  Invisible,
+  Visible,
 }
 
 export type Room = {
@@ -36,6 +43,8 @@ const initialValues: GlobalContextValue = {
   user: {
     nickname: undefined,
     avatarSeed: undefined,
+    isOwner: false,
+    isCurrentTurn: false,
   },
   room: {
     code: undefined,
@@ -63,12 +72,10 @@ export default function GlobalProvider(props: GlobalProviderProps) {
   const [room, setRoom] = useState<Room>(initialValues.room);
 
   useEffect(() => {
-    console.log('Dados globais do usuário alterados.');
-    console.log(user);
+    //console.log(user);
   }, [user]);
 
   useEffect(() => {
-    console.log('Dados globais da sala alterados.');
     console.log(room);
   }, [room]);
 

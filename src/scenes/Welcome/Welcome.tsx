@@ -21,7 +21,7 @@ function Welcome() {
         .then(() => {
           console.log('OK');
           const nextURL = '/Lobby';
-          setUser({nickname: userData.nickname, avatarSeed: userData.avatarSeed});
+          setUser({nickname: userData.nickname, avatarSeed: userData.avatarSeed, isOwner: false, isCurrentTurn: false});
           setRoom(previous => {return {
             ...previous,
             code: userData.roomCode,

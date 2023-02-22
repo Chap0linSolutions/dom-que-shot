@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RotateCcw, AlertTriangle } from 'react-feather';
 import { useGlobalContext } from '../../contexts/GlobalContextProvider';
-import games, { Game } from '../../contexts/games';
 import SocketConnection from '../../lib/socket';
 import Background from '../../components/Background';
 import Button from '../../components/Button';
@@ -40,7 +39,6 @@ function ChooseAvatar() {
     socket.connect();
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (destination === '/SelectNextGame') {
-        console.log(`Movendo a sala para ${destination}.`);
         return navigate(destination);
       }
     });
@@ -142,9 +140,7 @@ function ChooseAvatar() {
       avatarSeed: avatarSeed,
     };
     window.localStorage.setItem('userData', JSON.stringify(newUserData));
-    //o localStorage provavelmente irá ser trocado por cookies.
-    //por ora vou deixar ele aí para o propósito de reconexão de quem fechou o navegador.
-    setUser({nickname: userName, avatarSeed: avatarSeed});
+    setUser(previous => {return {...previous, nickname: userName, avatarSeed: avatarSeed}});
     redirect();
   };
 

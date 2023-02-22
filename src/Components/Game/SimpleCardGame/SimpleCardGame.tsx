@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../../contexts/GlobalContextProvider';
 import SocketConnection from '../../../lib/socket';
 import CoverPage from '../Cover';
@@ -27,11 +27,8 @@ export default function SimpleCardGame({
   coverImg,
 }: SimpleCardGameProps) {
 
-  const {setRoom} = useGlobalContext();
+  const {user, room, setRoom} = useGlobalContext();
   const userData = JSON.parse(window.localStorage.getItem('userData'));
-  const [currentGameState, setCurrentGameState] = useState<Game>(Game.Cover);
-  const turnVisibility = useLocation().state.isYourTurn;
-  const ownerVisibility = useLocation().state.isOwner;
   const navigate = useNavigate();
 
   const endOfGame = () => {
@@ -55,20 +52,21 @@ export default function SimpleCardGame({
 
   useEffect(() => {
     socket.addEventListener('room-is-moving-to', (destination) => {
-      setRoom(previous => {
-        return {
-          ...previous,
-          URL: destination,
-          page: undefined,
-        }
-      });
-      navigate(destination, {
-        state: {
-          coverImg: coverImg,
-          isYourTurn: turnVisibility,
-          isOwner: ownerVisibility,
-        },
-      });
+      if (typeof destination === 'string') {
+        setRoom(previous => {
+          return {
+            ...previous,
+            URL: destination,
+            page: undefined,
+          }
+        });
+        return navigate(destination, {
+          state: {
+            coverImg: coverImg,
+          },
+        });
+      }
+      setGlobalRoomPage(destination);
     });
 
     return () => {
@@ -78,30 +76,33 @@ export default function SimpleCardGame({
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  switch (currentGameState) {
-    case Game.Cover:
-      return (
-        <CoverPage
-          type="simple"
-          title={title}
-          coverImg={coverImg}
-          goBackPage={backToLobby}
-          description={description} //full game info is now loaded here
-          sizeOfDescription={sizeOfDescription ? sizeOfDescription : undefined}
-          turnVisibility={turnVisibility}
-          ownerVisibility={ownerVisibility}
-          gamePage={() => setCurrentGameState(Game.Hint)}
-        />
-      );
+  const setGlobalRoomPage = (newPage: Game) => {
+    setRoom(previous => {return {...previous, page: newPage}})
+  }
 
+  switch (room.page) {
     case Game.Hint:
       return (
         <HintPage
           title={title}
           coverImg={coverImg}
           description={hint}
-          coverPage={() => setCurrentGameState(Game.Cover)}
+          coverPage={() => setGlobalRoomPage(Game.Cover)}
           gamePage={endOfGame}
+        />
+      );
+    default:
+      return (
+        <CoverPage
+          type="simple"
+          title={title}
+          coverImg={coverImg}
+          goBackPage={backToLobby}
+          description={description}
+          sizeOfDescription={sizeOfDescription ? sizeOfDescription : undefined}
+          turnVisibility={user.isCurrentTurn}
+          ownerVisibility={user.isOwner}
+          gamePage={() => setGlobalRoomPage(Game.Hint)}
         />
       );
   }

@@ -9,11 +9,6 @@ import './Lobby.css';
 import MainPage from './Main';
 import SettingsPage from './Settings';
 
-enum Visibility {
-  Invisible,
-  Visible,
-}
-
 enum LobbyStates {
   Main,
   Settings,
@@ -28,13 +23,10 @@ type Player = {
 
 export default function Lobby() {
 
-  const {user, room, setRoom} = useGlobalContext();
+  const {user, room, setUser, setRoom} = useGlobalContext();
   const navigate = useNavigate();
   const returningPlayer = useLocation().state?.returningPlayer ? true : false;
-  const [ownerVisibility, setOwnerVisibility] = useState<Visibility>(
-    Visibility.Invisible
-  );
-  const [currentOwner, setCurrentOwner] = useState<string>();
+  const [currentOwner, setCurrentOwner] = useState<string>('alguém');
   const [alertMessage, setAlertMessage] = useState<string>(undefined);
 
   useEffect(() => {
@@ -91,25 +83,28 @@ export default function Lobby() {
     })
 
 
-    if(room.gameList.length === 0){            //se for a primeira vez que o jogador está ingressando na partida, ele pede a lista de jogos ao servidor
-      socket.push('games-update', room.code);  //saberemos se esse for o caso porque a lista de jogos começa vazia
+    if(room.gameList.length === 0){                               //se for a primeira vez que o jogador está ingressando na partida, ele pede a lista de jogos ao servidor
+      socket.push('games-update', room.code);                     //saberemos se esse for o caso porque a lista de jogos começa vazia
     }
 
-    socket.addEventListener('room-owner-is', (ownerID) => {
-      socket.push('get-player-name-by-id', ownerID);
-      if (ownerID === socket.socket.id) {
-        setOwnerVisibility(Visibility.Visible);
-        return;
-      }
+    socket.addEventListener('room-owner-is', (ownerName) => {
+      // socket.push('get-player-name-by-id', ownerID);           //não é mais necessário se o roow-owner-is já retornar o nome direto
+      const isOwner = (user.nickname === ownerName);
+      setUser(previous => {
+        return {
+          ...previous,
+          isOwner: isOwner,
+        }
+      });
+      setCurrentOwner(ownerName);
     });
 
-    socket.addEventListener('player-name', (playerName) => {
-      setCurrentOwner(playerName);
-    });
+    // socket.addEventListener('player-name', (playerName) => {   //aqui também não mais necessário
+    //   setCurrentOwner(playerName);
+    // });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (destination === '/SelectNextGame') {
-        console.log(`Movendo a sala para ${destination}.`);
         setRoom(previous => {
           return {
             ...previous,
@@ -122,17 +117,21 @@ export default function Lobby() {
     });
 
     if (returningPlayer) {
-      socket.addEventListener('current-game-is', (currentGame) => {
-        if (currentGame == 'BangBang' || currentGame == 'OEscolhido') {
-          setAlertMessage('Aguardando finalizar jogo em andamento.');
-        } else if(currentGame !== null) {
+      socket.addEventListener('current-game-is', (currentGame) => {        //TODO possivelmente essa lógica só vai valer para quem está entrando com um jogo em andamento,
+        if (currentGame == 'BangBang' || currentGame == 'OEscolhido') {    //sendo necessário repensar o que acontecer com quem só caiu e voltou. Isso porque
+          setAlertMessage('Aguardando finalizar jogo em andamento.');      //agora o jogador que caiu momentaneamente tem armazenado globalmente tanto a URL
+        } else if(currentGame !== null) {                                  //quanto a página em que ele estava.
+
+          const destination = `/${currentGame}`;
           setAlertMessage('Reconectando...');
-          return navigate(`/${currentGame}`, {
-            state: {
-              isYourTurn: false,
-              isOwner: false,
-            },
-          });
+          setRoom(previous => {             
+            return {
+              ...previous,
+              URL: destination,
+              page: undefined,    
+            }
+          })
+          return navigate(destination);
         }
       });
 
@@ -203,7 +202,6 @@ export default function Lobby() {
     default:
       return (
         <MainPage
-          ownerVisibility={ownerVisibility}
           alertMessage={alertMessage}
           currentOwner={currentOwner}
           roomCode={room.code}

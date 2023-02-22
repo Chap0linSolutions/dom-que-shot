@@ -13,13 +13,11 @@ import './WhoDrank.css';
 
 
 export default function WhoDrankPage() {
-  const {room, setRoom} = useGlobalContext();
+  const {user, room, setRoom} = useGlobalContext();
 
   const navigate = useNavigate();
   const location = useLocation();
   const coverImg = location.state.coverImg;
-
-  const turnVisibility = useLocation().state.isYourTurn;
   const userData = JSON.parse(window.localStorage.getItem('userData'));
 
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
@@ -99,7 +97,7 @@ export default function WhoDrankPage() {
     });
   };
 
-  if (turnVisibility === true) {
+  if (user.isCurrentTurn === true) {
     return (
       <Background>
         <Header logo={coverImg} />

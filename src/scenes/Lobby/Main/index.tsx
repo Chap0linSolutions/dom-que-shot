@@ -9,11 +9,6 @@ import Button from '../../../components/Button';
 import Alert from '../../../components/Alert';
 import './Main.css';
 
-enum Visibility {
-  Invisible,
-  Visible,
-}
-
 type Player = {
   avatarSeed: string;
   nickname: string;
@@ -22,7 +17,6 @@ type Player = {
 };
 
 interface MainProps {
-  ownerVisibility: Visibility;
   currentOwner: string;
   alertMessage: string | undefined;
   roomCode: string;
@@ -33,7 +27,6 @@ interface MainProps {
 }
 
 export default function Main({
-  ownerVisibility,
   currentOwner,
   alertMessage,
   roomCode,
@@ -42,7 +35,7 @@ export default function Main({
   settingsPage,
   playerList,
 }: MainProps) {
-  const { setRoom } = useGlobalContext();
+  const { user, setRoom } = useGlobalContext();
   const navigate = useNavigate();
   const [copyColor, setCopyColor] = useState('#8877DF');
 
@@ -56,12 +49,12 @@ export default function Main({
       }
     })
     navigate('/ChooseAvatar', {
-      state: { option: 'update', roomCode: roomCode },
+      state: { option: 'update' },
     });
   }
 
   const header =
-    ownerVisibility === Visibility.Visible ? (
+    user.isOwner === true ? (
       <Header
         goBackArrow={backToChooseAvatar}
         settingsPage={() => {
@@ -120,9 +113,9 @@ export default function Main({
           <div
             className="WaitingMessageDiv"
             style={
-              ownerVisibility === Visibility.Invisible
-                ? { visibility: 'visible' }
-                : { display: 'none' }
+              user.isOwner === true
+                ? { display: 'none' }
+                : { visibility: 'visible' }
             }>
             <p className="WaitingMessage">
               Aguardando {currentOwner}
@@ -134,7 +127,7 @@ export default function Main({
         <div
           className="BeginButton"
           style={
-            ownerVisibility === Visibility.Visible
+            user.isOwner === true
               ? { visibility: 'visible' }
               : { display: 'none' }
           }>
