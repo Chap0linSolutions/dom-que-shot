@@ -211,7 +211,8 @@ export default function SelectNextGame() {
   };
 
   const turnTheWheel = () => {
-    socket.push('roulette-number-is', userData.roomCode);
+    socket.pushMessage(userData.roomCode, 'roulette-number-is', null);
+    //socket.push('roulette-number-is', userData.roomCode);
   };
 
   const backToLobby = () => {

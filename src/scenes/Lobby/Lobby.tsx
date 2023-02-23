@@ -99,23 +99,33 @@ export default function Lobby() {
       }
     });
 
-    if (returningPlayer) {
-      socket.addEventListener('current-game-is', (currentGame) => {
-        if (currentGame == 'BangBang' || currentGame == 'OEscolhido') {
+    socket.addEventListener('current-game-is', (currentURL) => {
+      console.log(`current game URL: ${currentURL}`)
+      if(currentURL == '/SelectNextGame'){
+        setAlertMessage('Entrando na partida...');
+        return navigate(currentURL, {
+          state: {
+            isYourTurn: false,
+            isOwner: false,
+          },
+        });
+      }
+      if(returningPlayer){
+        if (currentURL == '/BangBang' || currentURL == '/OEscolhido') {
           setAlertMessage('Aguardando finalizar jogo em andamento.');
-        } else if(currentGame !== null) {
+        } else if(currentURL !== null) {
           setAlertMessage('Reconectando...');
-          return navigate(`/${currentGame}`, {
+          return navigate(currentURL, {
             state: {
               isYourTurn: false,
               isOwner: false,
             },
           });
         }
-      });
+      }
+    });
 
-      socket.push('get-current-game-by-room', userData.roomCode);
-    }
+    socket.push('get-current-game-by-room', userData.roomCode);
 
     return () => {
       socket.removeAllListeners();
