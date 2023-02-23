@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import coverImg from '../../assets/game-covers/eu-nunca.png';
 import SocketConnection from '../../lib/socket';
-import Background from '../../components/Background';
 import CoverPage from '../../components/Game/Cover';
 import GamePage from './Game';
 import './EuNunca.css';
@@ -15,7 +14,7 @@ enum Game {
 
 export default function EuNunca() {
 
-  const { user, room, setRoom } = useGlobalContext();
+  const { user, room, setUser, setRoom } = useGlobalContext();
 
   const description = (
     <>
@@ -67,6 +66,16 @@ export default function EuNunca() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
+    socket.addEventListener('room-owner-is', (ownerName) => {
+      const isOwner = (user.nickname === ownerName);
+      setUser(previous => {
+        return {
+          ...previous,
+          isOwner: isOwner,
+        }
+      });
+    });
+
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
         setRoom(previous => {

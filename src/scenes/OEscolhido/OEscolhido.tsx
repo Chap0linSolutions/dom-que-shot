@@ -23,7 +23,7 @@ enum Game {
 
 export default function OEscolhido() {
 
-  const {user, room, setRoom} = useGlobalContext();
+  const {user, room, setUser, setRoom} = useGlobalContext();
   const title = 'O Escolhido';
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////////
@@ -102,6 +102,17 @@ export default function OEscolhido() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
+
+    socket.addEventListener('room-owner-is', (ownerName) => {
+      const isOwner = (user.nickname === ownerName);
+      setUser(previous => {
+        return {
+          ...previous,
+          isOwner: isOwner,
+        }
+      });
+    });
+
     socket.addEventListener('vote-results', (mostVoted) => {
       const results = JSON.parse(mostVoted);
       const amount = results.at(0).votesReceived;

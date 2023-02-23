@@ -23,7 +23,7 @@ const BangBangEvents = {
 };
 
 export function BangBang() {
-  const {user, room, setRoom} = useGlobalContext();
+  const {user, room, setUser, setRoom} = useGlobalContext();
 
   const [ready, setReady] = useState(false);
   const [currentRanking, setCurrentRanking] = useState([]);
@@ -91,6 +91,16 @@ export function BangBang() {
           setCurrentRanking(ranking);
           setFinalRanking(true);
       }
+    });
+
+    socket.addEventListener('room-owner-is', (ownerName) => {
+      const isOwner = (user.nickname === ownerName);
+      setUser(previous => {
+        return {
+          ...previous,
+          isOwner: isOwner,
+        }
+      });
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {

@@ -27,7 +27,7 @@ export default function SimpleCardGame({
   coverImg,
 }: SimpleCardGameProps) {
 
-  const {user, room, setRoom} = useGlobalContext();
+  const {user, room, setUser, setRoom} = useGlobalContext();
   const userData = JSON.parse(window.localStorage.getItem('userData'));
   const navigate = useNavigate();
 
@@ -51,6 +51,16 @@ export default function SimpleCardGame({
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
+    socket.addEventListener('room-owner-is', (ownerName) => {
+      const isOwner = (user.nickname === ownerName);
+      setUser(previous => {
+        return {
+          ...previous,
+          isOwner: isOwner,
+        }
+      });
+    });
+
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
         setRoom(previous => {
