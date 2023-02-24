@@ -100,7 +100,6 @@ export default function Lobby() {
     });
 
     socket.addEventListener('current-game-is', (currentURL) => {
-      console.log(`current game URL: ${currentURL}`)
       if(currentURL == '/SelectNextGame'){
         setAlertMessage('Entrando na partida...');
         return navigate(currentURL, {
