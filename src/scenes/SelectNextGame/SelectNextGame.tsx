@@ -128,7 +128,7 @@ export default function SelectNextGame() {
   }, [number]);
 
   const startSelectedGame = () => {
-    if (ownerVisibility === Visibility.Visible) {
+    if (turnVisibility === Visibility.Visible) {
       setTimeout(() => {
         socket.push('start-game', {
           roomCode: userData.roomCode,
