@@ -14,13 +14,6 @@ enum LobbyStates {
   Settings,
 }
 
-type Player = {
-  avatarSeed: string;
-  nickname: string;
-  beers: number;
-  playerID: number;
-};
-
 export default function Lobby() {
 
   const {user, room, setUser, setRoom} = useGlobalContext();
@@ -117,25 +110,26 @@ export default function Lobby() {
     });
 
     if (returningPlayer) {
-      socket.addEventListener('current-game-is', (currentGame) => {        //TODO possivelmente essa lógica só vai valer para quem está entrando com um jogo em andamento,
-        if (currentGame == 'BangBang' || currentGame == 'OEscolhido') {    //sendo necessário repensar o que acontecer com quem só caiu e voltou. Isso porque
-          setAlertMessage('Aguardando finalizar jogo em andamento.');      //agora o jogador que caiu momentaneamente tem armazenado globalmente tanto a URL
-        } else if(currentGame !== null) {                                  //quanto a página em que ele estava.
+      socket.addEventListener('current-state-is', (currentState) => {        //TODO possivelmente essa lógica só vai valer para quem está entrando com um jogo em andamento,
 
-          const destination = `/${currentGame}`;
+        const {URL, page} = JSON.parse(currentState);
+
+        if (URL == '/BangBang' || URL == '/OEscolhido') {                    //sendo necessário repensar o que acontecer com quem só caiu e voltou. Isso porque
+          setAlertMessage('Aguardando finalizar jogo em andamento.');        //agora o jogador que caiu momentaneamente tem armazenado globalmente tanto a URL
+        } else {                                                             //quanto a página em que ele estava.
           setAlertMessage('Reconectando...');
           setRoom(previous => {             
             return {
               ...previous,
-              URL: destination,
-              page: undefined,    
+              URL: URL,
+              page: page,    
             }
           })
-          return navigate(destination);
+          return navigate(URL);
         }
       });
 
-      socket.push('get-current-game-by-room', room.code);
+      socket.push('get-current-state-by-room', room.code);
     }
 
     return () => {

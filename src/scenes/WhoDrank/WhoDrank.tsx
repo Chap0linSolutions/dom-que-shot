@@ -16,8 +16,13 @@ export default function WhoDrankPage() {
   const {user, room, setRoom} = useGlobalContext();
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const coverImg = location.state.coverImg;
+  let coverImg = undefined;
+  try{
+    const location = useLocation();
+    coverImg = location.state.coverImg;
+  } catch (e){
+    coverImg = true;
+  }
   const userData = JSON.parse(window.localStorage.getItem('userData'));
 
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
