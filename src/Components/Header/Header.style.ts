@@ -83,7 +83,7 @@ export const LogoBackground = styled.div`
   border-radius: 28px;
   margin-right: 5px;
   margin-top: 5px;
-  @media (max-height: 740px){
+  @media (max-height: 740px) {
     width: 61px;
     height: 69px;
     border-radius: 24px;

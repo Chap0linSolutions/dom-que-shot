@@ -8,7 +8,7 @@ class SocketConnection {
   connect() {
     if (!this.socket) {
       this.socket = io(this.serverAddress);
-      this.socket.io.on("reconnect", () => {
+      this.socket.io.on('reconnect', () => {
         alert('Conexão perdida! Reconectando...');
         window.location.reload();
       });

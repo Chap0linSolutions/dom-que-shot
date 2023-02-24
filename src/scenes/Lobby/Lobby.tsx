@@ -100,7 +100,13 @@ export default function Lobby() {
     });
 
     socket.addEventListener('current-game-is', (currentURL) => {
-      if(currentURL == '/SelectNextGame'){
+      // TODO: trocar listener e variavel acima para currentState
+      // TODO: const {URL, page} = JSON.parse(currentState);
+      // //lógica vai aqui
+      // setRoom(URL, page);
+      // navigate();
+
+      if (currentURL == '/SelectNextGame') {
         setAlertMessage('Entrando na partida...');
         return navigate(currentURL, {
           state: {
@@ -108,11 +114,15 @@ export default function Lobby() {
             isOwner: false,
           },
         });
-      }
-      if(returningPlayer){
-        if (currentURL == '/BangBang' || currentURL == '/OEscolhido') {
+      } //TODO add popup 'u sure u wanna do dis?' for those entering an ongoing game that not bangbang or oEscolhido
+      if (returningPlayer) {
+        if (
+          currentURL == '/BangBang' ||
+          currentURL == '/OEscolhido' ||
+          currentURL == '/EuNunca'
+        ) {
           setAlertMessage('Aguardando finalizar jogo em andamento.');
-        } else if(currentURL !== null) {
+        } else {
           setAlertMessage('Reconectando...');
           return navigate(currentURL, {
             state: {
