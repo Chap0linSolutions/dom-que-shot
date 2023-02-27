@@ -132,7 +132,7 @@ export default function SelectNextGame() {
       setTimeout(() => {
         socket.push('start-game', {
           roomCode: userData.roomCode,
-          nextGame: nextGame,
+          nextGame: 'Titanic',//nextGame,
         });
       }, 1000);
     }
