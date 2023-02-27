@@ -173,7 +173,6 @@ export default function Lobby() {
 
   const beginMatch = () => {
     if (room.playerList.length >= 2) {
-      console.log('Iniciando a partida.');
       socket.push('set-turn', room.code);
       socket.push('move-room-to', {
         roomCode: room.code,
