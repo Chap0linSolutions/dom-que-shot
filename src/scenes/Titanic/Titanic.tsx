@@ -5,28 +5,20 @@ import Background from '../../components/Background';
 import CoverPage from '../../components/Game/Cover';
 import GamePage from './Game';
 import FinishPage from './Finish';
-import AwaitingResults from './Awaiting';
 import coverImg from '../../assets/game-covers/titanic.png';
-
-interface ListedPlayerProps {
-  nickname: string;
-  avatarSeed: string;
-  id: number;
-}
 
 enum Game {
   Cover,
   Game,
-  AwaitingResults,
   Finish,
 }
 
 export default function Titanic() {
-  const title = 'O Escolhido';
+  const title = 'Titanic';
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////////
 
-  const gameTime = 10000;
+  const gameTime = 15000;
 
   const [msTimer, setMsTimer] = useState(gameTime);
   const [timer, setTimer] = useState<NodeJS.Timer>();
@@ -41,7 +33,9 @@ export default function Titanic() {
       updatedMs -= 10;
       if (updatedMs === 0) {
         console.log('Acabou o tempo.');
-        socket.pushMessage(userData.roomCode, 'vote-results', null);
+        if(turnVisibility === true){
+          sendResults(JSON.stringify([-100]));
+        }
       }
       setMsTimer(updatedMs);
     }
@@ -54,20 +48,30 @@ export default function Titanic() {
   const turnVisibility = useLocation().state.isYourTurn;
   const userData = JSON.parse(window.localStorage.getItem('userData'));
   const [currentGameState, setCurrentGameState] = useState<Game>(Game.Cover);
-  const [playerList, updatePlayerList] = useState<ListedPlayerProps[]>([]);
+  const [results, setResults] = useState<string | undefined>(undefined);
 
   const description = (
     <>
       Neste jogo, cada participante vai jogar com o seu aparelho.
       <br />
       <br />
-      Aparecerá uma lista com todos os participantes da sala e cada um votará em
-      uma pessoa da lista para virar uma dose.
+      Aparecerá um mapa na tela, e os jogadores da roda devem escolher
+      onde vão posicionar seus barcos. Enquanto isso, o jogador
+      da vez escolhe onde vai posicionar seus Icebergs.
+      <br />
+      <br />
+      Se o jogador da vez colocar um Iceberg onde algum dos demais
+      colocou um barco, o jogador atingido deve virar uma dose para
+      cada barco derrubado.
       <br />
       <br />
       Boa sorte!
     </>
   );
+
+  const sendResults = (selection) => { //selection is a JSON.stringify() of the chosen sectors positions
+    socket.pushMessage(userData.roomCode, 'player-has-selected', selection);
+  }
 
   const startGame = () => {
     socket.push('move-room-to', {
@@ -99,7 +103,6 @@ export default function Titanic() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.setLobbyUpdateListener(updatePlayerList);
     socket.push('lobby-update', userData.roomCode);
 
     socket.addEventListener('room-is-moving-to', (destination) => {
@@ -109,12 +112,28 @@ export default function Titanic() {
       setCurrentGameState(destination);
     });
 
+    socket.addEventListener('titanic-results', (finalResults) => {
+      setResults(finalResults);
+    });
+
     return () => {
       socket.removeAllListeners();
     };
   }, []);
 
   //////////////////////////////////////////////////////////////////////////////////////////////
+
+  useEffect(() => {
+    if (currentGameState === Game.Game) {
+      startTimer();
+    } 
+  }, [currentGameState]);
+
+  useEffect(() => {
+    if(typeof results === 'string'){
+      clearInterval(timer);
+    }
+  }, [results])
 
   switch (currentGameState) {
     case Game.Cover:
@@ -134,21 +153,18 @@ export default function Titanic() {
     case Game.Game:
       return (
         <GamePage
-          finishPage={() => setCurrentGameState(Game.AwaitingResults)}
+          sendResults={sendResults}
+          receiveResults={results}
+          isCurrentTurn={turnVisibility}
           msTimeLeft={msTimer}
-        />
-      );
-
-    case Game.AwaitingResults:
-      return (
-        <AwaitingResults
-          msTimeLeft={msTimer}
+          finishPage={() => setCurrentGameState(Game.Finish)}
         />
       );
 
     case Game.Finish:
       return (
         <FinishPage
+          results={results}
           turnVisibility={turnVisibility}
           roulettePage={() => nextRound()}
         />

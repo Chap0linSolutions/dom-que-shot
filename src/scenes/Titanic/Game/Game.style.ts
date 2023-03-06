@@ -1,105 +1,76 @@
 import styled from "@emotion/styled";
 
-export const whatever = styled.div``;
+export const OverflowHandler = styled.div`
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+`;
 
-// .OEscolhidoContainer {
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: space-between;
-//   height: 100%;
-//   width: 100%;
-// }
+export const Titanic = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+`;
 
-// .OEscolhidoTitleAndList {
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   width: 100%;
-// }
+export const Content = styled(Titanic)`
+    justify-content: flex-start;
+`;
 
-// .OEscolhidoTitle {
-//   margin: 10px;
-//   margin-top: 20px;
-//   font-size: 20px;
-// }
+export const Title = styled.p`
+    font-size: 22px;
+    font-family: Adumu;
+    @media(max-height: 740px){
+        font-size: 20px;
+    }
+`;
 
-// .GamePlayerListDiv {
-//   padding: 1em;
-//   width: 90%;
-//   overflow-y: scroll;
-//   overflow-x: hidden;
-//   display: flex;
-//   flex-direction: column;
-//   max-height: calc(100vh - 107px - 2rem - 260px);
-// }
+export const Subtitle = styled.p`
+    margin: 0 10px;
+    font-size: 18px;
+    font-family: Adumu;
+    @media(max-height: 740px){
+        font-size: 17px;
+    }
+`;
 
-// .GamePlayerListDiv::-webkit-scrollbar {
-//   display: none;
-// }
+export const RemainingElements = styled(Titanic)`
+    flex-direction: row;
+    justify-content: flex-end;
+    height: auto;
+    padding: 10px 40px;
+`;
 
-// .GamePlayerListItem {
-//   border-radius: 10px;
-//   height: 48px;
-//   width: 100%;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   margin-bottom: 8px;
-// }
+export const RemainingIcon = styled.img`
+    object-fit: scale-down;
+    width: 40px;
+`; 
 
-// .selectedItem {
-//   background: #403a55;
-// }
+export const End = styled.div`
+    display: flex;
+    align-items: center;
+    margin: 0;
+    margin-bottom: 40px;
+    background: #ef4f59;
+    padding: 14px 20px;
+    border-radius: 20px;
+    @media(max-height: 740px){
+        padding: 10px 20px;
+    }
+`;
 
-// .selectedAvatar {
-//   border: 2px solid #403a55;
-// }
+export const Text = styled.p`
+    margin: 0;
+    margin-left: 14px;
+    font-size: 18px;
+    @media(max-height: 740px){
+        font-size: 14px;
+    }
+`;
 
-// .unselectedAvatar {
-//   border-left: 2px solid gold;
-// }
-
-// .unselectedItem {
-//   background: #8877df;
-// }
-
-// .GamePlayerListNickname {
-//   margin: 0;
-//   padding: 0 1em;
-//   font-size: 16px;
-// }
-
-// .GamePlayerListAvatar {
-//   display: flex;
-//   align-items: center;
-//   width: 48px;
-//   height: 48px;
-//   border-radius: 10px;
-// }
-
-// @media (max-height: 740px) {
-//   .GamePlayerListDiv {
-//     max-height: calc(100vh - 107px - 2rem - 230px);
-//   }
-
-//   .OEscolhidoTitle {
-//     margin: 8px;
-//     margin-top: 16px;
-//     font-size: 18px;
-//   }
-
-//   .GamePlayerListItem {
-//     height: 44px;
-//     margin-bottom: 7px;
-//   }
-
-//   .GamePlayerListNickname {
-//     font-size: 15px;
-//   }
-
-//   .GamePlayerListAvatar {
-//     width: 44px;
-//     height: 44px;
-//   }
-// }
+export const BeerIcon = styled(RemainingIcon)`
+    width: 30px;
+`;
