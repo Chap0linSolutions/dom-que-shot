@@ -100,11 +100,6 @@ export default function Lobby() {
     });
 
     socket.addEventListener('current-game-is', (currentURL) => {
-      // TODO: trocar listener e variavel acima para currentState
-      // TODO: const {URL, page} = JSON.parse(currentState);
-      // //lógica vai aqui
-      // setRoom(URL, page);
-      // navigate();
 
       if (currentURL == '/SelectNextGame') {
         setAlertMessage('Entrando na partida...');
@@ -118,8 +113,7 @@ export default function Lobby() {
       if (returningPlayer) {
         if (
           currentURL == '/BangBang' ||
-          currentURL == '/OEscolhido' ||
-          currentURL == '/EuNunca'
+          currentURL == '/OEscolhido'
         ) {
           setAlertMessage('Aguardando finalizar jogo em andamento.');
         } else {
