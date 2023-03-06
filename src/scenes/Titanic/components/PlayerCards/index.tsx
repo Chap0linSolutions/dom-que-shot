@@ -12,6 +12,11 @@ export default function PlayerCards({titanicPlayers, icebergPlayer}:PlayerCardsP
     const hasIcebergs = icebergPlayer && icebergPlayer.hasAppeared;
     const whoPlayed = titanicPlayers.filter(p => p.shipPlacement.length > 1);
     const survivors = whoPlayed.filter(p => p.hits === 0);
+    
+    let icebergStatus = (icebergPlayer)? icebergPlayer.shipPlacement[0] : 0;
+    if(icebergStatus !== -100 && survivors.length === whoPlayed.length){
+        icebergStatus = -300;
+    }
 
     const icebergPlayerCard = (hasIcebergs)
     ? <Card 
@@ -19,8 +24,7 @@ export default function PlayerCards({titanicPlayers, icebergPlayer}:PlayerCardsP
         avatarSeed={icebergPlayer.avatarSeed}
         titanic={false}
         hits={icebergPlayer.hits}
-        gotNoOne={survivors.length > 0 && survivors.length === whoPlayed.length}
-        someonePlayed={whoPlayed.length > 0}
+        status={icebergStatus}
     />
     : null;
 
@@ -36,8 +40,8 @@ export default function PlayerCards({titanicPlayers, icebergPlayer}:PlayerCardsP
                         avatarSeed={player.avatarSeed}
                         titanic={true}
                         hits={player.hits}
+                        status={player.shipPlacement[0]}
                         icebergsHaveAppeared={hasIcebergs}
-                        disconnectedBeforePlaying={player.shipPlacement.length === 1}
                     />
                 )}
             </TitanicPlayers>

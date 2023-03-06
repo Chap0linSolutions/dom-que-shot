@@ -7,6 +7,10 @@ const Card = styled.div`
     justify-content: space-between;
     align-items: center;
     border-radius: 10px;
+    padding: 5px 0;
+    @media(max-height: 740px){
+        padding: 2px;
+    }
 `;
 
 export const TitanicCard = styled(Card)`
@@ -38,8 +42,8 @@ export const Nickname = styled.p`
 export const IcebergNickname = styled(Nickname)``;
 
 export const AvatarDiv = styled.div`
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     margin-left: 3px;
 `;
 
@@ -68,11 +72,15 @@ export const Ships = styled.div`
     border-left: 5px solid #ef4f59;
     border-right: 5px solid #ef4f59;
     height: 50px;
+    margin-right: 5px;
+    @media(max-height: 740px){
+        margin-right: 2px;
+    }
 `;
 
 export const Icebergs = styled(Ships)`
     background: #358fb0;
-    border-left: none;
+    border-left: 5px solid #358fb0;
     border-right: 5px solid #358fb0;
     padding: 0 10px;
 `;
@@ -98,8 +106,8 @@ export const Titanic = styled(Icon)`
     }
 `;
 
-export const DisconnectedText = styled.p`
-    color: red;
+export const TitanicText = styled.p`
+    color: #ef4f59;
     font-size: 14px;
     line-height: 14px;
     margin: 0 10px;
@@ -110,7 +118,7 @@ export const DisconnectedText = styled.p`
     }
 `;
 
-export const GotNoOneText = styled(DisconnectedText)`
+export const IcebergText = styled(TitanicText)`
     margin: 0;
     color: white;
 `;

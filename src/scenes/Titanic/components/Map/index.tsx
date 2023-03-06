@@ -1,9 +1,9 @@
-import { DefaultMap, AnimatedMap, FinishMapView, RadarMapView, Radar, RadarMapViewRed, RadarRed } from './Map.style';
+import { DefaultMap, AnimatedMap, FinishMapView, RadarMapView, Radar, RadarMapViewRed, RadarRed, DeadMap} from './Map.style';
 import GameMapSector from './Sector/GameMapSector';
 import FinishMapSector from './Sector/FinishMapSector';
 
 interface mapProps {
-    type: 'game' | 'finish',
+    type: 'game' | 'finish' | 'no one played',
     isCurrentTurn?: boolean;
     places?: number[];
     icebergPlaces?: number[];
@@ -45,19 +45,36 @@ export default function Map({type, places, icebergPlaces, isCurrentTurn, toggleS
         }
     }
 
-    const MapContent = (type === 'game')
-    ? <RadarMap>
-        <RadarNeedle>
-            <AnimatedMap>
-                {mapSectors}
-            </AnimatedMap>
-        </RadarNeedle>
-      </RadarMap>
-    : <FinishMapView>
-        <DefaultMap>
-            {mapSectors}
-        </DefaultMap>
-      </FinishMapView>;
+    let MapContent = null;
+    
+    switch(type){
+        case 'game':
+            MapContent = 
+                <RadarMap>
+                    <RadarNeedle>
+                        <AnimatedMap>
+                            {mapSectors}
+                        </AnimatedMap>
+                    </RadarNeedle>
+                </RadarMap>
+            break;
+        case 'finish':
+            MapContent =
+            <FinishMapView>
+                <DefaultMap>
+                    {mapSectors}
+                </DefaultMap>
+            </FinishMapView>;
+            break;
+        default:
+            MapContent =
+            <DeadMap>
+                <DefaultMap>
+                    {mapSectors}
+                </DefaultMap>
+            </DeadMap>;
+    }
+
 
     return (
         <>

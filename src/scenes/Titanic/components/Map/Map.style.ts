@@ -5,6 +5,7 @@ import radarRed from '../../assets/radar-red.png';
 import seaWithWaves from '../../assets/sea-with-waves.png';
 import seaWithRadarAndWaves from '../../assets/sea-radar.png';
 import seaWithRadarAndWavesRed from '../../assets/sea-radar-red.png';
+import noOnePlayed from '../../assets/no-one-played-sea.png';
 
 const rotateCW = keyframes`
   to {
@@ -46,6 +47,11 @@ export const RadarMapView = styled(MapView)`
 
 export const RadarMapViewRed = styled(MapView)`
   background: url(${seaWithRadarAndWavesRed});
+  background-size: contain;
+`;
+
+export const DeadMap = styled(FinishMapView)`
+  background: url(${noOnePlayed});
   background-size: contain;
 `;
 

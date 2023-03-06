@@ -5,7 +5,7 @@ import Button from '../../../components/Button';
 import Map from '../components/Map';
 import gsap from 'gsap';
 import PlayerCards from '../components/PlayerCards';
-import { Content, Finish, Title, Text } from './Finish.style';
+import { Content, Finish, Title } from './Finish.style';
 
 interface CoverProps {
   results: string;
@@ -40,6 +40,41 @@ export default function FinishPage({
   const [icebergPlayer, setIcebergPlayer] = useState<Results>();
   const [finishState, setFinishState] = useState<FinishState>(FinishState.Showing);
   const finalResults:Results[] = JSON.parse(results);
+
+  const noOnePlayedInTime = finalResults
+  .filter(p => p.shipPlacement[0] === -100)
+  .length === finalResults.length;
+
+  const everybodyFell = finalResults
+  .filter(p => p.shipPlacement[0] === -1)
+  .length === finalResults.length - 1;
+
+  const whoPlayed = finalResults
+  .filter(p => p.shipPlacement.length > 1);
+
+  const everyoneSurvived = whoPlayed.filter(p => p.hits === 0)
+  .length === whoPlayed.length - 1;
+ 
+  const icebergsHaveAppeared = icebergPlayer && icebergPlayer.hasAppeared;
+  const mapType = (noOnePlayedInTime && icebergsHaveAppeared)
+  ? 'no one played'
+  : 'finish';
+
+  let title = 'E o resultado é...';
+  if(noOnePlayedInTime && icebergsHaveAppeared){
+    title = 'NINGUÉM jogou a tempo!';
+  } else if(everybodyFell) {
+    title = `Todo mundo caiu :'(`;
+  } else if(everyoneSurvived && icebergsHaveAppeared) {
+    if(icebergPlayer.shipPlacement[0] === -100){
+      title = `O iceberg comeu mosca!`;
+    } else {
+      title = `O iceberg errou tudo!`;
+    }
+  } else if(icebergsHaveAppeared){
+    title = 'Quem afundou bebe!';
+  }
+
   
   useLayoutEffect(() => {
     gsap.timeline().
@@ -117,9 +152,9 @@ export default function FinishPage({
       <Header logo/>
       <Finish ref={pageRef}>
         <Content>
-        <Title>Os atingidos bebem!</Title>
+        <Title>{title}</Title>
           <Map
-            type='finish'
+            type={mapType}
             places={places}
             icebergPlaces={icebergPlaces}
           />
