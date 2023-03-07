@@ -101,12 +101,13 @@ export default function Lobby() {
 
     if (returningPlayer) {
       socket.addEventListener('current-game-is', (currentGame) => {
-        if ( currentGame === 'BangBang' 
-          || currentGame === 'OEscolhido'
-          || currentGame === 'Titanic'
+        if (
+          currentGame === 'BangBang' ||
+          currentGame === 'OEscolhido' ||
+          currentGame === 'Titanic'
         ) {
           setAlertMessage('Aguardando finalizar jogo em andamento.');
-        } else if(currentGame !== null) {
+        } else if (currentGame !== null) {
           setAlertMessage('Reconectando...');
           return navigate(`/${currentGame}`, {
             state: {

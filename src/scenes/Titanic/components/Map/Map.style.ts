@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import radar from '../../assets/radar.png';
 import radarRed from '../../assets/radar-red.png';
@@ -25,19 +25,19 @@ export const MapView = styled.div`
   border-radius: 20px;
   width: 345px;
   height: 345px;
-  @media(max-height: 740px){
-      width: 304px;
-      height: 304px;
+  @media (max-height: 740px) {
+    width: 304px;
+    height: 304px;
   }
 `;
 
 export const FinishMapView = styled(MapView)`
   width: 320px;
   height: 320px;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     width: 280px;
     height: 280px;
-}
+  }
 `;
 
 export const RadarMapView = styled(MapView)`

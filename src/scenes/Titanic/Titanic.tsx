@@ -33,9 +33,10 @@ export default function Titanic() {
       updatedMs -= 100;
       if (updatedMs === 0) {
         setResults(`time's up`);
-        if(turnVisibility === true){
+        if (turnVisibility === true) {
           return sendResults(JSON.stringify([-100, -100, -100, -100, -100]));
-        } return sendResults(JSON.stringify([-100]));
+        }
+        return sendResults(JSON.stringify([-100]));
       }
       setMsTimer(updatedMs);
     }
@@ -55,25 +56,25 @@ export default function Titanic() {
       Neste jogo, cada participante vai jogar com o seu aparelho.
       <br />
       <br />
-      Aparecerá um mapa na tela, e os jogadores da roda devem escolher
-      onde vão posicionar seus barcos. Enquanto isso, o jogador
-      da vez escolhe onde vai posicionar seus Icebergs.
+      Aparecerá um mapa na tela, e os jogadores da roda devem escolher onde vão
+      posicionar seus barcos. Enquanto isso, o jogador da vez escolhe onde vai
+      posicionar seus Icebergs.
       <br />
       <br />
-      Se o jogador da vez colocar um Iceberg onde algum dos demais
-      colocou um barco, o jogador atingido deve virar uma dose para
-      cada barco derrubado.
+      Se o jogador da vez colocar um Iceberg onde algum dos demais colocou um
+      barco, o jogador atingido deve virar uma dose para cada barco derrubado.
       <br />
       <br />
       Boa sorte!
     </>
   );
 
-  const sendResults = (selection) => { //selection is a JSON.stringify() of the chosen sectors positions
+  const sendResults = (selection) => {
+    //selection is a JSON.stringify() of the chosen sectors positions
     clearInterval(timer);
     setTimer(null);
     socket.pushMessage(userData.roomCode, 'player-has-selected', selection);
-  }
+  };
 
   const startGame = () => {
     socket.push('move-room-to', {
@@ -128,18 +129,18 @@ export default function Titanic() {
   useEffect(() => {
     if (currentGameState === Game.Game) {
       startTimer();
-    } 
+    }
   }, [currentGameState]);
 
   useEffect(() => {
-    if(typeof results === 'string'){
-      if(timer !== null){
+    if (typeof results === 'string') {
+      if (timer !== null) {
         console.log('parando o timer.');
         clearInterval(timer);
         setTimer(null);
       }
     }
-  }, [results])
+  }, [results]);
 
   switch (currentGameState) {
     case Game.Cover:
