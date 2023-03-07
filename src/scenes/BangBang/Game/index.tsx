@@ -51,7 +51,7 @@ export function GamePage({
 
   const [timer, setTimer] = useState<NodeJS.Timer>();
   const startTimer = () => {
-    setTimer(setInterval(run, 10));
+    setTimer(setInterval(run, 100));
   };
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export function GamePage({
 
   let updatedMs = msTimer;
   const run = () => {
-    updatedMs -= 10;
+    updatedMs -= 100;
     return setMsTimer(updatedMs);
   };
 
