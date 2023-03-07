@@ -18,19 +18,19 @@ export default function Titanic() {
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////////
 
-  const gameTime = 30000;
+  const gameTime = 15000;
 
   const [msTimer, setMsTimer] = useState(gameTime);
   const [timer, setTimer] = useState<NodeJS.Timer | null>(null);
 
   const startTimer = () => {
-    setTimer(setInterval(run, 10));
+    setTimer(setInterval(run, 100));
   };
 
   let updatedMs = msTimer;
   const run = () => {
     if (updatedMs > 0) {
-      updatedMs -= 10;
+      updatedMs -= 100;
       if (updatedMs === 0) {
         setResults(`time's up`);
         if(turnVisibility === true){
