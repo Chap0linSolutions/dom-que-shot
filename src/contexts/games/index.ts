@@ -8,6 +8,7 @@ import Medusa from '../../assets/game-covers/medusa.png';
 import OEscolhido from '../../assets/game-covers/o-escolhido.png';
 import PensaRapido from '../../assets/game-covers/pensa-rapido.png';
 import Vrum from '../../assets/game-covers/vrum.png';
+import Titanic from '../../assets/game-covers/titanic.png';
 
 export type Game = {
   id: number;
@@ -72,6 +73,12 @@ const games: Game[] = [
     src: Vrum,
     backgroundColor: '#403A55',
   },
+  {
+    id: 9,
+    text: 'Titanic',
+    src: Titanic,
+    backgroundColor: '#800080',
+  }
 ];
 
 export default games;

@@ -7,6 +7,7 @@ import BichoBebe from '../../../assets/game-covers/bicho-bebe.png';
 import Buzz from '../../../assets/game-covers/buzz.png';
 import PensaRapido from '../../../assets/game-covers/pensa-rapido.png';
 import CSComposto from '../../../assets/game-covers/cs-composto.png';
+import Titanic from '../../../assets/game-covers/titanic.png';
 
 type GameCardsProps = {
   image: string;
@@ -126,5 +127,23 @@ export const gameCards: GameCardsProps[] = [
         bicho&#41;. Quem errar vira uma dose.{' '}
       </>
     ),
-  },
+  }, 
+  {
+    image: Titanic,
+    title: 'Titanic',
+    id: 8,
+    color: GameTypes.Round,
+    description: (
+      <>
+        Aparecerá um mapa na tela, e os jogadores da roda devem escolher onde vão
+        posicionar seus barcos. Enquanto isso, o jogador da vez escolhe onde vai
+        posicionar seus Icebergs.
+        <br />
+        <br />Se o jogador da vez colocar um Iceberg onde algum dos demais
+        colocou um barco, o jogador atingido deve virar uma dose.
+        <br />
+        <br />Boa sorte!
+      </>
+    ),
+  }
 ];

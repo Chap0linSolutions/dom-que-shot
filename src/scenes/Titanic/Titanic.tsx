@@ -62,7 +62,7 @@ export default function Titanic() {
       <br />
       <br />
       Se o jogador da vez colocar um Iceberg onde algum dos demais colocou um
-      barco, o jogador atingido deve virar uma dose para cada barco derrubado.
+      barco, o jogador atingido deve virar uma dose.
       <br />
       <br />
       Boa sorte!
@@ -72,6 +72,7 @@ export default function Titanic() {
   const sendResults = (selection) => {
     //selection is a JSON.stringify() of the chosen sectors positions
     clearInterval(timer);
+    setMsTimer(0);
     setTimer(null);
     socket.pushMessage(userData.roomCode, 'player-has-selected', selection);
   };
@@ -137,6 +138,7 @@ export default function Titanic() {
       if (timer !== null) {
         console.log('parando o timer.');
         clearInterval(timer);
+        setMsTimer(0);
         setTimer(null);
       }
     }
