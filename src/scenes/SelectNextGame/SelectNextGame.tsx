@@ -88,7 +88,7 @@ export default function SelectNextGame() {
   }, [number]);
 
   const startSelectedGame = () => {
-    if (user.isOwner === true) {
+    if (user.isCurrentTurn === true) {
       setTimeout(() => {
         socket.push('start-game', {
           roomCode: room.code,
@@ -171,7 +171,7 @@ export default function SelectNextGame() {
   };
 
   const turnTheWheel = () => {
-    socket.push('roulette-number-is', room.code);
+    socket.pushMessage(room.code, 'roulette-number-is', null);
   };
 
   const backToLobby = () => {

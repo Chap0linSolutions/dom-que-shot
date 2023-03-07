@@ -18,7 +18,7 @@ export default function Lobby() {
 
   const {user, room, setUser, setRoom} = useGlobalContext();
   const navigate = useNavigate();
-  const returningPlayer = useLocation().state?.returningPlayer ? true : false;
+  // const returningPlayer = useLocation().state?.returningPlayer ? true : false;
   const [currentOwner, setCurrentOwner] = useState<string>('alguém');
   const [alertMessage, setAlertMessage] = useState<string>(undefined);
 
@@ -109,28 +109,37 @@ export default function Lobby() {
       }
     });
 
-    if (returningPlayer) {
-      socket.addEventListener('current-state-is', (currentState) => {        //TODO possivelmente essa lógica só vai valer para quem está entrando com um jogo em andamento,
+    socket.addEventListener('current-state-is', (currentState) => {        //TODO possivelmente essa lógica só vai valer para quem está entrando com um jogo em andamento,
 
-        const {URL, page} = JSON.parse(currentState);
+      const {URL, page} = JSON.parse(currentState);
 
-        if (URL == '/BangBang' || URL == '/OEscolhido') {                    //sendo necessário repensar o que acontecer com quem só caiu e voltou. Isso porque
-          setAlertMessage('Aguardando finalizar jogo em andamento.');        //agora o jogador que caiu momentaneamente tem armazenado globalmente tanto a URL
-        } else {                                                             //quanto a página em que ele estava.
-          setAlertMessage('Reconectando...');
-          setRoom(previous => {             
-            return {
-              ...previous,
-              URL: URL,
-              page: page,    
-            }
-          })
-          return navigate(URL);
-        }
-      });
+      // if (URL == '/SelectNextGame') {
+      //   setAlertMessage('Entrando na partida...');
+      //   return navigate(URL, {
+      //     state: {
+      //       isYourTurn: false,
+      //       isOwner: false,
+      //     },
+      //   });
+      // } //TODO add popup 'u sure u wanna do dis?' for those entering an ongoing game that not bangbang or oEscolhido
+      
 
-      socket.push('get-current-state-by-room', room.code);
-    }
+      if (URL == '/BangBang' || URL == '/OEscolhido') {                    //sendo necessário repensar o que acontecer com quem só caiu e voltou. Isso porque
+        setAlertMessage('Aguardando finalizar jogo em andamento.');        //agora o jogador que caiu momentaneamente tem armazenado globalmente tanto a URL
+      } else {                                                             //quanto a página em que ele estava.
+        setAlertMessage('Reconectando...');
+        setRoom(previous => {             
+          return {
+            ...previous,
+            URL: URL,
+            page: page,    
+          }
+        })
+        return navigate(URL);
+      }
+    });
+
+    socket.push('get-current-state-by-room', room.code);
 
     return () => {
       socket.removeAllListeners();

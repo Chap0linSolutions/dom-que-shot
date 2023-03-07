@@ -154,7 +154,12 @@ export function GamePage({
         </div>
 
         <div className="animation-balloon">
-          <img src={balloon} className="balloon-img" onLoad={iAmReady} onError={iAmReady} />
+          <img
+            src={balloon}
+            className="balloon-img"
+            onLoad={iAmReady}
+            onError={iAmReady}
+          />
           <p className="balloon-text">{balloonText}</p>
         </div>
 
