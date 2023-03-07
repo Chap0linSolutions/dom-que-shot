@@ -145,7 +145,7 @@ export default function GamePage({
     }
   }, [receiveResults]);
 
-  let button = (animation !== animationState.End)
+  const button = (animation !== animationState.End)
   ? <Button 
     staysOnBottom
     isDisabled={remainingElements > 0}

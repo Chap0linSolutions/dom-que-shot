@@ -26,13 +26,3 @@ export const Title = styled.p`
     font-size: 21px;
   }
 `;
-
-export const Text = styled.p`
-  font-weight: 500;
-  font-size: 18px;
-  margin-top: 10px;
-  margin-bottom: 0;
-  @media (max-height: 740px) {
-    font-size: 16px;
-  }
-`;
