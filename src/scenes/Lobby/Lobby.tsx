@@ -99,27 +99,37 @@ export default function Lobby() {
       }
     });
 
-    if (returningPlayer) {
-      socket.addEventListener('current-game-is', (currentGame) => {
+    socket.addEventListener('current-game-is', (currentURL) => {
+
+      if (currentURL == '/SelectNextGame') {
+        setAlertMessage('Entrando na partida...');
+        return navigate(currentURL, {
+          state: {
+            isYourTurn: false,
+            isOwner: false,
+          },
+        });
+      } //TODO add popup 'u sure u wanna do dis?' for those entering an ongoing game that not bangbang or oEscolhido
+      if (returningPlayer) {
         if (
-          currentGame === 'BangBang' ||
-          currentGame === 'OEscolhido' ||
-          currentGame === 'Titanic'
+          currentURL === '/BangBang' ||
+          currentURL === '/OEscolhido' ||
+          currentURL === '/Titanic'
         ) {
           setAlertMessage('Aguardando finalizar jogo em andamento.');
-        } else if (currentGame !== null) {
+        } else {
           setAlertMessage('Reconectando...');
-          return navigate(`/${currentGame}`, {
+          return navigate(currentURL, {
             state: {
               isYourTurn: false,
               isOwner: false,
             },
           });
         }
-      });
+      }
+    });
 
-      socket.push('get-current-game-by-room', userData.roomCode);
-    }
+    socket.push('get-current-game-by-room', userData.roomCode);
 
     return () => {
       socket.removeAllListeners();

@@ -9,7 +9,6 @@ interface AlertProps {
 }
 
 export default function Alert({ message, icon, noButton }: AlertProps) {
-  const alertComponent = useRef();
   const background = useRef();
   const alert = useRef();
   const img = useRef();
