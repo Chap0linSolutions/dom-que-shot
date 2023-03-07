@@ -52,8 +52,12 @@ export default function FinishPage({
   const whoPlayed = finalResults
   .filter(p => p.shipPlacement.length > 1);
 
-  const everyoneSurvived = whoPlayed.filter(p => p.hits === 0)
+  const everyoneSurvived = whoPlayed.length > 1
+  && whoPlayed.filter(p => p.hits === 0)
   .length === whoPlayed.length - 1;
+
+  const noTitanicPlayed = whoPlayed.length === 1
+  && !everybodyFell;
  
   const icebergsHaveAppeared = icebergPlayer && icebergPlayer.hasAppeared;
   const mapType = (noOnePlayedInTime && icebergsHaveAppeared)
@@ -65,6 +69,8 @@ export default function FinishPage({
     title = 'NINGUÉM jogou a tempo!';
   } else if(everybodyFell) {
     title = `Todo mundo caiu :'(`;
+  } else if(noTitanicPlayed){
+    title = 'Os titanics comeram mosca!';
   } else if(everyoneSurvived && icebergsHaveAppeared) {
     if(icebergPlayer.shipPlacement[0] === -100){
       title = `O iceberg comeu mosca!`;
@@ -102,8 +108,9 @@ export default function FinishPage({
   }, []);
 
   useEffect(() => {
-    const hasBeenInitialized = (places.filter(p => p >= 100).length === 0);
-    if(places.length > 0 && hasBeenInitialized){
+    const hasBeenInitialized = (places.filter(p => p < 25).length === 25);
+    const showStarted = titanicPlayers.filter(p => p.hasAppeared).length > 0;
+    if(!showStarted && hasBeenInitialized){
       showResults();
     }
   }, [places]);

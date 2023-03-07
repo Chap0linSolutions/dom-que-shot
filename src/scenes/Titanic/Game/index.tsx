@@ -117,6 +117,34 @@ export default function GamePage({
     background: '#358fb0',
   }
 
+  const awaitingText = (receiveResults === `time's up`)
+  ? <>Tempo Esgotado!<br/>Aguardando resultados...</>
+  : <>Aguardando os<br/> demais jogadores...</>;
+
+  useEffect(() => {
+    if(receiveResults === `time's up`){
+     setAnimation(animationState.Change);
+    } else if(typeof receiveResults === 'string'){
+      gsap.to(buttonRef.current, {
+        opacity: 0,
+        yPercent: 200,
+        duration: 0.25,
+      });
+      gsap.timeline()
+      .to(pageRef.current, {
+        xPercent: 10,
+        duration: 0.5,
+        ease: 'power2',
+      })
+      .to(pageRef.current, {
+        xPercent: -100,
+        duration: 0.5,
+        delay: 0.1,
+        ease: 'power2',
+      }).call(finishPage);
+    }
+  }, [receiveResults]);
+
   let button = (animation !== animationState.End)
   ? <Button 
     staysOnBottom
@@ -127,29 +155,9 @@ export default function GamePage({
   : <End style={(isCurrentTurn)? currentTurnEndStyle : null}>
       <BeerIcon src={beer} ref={beerIcon}/>
       <Text>
-        Aguardando os <br/> demais jogadores...
+        {awaitingText}
       </Text>
     </End>;
-
-  if(receiveResults){
-    gsap.to(buttonRef.current, {
-      opacity: 0,
-      yPercent: 200,
-      duration: 0.25,
-    });
-    gsap.timeline()
-    .to(pageRef.current, {
-      xPercent: 10,
-      duration: 0.5,
-      ease: 'power2',
-    })
-    .to(pageRef.current, {
-      xPercent: -100,
-      duration: 0.5,
-      delay: 0.1,
-      ease: 'power2',
-    }).call(finishPage);
-  }
 
   return (
     <Background noImage>

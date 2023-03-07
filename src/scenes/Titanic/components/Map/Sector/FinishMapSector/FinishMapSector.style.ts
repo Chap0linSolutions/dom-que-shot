@@ -15,19 +15,31 @@ export const RegularSector = styled.div`
 `;
 
 export const TopLeftSector = styled(RegularSector)`
-    border-radius: 16px 0 0 0;
+    border-radius: 20px 0 0 0;
+    @media(max-height: 740px){
+        border-radius: 22px 0 0 0;
+    }
 `;
 
 export const TopRightSector = styled(RegularSector)`
-    border-radius: 0 16px 0 0;
+    border-radius: 0 20px 0 0;
+    @media(max-height: 740px){
+        border-radius: 0 22px 0 0;
+    }
 `;
 
 export const BottomLeftSector = styled(RegularSector)`
-    border-radius: 0 0 0 16px;
+    border-radius: 0 0 0 20px;
+    @media(max-height: 740px){
+        border-radius: 0 0 0 22px;
+    }
 `;
 
 export const BottomRightSector = styled(RegularSector)`
-    border-radius: 0 0 16px 0;
+    border-radius: 0 0 20px 0;
+    @media(max-height: 740px){
+        border-radius: 0 0 22px 0;
+    }
 `;
 
 export const ElementIcon = styled.img`
@@ -40,25 +52,32 @@ export const ElementIcon = styled.img`
 `;
 
 export const SmallElemetIcon = styled(ElementIcon)`
-    width: 30px;
+    width: 26px;
     @media(max-height: 740px){
-        width: 26px;
+        width: 22px;
     }
 `;
 
 export const IconCounter = styled.div`
-    width: 20px;
-    height: 20px;
-    margin: 5px;
+    width: 24px;
+    height: 24px;
+    margin: 0 2px;
     border-radius: 10px;
     background-color: #1e5168;
     display: flex;
     align-items: center;
     justify-content: center;
+    @media(mex-height: 740px){
+        width: 20px;
+        height: 20px;
+    }
 `;
 
 export const IconCount = styled.p`
-    font-size: 14px;
+    font-size: 12px;
     margin: 0;
     color: white;
+    @media(max-height: 740px){
+        font-size: 11px;
+    }
 `;

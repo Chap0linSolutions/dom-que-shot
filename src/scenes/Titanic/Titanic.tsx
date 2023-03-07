@@ -18,10 +18,10 @@ export default function Titanic() {
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////////
 
-  const gameTime = 15000;
+  const gameTime = 30000;
 
   const [msTimer, setMsTimer] = useState(gameTime);
-  const [timer, setTimer] = useState<NodeJS.Timer>();
+  const [timer, setTimer] = useState<NodeJS.Timer | null>(null);
 
   const startTimer = () => {
     setTimer(setInterval(run, 10));
@@ -32,10 +32,10 @@ export default function Titanic() {
     if (updatedMs > 0) {
       updatedMs -= 10;
       if (updatedMs === 0) {
-        console.log('Acabou o tempo.');
+        setResults(`time's up`);
         if(turnVisibility === true){
-          sendResults(JSON.stringify([-100]));
-        }
+          return sendResults(JSON.stringify([-100, -100, -100, -100, -100]));
+        } return sendResults(JSON.stringify([-100]));
       }
       setMsTimer(updatedMs);
     }
@@ -70,6 +70,8 @@ export default function Titanic() {
   );
 
   const sendResults = (selection) => { //selection is a JSON.stringify() of the chosen sectors positions
+    clearInterval(timer);
+    setTimer(null);
     socket.pushMessage(userData.roomCode, 'player-has-selected', selection);
   }
 
@@ -131,7 +133,11 @@ export default function Titanic() {
 
   useEffect(() => {
     if(typeof results === 'string'){
-      clearInterval(timer);
+      if(timer !== null){
+        console.log('parando o timer.');
+        clearInterval(timer);
+        setTimer(null);
+      }
     }
   }, [results])
 

@@ -10,12 +10,17 @@ interface PlayerCardsProps {
 export default function PlayerCards({titanicPlayers, icebergPlayer}:PlayerCardsProps){    
     
     const hasIcebergs = icebergPlayer && icebergPlayer.hasAppeared;
+    const whoFell = titanicPlayers.filter(p => p.shipPlacement[0] === -1);
     const whoPlayed = titanicPlayers.filter(p => p.shipPlacement.length > 1);
     const survivors = whoPlayed.filter(p => p.hits === 0);
-    
+
     let icebergStatus = (icebergPlayer)? icebergPlayer.shipPlacement[0] : 0;
-    if(icebergStatus !== -100 && survivors.length === whoPlayed.length){
-        icebergStatus = -300;
+    if(whoFell.length === titanicPlayers.length){
+        icebergStatus = -200;
+    } else if(survivors.length > 0
+        && survivors.length === whoPlayed.length
+        && icebergStatus !== -100){
+        icebergStatus = -300;       //-300 = o jogador da vez errou todo mundo
     }
 
     const icebergPlayerCard = (hasIcebergs)
