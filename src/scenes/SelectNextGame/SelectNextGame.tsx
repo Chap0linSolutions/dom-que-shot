@@ -90,10 +90,11 @@ export default function SelectNextGame() {
   const startSelectedGame = () => {
     if (user.isCurrentTurn === true) {
       setTimeout(() => {
-        socket.push('start-game', {
-          roomCode: room.code,
-          nextGame: nextGame,
-        });
+        socket.pushMessage(
+          room.code,
+          'start-game',
+          nextGame
+        );
       }, 1000);
     }
   };
@@ -137,6 +138,7 @@ export default function SelectNextGame() {
 
   const rouletteButton = useRef();
   const nextGameTitle = useRef();
+  const animation = useRef<gsap.core.Timeline>();
 
   const spin = (id) => {
     //console.log(games.map((game) => game.text));
@@ -150,24 +152,23 @@ export default function SelectNextGame() {
       display: 'none',
       duration: 0.25,
     });
-    const timeline = gsap.timeline();
-    timeline
-      .to('.rouletteCard', {
-        y: `-${3 * (room.gameList.length - 2) * (rouletteDimensions.cardSize + 2)}px`,
-        duration: 1,
-        ease: 'linear',
-      })
-      .to('.rouletteCard', {
-        y: `-${(room.gameList.length - 1 + id) * (rouletteDimensions.cardSize + 2)}px`,
-        duration: 2,
-        ease: 'elastic',
-      })
-      .to(nextGameTitle.current, {
-        opacity: 1,
-        duration: 1,
-        ease: 'power2',
-      })
-      .call(startSelectedGame);
+    animation.current = gsap.timeline()
+    .to('.rouletteCard', {
+      y: `-${3 * (room.gameList.length - 2) * (rouletteDimensions.cardSize + 2)}px`,
+      duration: 1,
+      ease: 'linear',
+    })
+    .to('.rouletteCard', {
+      y: `-${(room.gameList.length - 1 + id) * (rouletteDimensions.cardSize + 2)}px`,
+      duration: 2,
+      ease: 'elastic',
+    })
+    .to(nextGameTitle.current, {
+      opacity: 1,
+      duration: 1,
+      ease: 'power2',
+    })
+    .call(startSelectedGame);
   };
 
   const turnTheWheel = () => {
@@ -175,6 +176,9 @@ export default function SelectNextGame() {
   };
 
   const backToLobby = () => {
+    if(animation.current){
+      animation.current.kill();
+    }
     socket.push('move-room-to', {
       roomCode: room.code,
       destination: '/Lobby',
