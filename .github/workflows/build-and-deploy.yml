@@ -24,7 +24,7 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Setup environment variables
-        uses: npm run setup:prod
+        run: npm run setup:prod
 
       - name: Build project
         run: npm run build
