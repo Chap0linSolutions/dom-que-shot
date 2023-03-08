@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import { Player } from '../../contexts/GlobalContextProvider';
@@ -13,7 +13,7 @@ import './WhoDrank.css';
 
 
 export default function WhoDrankPage() {
-  const {user, room, setRoom} = useGlobalContext();
+  const {user, room, setUser, setRoom} = useGlobalContext();
 
   const navigate = useNavigate();
   let coverImg = undefined;
@@ -23,7 +23,6 @@ export default function WhoDrankPage() {
   } catch (e){
     coverImg = true;
   }
-  const userData = JSON.parse(window.localStorage.getItem('userData'));
 
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [SP, setSP] = useState<number>(Math.random());
@@ -34,6 +33,16 @@ export default function WhoDrankPage() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
+    socket.addEventListener('lobby-update', (reply) => { 
+      const newPlayerList = JSON.parse(reply);                  //newPlayerList = Player[]
+      setRoom(previous => {
+        return {
+          ...previous,
+          playerList: newPlayerList,
+        }
+      });
+    });
+
     socket.addEventListener('room-is-moving-to', (destination) => {
       setRoom(previous => {
         return {
@@ -43,6 +52,16 @@ export default function WhoDrankPage() {
         }
       });
       navigate(destination);
+    });
+    
+    socket.addEventListener('room-owner-is', (ownerName) => {
+      const isOwner = (user.nickname === ownerName);
+      setUser(previous => {
+        return {
+          ...previous,
+          isOwner: isOwner,
+        }
+      });
     });
 
     return () => {
@@ -91,15 +110,12 @@ export default function WhoDrankPage() {
 
   const backToRoulette = () => {
     socket.push('players-who-drank-are', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       players: JSON.stringify(selectedPlayers),
     });
 
-    socket.push('update-turn', userData.roomCode);
-    socket.push('move-room-to', {
-      roomCode: userData.roomCode,
-      destination: '/SelectNextGame',
-    });
+    socket.push('update-turn', room.code);
+    socket.pushMessage(room.code, 'end-game', null);
   };
 
   if (user.isCurrentTurn === true) {

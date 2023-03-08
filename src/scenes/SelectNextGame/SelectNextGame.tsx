@@ -39,6 +39,18 @@ export default function SelectNextGame() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
+    socket.addEventListener('lobby-update', (reply) => { 
+      console.log('atualizando lista de jogadores.');
+      const newPlayerList = JSON.parse(reply);                  //newPlayerList = Player[]
+      setRoom(previous => {
+        return {
+          ...previous,
+          playerList: newPlayerList,
+        }
+      });
+    });
+    socket.push('lobby-update', room.code);
+
     socket.addEventListener('player-turn-is', (turnName) => {
       setUser(previous => {
         return {
@@ -48,7 +60,8 @@ export default function SelectNextGame() {
       });
       setCurrentPlayer(turnName);
     });
-    socket.push('player-turn-is', room.code);
+    
+    socket.pushMessage(room.code, 'player-turn-is', null);
 
     socket.addEventListener('room-owner-is', (ownerName) => {
       setUser(previous => {

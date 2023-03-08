@@ -18,7 +18,7 @@ export default function Lobby() {
 
   const {user, room, setUser, setRoom} = useGlobalContext();
   const navigate = useNavigate();
-  // const returningPlayer = useLocation().state?.returningPlayer ? true : false;
+  const returningPlayer = useLocation().state?.returningPlayer ? true : false;
   const [currentOwner, setCurrentOwner] = useState<string>('alguém');
   const [alertMessage, setAlertMessage] = useState<string>(undefined);
 
@@ -64,7 +64,7 @@ export default function Lobby() {
       });
     });
 
-    socket.addEventListener('games-update', (newGameList) => {    //reply = string[] com o nome dos jogos da partida
+    socket.addEventListener('games-update', (newGameList) => { 
       const selectedGames = games.filter(game => newGameList.includes(game.text));
       const orderedSelection = selectedGames.map((game, index) => {return {...game, id: index}})
       setRoom(previous => {
@@ -81,7 +81,6 @@ export default function Lobby() {
     }
 
     socket.addEventListener('room-owner-is', (ownerName) => {
-      // socket.push('get-player-name-by-id', ownerID);           //não é mais necessário se o roow-owner-is já retornar o nome direto
       const isOwner = (user.nickname === ownerName);
       setUser(previous => {
         return {
@@ -92,9 +91,6 @@ export default function Lobby() {
       setCurrentOwner(ownerName);
     });
 
-    // socket.addEventListener('player-name', (playerName) => {   //aqui também não mais necessário
-    //   setCurrentOwner(playerName);
-    // });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (destination === '/SelectNextGame') {
@@ -109,24 +105,13 @@ export default function Lobby() {
       }
     });
 
-    socket.addEventListener('current-state-is', (currentState) => {        //TODO possivelmente essa lógica só vai valer para quem está entrando com um jogo em andamento,
+    socket.addEventListener('current-state-is', (currentState) => {        
 
-      const {URL, page} = JSON.parse(currentState);
+      const {URL, page} = JSON.parse(currentState);      
 
-      // if (URL == '/SelectNextGame') {
-      //   setAlertMessage('Entrando na partida...');
-      //   return navigate(URL, {
-      //     state: {
-      //       isYourTurn: false,
-      //       isOwner: false,
-      //     },
-      //   });
-      // } //TODO add popup 'u sure u wanna do dis?' for those entering an ongoing game that not bangbang or oEscolhido
-      
-
-      if (URL == '/BangBang' || URL == '/OEscolhido') {                    //sendo necessário repensar o que acontecer com quem só caiu e voltou. Isso porque
-        setAlertMessage('Aguardando finalizar jogo em andamento.');        //agora o jogador que caiu momentaneamente tem armazenado globalmente tanto a URL
-      } else {                                                             //quanto a página em que ele estava.
+      if ((!returningPlayer && URL === '/WhoDrank') || (URL === '/BangBang' || URL === '/OEscolhido')) {
+        setAlertMessage('Aguardando finalizar jogo em andamento.');        
+      } else {                                                             
         setAlertMessage('Reconectando...');
         setRoom(previous => {             
           return {

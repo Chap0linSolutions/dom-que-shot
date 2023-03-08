@@ -46,10 +46,7 @@ export default function EuNunca() {
   };
 
   const endOfGame = () => {
-    socket.push('move-room-to', {
-      roomCode: room.code,
-      destination: '/WhoDrank',
-    });
+    socket.pushMessage(room.code, 'end-game', coverImg);
   };
 
   const backToLobby = () => {

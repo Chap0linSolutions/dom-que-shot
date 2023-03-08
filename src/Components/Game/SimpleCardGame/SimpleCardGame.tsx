@@ -28,20 +28,15 @@ export default function SimpleCardGame({
 }: SimpleCardGameProps) {
 
   const {user, room, setUser, setRoom} = useGlobalContext();
-  const userData = JSON.parse(window.localStorage.getItem('userData'));
   const navigate = useNavigate();
 
   const endOfGame = () => {
-    socket.pushMessage(userData.roomCode, 'end-game', coverImg);
-    socket.push('move-room-to', {
-      roomCode: userData.roomCode,
-      destination: '/WhoDrank',
-    });
+    socket.pushMessage(room.code, 'end-game', null);
   };
 
   const backToLobby = () => {
     socket.push('move-room-to', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       destination: '/Lobby',
     });
   };
@@ -51,6 +46,16 @@ export default function SimpleCardGame({
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
+    socket.addEventListener('lobby-update', (reply) => { 
+      const newPlayerList = JSON.parse(reply);                  //newPlayerList = Player[]
+      setRoom(previous => {
+        return {
+          ...previous,
+          playerList: newPlayerList,
+        }
+      });
+    });
+
     socket.addEventListener('room-owner-is', (ownerName) => {
       const isOwner = (user.nickname === ownerName);
       setUser(previous => {
