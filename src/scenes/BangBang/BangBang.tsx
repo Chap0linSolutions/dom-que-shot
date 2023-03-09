@@ -124,10 +124,7 @@ export function BangBang() {
   }, []);
 
   const startGame = () => {
-    socket.push('move-room-to', {
-      roomCode: room.code,
-      destination: Game.Game,
-    });
+    socket.pushMessage(room.code, 'move-to', Game.Game);
   };
 
   const thisPlayerIsReady = () => {

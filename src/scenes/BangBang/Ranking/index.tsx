@@ -8,15 +8,15 @@ import crown from './img/crown.png';
 import Background from '../../../components/Background';
 import noOneVotedImage from '../../../assets/no-votes.png';
 
-type Player = {
+type Results = {
   id: string;
   nickname: string;
-  seed: string;
+  avatarSeed: string;
   shotTime: string;
 };
 
 interface RankingProps {
-  data: Player[];
+  data: Results[];
   finalRanking: boolean;
   roulettePage: () => void;
   gamePage: () => void;
@@ -49,7 +49,7 @@ export function RankingPage({
 
   const button =
     turnVisibility === true ? (
-      <Button staysOnBottom onClick={roulettePage}>
+      <Button isDisabled={!finalRanking} staysOnBottom onClick={roulettePage}>
         Próximo jogo
       </Button>
     ) : null;
@@ -64,14 +64,14 @@ export function RankingPage({
                 <div className="container-winner">
                   <div className="background-avatar">
                     <img className="crown" src={crown} />
-                    <Avatar seed={winner.seed} />
+                    <Avatar seed={winner.avatarSeed} />
                   </div>
                   <p>{winner.nickname}</p>
                   <span>{(parseInt(winner.shotTime) / -1000).toFixed(2)}s</span>
                 </div>
                 <div className="container-loser">
                   <div className="background-avatar">
-                    {finalRanking && <Avatar seed={loser.seed} />}
+                    {finalRanking && <Avatar seed={loser.avatarSeed} />}
                     <img className="thumbDown" src={thumbDown} />
                   </div>
                   {finalRanking && <p>{loser.nickname}</p>}
@@ -88,7 +88,7 @@ export function RankingPage({
                   {!noOneVoted ? (
                     <>
                       <img className="only-crown" src={crown} />
-                      <Avatar seed={winner.seed} />
+                      <Avatar seed={winner.avatarSeed} />
                     </>
                   ) : (
                     <img
