@@ -39,13 +39,13 @@ export default function OEscolhido() {
   const [timer, setTimer] = useState<NodeJS.Timer>();
 
   const startTimer = () => {
-    setTimer(setInterval(run, 10));
+    setTimer(setInterval(run, 100));
   };
 
   let updatedMs = msTimer;
   const run = () => {
     if (updatedMs > 0) {
-      updatedMs -= 10;
+      updatedMs -= 100;
       if (updatedMs === 0) {
         console.log('Acabou o tempo.');
         socket.pushMessage(room.code, 'vote-results', null);
