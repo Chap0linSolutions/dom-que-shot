@@ -27,7 +27,7 @@ function Welcome() {
             code: userData.roomCode,
             URL: nextURL,
           }});
-          navigate(nextURL, { state: { returningPlayer: true } });
+          navigate(nextURL);
         })
         .catch(() => {
           console.log('Acesso negado.');

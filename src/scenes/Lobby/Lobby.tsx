@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
 import games, { Game } from '../../contexts/games';
@@ -18,7 +18,6 @@ export default function Lobby() {
 
   const {user, room, setUser, setRoom} = useGlobalContext();
   const navigate = useNavigate();
-  const returningPlayer = useLocation().state?.returningPlayer ? true : false;
   const [currentOwner, setCurrentOwner] = useState<string>('alguém');
   const [alertMessage, setAlertMessage] = useState<string>(undefined);
 
@@ -55,7 +54,7 @@ export default function Lobby() {
     });
 
     socket.addEventListener('lobby-update', (reply) => { 
-      const newPlayerList = JSON.parse(reply);                  //newPlayerList = Player[]
+      const newPlayerList = JSON.parse(reply);    
       setRoom(previous => {
         return {
           ...previous,
@@ -93,7 +92,7 @@ export default function Lobby() {
 
 
     socket.addEventListener('room-is-moving-to', (destination) => {
-      if (destination === '/SelectNextGame') {
+      if (destination === '/SelectNextGame' || destination === '/WhoDrank') {
         setRoom(previous => {
           return {
             ...previous,
@@ -109,7 +108,7 @@ export default function Lobby() {
 
       const {URL, page} = JSON.parse(currentState);      
 
-      if ((!returningPlayer && URL === '/WhoDrank') || (URL === '/BangBang' || URL === '/OEscolhido')) {
+      if (URL === '/WhoDrank' || URL === '/BangBang' || URL === '/OEscolhido') {
         setAlertMessage('Aguardando finalizar jogo em andamento.');        
       } else {                                                             
         setAlertMessage('Reconectando...');

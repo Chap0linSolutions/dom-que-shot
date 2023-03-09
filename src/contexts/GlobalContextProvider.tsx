@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext, useState, useEffect } from 'react';
 import { Game } from './games';
+import gsap from 'gsap';
 
 export type Player = {
   avatarSeed: string;
@@ -70,6 +71,10 @@ export function useGlobalContext() {
 export default function GlobalProvider(props: GlobalProviderProps) {
   const [user, setUser] = useState<User>(initialValues.user);
   const [room, setRoom] = useState<Room>(initialValues.room);
+
+  useEffect(() => {
+    gsap.config({nullTargetWarn:false});
+  }, []);
 
   useEffect(() => {
     //console.log(user);

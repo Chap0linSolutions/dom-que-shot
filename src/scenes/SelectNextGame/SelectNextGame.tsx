@@ -40,7 +40,6 @@ export default function SelectNextGame() {
 
   useEffect(() => {
     socket.addEventListener('lobby-update', (reply) => { 
-      console.log('atualizando lista de jogadores.');
       const newPlayerList = JSON.parse(reply);                  //newPlayerList = Player[]
       setRoom(previous => {
         return {
@@ -49,7 +48,6 @@ export default function SelectNextGame() {
         }
       });
     });
-    socket.push('lobby-update', room.code);
 
     socket.addEventListener('player-turn-is', (turnName) => {
       setUser(previous => {
@@ -154,7 +152,6 @@ export default function SelectNextGame() {
   const animation = useRef<gsap.core.Timeline>();
 
   const spin = (id) => {
-    //console.log(games.map((game) => game.text));
     const selectedGame = room.gameList.find((game) => game.id === id);
     nextGame = selectedGame.text;
     setNextGameName(nextGame);

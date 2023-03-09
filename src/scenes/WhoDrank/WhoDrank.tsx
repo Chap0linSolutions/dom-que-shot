@@ -24,9 +24,14 @@ export default function WhoDrankPage() {
     coverImg = true;
   }
 
+  const playerList = useRef<Player[]>(room.playerList);
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [SP, setSP] = useState<number>(Math.random());
   const [buttonText, setButtonText] = useState('Ninguém bebeu');
+
+  useEffect(() => {
+    gsap.config({nullTargetWarn:false});
+  }, [])
 
   //SOCKET////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -127,7 +132,7 @@ export default function WhoDrankPage() {
             <p className="WhoDrankTitle">E aí, quem perdeu?</p>
             <p style={{ margin: 0 }}>Selecione quem bebeu uma dose:</p>
             <div className="WhoDrankPlayerListDiv">
-              {room.playerList.map((player) => (
+              {playerList.current.map((player) => (
                 <div
                   onClick={() => {
                     selectPlayer(player);
