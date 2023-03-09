@@ -127,7 +127,7 @@ export default function SelectNextGame() {
   }, [number]);
 
   const startSelectedGame = () => {
-    if (ownerVisibility === Visibility.Visible) {
+    if (turnVisibility === Visibility.Visible) {
       setTimeout(() => {
         socket.push('start-game', {
           roomCode: userData.roomCode,
@@ -210,7 +210,7 @@ export default function SelectNextGame() {
   };
 
   const turnTheWheel = () => {
-    socket.push('roulette-number-is', userData.roomCode);
+    socket.pushMessage(userData.roomCode, 'roulette-number-is', null);
   };
 
   const backToLobby = () => {
