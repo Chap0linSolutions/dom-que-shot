@@ -108,19 +108,27 @@ export default function Lobby() {
 
       const {URL, page} = JSON.parse(currentState);      
 
-      if (URL === '/WhoDrank' || URL === '/BangBang' || URL === '/OEscolhido') {
-        setAlertMessage('Aguardando finalizar jogo em andamento.');        
-      } else {                                                             
-        setAlertMessage('Reconectando...');
-        setRoom(previous => {             
-          return {
-            ...previous,
-            URL: URL,
-            page: page,    
+      switch(URL){
+        case '/BangBang':
+        case '/OEscolhido':
+          if(!page || page === 0){                //se o jogo ainda estiver na capa é possível entrar tardiamente
+            setAlertMessage('Reconectando...');
+            goTo(URL, page);
+          } else {
+            setAlertMessage('Aguardando finalizar jogo em andamento.');
           }
-        })
-        return navigate(URL);
+          break;
+        case '/WhoDrank':
+          setAlertMessage('Aguardando finalizar jogo em andamento.');
+          break;
+        default:
+          goTo(URL, page);
       }
+    });
+
+    socket.addEventListener('cant-go-back-to', (gameName) => {
+      setAlertMessage(`Oops! Parece que sua conexão falhou ou você atualizou a página durante uma rodada
+      de ${gameName}, e não temos como te colocar de volta. Por favor aguarde a rodada terminar.`); 
     });
 
     socket.push('get-current-state-by-room', room.code);
@@ -131,6 +139,17 @@ export default function Lobby() {
   }, []);
 
   //////////////////////////////////////////////////////////////////////////////////////////////
+
+  const goTo = (URL: string, page: number | undefined) => {
+    setRoom(previous => {             
+      return {
+        ...previous,
+        URL: URL,
+        page: page,    
+      }
+    })
+    return navigate(URL);
+  }
 
   const setGlobalRoomPage = (newPage: LobbyStates) => {
     setRoom(previous => {return {...previous, page: newPage}})

@@ -9,8 +9,13 @@ import coverImg from '../../assets/game-covers/o-escolhido.png';
 import { Player, useGlobalContext } from '../../contexts/GlobalContextProvider';
 import './OEscolhido.css';
 
+export type MostVoted = {
+  nickname: string,
+  avatarSeed: string,
+}
+
 type VoteResults = {
-  players: Player[],
+  players: MostVoted[],
   numberOfVotes: number,
 }
 
@@ -73,10 +78,7 @@ export default function OEscolhido() {
   }
 
   const startGame = () => {
-    socket.push('move-room-to', {
-      roomCode: room.code,
-      destination: Game.Game,
-    });
+    socket.pushMessage(room.code, 'move-to', Game.Game);
   };
 
   const nextRound = () => {
@@ -103,6 +105,16 @@ export default function OEscolhido() {
 
   useEffect(() => {
 
+    socket.addEventListener('lobby-update', (reply) => { 
+      const newPlayerList = JSON.parse(reply);    
+      setRoom(previous => {
+        return {
+          ...previous,
+          playerList: newPlayerList,
+        }
+      });
+    });
+
     socket.addEventListener('room-owner-is', (ownerName) => {
       const isOwner = (user.nickname === ownerName);
       setUser(previous => {
@@ -115,11 +127,11 @@ export default function OEscolhido() {
 
     socket.addEventListener('vote-results', (mostVoted) => {
       const results = JSON.parse(mostVoted);
+      console.log('Mais votados:');
+      console.log(results);
       const amount = results.at(0).votesReceived;
-      const votedNames = results.map(p => p.nickname);
-      const votedPlayers = room.playerList.filter(p => votedNames.includes(p.nickname));
       setVoteResults({
-        players: votedPlayers,
+        players: results,
         numberOfVotes: amount,
       });
       setGlobalRoomPage(Game.Finish);

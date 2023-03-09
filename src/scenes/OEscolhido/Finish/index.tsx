@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
-import { Player } from '../../../contexts/GlobalContextProvider';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
 import noOneVoted from '../../../assets/no-votes.png';
-import './Finish.style';
+import { MostVoted } from '../OEscolhido';
 import {
   Finish,
   Content,
@@ -34,9 +33,8 @@ import {
   MultipleTiesAvatar,
 } from './Finish.style';
 
-
 interface CoverProps {
-  votedPlayer: Player[];
+  votedPlayer: MostVoted[];
   numberOfVotes: number;
   turnVisibility: boolean;
   roulettePage: () => void;

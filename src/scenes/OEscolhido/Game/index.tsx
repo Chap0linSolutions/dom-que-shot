@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, useRef } from 'react';
 import { Player } from '../../../contexts/GlobalContextProvider';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
@@ -25,6 +25,8 @@ export default function GamePage({
     playerID: 0,
   });
 
+  const players = useRef(playerList);
+
   useLayoutEffect(() => {
     if (selectedPlayer) {
       gsap.to('.selectedItem', { scale: 1.08, duration: 0.5 });
@@ -45,7 +47,7 @@ export default function GamePage({
         <div className="OEscolhidoTitleAndList">
           <p className="OEscolhidoTitle">Vote em quem deve beber:</p>
           <div className="GamePlayerListDiv">
-            {playerList.map((player, i) => (
+            {players.current.map((player, i) => (
               <div
                 key={`${i}`}
                 onClick={() => {
