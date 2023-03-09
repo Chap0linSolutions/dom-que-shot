@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { gameCards } from './GameCards';
 import { ArrowRight, AlertTriangle } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import ImageSlider from './ImageSlider';
@@ -8,6 +7,7 @@ import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Popup from '../../components/Popup';
 import api from '../../services/api';
+import games from '../../contexts/games';
 import './Home.css';
 
 type GameInformation = {
@@ -143,7 +143,7 @@ function Home() {
       <div className="ChooseGameDiv">
         <p className="ChooseGameText">Já conhece nossos jogos?</p>
         <ImageSlider
-          content={gameCards}
+          content={games}
           show={() => setPopupVisibility(true)}
           setGameInfo={setGameInfo}
         />

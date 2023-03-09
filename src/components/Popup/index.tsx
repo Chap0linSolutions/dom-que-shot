@@ -84,11 +84,11 @@ export default function Popup({
           </p>
           <X color="#170C32" width="24px" strokeWidth="5px" onClick={exit} />
         </div>
-        <p
+        <div
           className="PopupDescription"
           style={descriptionColor ? { color: descriptionColor } : {}}>
           {description}
-        </p>
+        </div>
       </div>
     </div>
   );

@@ -74,7 +74,7 @@ export default function Settings({
               <GameCard
                 onClick={() => updateSelection(card.id)}
                 id={card.id}
-                title={card.text}
+                title={card.title}
                 image={card.src}
                 backgroundColor={card.backgroundColor}
               />
