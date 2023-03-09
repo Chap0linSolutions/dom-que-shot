@@ -110,16 +110,6 @@ export default function FinishPage({
         delay: 1.4,
       });
 
-    return () => {
-      cardAnimation.revert();
-      avatarAnimation.revert();
-      roleAnimation.revert();
-      nickAnimation.revert();
-      buttonAnimation.revert();
-    };
-  }, []);
-
-  useLayoutEffect(() => {
     const iconAnimation = gsap.to('.icon', {
       rotate: -360,
       duration: 5,
@@ -128,9 +118,14 @@ export default function FinishPage({
     });
 
     return () => {
+      cardAnimation.revert();
+      avatarAnimation.revert();
+      roleAnimation.revert();
+      nickAnimation.revert();
+      buttonAnimation.revert();
       iconAnimation.revert();
     };
-  });
+  }, []);
 
   const winners = useRef<ListedPlayerProps[]>(
     players.filter((player) => player.id === 1000)

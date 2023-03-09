@@ -40,7 +40,7 @@ export default function AwaitingBanner({
     return () => {
       loop.revert();
     };
-  });
+  }, []);
 
   return (
     <BannerDiv style={bannerStyle}>

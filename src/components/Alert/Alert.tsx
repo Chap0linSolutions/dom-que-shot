@@ -27,12 +27,6 @@ export default function Alert({ message, icon, noButton }: AlertProps) {
       repeat: -1,
     });
 
-    return () => {
-      loop.revert();
-    };
-  });
-
-  useEffect(() => {
     const intro = gsap
       .timeline()
       .to(background.current, { opacity: 1, duration: 0.2 })
@@ -40,6 +34,7 @@ export default function Alert({ message, icon, noButton }: AlertProps) {
 
     return () => {
       intro.revert();
+      loop.revert();
     };
   }, []);
 
