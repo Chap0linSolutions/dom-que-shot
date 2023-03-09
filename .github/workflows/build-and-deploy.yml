@@ -1,8 +1,11 @@
 name: Build and Deploy
 
 on:
-  pull_request:
-    types: [closed]
+  # pull_request:
+  #   types: [closed]
+  #   branches:
+  #     - master
+  push:
     branches:
       - master
 
@@ -26,9 +29,11 @@ jobs:
       - name: Setup environment variables
         run: npm run setup:prod
 
-
       - name: Build project
         run: npm run build
+
+      - name: check dist folder
+        run: ls -a
 
   deploy:
     name: 🎉 Deploy
