@@ -6,7 +6,7 @@ import Background from '../../../components/Background';
 import PlayerList from './PlayerList';
 import Button from '../../../components/Button';
 import './Main.css';
-import Alert from '../../../Components/Alert';
+import Alert from '../../../components/Alert';
 
 enum Visibility {
   Invisible,
