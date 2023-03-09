@@ -31,15 +31,7 @@ jobs:
 
       - name: Build project
         run: npm run build
-
-  deploy:
-    name: 🎉 Deploy
-    needs: build
-    # if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    steps:
-      - name: check dist folder
-        run: ls -a
+      
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
