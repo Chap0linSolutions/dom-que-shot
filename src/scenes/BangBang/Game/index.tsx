@@ -51,7 +51,7 @@ export function GamePage({
 
   const [timer, setTimer] = useState<NodeJS.Timer>();
   const startTimer = () => {
-    setTimer(setInterval(run, 100));
+    setTimer(setInterval(run, 97));
   };
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export function GamePage({
 
   let updatedMs = msTimer;
   const run = () => {
-    updatedMs -= 100;
+    updatedMs -= 97;
     return setMsTimer(updatedMs);
   };
 
@@ -118,7 +118,7 @@ export function GamePage({
     if (msTimer > 0) {
       // queima da largada
       console.log('False start');
-      shot(-10000 - msTimer);
+      shot(-10000);
     } else {
       shot(msTimer);
     }
