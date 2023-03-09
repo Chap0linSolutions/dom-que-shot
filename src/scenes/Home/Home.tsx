@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
-import { gameCards } from './GameCards';
 import { ArrowRight, AlertTriangle } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import ImageSlider from './ImageSlider';
 import Background from '../../components/Background';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Popup from '../../components/Popup';
 import api from '../../services/api';
-import { useGlobalContext } from '../../contexts/GlobalContextProvider';
+import games from '../../contexts/games';
 import './Home.css';
 
 
@@ -158,7 +158,7 @@ function Home() {
       <div className="ChooseGameDiv">
         <p className="ChooseGameText">Já conhece nossos jogos?</p>
         <ImageSlider
-          content={gameCards}
+          content={games}
           show={() => setPopupVisibility(true)}
           setGameInfo={setGameInfo}
         />

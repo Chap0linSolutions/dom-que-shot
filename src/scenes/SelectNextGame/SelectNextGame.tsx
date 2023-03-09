@@ -153,7 +153,7 @@ export default function SelectNextGame() {
 
   const spin = (id) => {
     const selectedGame = room.gameList.find((game) => game.id === id);
-    nextGame = selectedGame.text;
+    nextGame = selectedGame.title;
     setNextGameName(nextGame);
 
     setRouletteIsSpinning(true);
@@ -221,7 +221,7 @@ export default function SelectNextGame() {
                         : sizeConstant * rouletteDimensions.cardSize
                     }
                     height={rouletteDimensions.cardSize}
-                    text={rouletteCard.text}
+                    text={rouletteCard.title}
                     src={rouletteCard.src}
                   />
                 </Card>
@@ -235,7 +235,7 @@ export default function SelectNextGame() {
                         : sizeConstant * rouletteDimensions.cardSize
                     }
                     height={rouletteDimensions.cardSize}
-                    text={rouletteCard.text}
+                    text={rouletteCard.title}
                     src={rouletteCard.src}
                   />
                 </Card>
@@ -249,7 +249,7 @@ export default function SelectNextGame() {
                         : sizeConstant * rouletteDimensions.cardSize
                     }
                     height={rouletteDimensions.cardSize}
-                    text={rouletteCard.text}
+                    text={rouletteCard.title}
                     src={rouletteCard.src}
                   />
                 </Card>

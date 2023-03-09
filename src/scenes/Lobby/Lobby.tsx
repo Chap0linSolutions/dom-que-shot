@@ -64,7 +64,7 @@ export default function Lobby() {
     });
 
     socket.addEventListener('games-update', (newGameList) => { 
-      const selectedGames = games.filter(game => newGameList.includes(game.text));
+      const selectedGames = games.filter(game => newGameList.includes(game.title));
       const orderedSelection = selectedGames.map((game, index) => {return {...game, id: index}})
       setRoom(previous => {
         return {
@@ -165,7 +165,7 @@ export default function Lobby() {
 
   const finishSettings = (selectedGames: Game[]) => {
     if (selectedGames.length >= 3) {
-      const selection = selectedGames.map((game) => game.text);
+      const selection = selectedGames.map((game) => game.title);
       socket.push('selected-games-are', {
         roomCode: room.code,
         selectedGames: JSON.stringify(selection),
