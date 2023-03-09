@@ -100,7 +100,6 @@ export default function Lobby() {
     });
 
     socket.addEventListener('current-game-is', (currentURL) => {
-
       if (currentURL == '/SelectNextGame') {
         setAlertMessage('Entrando na partida...');
         return navigate(currentURL, {
@@ -111,10 +110,7 @@ export default function Lobby() {
         });
       } //TODO add popup 'u sure u wanna do dis?' for those entering an ongoing game that not bangbang or oEscolhido
       if (returningPlayer) {
-        if (
-          currentURL == '/BangBang' ||
-          currentURL == '/OEscolhido'
-        ) {
+        if (currentURL == '/BangBang' || currentURL == '/OEscolhido') {
           setAlertMessage('Aguardando finalizar jogo em andamento.');
         } else {
           setAlertMessage('Reconectando...');
