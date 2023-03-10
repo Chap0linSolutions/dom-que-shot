@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
 import CoverPage from '../../components/Game/Cover';
@@ -8,16 +8,10 @@ import CategoryPage from './Category';
 import GamePage from './Game';
 import FinishPage from './Finish';
 
-export interface ListedPlayerProps {
-  nickname: string;
-  avatarSeed: string;
-  id: number;
-  whoYouAre: string;
-}
-
-type whoPlayer = {
+export type whoPlayer = {
   player: string;
   whoPlayerIs: string;
+  winner: boolean;
 };
 
 enum Game {
@@ -32,11 +26,8 @@ export default function OEscolhido() {
   const title = 'Quem Sou Eu?';
 
   const navigate = useNavigate();
-  const [playerList, updatePlayerList] = useState<ListedPlayerProps[]>([]);
   const [category, setCategory] = useState<string>(undefined);
-  const [playersAndNames, setPlayersAndNames] =
-    useState<whoPlayer[]>(undefined);
-  const [winners, setWinners] = useState<string[]>([]);
+  const [playersAndNames, setPlayersAndNames] = useState<whoPlayer[]>(undefined);
 
   const description = (
     <>
@@ -52,6 +43,13 @@ export default function OEscolhido() {
     </>
   );
 
+  const startCategorySelection = () => {
+    socket.push('move-room-to', {
+      roomCode: room.code,
+      destination: Game.Category,
+    });
+  };
+
   const startGame = () => {
     socket.push('move-room-to', {
       roomCode: room.code,
@@ -59,10 +57,10 @@ export default function OEscolhido() {
     });
   };
 
-  const startCategorySelection = () => {
+  const finishGame = () => {
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: Game.Category,
+      destination: Game.Finish,
     });
   };
 
@@ -74,10 +72,18 @@ export default function OEscolhido() {
     });
   };
 
+  const sendWinners = (winners: string[]) => {
+    socket.pushMessage(
+      room.code,
+      'winners-are',
+      JSON.stringify(winners)
+    );
+  };
+
   const backToRoulette = () => {
     socket.push('players-who-drank-are', {
       roomCode: room.code,
-      players: JSON.stringify(playerList.filter((player) => player.id === 0)), //all players who didn't get their characters right will have the id field set to 0
+      players: JSON.stringify(playersAndNames.filter(p => !p.winner)), 
     });
 
     socket.push('update-turn', room.code);
@@ -89,6 +95,11 @@ export default function OEscolhido() {
 
   const setGlobalRoomPage = (newPage: Game) => {
     setRoom(previous => {return {...previous, page: newPage}})
+  }
+
+  const selectCategory = (category: string) => {
+    console.log(`categoria selecionada: ${category}`);
+    socket.pushMessage(room.code, 'game-category-is', category);
   }
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
@@ -131,17 +142,30 @@ export default function OEscolhido() {
     });
 
     socket.addEventListener('players-and-names-are', (newNames) => {
-      setPlayersAndNames(JSON.parse(newNames));
+      setPlayersAndNames(JSON.parse(newNames)
+        .map((p) => {
+          return {
+            player: p.player,
+            whoPlayerIs: p.whoPlayerIs,
+            winner: false,
+          }
+        }
+      ));
     });
 
     socket.addEventListener('winners-are', (players) => {
-      setWinners(JSON.parse(players));
+      const winners: string[] = JSON.parse(players);
+      setPlayersAndNames(previous => previous.map(p => {
+        return {
+          ...p,
+          winner: winners.includes(p.player),
+        }
+      }))
+      finishGame();
     });
 
     socket.addEventListener('game-category-is', (category) => {
-      if (user.isCurrentTurn === false) {
-        setCategory(category);
-      }
+      setCategory(category);
     });
 
     return () => {
@@ -149,104 +173,33 @@ export default function OEscolhido() {
     };
   }, []);
 
-  //////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    updatePlayerList(room.playerList.map((p, index) => {
-      return {
-        nickname: p.nickname,
-        avatarSeed: p.avatarSeed,
-        id: index,
-        whoYouAre: undefined,
-      }
-    }));
-  }, []);
+    if(!category && room.page === Game.Game){
+      socket.pushMessage(room.code, 'update-me', 'please');
+    }
+  }, [])
 
   useEffect(() => {
-    if (playersAndNames) {
-      const newPlayerList = playerList.map((player) => {
-        const i = playersAndNames.findIndex(
-          (p) => p.player === player.nickname
-        );
-        return {
-          ...player,
-          whoYouAre: i > -1 ? playersAndNames[i].whoPlayerIs : player.whoYouAre,
-        };
-      });
-      updatePlayerList(newPlayerList);
+    if(playersAndNames &&
+      user.isCurrentTurn &&
+      room.page === Game.Category
+    ){
+        startGame();
     }
   }, [playersAndNames]);
 
-  useEffect(() => {
-    if (winners.length > 0) {
-      updatePlayerList(
-        playerList.map((player) => {
-          return {
-            ...player,
-            id: winners.includes(player.nickname) ? 1000 : 0,
-          };
-        })
-      );
-      setGlobalRoomPage(Game.Finish);
-    }
-  }, [winners]);
-
-  useEffect(() => {
-    if (playerList) {
-      console.log(playerList.filter((player) => player.id));
-
-      const playersWhoWon = playerList.filter((player) => player.id === 1000);
-      if (playersWhoWon.length > 0) {
-        if (winners.length === 0) {
-          console.log('enviando lista de vencedores ao jogo...');
-          socket.pushMessage(
-            room.code,
-            'winners-are',
-            JSON.stringify(playersWhoWon.map((w) => w.nickname))
-          );
-        }
-      } else {
-        const playersWithNoNames = playerList
-          .filter((p) => p.whoYouAre === undefined)
-          .map((p) => p.nickname);
-
-        if (room.page === Game.Category) {
-          if (playersWithNoNames.length === 0) {
-            return startGame();
-          }
-        }
-
-        if (room.page === Game.Game) {
-          if (playersWithNoNames.length > 0 && user.isCurrentTurn === true) {
-            socket.pushMessage(
-              room.code,
-              'send-names',
-              JSON.stringify(playersWithNoNames)
-            );
-          }
-        }
+  const listOfPlayers = (playersAndNames)
+  ? room.playerList.map(player => {
+      const i = playersAndNames.findIndex(p => p.player === player.nickname);
+      return {
+        nickname: player.nickname,
+        avatarSeed: player.avatarSeed,
+        whoPlayerIs: (i > -1)? playersAndNames[i].whoPlayerIs : 'carregando...',
       }
-    }
-  }, [playerList]);
-
-  useEffect(() => {
-    if (category) {
-      console.log(`categoria selecionada: ${category}`);
-      socket.pushMessage(room.code, 'game-category-is', category);
-      if (user.isCurrentTurn === true) {
-        const playersWithNoNames = playerList
-          .filter((p) => p.whoYouAre === undefined)
-          .map((p) => p.nickname);
-        console.log('Jogadores que ainda não têm nome definido:');
-        console.log(playersWithNoNames);
-        socket.pushMessage(
-          room.code,
-          'send-names',
-          JSON.stringify(playersWithNoNames)
-        );
-      }
-    }
-  }, [category]);
+    })
+  : [];
 
   switch (room.page) {
     case Game.Category:
@@ -254,7 +207,7 @@ export default function OEscolhido() {
         <CategoryPage
           title={title}
           description={description}
-          setCategory={setCategory}
+          setCategory={selectCategory}
           turnVisibility={user.isCurrentTurn}
         />
       );
@@ -266,8 +219,8 @@ export default function OEscolhido() {
           description={description}
           category={category}
           currentPlayerNickname={user.nickname}
-          players={playerList}
-          setWinners={updatePlayerList} //the winners of the match will have the 'whoYouAre' field either set as 'winner' or undefined. That's how we'll filter it
+          players={listOfPlayers}
+          setWinners={sendWinners}
           turnVisibility={user.isCurrentTurn}
         />
       );
@@ -276,7 +229,7 @@ export default function OEscolhido() {
       return (
         <FinishPage
           logo={coverImg}
-          players={playerList}
+          players={playersAndNames}
           turnVisibility={user.isCurrentTurn}
           roulettePage={backToRoulette}
         />
@@ -297,3 +250,106 @@ export default function OEscolhido() {
       );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //////////////////////////////////////////////////////////////////////////////////////////////
+
+  // useEffect(() => {
+  //   updatePlayerList(room.playerList.map((p, index) => {
+  //     return {
+  //       nickname: p.nickname,
+  //       avatarSeed: p.avatarSeed,
+  //       id: index,
+  //       whoYouAre: undefined,
+  //     }
+  //   }));
+  // }, []);
+
+  // useEffect(() => {
+  //   if (playersAndNames) {
+  //     const newPlayerList = playerList.map((player) => {
+  //       const i = playersAndNames.findIndex(
+  //         (p) => p.player === player.nickname
+  //       );
+  //       return {
+  //         ...player,
+  //         whoYouAre: i > -1 ? playersAndNames[i].whoPlayerIs : player.whoYouAre,
+  //       };
+  //     });
+  //     updatePlayerList(newPlayerList);
+  //   }
+  // }, [playersAndNames]);
+
+  // useEffect(() => {
+  //   if (winners.length > 0) {
+  //     updatePlayerList(
+  //       playerList.map((player) => {
+  //         return {
+  //           ...player,
+  //           id: winners.includes(player.nickname) ? 1000 : 0,
+  //         };
+  //       })
+  //     );
+  //     setGlobalRoomPage(Game.Finish);
+  //   }
+  // }, [winners]);
+
+  // useEffect(() => {
+  //   if (playerList) {
+  //     console.log(playerList.filter((player) => player.id));
+
+  //     const playersWhoWon = playerList.filter((player) => player.id === 1000);
+  //     if (playersWhoWon.length > 0) {
+  //       if (winners.length === 0) {
+  //         console.log('enviando lista de vencedores ao jogo...');
+  //         socket.pushMessage(
+  //           room.code,
+  //           'winners-are',
+  //           JSON.stringify(playersWhoWon.map((w) => w.nickname))
+  //         );
+  //       }
+  //     } else {
+  //       const playersWithNoNames = playerList
+  //         .filter((p) => p.whoYouAre === undefined)
+  //         .map((p) => p.nickname);
+
+  //       if (room.page === Game.Category) {
+  //         if (playersWithNoNames.length === 0) {
+  //           return startGame();
+  //         }
+  //       }
+
+  //       if (room.page === Game.Game) {
+  //         if (playersWithNoNames.length > 0 && user.isCurrentTurn === true) {
+  //           socket.pushMessage(
+  //             room.code,
+  //             'send-names',
+  //             JSON.stringify(playersWithNoNames)
+  //           );
+  //         }
+  //       }
+  //     }
+  //   }
+  // }, [playerList]);

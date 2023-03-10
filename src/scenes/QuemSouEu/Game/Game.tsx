@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { ListedPlayerProps } from '../QuemSouEu';
 import { Eye, EyeOff } from 'react-feather';
 import Avatar from '../../../components/Avatar';
 import Background from '../../../components/Background';
@@ -27,7 +26,13 @@ import {
   Content,
 } from './Game.style';
 
-interface WhoPlayersProps extends ListedPlayerProps {
+interface WhoPlayersProps {
+  nickname: string,
+  avatarSeed: string,
+  whoPlayerIs: string,
+}
+
+interface WhoPlayersSelectable extends WhoPlayersProps {
   selected: boolean;
   isNameVisible: boolean;
 }
@@ -36,8 +41,8 @@ interface GameProps {
   title: string;
   description: string | JSX.Element;
   currentPlayerNickname: string;
-  players: ListedPlayerProps[];
-  setWinners: React.Dispatch<React.SetStateAction<ListedPlayerProps[]>>;
+  players: WhoPlayersProps[];
+  setWinners: (value: string[]) => void;
   turnVisibility: boolean;
   category: string;
 }
@@ -52,7 +57,7 @@ export default function GamePage({
   setWinners,
 }: GameProps) {
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
-  const [whoPlayers, setWhoPlayers] = useState<WhoPlayersProps[]>(
+  const [whoPlayers, setWhoPlayers] = useState<WhoPlayersSelectable[]>(
     players.map((player) => {
       return { ...player, selected: false, isNameVisible: false };
     })
@@ -74,14 +79,9 @@ export default function GamePage({
   };
 
   const endGame = () => {
-    //here's where we set the id field of each player to either 1000 (winner) or 0 (loser).
-    const winners = players.map((player) => {
-      const p = whoPlayers.filter((pl) => pl.nickname === player.nickname);
-      if (p[0].selected === true) {
-        return { ...player, id: 1000 };
-      }
-      return { ...player, id: 0 };
-    });
+    const winners = whoPlayers
+    .filter(p => p.selected)
+    .map(p => p.nickname);
     setWinners(winners);
   };
 
@@ -149,7 +149,7 @@ export default function GamePage({
                 player.nickname === currentPlayerNickname ? (
                   <YourName>{`(você)`}</YourName>
                 ) : (
-                  <OthersName>{player.whoYouAre}</OthersName>
+                  <OthersName>{player.whoPlayerIs}</OthersName>
                 );
               return (
                 <Card

@@ -118,6 +118,14 @@ export default function Lobby() {
             setAlertMessage('Aguardando finalizar jogo em andamento.');
           }
           break;
+        case '/QuemSouEu':
+          if(page !== 3){                         //no caso do Quem Sou Eu os jogadores podem entrar a qualquer momento, com exceção da tela de resultados
+            setAlertMessage('Reconectando...');
+            goTo(URL, page);
+          } else {
+            setAlertMessage('Aguardando finalizar jogo em andamento.');
+          }
+          break;
         case '/WhoDrank':
           setAlertMessage('Aguardando finalizar jogo em andamento.');
           break;

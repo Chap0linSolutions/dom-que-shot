@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useRef } from 'react';
+import { useGlobalContext } from '../../../contexts/GlobalContextProvider';
+import { whoPlayer } from '../QuemSouEu';
 import Background from '../../../components/Background';
-import { ListedPlayerProps } from '../QuemSouEu';
 import Header from '../../../components/Header';
 import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
@@ -26,7 +27,7 @@ import {
 
 interface CoverProps {
   logo: string;
-  players: ListedPlayerProps[];
+  players: whoPlayer[];
   turnVisibility: boolean;
   roulettePage: () => void;
 }
@@ -37,6 +38,7 @@ export default function FinishPage({
   roulettePage,
   turnVisibility,
 }: CoverProps) {
+
   const rouletteButtonText = 'Próximo jogo';
   const finishButton = useRef();
 
@@ -127,12 +129,21 @@ export default function FinishPage({
     };
   }, []);
 
-  const winners = useRef<ListedPlayerProps[]>(
-    players.filter((player) => player.id === 1000)
+  const playerBase = useRef(
+    useGlobalContext().room.playerList
   );
-  const losers = useRef<ListedPlayerProps[]>(
-    players.filter((player) => player.id === 0)
+  const winners = useRef<whoPlayer[]>(
+    players.filter((player) => player.winner)
   );
+  const losers = useRef<whoPlayer[]>(
+    players.filter((player) => !player.winner)
+  );
+
+  const getSeedFor = (player: whoPlayer) => {
+    return playerBase.current
+    .find(p => p.nickname === player.player)
+    .avatarSeed;
+  }
 
   const screenRatio = window.innerHeight < 740 ? [0.35, 0.48] : [0.42, 0.5];
 
@@ -158,13 +169,13 @@ export default function FinishPage({
           <WinnersDiv>
             <PlayersList>
               {winners.current.map((player) => (
-                <PlayerOuterCard className="playerCard" key={player.nickname}>
+                <PlayerOuterCard className="playerCard" key={player.player}>
                   <AvatarDiv className="avatar">
-                    <Avatar seed={player.avatarSeed} />
+                    <Avatar seed={getSeedFor(player)} />
                   </AvatarDiv>
                   <NameAndRole>
-                    <Name className="nickname">{player.nickname}</Name>
-                    <Role className="role">{player.whoYouAre}</Role>
+                    <Name className="nickname">{player.player}</Name>
+                    <Role className="role">{player.whoPlayerIs}</Role>
                   </NameAndRole>
                 </PlayerOuterCard>
               ))}
@@ -178,13 +189,13 @@ export default function FinishPage({
           <LosersDiv style={loserStyle}>
             <PlayersList>
               {losers.current.map((player) => (
-                <PlayerOuterCard className="playerCard" key={player.nickname}>
+                <PlayerOuterCard className="playerCard" key={player.player}>
                   <AvatarDiv className="avatar">
-                    <Avatar seed={player.avatarSeed} />
+                    <Avatar seed={getSeedFor(player)} />
                   </AvatarDiv>
                   <NameAndRole>
-                    <Name className="nickname">{player.nickname}</Name>
-                    <Role className="role">{player.whoYouAre}</Role>
+                    <Name className="nickname">{player.player}</Name>
+                    <Role className="role">{player.whoPlayerIs}</Role>
                   </NameAndRole>
                 </PlayerOuterCard>
               ))}
