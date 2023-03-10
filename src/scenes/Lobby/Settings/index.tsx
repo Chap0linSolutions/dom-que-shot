@@ -24,11 +24,11 @@ export default function Settings({
   mainPage,
 }: SettingsProps) {
 
-  const previousGameNames = previousGameSelection.map(p => p.text);
+  const previousGameNames = previousGameSelection.map(p => p.title);
   const [gameCards, setGameCards] = useState<Game[]>(game.map(g => {
     return {
       ...g, 
-      id: (previousGameNames.includes(g.text))
+      id: (previousGameNames.includes(g.title))
       ? g.id 
       : g.id + 1000,
     }

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
 import CoverPage from '../../components/Game/Cover';
 import coverImg from '../../assets/game-covers/quem-sou-eu.png';
 import CategoryPage from './Category';
 import GamePage from './Game';
 import FinishPage from './Finish';
-import './QuemSouEu.css';
 
 export interface ListedPlayerProps {
   nickname: string;
@@ -28,13 +28,10 @@ enum Game {
 }
 
 export default function OEscolhido() {
+  const {user, room, setUser, setRoom} = useGlobalContext();
   const title = 'Quem Sou Eu?';
 
   const navigate = useNavigate();
-  const ownerVisibility = useLocation().state.isOwner;
-  const turnVisibility = useLocation().state.isYourTurn;
-  const userData = JSON.parse(window.localStorage.getItem('userData'));
-  const [currentGameState, setCurrentGameState] = useState<Game>(Game.Cover);
   const [playerList, updatePlayerList] = useState<ListedPlayerProps[]>([]);
   const [category, setCategory] = useState<string>(undefined);
   const [playersAndNames, setPlayersAndNames] =
@@ -57,14 +54,14 @@ export default function OEscolhido() {
 
   const startGame = () => {
     socket.push('move-room-to', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       destination: Game.Game,
     });
   };
 
   const startCategorySelection = () => {
     socket.push('move-room-to', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       destination: Game.Category,
     });
   };
@@ -72,37 +69,65 @@ export default function OEscolhido() {
   const backToLobby = () => {
     console.log('O usuário desejou voltar ao lobby');
     socket.push('move-room-to', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       destination: '/Lobby',
     });
   };
 
   const backToRoulette = () => {
     socket.push('players-who-drank-are', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       players: JSON.stringify(playerList.filter((player) => player.id === 0)), //all players who didn't get their characters right will have the id field set to 0
     });
 
-    socket.push('update-turn', userData.roomCode);
+    socket.push('update-turn', room.code);
     socket.push('move-room-to', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       destination: '/SelectNextGame',
     });
   };
+
+  const setGlobalRoomPage = (newPage: Game) => {
+    setRoom(previous => {return {...previous, page: newPage}})
+  }
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.setLobbyUpdateListener(updatePlayerList);
-    socket.push('lobby-update', userData.roomCode);
+    socket.addEventListener('lobby-update', (reply) => { 
+      const newPlayerList = JSON.parse(reply);    
+      setRoom(previous => {
+        return {
+          ...previous,
+          playerList: newPlayerList,
+        }
+      });
+    });
+
+    socket.addEventListener('room-owner-is', (ownerName) => {
+      const isOwner = (user.nickname === ownerName);
+      setUser(previous => {
+        return {
+          ...previous,
+          isOwner: isOwner,
+        }
+      });
+    });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
+        setRoom(previous => {
+          return {
+            ...previous,
+            URL: destination,
+            page: undefined,
+          }
+        });
         return navigate(destination);
       }
-      setCurrentGameState(destination);
+      setGlobalRoomPage(destination);
     });
 
     socket.addEventListener('players-and-names-are', (newNames) => {
@@ -114,7 +139,7 @@ export default function OEscolhido() {
     });
 
     socket.addEventListener('game-category-is', (category) => {
-      if (turnVisibility === false) {
+      if (user.isCurrentTurn === false) {
         setCategory(category);
       }
     });
@@ -125,6 +150,17 @@ export default function OEscolhido() {
   }, []);
 
   //////////////////////////////////////////////////////////////////////////////////////////////
+
+  useEffect(() => {
+    updatePlayerList(room.playerList.map((p, index) => {
+      return {
+        nickname: p.nickname,
+        avatarSeed: p.avatarSeed,
+        id: index,
+        whoYouAre: undefined,
+      }
+    }));
+  }, []);
 
   useEffect(() => {
     if (playersAndNames) {
@@ -151,8 +187,7 @@ export default function OEscolhido() {
           };
         })
       );
-      //backToRoulette();                     //if you wish to go back to roulette without showing the finish screen, uncomment this and comment the line below
-      setCurrentGameState(Game.Finish);
+      setGlobalRoomPage(Game.Finish);
     }
   }, [winners]);
 
@@ -165,7 +200,7 @@ export default function OEscolhido() {
         if (winners.length === 0) {
           console.log('enviando lista de vencedores ao jogo...');
           socket.pushMessage(
-            userData.roomCode,
+            room.code,
             'winners-are',
             JSON.stringify(playersWhoWon.map((w) => w.nickname))
           );
@@ -175,16 +210,16 @@ export default function OEscolhido() {
           .filter((p) => p.whoYouAre === undefined)
           .map((p) => p.nickname);
 
-        if (currentGameState === Game.Category) {
+        if (room.page === Game.Category) {
           if (playersWithNoNames.length === 0) {
             return startGame();
           }
         }
 
-        if (currentGameState === Game.Game) {
-          if (playersWithNoNames.length > 0 && turnVisibility === true) {
+        if (room.page === Game.Game) {
+          if (playersWithNoNames.length > 0 && user.isCurrentTurn === true) {
             socket.pushMessage(
-              userData.roomCode,
+              room.code,
               'send-names',
               JSON.stringify(playersWithNoNames)
             );
@@ -197,15 +232,15 @@ export default function OEscolhido() {
   useEffect(() => {
     if (category) {
       console.log(`categoria selecionada: ${category}`);
-      socket.pushMessage(userData.roomCode, 'game-category-is', category);
-      if (turnVisibility === true) {
+      socket.pushMessage(room.code, 'game-category-is', category);
+      if (user.isCurrentTurn === true) {
         const playersWithNoNames = playerList
           .filter((p) => p.whoYouAre === undefined)
           .map((p) => p.nickname);
         console.log('Jogadores que ainda não têm nome definido:');
         console.log(playersWithNoNames);
         socket.pushMessage(
-          userData.roomCode,
+          room.code,
           'send-names',
           JSON.stringify(playersWithNoNames)
         );
@@ -213,28 +248,14 @@ export default function OEscolhido() {
     }
   }, [category]);
 
-  switch (currentGameState) {
-    case Game.Cover:
-      return (
-        <CoverPage
-          type="round"
-          title={title}
-          coverImg={coverImg}
-          goBackPage={backToLobby}
-          turnVisibility={turnVisibility}
-          ownerVisibility={ownerVisibility}
-          description={description}
-          gamePage={startCategorySelection}
-        />
-      );
-
+  switch (room.page) {
     case Game.Category:
       return (
         <CategoryPage
           title={title}
           description={description}
           setCategory={setCategory}
-          turnVisibility={turnVisibility}
+          turnVisibility={user.isCurrentTurn}
         />
       );
 
@@ -244,10 +265,10 @@ export default function OEscolhido() {
           title={title}
           description={description}
           category={category}
-          currentPlayerNickname={userData.nickname}
+          currentPlayerNickname={user.nickname}
           players={playerList}
           setWinners={updatePlayerList} //the winners of the match will have the 'whoYouAre' field either set as 'winner' or undefined. That's how we'll filter it
-          turnVisibility={turnVisibility}
+          turnVisibility={user.isCurrentTurn}
         />
       );
 
@@ -256,8 +277,22 @@ export default function OEscolhido() {
         <FinishPage
           logo={coverImg}
           players={playerList}
-          turnVisibility={turnVisibility}
+          turnVisibility={user.isCurrentTurn}
           roulettePage={backToRoulette}
+        />
+      );
+
+    default:
+      return (
+        <CoverPage
+          type="round"
+          title={title}
+          coverImg={coverImg}
+          goBackPage={backToLobby}
+          turnVisibility={user.isCurrentTurn}
+          ownerVisibility={user.isOwner}
+          description={description}
+          gamePage={startCategorySelection}
         />
       );
   }
