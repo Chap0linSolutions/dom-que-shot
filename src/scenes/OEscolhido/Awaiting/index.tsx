@@ -8,7 +8,7 @@ import gsap from 'gsap';
 import './Awaiting.css';
 import { Player } from '../../../contexts/GlobalContextProvider';
 interface AwaitingProps {
-  votedPlayer: Player,
+  votedPlayer: Player;
   msTimeLeft: number;
   gamePage: () => void;
   finishPage: () => void;
@@ -19,7 +19,6 @@ export default function AwaitingResults({
   gamePage,
   msTimeLeft,
 }: AwaitingProps) {
-
   useEffect(() => {
     gsap.from('.AwaitingTitle, .AwaitingCheck', {
       opacity: 0,

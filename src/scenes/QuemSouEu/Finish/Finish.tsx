@@ -38,7 +38,6 @@ export default function FinishPage({
   roulettePage,
   turnVisibility,
 }: CoverProps) {
-
   const rouletteButtonText = 'Próximo jogo';
   const finishButton = useRef();
 
@@ -129,9 +128,7 @@ export default function FinishPage({
     };
   }, []);
 
-  const playerBase = useRef(
-    useGlobalContext().room.playerList
-  );
+  const playerBase = useRef(useGlobalContext().room.playerList);
   const winners = useRef<whoPlayer[]>(
     players.filter((player) => player.winner)
   );
@@ -140,10 +137,9 @@ export default function FinishPage({
   );
 
   const getSeedFor = (player: whoPlayer) => {
-    return playerBase.current
-    .find(p => p.nickname === player.player)
-    .avatarSeed;
-  }
+    return playerBase.current.find((p) => p.nickname === player.player)
+      .avatarSeed;
+  };
 
   const screenRatio = window.innerHeight < 740 ? [0.35, 0.48] : [0.42, 0.5];
 

@@ -11,7 +11,7 @@ import api from '../../services/api';
 import './ChooseAvatar.css';
 
 function ChooseAvatar() {
-  const {user, room, setUser, setRoom} = useGlobalContext();
+  const { user, room, setUser, setRoom } = useGlobalContext();
   const navigate = useNavigate();
   const location = useLocation();
   const { option } = location.state;
@@ -24,8 +24,8 @@ function ChooseAvatar() {
 
   const roomCode = room.code;
   const oldNickname = user.nickname;
-  const [inputText, setInputText] = useState(oldNickname? oldNickname : '');
-  const [userName, setUserName] = useState(oldNickname? oldNickname : '');
+  const [inputText, setInputText] = useState(oldNickname ? oldNickname : '');
+  const [userName, setUserName] = useState(oldNickname ? oldNickname : '');
   const [inputErrorMsg, setInputErrorMsg] = useState({
     msg: '',
     visibility: 'hidden',
@@ -124,11 +124,11 @@ function ChooseAvatar() {
   }
 
   const proceedTo = (nextURL) => {
-    setRoom(previous => {
+    setRoom((previous) => {
       return {
         ...previous,
         URL: nextURL,
-      }
+      };
     });
     navigate(nextURL);
   };
@@ -140,10 +140,11 @@ function ChooseAvatar() {
       avatarSeed: avatarSeed,
     };
     window.localStorage.setItem('userData', JSON.stringify(newUserData));
-    setUser(previous => {return {...previous, nickname: userName, avatarSeed: avatarSeed}});
+    setUser((previous) => {
+      return { ...previous, nickname: userName, avatarSeed: avatarSeed };
+    });
     redirect();
   };
-
 
   ////Listener para remover foco do <input> quando o usuário aperta Enter/////////////////////////
 
@@ -167,11 +168,13 @@ function ChooseAvatar() {
   const leaveMatch = () => {
     socket && socket.disconnect();
     const nextURL = '/Home';
-    setRoom(previous => {return {
-      ...previous,
-      code: undefined,
-      URL: nextURL,
-    }});
+    setRoom((previous) => {
+      return {
+        ...previous,
+        code: undefined,
+        URL: nextURL,
+      };
+    });
     navigate(nextURL);
   };
 

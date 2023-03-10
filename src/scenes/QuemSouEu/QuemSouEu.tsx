@@ -22,12 +22,13 @@ enum Game {
 }
 
 export default function OEscolhido() {
-  const {user, room, setUser, setRoom} = useGlobalContext();
+  const { user, room, setUser, setRoom } = useGlobalContext();
   const title = 'Quem Sou Eu?';
 
   const navigate = useNavigate();
   const [category, setCategory] = useState<string>(undefined);
-  const [playersAndNames, setPlayersAndNames] = useState<whoPlayer[]>(undefined);
+  const [playersAndNames, setPlayersAndNames] =
+    useState<whoPlayer[]>(undefined);
 
   const description = (
     <>
@@ -73,17 +74,13 @@ export default function OEscolhido() {
   };
 
   const sendWinners = (winners: string[]) => {
-    socket.pushMessage(
-      room.code,
-      'winners-are',
-      JSON.stringify(winners)
-    );
+    socket.pushMessage(room.code, 'winners-are', JSON.stringify(winners));
   };
 
   const backToRoulette = () => {
     socket.push('players-who-drank-are', {
       roomCode: room.code,
-      players: JSON.stringify(playersAndNames.filter(p => !p.winner)), 
+      players: JSON.stringify(playersAndNames.filter((p) => !p.winner)),
     });
 
     socket.push('update-turn', room.code);
@@ -94,47 +91,49 @@ export default function OEscolhido() {
   };
 
   const setGlobalRoomPage = (newPage: Game) => {
-    setRoom(previous => {return {...previous, page: newPage}})
-  }
+    setRoom((previous) => {
+      return { ...previous, page: newPage };
+    });
+  };
 
   const selectCategory = (category: string) => {
     console.log(`categoria selecionada: ${category}`);
     socket.pushMessage(room.code, 'game-category-is', category);
-  }
+  };
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.addEventListener('lobby-update', (reply) => { 
-      const newPlayerList = JSON.parse(reply);    
-      setRoom(previous => {
+    socket.addEventListener('lobby-update', (reply) => {
+      const newPlayerList = JSON.parse(reply);
+      setRoom((previous) => {
         return {
           ...previous,
           playerList: newPlayerList,
-        }
+        };
       });
     });
 
     socket.addEventListener('room-owner-is', (ownerName) => {
-      const isOwner = (user.nickname === ownerName);
-      setUser(previous => {
+      const isOwner = user.nickname === ownerName;
+      setUser((previous) => {
         return {
           ...previous,
           isOwner: isOwner,
-        }
+        };
       });
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
-        setRoom(previous => {
+        setRoom((previous) => {
           return {
             ...previous,
             URL: destination,
             page: undefined,
-          }
+          };
         });
         return navigate(destination);
       }
@@ -142,25 +141,27 @@ export default function OEscolhido() {
     });
 
     socket.addEventListener('players-and-names-are', (newNames) => {
-      setPlayersAndNames(JSON.parse(newNames)
-        .map((p) => {
+      setPlayersAndNames(
+        JSON.parse(newNames).map((p) => {
           return {
             player: p.player,
             whoPlayerIs: p.whoPlayerIs,
             winner: false,
-          }
-        }
-      ));
+          };
+        })
+      );
     });
 
     socket.addEventListener('winners-are', (players) => {
       const winners: string[] = JSON.parse(players);
-      setPlayersAndNames(previous => previous.map(p => {
-        return {
-          ...p,
-          winner: winners.includes(p.player),
-        }
-      }))
+      setPlayersAndNames((previous) =>
+        previous.map((p) => {
+          return {
+            ...p,
+            winner: winners.includes(p.player),
+          };
+        })
+      );
       finishGame();
     });
 
@@ -173,33 +174,33 @@ export default function OEscolhido() {
     };
   }, []);
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    if(!category && room.page === Game.Game){
+    if (!category && room.page === Game.Game) {
       socket.pushMessage(room.code, 'update-me', 'please');
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if(playersAndNames &&
-      user.isCurrentTurn &&
-      room.page === Game.Category
-    ){
-        startGame();
+    if (playersAndNames && user.isCurrentTurn && room.page === Game.Category) {
+      startGame();
     }
   }, [playersAndNames]);
 
-  const listOfPlayers = (playersAndNames)
-  ? room.playerList.map(player => {
-      const i = playersAndNames.findIndex(p => p.player === player.nickname);
-      return {
-        nickname: player.nickname,
-        avatarSeed: player.avatarSeed,
-        whoPlayerIs: (i > -1)? playersAndNames[i].whoPlayerIs : 'carregando...',
-      }
-    })
-  : [];
+  const listOfPlayers = playersAndNames
+    ? room.playerList.map((player) => {
+        const i = playersAndNames.findIndex(
+          (p) => p.player === player.nickname
+        );
+        return {
+          nickname: player.nickname,
+          avatarSeed: player.avatarSeed,
+          whoPlayerIs:
+            i > -1 ? playersAndNames[i].whoPlayerIs : 'carregando...',
+        };
+      })
+    : [];
 
   switch (room.page) {
     case Game.Category:
@@ -251,105 +252,82 @@ export default function OEscolhido() {
   }
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////
 
+// useEffect(() => {
+//   updatePlayerList(room.playerList.map((p, index) => {
+//     return {
+//       nickname: p.nickname,
+//       avatarSeed: p.avatarSeed,
+//       id: index,
+//       whoYouAre: undefined,
+//     }
+//   }));
+// }, []);
 
+// useEffect(() => {
+//   if (playersAndNames) {
+//     const newPlayerList = playerList.map((player) => {
+//       const i = playersAndNames.findIndex(
+//         (p) => p.player === player.nickname
+//       );
+//       return {
+//         ...player,
+//         whoYouAre: i > -1 ? playersAndNames[i].whoPlayerIs : player.whoYouAre,
+//       };
+//     });
+//     updatePlayerList(newPlayerList);
+//   }
+// }, [playersAndNames]);
 
+// useEffect(() => {
+//   if (winners.length > 0) {
+//     updatePlayerList(
+//       playerList.map((player) => {
+//         return {
+//           ...player,
+//           id: winners.includes(player.nickname) ? 1000 : 0,
+//         };
+//       })
+//     );
+//     setGlobalRoomPage(Game.Finish);
+//   }
+// }, [winners]);
 
+// useEffect(() => {
+//   if (playerList) {
+//     console.log(playerList.filter((player) => player.id));
 
+//     const playersWhoWon = playerList.filter((player) => player.id === 1000);
+//     if (playersWhoWon.length > 0) {
+//       if (winners.length === 0) {
+//         console.log('enviando lista de vencedores ao jogo...');
+//         socket.pushMessage(
+//           room.code,
+//           'winners-are',
+//           JSON.stringify(playersWhoWon.map((w) => w.nickname))
+//         );
+//       }
+//     } else {
+//       const playersWithNoNames = playerList
+//         .filter((p) => p.whoYouAre === undefined)
+//         .map((p) => p.nickname);
 
+//       if (room.page === Game.Category) {
+//         if (playersWithNoNames.length === 0) {
+//           return startGame();
+//         }
+//       }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //////////////////////////////////////////////////////////////////////////////////////////////
-
-  // useEffect(() => {
-  //   updatePlayerList(room.playerList.map((p, index) => {
-  //     return {
-  //       nickname: p.nickname,
-  //       avatarSeed: p.avatarSeed,
-  //       id: index,
-  //       whoYouAre: undefined,
-  //     }
-  //   }));
-  // }, []);
-
-  // useEffect(() => {
-  //   if (playersAndNames) {
-  //     const newPlayerList = playerList.map((player) => {
-  //       const i = playersAndNames.findIndex(
-  //         (p) => p.player === player.nickname
-  //       );
-  //       return {
-  //         ...player,
-  //         whoYouAre: i > -1 ? playersAndNames[i].whoPlayerIs : player.whoYouAre,
-  //       };
-  //     });
-  //     updatePlayerList(newPlayerList);
-  //   }
-  // }, [playersAndNames]);
-
-  // useEffect(() => {
-  //   if (winners.length > 0) {
-  //     updatePlayerList(
-  //       playerList.map((player) => {
-  //         return {
-  //           ...player,
-  //           id: winners.includes(player.nickname) ? 1000 : 0,
-  //         };
-  //       })
-  //     );
-  //     setGlobalRoomPage(Game.Finish);
-  //   }
-  // }, [winners]);
-
-  // useEffect(() => {
-  //   if (playerList) {
-  //     console.log(playerList.filter((player) => player.id));
-
-  //     const playersWhoWon = playerList.filter((player) => player.id === 1000);
-  //     if (playersWhoWon.length > 0) {
-  //       if (winners.length === 0) {
-  //         console.log('enviando lista de vencedores ao jogo...');
-  //         socket.pushMessage(
-  //           room.code,
-  //           'winners-are',
-  //           JSON.stringify(playersWhoWon.map((w) => w.nickname))
-  //         );
-  //       }
-  //     } else {
-  //       const playersWithNoNames = playerList
-  //         .filter((p) => p.whoYouAre === undefined)
-  //         .map((p) => p.nickname);
-
-  //       if (room.page === Game.Category) {
-  //         if (playersWithNoNames.length === 0) {
-  //           return startGame();
-  //         }
-  //       }
-
-  //       if (room.page === Game.Game) {
-  //         if (playersWithNoNames.length > 0 && user.isCurrentTurn === true) {
-  //           socket.pushMessage(
-  //             room.code,
-  //             'send-names',
-  //             JSON.stringify(playersWithNoNames)
-  //           );
-  //         }
-  //       }
-  //     }
-  //   }
-  // }, [playerList]);
+//       if (room.page === Game.Game) {
+//         if (playersWithNoNames.length > 0 && user.isCurrentTurn === true) {
+//           socket.pushMessage(
+//             room.code,
+//             'send-names',
+//             JSON.stringify(playersWithNoNames)
+//           );
+//         }
+//       }
+//     }
+//   }
+// }, [playerList]);

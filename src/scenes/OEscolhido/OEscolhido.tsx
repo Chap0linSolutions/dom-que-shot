@@ -10,14 +10,14 @@ import { Player, useGlobalContext } from '../../contexts/GlobalContextProvider';
 import './OEscolhido.css';
 
 export type MostVoted = {
-  nickname: string,
-  avatarSeed: string,
-}
+  nickname: string;
+  avatarSeed: string;
+};
 
 type VoteResults = {
-  players: MostVoted[],
-  numberOfVotes: number,
-}
+  players: MostVoted[];
+  numberOfVotes: number;
+};
 
 enum Game {
   Cover,
@@ -27,8 +27,7 @@ enum Game {
 }
 
 export default function OEscolhido() {
-
-  const {user, room, setUser, setRoom} = useGlobalContext();
+  const { user, room, setUser, setRoom } = useGlobalContext();
   const title = 'O Escolhido';
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////////
@@ -74,8 +73,10 @@ export default function OEscolhido() {
   );
 
   const setGlobalRoomPage = (newPage: Game) => {
-    setRoom(previous => {return {...previous, page: newPage}})
-  }
+    setRoom((previous) => {
+      return { ...previous, page: newPage };
+    });
+  };
 
   const startGame = () => {
     socket.pushMessage(room.code, 'move-to', Game.Game);
@@ -104,24 +105,23 @@ export default function OEscolhido() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-
-    socket.addEventListener('lobby-update', (reply) => { 
-      const newPlayerList = JSON.parse(reply);    
-      setRoom(previous => {
+    socket.addEventListener('lobby-update', (reply) => {
+      const newPlayerList = JSON.parse(reply);
+      setRoom((previous) => {
         return {
           ...previous,
           playerList: newPlayerList,
-        }
+        };
       });
     });
 
     socket.addEventListener('room-owner-is', (ownerName) => {
-      const isOwner = (user.nickname === ownerName);
-      setUser(previous => {
+      const isOwner = user.nickname === ownerName;
+      setUser((previous) => {
         return {
           ...previous,
           isOwner: isOwner,
-        }
+        };
       });
     });
 
@@ -139,12 +139,12 @@ export default function OEscolhido() {
 
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
-        setRoom(previous => {
+        setRoom((previous) => {
           return {
             ...previous,
             URL: destination,
             page: undefined,
-          }
+          };
         });
         return navigate(destination);
       }
@@ -159,13 +159,13 @@ export default function OEscolhido() {
   //////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    if(userVote){
+    if (userVote) {
       setGlobalRoomPage(Game.AwaitingResults);
       socket.pushMessage(room.code, 'voted-player', {
-          roomCode: room.code,
-          player: JSON.stringify(userVote),
-        });
-      } 
+        roomCode: room.code,
+        player: JSON.stringify(userVote),
+      });
+    }
   }, [userVote]);
 
   useEffect(() => {
@@ -206,7 +206,7 @@ export default function OEscolhido() {
           roulettePage={() => nextRound()}
         />
       );
-    
+
     default:
       return (
         <CoverPage

@@ -13,11 +13,7 @@ interface GameProps {
   playerList: Player[];
 }
 
-export default function GamePage({
-  vote,
-  msTimeLeft,
-  playerList,
-}: GameProps) {
+export default function GamePage({ vote, msTimeLeft, playerList }: GameProps) {
   const [selectedPlayer, setSelectedPlayer] = useState<Player>({
     nickname: '',
     avatarSeed: '',
@@ -71,7 +67,10 @@ export default function GamePage({
             ))}
           </div>
         </div>
-        <Button staysOnBottom isDisabled={!hasSelected} onClick={() => vote(selectedPlayer)}>
+        <Button
+          staysOnBottom
+          isDisabled={!hasSelected}
+          onClick={() => vote(selectedPlayer)}>
           Votar
         </Button>
       </div>

@@ -52,15 +52,12 @@ class SocketConnection {
   }
 
   addPlayer(userData) {
-    this.socket.emit(
-      'add-player',
-      JSON.stringify({ ...userData, beers: 0})
-    );
+    this.socket.emit('add-player', JSON.stringify({ ...userData, beers: 0 }));
   }
 
   setGamesUpdateListener(useState) {
     this.socket.on('games-update', (reply) => {
-      useState(reply);    //reply: string[] com nomes dos jogos
+      useState(reply); //reply: string[] com nomes dos jogos
     });
   }
 

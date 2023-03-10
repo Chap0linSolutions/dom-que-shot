@@ -9,7 +9,7 @@ import './Welcome.css';
 
 function Welcome() {
   const navigate = useNavigate();
-  const {setUser, setRoom} = useGlobalContext();
+  const { setUser, setRoom } = useGlobalContext();
 
   useEffect(() => {
     const userData = JSON.parse(window.localStorage.getItem('userData'));
@@ -21,12 +21,19 @@ function Welcome() {
         .then(() => {
           console.log('OK');
           const nextURL = '/Lobby';
-          setUser({nickname: userData.nickname, avatarSeed: userData.avatarSeed, isOwner: false, isCurrentTurn: false});
-          setRoom(previous => {return {
-            ...previous,
-            code: userData.roomCode,
-            URL: nextURL,
-          }});
+          setUser({
+            nickname: userData.nickname,
+            avatarSeed: userData.avatarSeed,
+            isOwner: false,
+            isCurrentTurn: false,
+          });
+          setRoom((previous) => {
+            return {
+              ...previous,
+              code: userData.roomCode,
+              URL: nextURL,
+            };
+          });
           navigate(nextURL);
         })
         .catch(() => {
@@ -38,12 +45,14 @@ function Welcome() {
 
   const goHome = () => {
     const nextURL = '/Home';
-    setRoom(previous => {return {
-      ...previous,
-      URL: nextURL,
-    }});
+    setRoom((previous) => {
+      return {
+        ...previous,
+        URL: nextURL,
+      };
+    });
     navigate(nextURL);
-  }
+  };
 
   return (
     <Background>

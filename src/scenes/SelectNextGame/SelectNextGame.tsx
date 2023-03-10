@@ -24,7 +24,7 @@ import {
 } from './styles';
 
 export default function SelectNextGame() {
-  const {user, setUser, room, setRoom} = useGlobalContext();
+  const { user, setUser, room, setRoom } = useGlobalContext();
   let nextGame = '';
 
   const navigate = useNavigate();
@@ -39,34 +39,34 @@ export default function SelectNextGame() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.addEventListener('lobby-update', (reply) => { 
-      const newPlayerList = JSON.parse(reply);                  //newPlayerList = Player[]
-      setRoom(previous => {
+    socket.addEventListener('lobby-update', (reply) => {
+      const newPlayerList = JSON.parse(reply); //newPlayerList = Player[]
+      setRoom((previous) => {
         return {
           ...previous,
           playerList: newPlayerList,
-        }
+        };
       });
     });
 
     socket.addEventListener('player-turn-is', (turnName) => {
-      setUser(previous => {
+      setUser((previous) => {
         return {
           ...previous,
-          isCurrentTurn: (user.nickname === turnName),
-        }
+          isCurrentTurn: user.nickname === turnName,
+        };
       });
       setCurrentPlayer(turnName);
     });
-    
+
     socket.pushMessage(room.code, 'player-turn-is', null);
 
     socket.addEventListener('room-owner-is', (ownerName) => {
-      setUser(previous => {
+      setUser((previous) => {
         return {
           ...previous,
-          isOwner: (user.nickname === ownerName),
-        }
+          isOwner: user.nickname === ownerName,
+        };
       });
     });
 
@@ -76,11 +76,11 @@ export default function SelectNextGame() {
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
-      setRoom(previous => {
+      setRoom((previous) => {
         return {
           ...previous,
           URL: destination,
-        }
+        };
       });
       navigate(destination);
     });
@@ -101,11 +101,7 @@ export default function SelectNextGame() {
   const startSelectedGame = () => {
     if (user.isCurrentTurn === true) {
       setTimeout(() => {
-        socket.pushMessage(
-          room.code,
-          'start-game',
-          nextGame
-        );
+        socket.pushMessage(room.code, 'start-game', nextGame);
       }, 1000);
     }
   };
@@ -162,23 +158,28 @@ export default function SelectNextGame() {
       display: 'none',
       duration: 0.25,
     });
-    animation.current = gsap.timeline()
-    .to('.rouletteCard', {
-      y: `-${3 * (room.gameList.length - 2) * (rouletteDimensions.cardSize + 2)}px`,
-      duration: 1,
-      ease: 'linear',
-    })
-    .to('.rouletteCard', {
-      y: `-${(room.gameList.length - 1 + id) * (rouletteDimensions.cardSize + 2)}px`,
-      duration: 2,
-      ease: 'elastic',
-    })
-    .to(nextGameTitle.current, {
-      opacity: 1,
-      duration: 1,
-      ease: 'power2',
-    })
-    .call(startSelectedGame);
+    animation.current = gsap
+      .timeline()
+      .to('.rouletteCard', {
+        y: `-${
+          3 * (room.gameList.length - 2) * (rouletteDimensions.cardSize + 2)
+        }px`,
+        duration: 1,
+        ease: 'linear',
+      })
+      .to('.rouletteCard', {
+        y: `-${
+          (room.gameList.length - 1 + id) * (rouletteDimensions.cardSize + 2)
+        }px`,
+        duration: 2,
+        ease: 'elastic',
+      })
+      .to(nextGameTitle.current, {
+        opacity: 1,
+        duration: 1,
+        ease: 'power2',
+      })
+      .call(startSelectedGame);
   };
 
   const turnTheWheel = () => {
@@ -186,7 +187,7 @@ export default function SelectNextGame() {
   };
 
   const backToLobby = () => {
-    if(animation.current){
+    if (animation.current) {
       animation.current.kill();
     }
     socket.push('move-room-to', {
@@ -263,7 +264,7 @@ export default function SelectNextGame() {
 
           <WaitingMessageDiv
             style={
-              ((currentPlayer !== user.nickname) && (!rouletteIsSpinning))
+              currentPlayer !== user.nickname && !rouletteIsSpinning
                 ? { visibility: 'visible' }
                 : { display: 'none' }
             }>

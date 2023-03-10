@@ -23,7 +23,7 @@ const BangBangEvents = {
 };
 
 export function BangBang() {
-  const {user, room, setUser, setRoom} = useGlobalContext();
+  const { user, room, setUser, setRoom } = useGlobalContext();
 
   const [ready, setReady] = useState(false);
   const [currentRanking, setCurrentRanking] = useState([]);
@@ -47,8 +47,10 @@ export function BangBang() {
   );
 
   const setGlobalRoomPage = (newPage: Game) => {
-    setRoom(previous => {return {...previous, page: newPage}})
-  }
+    setRoom((previous) => {
+      return { ...previous, page: newPage };
+    });
+  };
 
   const backToLobby = () => {
     console.log('O usuário desejou voltar ao lobby');
@@ -61,12 +63,12 @@ export function BangBang() {
   useEffect(() => {
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
-        setRoom(previous => {
+        setRoom((previous) => {
           return {
             ...previous,
             URL: destination,
             page: undefined,
-          }
+          };
         });
         return navigate(destination);
       }
@@ -94,23 +96,23 @@ export function BangBang() {
     });
 
     socket.addEventListener('room-owner-is', (ownerName) => {
-      const isOwner = (user.nickname === ownerName);
-      setUser(previous => {
+      const isOwner = user.nickname === ownerName;
+      setUser((previous) => {
         return {
           ...previous,
           isOwner: isOwner,
-        }
+        };
       });
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
-        setRoom(previous => {
+        setRoom((previous) => {
           return {
             ...previous,
             URL: destination,
             page: undefined,
-          }
+          };
         });
         navigate(destination);
         return;

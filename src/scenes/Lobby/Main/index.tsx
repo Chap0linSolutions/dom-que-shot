@@ -41,17 +41,17 @@ export default function Main({
 
   const backToChooseAvatar = () => {
     const destination = '/ChooseAvatar';
-    setRoom(previous => {
+    setRoom((previous) => {
       return {
         ...previous,
         URL: destination,
         page: undefined,
-      }
-    })
+      };
+    });
     navigate('/ChooseAvatar', {
       state: { option: 'update' },
     });
-  }
+  };
 
   const header =
     user.isOwner === true ? (
@@ -62,10 +62,7 @@ export default function Main({
         }}
       />
     ) : (
-      <Header
-        logo
-        goBackArrow={backToChooseAvatar}
-      />
+      <Header logo goBackArrow={backToChooseAvatar} />
     );
 
   const alertBox = alertMessage ? (

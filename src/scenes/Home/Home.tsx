@@ -11,15 +11,13 @@ import api from '../../services/api';
 import games from '../../contexts/games';
 import './Home.css';
 
-
 type GameInformation = {
   title: string;
   description: string | JSX.Element;
 };
 
 function Home() {
-  
-  const {setUser, setRoom} = useGlobalContext();
+  const { setUser, setRoom } = useGlobalContext();
   const navigate = useNavigate();
 
   const [gameInfo, setGameInfo] = useState<GameInformation>({
@@ -81,19 +79,23 @@ function Home() {
 
   const enterRoom = (roomCode: string, option: string) => {
     const nextURL = '/ChooseAvatar';
-    setUser({nickname: undefined, avatarSeed: undefined, isOwner: false, isCurrentTurn: false});
+    setUser({
+      nickname: undefined,
+      avatarSeed: undefined,
+      isOwner: false,
+      isCurrentTurn: false,
+    });
     setRoom((previous) => {
       return {
-        ...previous, 
+        ...previous,
         code: roomCode,
         URL: nextURL,
-      }
+      };
     });
     navigate(nextURL, {
-      state: { option: option}
+      state: { option: option },
     });
   };
-
 
   ////Listener para remover foco do <input> quando o usuário aperta Enter/////////////////////////
 

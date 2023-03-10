@@ -27,9 +27,9 @@ import {
 } from './Game.style';
 
 interface WhoPlayersProps {
-  nickname: string,
-  avatarSeed: string,
-  whoPlayerIs: string,
+  nickname: string;
+  avatarSeed: string;
+  whoPlayerIs: string;
 }
 
 interface WhoPlayersSelectable extends WhoPlayersProps {
@@ -79,9 +79,7 @@ export default function GamePage({
   };
 
   const endGame = () => {
-    const winners = whoPlayers
-    .filter(p => p.selected)
-    .map(p => p.nickname);
+    const winners = whoPlayers.filter((p) => p.selected).map((p) => p.nickname);
     setWinners(winners);
   };
 

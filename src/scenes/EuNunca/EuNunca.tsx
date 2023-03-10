@@ -13,7 +13,6 @@ enum Game {
 }
 
 export default function EuNunca() {
-
   const { user, room, setUser, setRoom } = useGlobalContext();
 
   const description = (
@@ -64,23 +63,23 @@ export default function EuNunca() {
 
   useEffect(() => {
     socket.addEventListener('room-owner-is', (ownerName) => {
-      const isOwner = (user.nickname === ownerName);
-      setUser(previous => {
+      const isOwner = user.nickname === ownerName;
+      setUser((previous) => {
         return {
           ...previous,
           isOwner: isOwner,
-        }
+        };
       });
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
-        setRoom(previous => {
+        setRoom((previous) => {
           return {
             ...previous,
             URL: destination,
             page: undefined,
-          }
+          };
         });
         return navigate(destination, {
           state: {
@@ -105,8 +104,10 @@ export default function EuNunca() {
   //////////////////////////////////////////////////////////////////////////////////////////////////////
 
   const setGlobalRoomPage = (newPage: Game) => {
-    setRoom(previous => {return {...previous, page: newPage}})
-  }
+    setRoom((previous) => {
+      return { ...previous, page: newPage };
+    });
+  };
 
   switch (room.page) {
     case Game.Game:

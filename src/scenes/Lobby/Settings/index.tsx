@@ -23,25 +23,23 @@ export default function Settings({
   previousGameSelection,
   mainPage,
 }: SettingsProps) {
-
-  const previousGameNames = previousGameSelection.map(p => p.title);
-  const [gameCards, setGameCards] = useState<Game[]>(game.map(g => {
-    return {
-      ...g, 
-      id: (previousGameNames.includes(g.title))
-      ? g.id 
-      : g.id + 1000,
-    }
-  }));
-
+  const previousGameNames = previousGameSelection.map((p) => p.title);
+  const [gameCards, setGameCards] = useState<Game[]>(
+    game.map((g) => {
+      return {
+        ...g,
+        id: previousGameNames.includes(g.title) ? g.id : g.id + 1000,
+      };
+    })
+  );
 
   const updateSelection = (id) => {
     const newID = id < 1000 ? id + 1000 : id - 1000;
-    setGameCards(gameCards.map((game) =>
-      game.id === id
-      ? { ...game, id: newID }
-      : { ...game }
-    ));
+    setGameCards(
+      gameCards.map((game) =>
+        game.id === id ? { ...game, id: newID } : { ...game }
+      )
+    );
   };
 
   const numberOfSelectedGames = gameCards.filter(
@@ -65,7 +63,10 @@ export default function Settings({
 
   return (
     <Background>
-      <Header goBackArrow={() => mainPage(gameCards.filter((game) => game.id < 1000))} logo />
+      <Header
+        goBackArrow={() => mainPage(gameCards.filter((game) => game.id < 1000))}
+        logo
+      />
       <LobbySettings>
         <Title>Selecione os jogos da partida:</Title>
 

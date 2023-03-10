@@ -12,16 +12,15 @@ import gsap from 'gsap';
 import './WhoDrank.css';
 import AwaitingBanner from '../../components/AwaitingBanner';
 
-
 export default function WhoDrankPage() {
-  const {user, room, setUser, setRoom} = useGlobalContext();
+  const { user, room, setUser, setRoom } = useGlobalContext();
 
   const navigate = useNavigate();
   let coverImg = undefined;
-  try{
+  try {
     const location = useLocation();
     coverImg = location.state.coverImg;
-  } catch (e){
+  } catch (e) {
     coverImg = true;
   }
 
@@ -31,42 +30,42 @@ export default function WhoDrankPage() {
   const [buttonText, setButtonText] = useState('Ninguém bebeu');
 
   useEffect(() => {
-    gsap.config({nullTargetWarn:false});
-  }, [])
+    gsap.config({ nullTargetWarn: false });
+  }, []);
 
   //SOCKET////////////////////////////////////////////////////////////////////////////////////////////
 
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.addEventListener('lobby-update', (reply) => { 
-      const newPlayerList = JSON.parse(reply);                  //newPlayerList = Player[]
-      setRoom(previous => {
+    socket.addEventListener('lobby-update', (reply) => {
+      const newPlayerList = JSON.parse(reply); //newPlayerList = Player[]
+      setRoom((previous) => {
         return {
           ...previous,
           playerList: newPlayerList,
-        }
+        };
       });
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
-      setRoom(previous => {
+      setRoom((previous) => {
         return {
           ...previous,
           URL: destination,
           page: undefined,
-        }
+        };
       });
       navigate(destination);
     });
-    
+
     socket.addEventListener('room-owner-is', (ownerName) => {
-      const isOwner = (user.nickname === ownerName);
-      setUser(previous => {
+      const isOwner = user.nickname === ownerName;
+      setUser((previous) => {
         return {
           ...previous,
           isOwner: isOwner,
-        }
+        };
       });
     });
 
