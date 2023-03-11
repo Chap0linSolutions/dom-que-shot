@@ -53,7 +53,6 @@ export function BangBang() {
   };
 
   const backToLobby = () => {
-    console.log('O usuário desejou voltar ao lobby');
     socket.push('move-room-to', {
       roomCode: room.code,
       destination: '/Lobby',
@@ -178,7 +177,7 @@ export function BangBang() {
           goBackPage={backToLobby}
           turnVisibility={user.isCurrentTurn}
           ownerVisibility={user.isOwner}
-          description={description} //full game info is now loaded here
+          description={description}
           gamePage={startGame}
         />
       );

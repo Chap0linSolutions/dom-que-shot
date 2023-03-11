@@ -118,7 +118,7 @@ export function GamePage({
     if (msTimer > 0) {
       // queima da largada
       console.log('False start');
-      shot(-10000);
+      shot(-10000 - msTimer);
     } else {
       shot(msTimer);
     }
