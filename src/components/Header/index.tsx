@@ -14,12 +14,15 @@ import {
   LogoDiv,
   LogoBackground,
   Logo,
+  RoomCodeDiv,
+  RoomCode,
 } from './Header.style';
 
 interface HeaderProps {
   logo?: boolean | string;
   title?: string;
   goBackArrow?: true | (() => void);
+  roomCode?: boolean,
   timer?: number;
   settingsPage?: string | (() => void);
   infoPage?: string | (() => void);
@@ -29,6 +32,7 @@ export default function Header({
   logo,
   title,
   goBackArrow,
+  roomCode,
   timer,
   settingsPage,
   infoPage,
@@ -66,6 +70,15 @@ export default function Header({
     settingsPage();
   };
 
+  const getRoomCode = () => {
+    const userData = JSON.parse(window.localStorage.getItem('userData'));
+    try {
+      return userData.roomCode;
+    } catch (e) {
+      return undefined;
+    }
+  }
+
   return (
     <HeaderDiv>
       <ArrowAndTitle>
@@ -83,6 +96,10 @@ export default function Header({
       </Timer>
 
       <SettingsInfoAndLogo>
+        <RoomCodeDiv style={roomCode ? {} : { display: 'none' }}>
+          <RoomCode>Sala:<br/>{getRoomCode()}</RoomCode>
+        </RoomCodeDiv>
+
         <InfoDiv style={infoPage ? {} : { display: 'none' }}>
           <Info
             color="#FBBC05"

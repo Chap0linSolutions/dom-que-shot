@@ -29,6 +29,20 @@ export const Title = styled.p`
   margin: 0;
 `;
 
+export const RoomCodeDiv = styled.div`
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+`;
+
+export const RoomCode = styled.p`
+  font-size: 16px;
+  color: #524b6e;
+`;
+
 export const Timer = styled.div`
   align-self: center;
   color: red;

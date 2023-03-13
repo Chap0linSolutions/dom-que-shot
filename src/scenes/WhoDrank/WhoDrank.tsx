@@ -89,7 +89,7 @@ export default function WhoDrankPage() {
     });
   };
 
-  const header = coverImg ? <Header logo={coverImg} /> : <Header logo />;
+  const header = coverImg ? <Header roomCode logo={coverImg} /> : <Header roomCode logo />;
 
   if (turnVisibility === true) {
     return (

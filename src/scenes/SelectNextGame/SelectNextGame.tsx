@@ -222,9 +222,9 @@ export default function SelectNextGame() {
 
   const header =
     ownerVisibility === Visibility.Visible ? (
-      <Header goBackArrow={backToLobby} logo />
+      <Header goBackArrow={backToLobby} roomCode logo />
     ) : (
-      <Header logo />
+      <Header roomCode logo />
     );
 
   return (
