@@ -73,9 +73,7 @@ export default function OEscolhido() {
   );
 
   const setGlobalRoomPage = (newPage: Game) => {
-    setRoom((previous) => {
-      return { ...previous, page: newPage };
-    });
+    setRoom((previous) => ({ ...previous, page: newPage }));
   };
 
   const startGame = () => {
@@ -107,22 +105,18 @@ export default function OEscolhido() {
   useEffect(() => {
     socket.addEventListener('lobby-update', (reply) => {
       const newPlayerList = JSON.parse(reply);
-      setRoom((previous) => {
-        return {
-          ...previous,
-          playerList: newPlayerList,
-        };
-      });
+      setRoom((previous) => ({
+        ...previous,
+        playerList: newPlayerList,
+      }));
     });
 
     socket.addEventListener('room-owner-is', (ownerName) => {
       const isOwner = user.nickname === ownerName;
-      setUser((previous) => {
-        return {
-          ...previous,
-          isOwner: isOwner,
-        };
-      });
+      setUser((previous) => ({
+        ...previous,
+        isOwner: isOwner,
+      }));
     });
 
     socket.addEventListener('vote-results', (mostVoted) => {
@@ -139,13 +133,11 @@ export default function OEscolhido() {
 
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
-        setRoom((previous) => {
-          return {
-            ...previous,
-            URL: destination,
-            page: undefined,
-          };
-        });
+        setRoom((previous) => ({
+          ...previous,
+          URL: destination,
+          page: undefined,
+        }));
         return navigate(destination);
       }
       setGlobalRoomPage(destination);

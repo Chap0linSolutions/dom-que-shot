@@ -124,12 +124,10 @@ function ChooseAvatar() {
   }
 
   const proceedTo = (nextURL) => {
-    setRoom((previous) => {
-      return {
-        ...previous,
-        URL: nextURL,
-      };
-    });
+    setRoom((previous) => ({
+      ...previous,
+      URL: nextURL,
+    }));
     navigate(nextURL);
   };
 
@@ -140,9 +138,7 @@ function ChooseAvatar() {
       avatarSeed: avatarSeed,
     };
     window.localStorage.setItem('userData', JSON.stringify(newUserData));
-    setUser((previous) => {
-      return { ...previous, nickname: userName, avatarSeed: avatarSeed };
-    });
+    setUser((previous) => ({ ...previous, nickname: userName, avatarSeed: avatarSeed }));
     redirect();
   };
 
@@ -168,13 +164,11 @@ function ChooseAvatar() {
   const leaveMatch = () => {
     socket && socket.disconnect();
     const nextURL = '/Home';
-    setRoom((previous) => {
-      return {
-        ...previous,
-        code: undefined,
-        URL: nextURL,
-      };
-    });
+    setRoom((previous) => ({
+      ...previous,
+      code: undefined,
+      URL: nextURL,
+    }));
     navigate(nextURL);
   };
 

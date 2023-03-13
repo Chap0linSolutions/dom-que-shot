@@ -40,33 +40,27 @@ export default function WhoDrankPage() {
   useEffect(() => {
     socket.addEventListener('lobby-update', (reply) => {
       const newPlayerList = JSON.parse(reply); //newPlayerList: Player[]
-      setRoom((previous) => {
-        return {
-          ...previous,
-          playerList: newPlayerList,
-        };
-      });
+      setRoom((previous) => ({
+        ...previous,
+        playerList: newPlayerList,
+      }));
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
-      setRoom((previous) => {
-        return {
-          ...previous,
-          URL: destination,
-          page: undefined,
-        };
-      });
+      setRoom((previous) => ({
+        ...previous,
+        URL: destination,
+        page: undefined,
+      }));
       navigate(destination);
     });
 
     socket.addEventListener('room-owner-is', (ownerName) => {
       const isOwner = user.nickname === ownerName;
-      setUser((previous) => {
-        return {
-          ...previous,
-          isOwner: isOwner,
-        };
-      });
+      setUser((previous) => ({
+        ...previous,
+        isOwner: isOwner,
+      }));
     });
 
     return () => {

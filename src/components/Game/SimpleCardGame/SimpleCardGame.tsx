@@ -47,33 +47,27 @@ export default function SimpleCardGame({
   useEffect(() => {
     socket.addEventListener('lobby-update', (reply) => {
       const newPlayerList = JSON.parse(reply); //newPlayerList: Player[]
-      setRoom((previous) => {
-        return {
-          ...previous,
-          playerList: newPlayerList,
-        };
-      });
+      setRoom((previous) => ({
+        ...previous,
+        playerList: newPlayerList,
+      }));
     });
 
     socket.addEventListener('room-owner-is', (ownerName) => {
       const isOwner = user.nickname === ownerName;
-      setUser((previous) => {
-        return {
-          ...previous,
-          isOwner: isOwner,
-        };
-      });
+      setUser((previous) => ({
+        ...previous,
+        isOwner: isOwner,
+      }));
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
-        setRoom((previous) => {
-          return {
-            ...previous,
-            URL: destination,
-            page: undefined,
-          };
-        });
+        setRoom((previous) => ({
+          ...previous,
+          URL: destination,
+          page: undefined,
+        }));
         return navigate(destination, {
           state: {
             coverImg: coverImg,
@@ -91,9 +85,7 @@ export default function SimpleCardGame({
   //////////////////////////////////////////////////////////////////////////////////////////////////////
 
   const setGlobalRoomPage = (newPage: Game) => {
-    setRoom((previous) => {
-      return { ...previous, page: newPage };
-    });
+    setRoom((previous) => ({ ...previous, page: newPage }));
   };
 
   switch (room.page) {

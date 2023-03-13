@@ -82,14 +82,6 @@ export default function GlobalProvider(props: GlobalProviderProps) {
     gsap.config({ nullTargetWarn: false });
   }, []);
 
-  useEffect(() => {
-    //console.log(user);
-  }, [user]);
-
-  useEffect(() => {
-    console.log(room);
-  }, [room]);
-
   const { children } = props;
 
   const value: GlobalContextValue = {
@@ -101,8 +93,6 @@ export default function GlobalProvider(props: GlobalProviderProps) {
 
   return (
     <GlobalContext.Provider value={value}>
-      {' '}
-      {/* nos permite ler os dados */}
       {children}
     </GlobalContext.Provider>
   );
