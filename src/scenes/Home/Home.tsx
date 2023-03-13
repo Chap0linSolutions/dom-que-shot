@@ -150,6 +150,7 @@ function Home() {
       </div>
 
       <Popup
+        type='info'
         height={280}
         title={gameInfo.title}
         description={gameInfo.description}

@@ -60,6 +60,7 @@ export default function CategoryPage({
     return (
       <Background noImage>
         <Popup
+          type='info'
           title={title}
           description={description}
           show={popupVisibility}
@@ -97,6 +98,7 @@ export default function CategoryPage({
   return (
     <Background>
       <Popup
+        type='info'
         title={title}
         description={description}
         show={popupVisibility}

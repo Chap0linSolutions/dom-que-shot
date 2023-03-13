@@ -152,6 +152,7 @@ export default function CoverPage({
   return (
     <Background>
       <Popup
+        type='info'
         height={sizeOfDescription ? sizeOfDescription : undefined}
         title={title}
         description={description}

@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { ArrowLeft, Info, Settings } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import DomQueShotLogo from '../../assets/logo-darker.png';
+import Popup from '../Popup';
 import {
   ArrowDiv,
   ArrowAndTitle,
@@ -38,6 +40,7 @@ export default function Header({
   infoPage,
 }: HeaderProps) {
   const navigateTo = useNavigate();
+  const [warningVisibility, setWarningVisibility] = useState<boolean>(false);
 
   const seconds = timer / 1000;
   const timerColor = seconds < 3 ? 'red' : 'white';
@@ -79,8 +82,25 @@ export default function Header({
     }
   }
 
+  const copyCode = () => {
+    navigator.clipboard.writeText(getRoomCode());
+    setWarningVisibility(true);
+    setTimeout(() => {
+      setWarningVisibility(false);
+    }, 2000);
+  }
+
+  
+
   return (
     <HeaderDiv>
+      {roomCode && (
+      <Popup
+        type = 'warning'
+        warningType='success'
+        description={'código da sala copiado!'}
+        show={warningVisibility}
+      />)}
       <ArrowAndTitle>
         <ArrowDiv style={goBackArrow ? {} : { display: 'none' }}>
           <ArrowLeft width="30px" height="30px" onClick={goToPreviousPage} />
@@ -96,7 +116,7 @@ export default function Header({
       </Timer>
 
       <SettingsInfoAndLogo>
-        <RoomCodeDiv style={roomCode ? {} : { display: 'none' }}>
+        <RoomCodeDiv onClick={copyCode} style={roomCode ? {} : { display: 'none' }}>
           <RoomCode>Sala:<br/>{getRoomCode()}</RoomCode>
         </RoomCodeDiv>
 

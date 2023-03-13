@@ -127,6 +127,7 @@ export default function GamePage({
   return (
     <Background noImage>
       <Popup
+        type='info'
         title={title}
         description={description}
         show={popupVisibility}
