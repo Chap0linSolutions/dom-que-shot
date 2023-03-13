@@ -39,7 +39,7 @@ export default function WhoDrankPage() {
 
   useEffect(() => {
     socket.addEventListener('lobby-update', (reply) => {
-      const newPlayerList = JSON.parse(reply); //newPlayerList = Player[]
+      const newPlayerList = JSON.parse(reply); //newPlayerList: Player[]
       setRoom((previous) => {
         return {
           ...previous,

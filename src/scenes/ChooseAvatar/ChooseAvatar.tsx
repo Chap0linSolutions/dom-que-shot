@@ -90,7 +90,7 @@ function ChooseAvatar() {
       api
         .get(`/nicknameCheck/${roomCode}/${userName}`)
         .then(() => {
-          return saveStuff();
+          return storeInfo();
         })
         .catch(() => {
           if (oldNickname !== userName) {
@@ -99,7 +99,7 @@ function ChooseAvatar() {
               visibility: 'visible',
             });
           }
-          return saveStuff();
+          return storeInfo();
         });
       return;
     }
@@ -133,7 +133,7 @@ function ChooseAvatar() {
     navigate(nextURL);
   };
 
-  const saveStuff = () => {
+  const storeInfo = () => {
     const newUserData = {
       roomCode: roomCode,
       nickname: userName,
