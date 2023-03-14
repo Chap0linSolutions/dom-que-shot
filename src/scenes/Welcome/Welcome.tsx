@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import logo from '../../assets/logo-darker.png';
 import Background from '../../components/Background';
 import Button from '../../components/Button';
@@ -8,6 +9,7 @@ import './Welcome.css';
 
 function Welcome() {
   const navigate = useNavigate();
+  const { setUser, setRoom } = useGlobalContext();
 
   useEffect(() => {
     const userData = JSON.parse(window.localStorage.getItem('userData'));
@@ -18,7 +20,19 @@ function Welcome() {
         )
         .then(() => {
           console.log('OK');
-          navigate('/Lobby', { state: { returningPlayer: true } });
+          const nextURL = '/Lobby';
+          setUser({
+            nickname: userData.nickname,
+            avatarSeed: userData.avatarSeed,
+            isOwner: false,
+            isCurrentTurn: false,
+          });
+          setRoom((previous) => ({
+            ...previous,
+            code: userData.roomCode,
+            URL: nextURL,
+          }));
+          navigate(nextURL);
         })
         .catch(() => {
           console.log('Acesso negado.');
@@ -27,11 +41,20 @@ function Welcome() {
     }
   }, []);
 
+  const goHome = () => {
+    const nextURL = '/Home';
+    setRoom((previous) => ({
+      ...previous,
+      URL: nextURL,
+    }));
+    navigate(nextURL);
+  };
+
   return (
     <Background>
       <div className="WelcomePage">
         <img className="WelcomeImage" src={logo} />
-        <Button onClick={() => navigate('/Home')}>Entrar</Button>
+        <Button onClick={goHome}>Entrar</Button>
       </div>
     </Background>
   );

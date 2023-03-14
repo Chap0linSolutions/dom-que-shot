@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Player, useGlobalContext } from '../../../contexts/GlobalContextProvider';
 import SocketConnection from '../../../lib/socket';
 import CoverPage from '../Cover';
 import HintPage from '../Hint';
@@ -25,23 +26,16 @@ export default function SimpleCardGame({
   sizeOfDescription,
   coverImg,
 }: SimpleCardGameProps) {
-  const userData = JSON.parse(window.localStorage.getItem('userData'));
-  const [currentGameState, setCurrentGameState] = useState<Game>(Game.Cover);
-  const turnVisibility = useLocation().state.isYourTurn;
-  const ownerVisibility = useLocation().state.isOwner;
+  const { user, room, setUser, setRoom } = useGlobalContext();
   const navigate = useNavigate();
 
   const endOfGame = () => {
-    socket.pushMessage(userData.roomCode, 'end-game', coverImg);
-    socket.push('move-room-to', {
-      roomCode: userData.roomCode,
-      destination: '/WhoDrank',
-    });
+    socket.pushMessage(room.code, 'end-game', null);
   };
 
   const backToLobby = () => {
     socket.push('move-room-to', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       destination: '/Lobby',
     });
   };
@@ -51,14 +45,36 @@ export default function SimpleCardGame({
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
+    socket.addEventListener('lobby-update', (reply) => {
+      const newPlayerList: Player[] = JSON.parse(reply);
+      setRoom((previous) => ({
+        ...previous,
+        playerList: newPlayerList,
+      }));
+    });
+
+    socket.addEventListener('room-owner-is', (ownerName) => {
+      const isOwner = user.nickname === ownerName;
+      setUser((previous) => ({
+        ...previous,
+        isOwner: isOwner,
+      }));
+    });
+
     socket.addEventListener('room-is-moving-to', (destination) => {
-      navigate(destination, {
-        state: {
-          coverImg: coverImg,
-          isYourTurn: turnVisibility,
-          isOwner: ownerVisibility,
-        },
-      });
+      if (typeof destination === 'string') {
+        setRoom((previous) => ({
+          ...previous,
+          URL: destination,
+          page: undefined,
+        }));
+        return navigate(destination, {
+          state: {
+            coverImg: coverImg,
+          },
+        });
+      }
+      setGlobalRoomPage(destination);
     });
 
     return () => {
@@ -68,30 +84,33 @@ export default function SimpleCardGame({
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  switch (currentGameState) {
-    case Game.Cover:
-      return (
-        <CoverPage
-          type="simple"
-          title={title}
-          coverImg={coverImg}
-          goBackPage={backToLobby}
-          description={description} //full game info is now loaded here
-          sizeOfDescription={sizeOfDescription ? sizeOfDescription : undefined}
-          turnVisibility={turnVisibility}
-          ownerVisibility={ownerVisibility}
-          gamePage={() => setCurrentGameState(Game.Hint)}
-        />
-      );
+  const setGlobalRoomPage = (newPage: Game) => {
+    setRoom((previous) => ({ ...previous, page: newPage }));
+  };
 
+  switch (room.page) {
     case Game.Hint:
       return (
         <HintPage
           title={title}
           coverImg={coverImg}
           description={hint}
-          coverPage={() => setCurrentGameState(Game.Cover)}
+          coverPage={() => setGlobalRoomPage(Game.Cover)}
           gamePage={endOfGame}
+        />
+      );
+    default:
+      return (
+        <CoverPage
+          type="simple"
+          title={title}
+          coverImg={coverImg}
+          goBackPage={backToLobby}
+          description={description}
+          sizeOfDescription={sizeOfDescription ? sizeOfDescription : undefined}
+          turnVisibility={user.isCurrentTurn}
+          ownerVisibility={user.isOwner}
+          gamePage={() => setGlobalRoomPage(Game.Hint)}
         />
       );
   }

@@ -1,20 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RotateCcw, AlertTriangle } from 'react-feather';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
 import Background from '../../components/Background';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
 import Avatar from '../../components/Avatar';
-import './ChooseAvatar.css';
 import api from '../../services/api';
+import './ChooseAvatar.css';
 
 function ChooseAvatar() {
+  const { user, room, setUser, setRoom } = useGlobalContext();
   const navigate = useNavigate();
-  const userData = JSON.parse(window.localStorage.getItem('userData'));
   const location = useLocation();
-  const { option, roomCode } = location.state;
-  const oldNickname = userData.nickname;
+  const { option } = location.state;
   const buttonText =
     option === 'join'
       ? 'Entrar'
@@ -22,8 +22,10 @@ function ChooseAvatar() {
       ? 'Criar sala'
       : 'Atualizar';
 
+  const roomCode = room.code;
+  const oldNickname = user.nickname;
   const [inputText, setInputText] = useState(oldNickname ? oldNickname : '');
-  const [userName, setUserName] = useState('');
+  const [userName, setUserName] = useState(oldNickname ? oldNickname : '');
   const [inputErrorMsg, setInputErrorMsg] = useState({
     msg: '',
     visibility: 'hidden',
@@ -35,10 +37,8 @@ function ChooseAvatar() {
 
   useEffect(() => {
     socket.connect();
-    console.log(socket);
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (destination === '/SelectNextGame') {
-        console.log(`Movendo a sala para ${destination}.`);
         return navigate(destination);
       }
     });
@@ -52,12 +52,6 @@ function ChooseAvatar() {
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
-  useEffect(() => {
-    if (userData.nickname) {
-      setUserName(userData.nickname);
-    }
-  }, []);
-
   const updateUserName = (e) => {
     const input = e.target.value;
     setInputText(input);
@@ -69,8 +63,8 @@ function ChooseAvatar() {
   };
 
   const [avatarSeed, changeAvatarSeed] = useState(
-    userData.avatarSeed
-      ? userData.avatarSeed
+    user.avatarSeed
+      ? user.avatarSeed
       : Math.random().toString(36).substring(2, 6)
   );
 
@@ -83,21 +77,20 @@ function ChooseAvatar() {
     api
       .get(`/roomCode/${roomCode}`)
       .then(() => {
-        navigate('/Lobby');
+        proceedTo('/Lobby');
       })
       .catch(() => {
         // TODO: add error message handling to inform user room doesn't exist (anymore)
-        navigate('/Home');
-        return;
+        proceedTo('/Home');
       });
   };
 
   function checkNameInput() {
-    if (userName.length > 2 && userName.length < 16) {
+    if (userName.length > 2 && userName.length <= 16) {
       api
         .get(`/nicknameCheck/${roomCode}/${userName}`)
         .then(() => {
-          return saveOnLocalStorage();
+          return storeInfo();
         })
         .catch(() => {
           if (oldNickname !== userName) {
@@ -106,7 +99,7 @@ function ChooseAvatar() {
               visibility: 'visible',
             });
           }
-          return saveOnLocalStorage();
+          return storeInfo();
         });
       return;
     }
@@ -130,22 +123,22 @@ function ChooseAvatar() {
     });
   }
 
-  const saveOnLocalStorage = () => {
+  const proceedTo = (nextURL) => {
+    setRoom((previous) => ({
+      ...previous,
+      URL: nextURL,
+    }));
+    navigate(nextURL);
+  };
+
+  const storeInfo = () => {
     const newUserData = {
       roomCode: roomCode,
       nickname: userName,
       avatarSeed: avatarSeed,
     };
     window.localStorage.setItem('userData', JSON.stringify(newUserData));
-    console.log(
-      'Dados salvos em LocalStorage: código da sala (' +
-        roomCode +
-        '), nome (' +
-        userName +
-        ') e seed do avatar (' +
-        avatarSeed +
-        ').'
-    );
+    setUser((previous) => ({ ...previous, nickname: userName, avatarSeed: avatarSeed }));
     redirect();
   };
 
@@ -170,7 +163,13 @@ function ChooseAvatar() {
 
   const leaveMatch = () => {
     socket && socket.disconnect();
-    navigate('/Home');
+    const nextURL = '/Home';
+    setRoom((previous) => ({
+      ...previous,
+      code: undefined,
+      URL: nextURL,
+    }));
+    navigate(nextURL);
   };
 
   return (

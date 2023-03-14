@@ -1,17 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle, Copy, AlertTriangle } from 'react-feather';
+import { useGlobalContext } from '../../../contexts/GlobalContextProvider';
 import Header from '../../../components/Header';
 import Background from '../../../components/Background';
 import PlayerList from './PlayerList';
 import Button from '../../../components/Button';
-import './Main.css';
 import Alert from '../../../components/Alert';
-
-enum Visibility {
-  Invisible,
-  Visible,
-}
+import './Main.css';
 
 type Player = {
   avatarSeed: string;
@@ -21,7 +17,6 @@ type Player = {
 };
 
 interface MainProps {
-  ownerVisibility: Visibility;
   currentOwner: string;
   alertMessage: string | undefined;
   roomCode: string;
@@ -32,7 +27,6 @@ interface MainProps {
 }
 
 export default function Main({
-  ownerVisibility,
   currentOwner,
   alertMessage,
   roomCode,
@@ -41,31 +35,32 @@ export default function Main({
   settingsPage,
   playerList,
 }: MainProps) {
-  console.log(alertMessage);
+  const { user, setRoom } = useGlobalContext();
   const navigate = useNavigate();
   const [copyColor, setCopyColor] = useState('#8877DF');
 
+  const backToChooseAvatar = () => {
+    const destination = '/ChooseAvatar';
+    setRoom((previous) => ({
+      ...previous,
+      URL: destination,
+      page: undefined,
+    }));
+    navigate('/ChooseAvatar', {
+      state: { option: 'update' },
+    });
+  };
+
   const header =
-    ownerVisibility === Visibility.Visible ? (
+    user.isOwner === true ? (
       <Header
-        goBackArrow={() => {
-          navigate('/ChooseAvatar', {
-            state: { option: 'update', roomCode: roomCode },
-          });
-        }}
+        goBackArrow={backToChooseAvatar}
         settingsPage={() => {
           settingsPage();
         }}
       />
     ) : (
-      <Header
-        logo
-        goBackArrow={() => {
-          navigate('/ChooseAvatar', {
-            state: { option: 'update', roomCode: roomCode },
-          });
-        }}
-      />
+      <Header logo goBackArrow={backToChooseAvatar} />
     );
 
   const alertBox = alertMessage ? (
@@ -113,9 +108,9 @@ export default function Main({
           <div
             className="WaitingMessageDiv"
             style={
-              ownerVisibility === Visibility.Invisible
-                ? { visibility: 'visible' }
-                : { display: 'none' }
+              user.isOwner === true
+                ? { display: 'none' }
+                : { visibility: 'visible' }
             }>
             <p className="WaitingMessage">
               Aguardando {currentOwner}
@@ -127,7 +122,7 @@ export default function Main({
         <div
           className="BeginButton"
           style={
-            ownerVisibility === Visibility.Visible
+            user.isOwner === true
               ? { visibility: 'visible' }
               : { display: 'none' }
           }>

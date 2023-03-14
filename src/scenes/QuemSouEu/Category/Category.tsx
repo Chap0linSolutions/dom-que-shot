@@ -29,7 +29,7 @@ const categories: { name: string; color: string }[] = [
 interface CategoryProps {
   title: string;
   description: string | JSX.Element;
-  setCategory: React.Dispatch<React.SetStateAction<string>>;
+  setCategory: (value: string) => void;
   turnVisibility: boolean;
 }
 

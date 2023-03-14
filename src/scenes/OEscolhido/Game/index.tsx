@@ -1,4 +1,5 @@
 import React, { useState, useLayoutEffect, useRef } from 'react';
+import { Player } from '../../../contexts/GlobalContextProvider';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
 import Button from '../../../components/Button';
@@ -6,36 +7,26 @@ import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
 import './Game.css';
 
-interface PlayerProps {
-  nickname: string;
-  avatarSeed: string;
-  id: number;
-}
 interface GameProps {
-  finishPage: () => void;
+  vote: React.Dispatch<React.SetStateAction<Player>>;
   msTimeLeft: number;
-  playerList: PlayerProps[];
+  playerList: Player[];
 }
 
-export default function GamePage({
-  finishPage,
-  msTimeLeft,
-  playerList,
-}: GameProps) {
-  const [selectedPlayer, setSelectedPlayer] = useState<PlayerProps>({
+export default function GamePage({ vote, msTimeLeft, playerList }: GameProps) {
+  const [selectedPlayer, setSelectedPlayer] = useState<Player>({
     nickname: '',
     avatarSeed: '',
-    id: 0,
+    beers: 0,
+    playerID: 0,
   });
+
+  const players = useRef(playerList);
 
   useLayoutEffect(() => {
     if (selectedPlayer) {
       gsap.to('.selectedItem', { scale: 1.08, duration: 0.5 });
       gsap.to('.unselectedItem', { scale: 1, duration: 0.5 });
-      window.localStorage.setItem(
-        'voted-player',
-        JSON.stringify(selectedPlayer)
-      ); //guardamos temporariamente o nome e o seed do avatar no localstorage
     }
   }, [selectedPlayer]);
 
@@ -43,7 +34,6 @@ export default function GamePage({
     setSelectedPlayer(player);
   };
 
-  const players = useRef(playerList);
   const hasSelected = selectedPlayer.nickname != '';
 
   return (
@@ -77,7 +67,10 @@ export default function GamePage({
             ))}
           </div>
         </div>
-        <Button staysOnBottom isDisabled={!hasSelected} onClick={finishPage}>
+        <Button
+          staysOnBottom
+          isDisabled={!hasSelected}
+          onClick={() => vote(selectedPlayer)}>
           Votar
         </Button>
       </div>
