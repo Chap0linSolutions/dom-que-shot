@@ -90,13 +90,20 @@ export default function SelectNextGame() {
     }
   }, [number]);
 
+  useEffect(() => {
+    if(!rouletteIsSpinning && nextGameName !== ''){
+      startSelectedGame();
+    }
+  }, [rouletteIsSpinning])
+
   const startSelectedGame = () => {
     if (user.isCurrentTurn === true) {
       setTimeout(() => {
-        socket.pushMessage(room.code, 'start-game', nextGame);
+        socket.pushMessage(room.code, 'start-game', nextGameName);
       }, 1000);
     }
-  };
+  }
+
 
   //ajuste com o tamanho da tela///////////////////////////////////////////////////////////////
 
@@ -176,7 +183,7 @@ export default function SelectNextGame() {
         duration: 1,
         ease: 'power2',
       })
-      .call(startSelectedGame);
+      .call(() => setRouletteIsSpinning(false));
   };
 
   const turnTheWheel = () => {
@@ -258,7 +265,7 @@ export default function SelectNextGame() {
 
           <WaitingMessageDiv
             style={
-              currentPlayer !== user.nickname && !rouletteIsSpinning
+              currentPlayer !== user.nickname && nextGameName === ''
                 ? { visibility: 'visible' }
                 : { display: 'none' }
             }>
