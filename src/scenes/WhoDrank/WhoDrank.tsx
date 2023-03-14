@@ -107,7 +107,11 @@ export default function WhoDrankPage() {
     socket.pushMessage(room.code, 'end-game', null);
   };
 
-  const header = coverImg ? <Header exit logo={coverImg} /> : <Header exit logo />;
+  const header = coverImg ? (
+    <Header exit logo={coverImg} />
+  ) : (
+    <Header exit logo />
+  );
 
   if (user.isCurrentTurn === true) {
     return (

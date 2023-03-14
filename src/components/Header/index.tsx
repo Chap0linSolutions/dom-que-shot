@@ -72,7 +72,7 @@ export default function Header({
   const leaveRoom = () => {
     window.localStorage.clear();
     navigate('/Home');
-  }
+  };
 
   return (
     <HeaderDiv>
@@ -82,7 +82,7 @@ export default function Header({
         </ArrowDiv>
 
         <LeaveDiv style={exit ? {} : { display: 'none' }}>
-          <Power width="22px" height="22px" onClick={leaveRoom}/>  
+          <Power width="22px" height="22px" onClick={leaveRoom} />
         </LeaveDiv>
 
         <TitleDiv style={title ? {} : { display: 'none' }}>
