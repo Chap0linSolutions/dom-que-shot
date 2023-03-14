@@ -23,7 +23,6 @@ class SocketConnection {
     }
   }
 
-  //userData: {nickname, avatarSeed, roomCode}
   joinRoom(userData, onError = null) {
     this.socket.emit('join-room', userData.roomCode, (reply) => {
       if (reply === `ingressou na sala ${userData.roomCode}.`) {
@@ -56,14 +55,13 @@ class SocketConnection {
   }
 
   setGamesUpdateListener(useState) {
-    this.socket.on('games-update', (reply) => {
-      useState(reply); //reply: string[] com nomes dos jogos
+    this.socket.on('games-update', (reply: string[]) => {
+      useState(reply);
     });
   }
 
   setLobbyUpdateListener(useState) {
     this.socket.on('lobby-update', (reply) => {
-      //console.log('A lista de jogadores foi atualizada.');
       useState(JSON.parse(reply));
     });
   }
@@ -71,8 +69,6 @@ class SocketConnection {
   send(tag: string, message) {
     this.socket.emit(tag, message);
   }
-
-  //abaixo, as funções originalmente desenvolvidas pelo Carlos para esta classe
 
   static getInstance() {
     if (!SocketConnection.instance) {

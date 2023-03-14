@@ -27,13 +27,11 @@ function Welcome() {
             isOwner: false,
             isCurrentTurn: false,
           });
-          setRoom((previous) => {
-            return {
-              ...previous,
-              code: userData.roomCode,
-              URL: nextURL,
-            };
-          });
+          setRoom((previous) => ({
+            ...previous,
+            code: userData.roomCode,
+            URL: nextURL,
+          }));
           navigate(nextURL);
         })
         .catch(() => {
@@ -45,12 +43,10 @@ function Welcome() {
 
   const goHome = () => {
     const nextURL = '/Home';
-    setRoom((previous) => {
-      return {
-        ...previous,
-        URL: nextURL,
-      };
-    });
+    setRoom((previous) => ({
+      ...previous,
+      URL: nextURL,
+    }));
     navigate(nextURL);
   };
 

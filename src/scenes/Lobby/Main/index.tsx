@@ -41,13 +41,11 @@ export default function Main({
 
   const backToChooseAvatar = () => {
     const destination = '/ChooseAvatar';
-    setRoom((previous) => {
-      return {
-        ...previous,
-        URL: destination,
-        page: undefined,
-      };
-    });
+    setRoom((previous) => ({
+      ...previous,
+      URL: destination,
+      page: undefined,
+    }));
     navigate('/ChooseAvatar', {
       state: { option: 'update' },
     });

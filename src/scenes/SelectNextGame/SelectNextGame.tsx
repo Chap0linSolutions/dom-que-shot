@@ -40,34 +40,28 @@ export default function SelectNextGame() {
 
   useEffect(() => {
     socket.addEventListener('lobby-update', (reply) => {
-      const newPlayerList = JSON.parse(reply); //newPlayerList = Player[]
-      setRoom((previous) => {
-        return {
-          ...previous,
-          playerList: newPlayerList,
-        };
-      });
+      const newPlayerList = JSON.parse(reply); //newPlayerList: Player[]
+      setRoom((previous) => ({
+        ...previous,
+        playerList: newPlayerList,
+      }));
     });
 
     socket.addEventListener('player-turn-is', (turnName) => {
-      setUser((previous) => {
-        return {
-          ...previous,
-          isCurrentTurn: user.nickname === turnName,
-        };
-      });
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
+      }));
       setCurrentPlayer(turnName);
     });
 
     socket.pushMessage(room.code, 'player-turn-is', null);
 
     socket.addEventListener('room-owner-is', (ownerName) => {
-      setUser((previous) => {
-        return {
-          ...previous,
-          isOwner: user.nickname === ownerName,
-        };
-      });
+      setUser((previous) => ({
+        ...previous,
+        isOwner: user.nickname === ownerName,
+      }));
     });
 
     socket.addEventListener('roulette-number-is', (number) => {
@@ -76,12 +70,10 @@ export default function SelectNextGame() {
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
-      setRoom((previous) => {
-        return {
-          ...previous,
-          URL: destination,
-        };
-      });
+      setRoom((previous) => ({
+        ...previous,
+        URL: destination,
+      }));
       navigate(destination);
     });
 
@@ -129,6 +121,11 @@ export default function SelectNextGame() {
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
+    return () => {
+      if (animation.current) {
+        animation.current.kill();
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -187,9 +184,6 @@ export default function SelectNextGame() {
   };
 
   const backToLobby = () => {
-    if (animation.current) {
-      animation.current.kill();
-    }
     socket.push('move-room-to', {
       roomCode: room.code,
       destination: '/Lobby',

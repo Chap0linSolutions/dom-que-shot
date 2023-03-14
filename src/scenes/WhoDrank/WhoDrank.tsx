@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useGlobalContext } from '../../contexts/GlobalContextProvider';
-import { Player } from '../../contexts/GlobalContextProvider';
+import { useGlobalContext, Player } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
 import Background from '../../components/Background';
 import Header from '../../components/Header';
@@ -39,34 +38,28 @@ export default function WhoDrankPage() {
 
   useEffect(() => {
     socket.addEventListener('lobby-update', (reply) => {
-      const newPlayerList = JSON.parse(reply); //newPlayerList = Player[]
-      setRoom((previous) => {
-        return {
-          ...previous,
-          playerList: newPlayerList,
-        };
-      });
+      const newPlayerList: Player[] = JSON.parse(reply);
+      setRoom((previous) => ({
+        ...previous,
+        playerList: newPlayerList,
+      }));
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
-      setRoom((previous) => {
-        return {
-          ...previous,
-          URL: destination,
-          page: undefined,
-        };
-      });
+      setRoom((previous) => ({
+        ...previous,
+        URL: destination,
+        page: undefined,
+      }));
       navigate(destination);
     });
 
     socket.addEventListener('room-owner-is', (ownerName) => {
       const isOwner = user.nickname === ownerName;
-      setUser((previous) => {
-        return {
-          ...previous,
-          isOwner: isOwner,
-        };
-      });
+      setUser((previous) => ({
+        ...previous,
+        isOwner: isOwner,
+      }));
     });
 
     return () => {

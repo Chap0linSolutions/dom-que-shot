@@ -22,19 +22,17 @@ export default function Lobby() {
 
   useEffect(() => {
     if (room.playerList.length === 0) {
-      setRoom((previous) => {
-        return {
-          ...previous,
-          playerList: [
-            {
-              nickname: user.nickname,
-              avatarSeed: user.avatarSeed,
-              beers: 0,
-              playerID: 0,
-            },
-          ],
-        };
-      });
+      setRoom((previous) => ({
+        ...previous,
+        playerList: [
+          {
+            nickname: user.nickname,
+            avatarSeed: user.avatarSeed,
+            beers: 0,
+            playerID: 0,
+          },
+        ],
+      }));
     }
   }, []);
 
@@ -58,12 +56,10 @@ export default function Lobby() {
 
     socket.addEventListener('lobby-update', (reply) => {
       const newPlayerList = JSON.parse(reply);
-      setRoom((previous) => {
-        return {
-          ...previous,
-          playerList: newPlayerList,
-        };
-      });
+      setRoom((previous) => ({
+        ...previous,
+        playerList: newPlayerList,
+      }));
     });
 
     socket.addEventListener('games-update', (newGameList) => {
@@ -73,12 +69,10 @@ export default function Lobby() {
       const orderedSelection = selectedGames.map((game, index) => {
         return { ...game, id: index };
       });
-      setRoom((previous) => {
-        return {
-          ...previous,
-          gameList: orderedSelection,
-        };
-      });
+      setRoom((previous) => ({
+        ...previous,
+        gameList: orderedSelection,
+      }));
     });
 
     if (room.gameList.length === 0) {
@@ -88,24 +82,20 @@ export default function Lobby() {
 
     socket.addEventListener('room-owner-is', (ownerName) => {
       const isOwner = user.nickname === ownerName;
-      setUser((previous) => {
-        return {
-          ...previous,
-          isOwner: isOwner,
-        };
-      });
+      setUser((previous) => ({
+        ...previous,
+        isOwner: isOwner,
+      }));
       setCurrentOwner(ownerName);
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (destination === '/SelectNextGame' || destination === '/WhoDrank') {
-        setRoom((previous) => {
-          return {
-            ...previous,
-            URL: destination,
-            page: undefined,
-          };
-        });
+        setRoom((previous) => ({
+          ...previous,
+          URL: destination,
+          page: undefined,
+        }));
         return navigate(destination);
       }
     });
@@ -156,20 +146,16 @@ export default function Lobby() {
   //////////////////////////////////////////////////////////////////////////////////////////////
 
   const goTo = (URL: string, page: number | undefined) => {
-    setRoom((previous) => {
-      return {
-        ...previous,
-        URL: URL,
-        page: page,
-      };
-    });
+    setRoom((previous) => ({
+      ...previous,
+      URL: URL,
+      page: page,
+    }));
     return navigate(URL);
   };
 
   const setGlobalRoomPage = (newPage: LobbyStates) => {
-    setRoom((previous) => {
-      return { ...previous, page: newPage };
-    });
+    setRoom((previous) => ({ ...previous, page: newPage }));
   };
 
   const popWarning = (warning) => {

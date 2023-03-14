@@ -3,7 +3,7 @@ import Header from '../../../components/Header';
 import Background from '../../../components/Background';
 import GameCard from '../../../components/GameCard';
 import { AlertTriangle } from 'react-feather';
-import game, { Game } from '../../../contexts/games';
+import games, { Game } from '../../../contexts/games';
 import {
   Card,
   Cards,
@@ -25,7 +25,7 @@ export default function Settings({
 }: SettingsProps) {
   const previousGameNames = previousGameSelection.map((p) => p.title);
   const [gameCards, setGameCards] = useState<Game[]>(
-    game.map((g) => {
+    games.map((g) => {
       return {
         ...g,
         id: previousGameNames.includes(g.title) ? g.id : g.id + 1000,
@@ -52,7 +52,7 @@ export default function Settings({
         return `Nenhum jogo selecionado.`;
       case 1:
         return `1 jogo selecionado.`;
-      case game.length:
+      case games.length:
         return `Todos os jogos selecionados.`;
       default:
         return `${numberOfSelectedGames} jogos selecionados.`;

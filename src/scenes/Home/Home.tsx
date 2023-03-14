@@ -85,13 +85,11 @@ function Home() {
       isOwner: false,
       isCurrentTurn: false,
     });
-    setRoom((previous) => {
-      return {
-        ...previous,
-        code: roomCode,
-        URL: nextURL,
-      };
-    });
+    setRoom((previous) => ({
+      ...previous,
+      code: roomCode,
+      URL: nextURL,
+    }));
     navigate(nextURL, {
       state: { option: option },
     });

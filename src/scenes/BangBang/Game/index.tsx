@@ -22,6 +22,12 @@ const errorMsgs = [
   <>Tá brincando, só pode...</>,
 ];
 
+enum Times {
+  Disconnected= -20000,
+  InvalidShot = -10000,
+  GameOver = 10000,
+}
+
 type ErrorStyle = {
   left: string;
   top: string;
@@ -71,18 +77,18 @@ export function GamePage({
   };
 
   useEffect(() => {
-    if (msTimer <= -10000) {
+    if (msTimer <= Times.InvalidShot) {
       clearInterval(timer);
-      shot(-10000);
+      shot(Times.InvalidShot);
       rankingPage();
     }
   }, [msTimer]);
 
   const formatedTime = (): number => {
     if (msTimer > 0) {
-      return 10000;
+      return Times.GameOver;
     }
-    return 10000 + msTimer;
+    return Times.GameOver + msTimer;
   };
 
   const animationBalloon = () => {
@@ -118,7 +124,7 @@ export function GamePage({
     if (msTimer > 0) {
       // queima da largada
       console.log('False start');
-      shot(-10000 - msTimer);
+      shot(Times.InvalidShot - msTimer);
     } else {
       shot(msTimer);
     }

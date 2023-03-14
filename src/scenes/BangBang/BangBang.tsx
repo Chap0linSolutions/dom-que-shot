@@ -47,9 +47,7 @@ export function BangBang() {
   );
 
   const setGlobalRoomPage = (newPage: Game) => {
-    setRoom((previous) => {
-      return { ...previous, page: newPage };
-    });
+    setRoom((previous) => ({ ...previous, page: newPage }));
   };
 
   const backToLobby = () => {
@@ -62,13 +60,11 @@ export function BangBang() {
   useEffect(() => {
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
-        setRoom((previous) => {
-          return {
-            ...previous,
-            URL: destination,
-            page: undefined,
-          };
-        });
+        setRoom((previous) => ({
+          ...previous,
+          URL: destination,
+          page: undefined,
+        }));
         return navigate(destination);
       }
       setGlobalRoomPage(destination);
@@ -96,23 +92,19 @@ export function BangBang() {
 
     socket.addEventListener('room-owner-is', (ownerName) => {
       const isOwner = user.nickname === ownerName;
-      setUser((previous) => {
-        return {
-          ...previous,
-          isOwner: isOwner,
-        };
-      });
+      setUser((previous) => ({
+        ...previous,
+        isOwner: isOwner,
+      }));
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
-        setRoom((previous) => {
-          return {
-            ...previous,
-            URL: destination,
-            page: undefined,
-          };
-        });
+        setRoom((previous) => ({
+          ...previous,
+          URL: destination,
+          page: undefined,
+        }));
         navigate(destination);
         return;
       }
