@@ -1,4 +1,4 @@
-import { ArrowLeft, Info, Settings } from 'react-feather';
+import { ArrowLeft, Info, Settings, Power } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import DomQueShotLogo from '../../assets/logo-darker.png';
 import {
@@ -6,6 +6,7 @@ import {
   ArrowAndTitle,
   HeaderDiv,
   TitleDiv,
+  LeaveDiv,
   Title,
   Timer,
   SettingsInfoAndLogo,
@@ -17,6 +18,7 @@ import {
 } from './Header.style';
 
 interface HeaderProps {
+  exit?: boolean;
   logo?: boolean | string;
   title?: string;
   goBackArrow?: true | (() => void);
@@ -26,6 +28,7 @@ interface HeaderProps {
 }
 
 export default function Header({
+  exit,
   logo,
   title,
   goBackArrow,
@@ -33,7 +36,7 @@ export default function Header({
   settingsPage,
   infoPage,
 }: HeaderProps) {
-  const navigateTo = useNavigate();
+  const navigate = useNavigate();
 
   const seconds = timer / 1000;
   const timerColor = seconds < 3 ? 'red' : 'white';
@@ -42,7 +45,7 @@ export default function Header({
   const goToPreviousPage = () => {
     if (goBackArrow === true) {
       //goBackArrow pode ser boolean true OU pode ser uma arrow function
-      navigateTo(-1);
+      navigate(-1);
       return;
     }
     goBackArrow();
@@ -51,7 +54,7 @@ export default function Header({
   const goToInfoPage = () => {
     if (typeof infoPage === 'string') {
       //infoPage pode ser string com o endereço da página OU pode ser uma arrow function
-      navigateTo(infoPage);
+      navigate(infoPage);
       return;
     }
     infoPage();
@@ -60,11 +63,16 @@ export default function Header({
   const goToSettingPage = () => {
     if (typeof settingsPage === 'string') {
       //settingsPage pode ser string com o endereço da página OU pode ser uma arrow function
-      navigateTo(settingsPage);
+      navigate(settingsPage);
       return;
     }
     settingsPage();
   };
+
+  const leaveRoom = () => {
+    window.localStorage.clear();
+    navigate('/Home');
+  }
 
   return (
     <HeaderDiv>
@@ -72,6 +80,10 @@ export default function Header({
         <ArrowDiv style={goBackArrow ? {} : { display: 'none' }}>
           <ArrowLeft width="30px" height="30px" onClick={goToPreviousPage} />
         </ArrowDiv>
+
+        <LeaveDiv style={exit ? {} : { display: 'none' }}>
+          <Power width="22px" height="22px" onClick={leaveRoom}/>  
+        </LeaveDiv>
 
         <TitleDiv style={title ? {} : { display: 'none' }}>
           <Title>{title}</Title>

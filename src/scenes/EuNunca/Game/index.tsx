@@ -32,7 +32,7 @@ export default function GamePage({
   if (turnVisibility === true) {
     return (
       <Background>
-        <Header logo={coverImg} />
+        <Header exit logo={coverImg} />
         <div className="EuNuncaDiv">
           <div className="EuNuncaTitleAndSuggestions">
             <p className="EuNuncaGameTitle">
@@ -60,7 +60,7 @@ export default function GamePage({
 
   return (
     <Background>
-      <Header logo={coverImg} />
+      <Header exit logo={coverImg} />
       <div className="WhoDrankContainer" style={{ marginTop: '3em' }}>
         <AwaitingBanner
           icon={glassIcon}

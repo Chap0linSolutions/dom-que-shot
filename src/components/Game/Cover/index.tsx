@@ -40,11 +40,12 @@ export default function CoverPage({
 
   const header = ownerVisibility ? (
     <Header
+      exit
       goBackArrow={goBackPage}
       infoPage={() => setPopupVisibility(true)}
     />
   ) : (
-    <Header infoPage={() => setPopupVisibility(true)} />
+    <Header exit infoPage={() => setPopupVisibility(true)} />
   );
 
   const coverCard = useRef();

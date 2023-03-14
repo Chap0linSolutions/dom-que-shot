@@ -21,9 +21,9 @@ export const ArrowDiv = styled.div`
   padding-left: 1em;
 `;
 
-export const TitleDiv = styled.div`
-  padding-left: 1em;
-`;
+export const TitleDiv = styled(ArrowDiv)``; 
+
+export const LeaveDiv = styled(ArrowDiv)``;
 
 export const Title = styled.p`
   margin: 0;
