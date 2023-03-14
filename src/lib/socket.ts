@@ -23,7 +23,6 @@ class SocketConnection {
     }
   }
 
-  //userData: {nickname, avatarSeed, roomCode}
   joinRoom(userData, onError = null) {
     this.socket.emit('join-room', userData.roomCode, (reply) => {
       if (reply === `ingressou na sala ${userData.roomCode}.`) {

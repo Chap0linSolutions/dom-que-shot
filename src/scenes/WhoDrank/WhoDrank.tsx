@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useGlobalContext } from '../../contexts/GlobalContextProvider';
-import { Player } from '../../contexts/GlobalContextProvider';
+import { useGlobalContext, Player } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
 import Background from '../../components/Background';
 import Header from '../../components/Header';

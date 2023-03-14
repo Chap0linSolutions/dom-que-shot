@@ -123,7 +123,7 @@ export default function EuNunca() {
           gamePage={startGame}
           turnVisibility={user.isCurrentTurn}
           ownerVisibility={user.isOwner}
-          description={description} //full game info is now loaded here
+          description={description}
         />
       );
   }
