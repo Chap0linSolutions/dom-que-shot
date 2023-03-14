@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import SocketConnection from '../../lib/socket';
-import Background from '../../components/Background';
-import CoverPage from '../../components/Game/Cover';
+import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import { RankingPage } from './Ranking';
 import { GamePage } from './Game';
+import SocketConnection from '../../lib/socket';
+import CoverPage from '../../components/Game/Cover';
 import coverImg from '../../assets/game-covers/bang-bang.png';
 import './BangBang.css';
 
@@ -23,18 +23,14 @@ const BangBangEvents = {
 };
 
 export function BangBang() {
-  const [currentGameState, setCurrentGameState] = useState<Game>(Game.Cover);
+  const { user, room, setUser, setRoom } = useGlobalContext();
+
   const [ready, setReady] = useState(false);
   const [currentRanking, setCurrentRanking] = useState([]);
   const [finalRanking, setFinalRanking] = useState(false);
-  const turnVisibility = useLocation().state.isYourTurn;
-  const ownerVisibility = useLocation().state.isOwner;
-  const userData = JSON.parse(window.localStorage.getItem('userData'));
-  const bangBangRoom = userData.roomCode;
-
   const title = 'Bang Bang';
-  const navigateTo = useNavigate();
-  const socketConn = SocketConnection.getInstance();
+  const navigate = useNavigate();
+  const socket = SocketConnection.getInstance();
 
   const description = (
     <>
@@ -50,31 +46,37 @@ export function BangBang() {
     </>
   );
 
+  const setGlobalRoomPage = (newPage: Game) => {
+    setRoom((previous) => ({ ...previous, page: newPage }));
+  };
+
   const backToLobby = () => {
-    console.log('O usuário desejou voltar ao lobby');
-    socketConn.push('move-room-to', {
-      roomCode: userData.roomCode,
+    socket.push('move-room-to', {
+      roomCode: room.code,
       destination: '/Lobby',
     });
   };
 
   useEffect(() => {
-    socketConn.addEventListener('room-is-moving-to', (destination) => {
-      navigateTo(destination, {
-        state: {
-          isYourTurn: turnVisibility,
-          isOwner: ownerVisibility,
-        },
-      });
+    socket.addEventListener('room-is-moving-to', (destination) => {
+      if (typeof destination === 'string') {
+        setRoom((previous) => ({
+          ...previous,
+          URL: destination,
+          page: undefined,
+        }));
+        return navigate(destination);
+      }
+      setGlobalRoomPage(destination);
     });
 
     return () => {
-      socketConn.removeAllListeners();
+      socket.removeAllListeners();
     };
   }, []);
 
   useEffect(() => {
-    socketConn.onMessageReceived(({ message, ranking }) => {
+    socket.onMessageReceived(({ message, ranking }) => {
       switch (message) {
         case BangBangEvents.StartTimer:
           setReady(true);
@@ -88,85 +90,88 @@ export function BangBang() {
       }
     });
 
-    socketConn.addEventListener('room-is-moving-to', (destination) => {
+    socket.addEventListener('room-owner-is', (ownerName) => {
+      const isOwner = user.nickname === ownerName;
+      setUser((previous) => ({
+        ...previous,
+        isOwner: isOwner,
+      }));
+    });
+
+    socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
-        console.log(`Movendo a sala para ${destination}.`);
-        navigateTo(destination);
+        setRoom((previous) => ({
+          ...previous,
+          URL: destination,
+          page: undefined,
+        }));
+        navigate(destination);
         return;
       }
-      setCurrentGameState(destination);
+      setGlobalRoomPage(destination);
     });
 
     return () => {
-      socketConn.removeAllListeners();
+      socket.removeAllListeners();
     };
   }, []);
 
   const startGame = () => {
-    socketConn.push('move-room-to', {
-      roomCode: userData.roomCode,
-      destination: Game.Game,
-    });
+    socket.pushMessage(room.code, 'move-to', Game.Game);
   };
 
   const thisPlayerIsReady = () => {
-    socketConn.pushMessage(bangBangRoom, 'player_ready', '');
+    socket.pushMessage(room.code, 'player_ready', '');
   };
 
   const handleShot = (msTimer) => {
-    socketConn.pushMessage(bangBangRoom, BangBangEvents.FireEvent, {
+    socket.pushMessage(room.code, BangBangEvents.FireEvent, {
       time: msTimer,
     });
   };
 
   const goTo = (where: string) => {
-    socketConn.push('move-room-to', {
-      roomCode: userData.roomCode,
+    socket.push('move-room-to', {
+      roomCode: room.code,
       destination: where,
     });
   };
 
-  switch (currentGameState) {
-    case Game.Cover:
-      return (
-        <CoverPage
-          type="round"
-          title={title}
-          coverImg={coverImg}
-          goBackPage={backToLobby}
-          turnVisibility={turnVisibility}
-          ownerVisibility={ownerVisibility}
-          description={description} //full game info is now loaded here
-          gamePage={startGame}
-        />
-      );
+  switch (room.page) {
     case Game.Game:
       return (
         <GamePage
           everyoneIsReady={ready}
           iAmReady={thisPlayerIsReady}
           shot={handleShot}
-          rankingPage={() => setCurrentGameState(Game.Ranking)}
+          rankingPage={() => setGlobalRoomPage(Game.Ranking)}
         />
       );
     case Game.Ranking:
       return (
         <RankingPage
           data={currentRanking}
-          gamePage={() => setCurrentGameState(Game.Game)}
+          gamePage={() => setGlobalRoomPage(Game.Game)}
           finalRanking={finalRanking}
-          turnVisibility={turnVisibility}
+          turnVisibility={user.isCurrentTurn}
           roulettePage={() => {
-            socketConn.push('update-turn', userData.roomCode);
+            socket.push('update-turn', room.code);
             goTo('/SelectNextGame');
           }}
         />
       );
     default:
       return (
-        <Background>
-          <div>Erro!</div>
-        </Background>
+        <CoverPage
+          type="round"
+          title={title}
+          coverImg={coverImg}
+          goBackPage={backToLobby}
+          turnVisibility={user.isCurrentTurn}
+          ownerVisibility={user.isOwner}
+          description={description}
+          gamePage={startGame}
+        />
       );
   }
 }

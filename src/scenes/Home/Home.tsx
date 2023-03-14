@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
-import { gameCards } from './GameCards';
 import { ArrowRight, AlertTriangle } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import ImageSlider from './ImageSlider';
 import Background from '../../components/Background';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Popup from '../../components/Popup';
 import api from '../../services/api';
+import games from '../../contexts/games';
 import './Home.css';
 
 type GameInformation = {
@@ -16,6 +17,7 @@ type GameInformation = {
 };
 
 function Home() {
+  const { setUser, setRoom } = useGlobalContext();
   const navigate = useNavigate();
 
   const [gameInfo, setGameInfo] = useState<GameInformation>({
@@ -35,9 +37,7 @@ function Home() {
       .then((response) => {
         console.log(response.data);
         window.localStorage.setItem('userData', JSON.stringify({}));
-        navigate('/ChooseAvatar', {
-          state: { option: 'create', roomCode: response.data },
-        });
+        enterRoom(response.data, 'create');
       })
       .catch(() => {
         alert(`Erro ao criar a sala. Tente novamente mais tarde.`);
@@ -49,7 +49,6 @@ function Home() {
     const newRoom: string = e.target.value.trim().toUpperCase();
     if (newRoom.length !== 0) {
       setRoomCode(newRoom);
-      //room = newRoom;
       setInputErrorMsg({ msg: '', visibility: 'hidden' });
       return;
     }
@@ -62,9 +61,7 @@ function Home() {
         .then((response) => {
           console.log(response.data);
           window.localStorage.setItem('userData', JSON.stringify({}));
-          navigate('/ChooseAvatar', {
-            state: { option: 'join', roomCode: code },
-          });
+          enterRoom(code, 'join');
         })
         .catch(() => {
           setInputErrorMsg({
@@ -78,6 +75,24 @@ function Home() {
         visibility: 'visible',
       });
     }
+  };
+
+  const enterRoom = (roomCode: string, option: string) => {
+    const nextURL = '/ChooseAvatar';
+    setUser({
+      nickname: undefined,
+      avatarSeed: undefined,
+      isOwner: false,
+      isCurrentTurn: false,
+    });
+    setRoom((previous) => ({
+      ...previous,
+      code: roomCode,
+      URL: nextURL,
+    }));
+    navigate(nextURL, {
+      state: { option: option },
+    });
   };
 
   ////Listener para remover foco do <input> quando o usuário aperta Enter/////////////////////////
@@ -143,7 +158,7 @@ function Home() {
       <div className="ChooseGameDiv">
         <p className="ChooseGameText">Já conhece nossos jogos?</p>
         <ImageSlider
-          content={gameCards}
+          content={games}
           show={() => setPopupVisibility(true)}
           setGameInfo={setGameInfo}
         />

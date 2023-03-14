@@ -49,3 +49,7 @@ npm run setup:dev
 ```
 npm run setup:prod
 ```
+
+## Deploy
+
+Fazer o merge de um pull request na master irá disparar uma ação no Github Actions.

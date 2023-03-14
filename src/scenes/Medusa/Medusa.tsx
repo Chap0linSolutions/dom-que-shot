@@ -9,7 +9,7 @@ export default function Medusa() {
       Este jogo deve ser jogado fora do aparelho. Funciona assim:
       <br />
       <br />
-      É recomendado jogar com várias pessoas. Façam um círculo com todos olhando
+      É recomendado jogar com várias pessoas. Façam uma roda com todos olhando
       para baixo.
       <br />
       Quando o jogador da vez falar "Já", todos devem levantar a cabeça e olhar
