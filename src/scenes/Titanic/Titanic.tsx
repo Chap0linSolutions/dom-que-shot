@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
-import Background from '../../components/Background';
 import CoverPage from '../../components/Game/Cover';
 import GamePage from './Game';
 import FinishPage from './Finish';
@@ -14,6 +14,7 @@ enum Game {
 }
 
 export default function Titanic() {
+  const {user, room, setUser, setRoom} = useGlobalContext();
   const title = 'Titanic';
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////////
@@ -33,7 +34,7 @@ export default function Titanic() {
       updatedMs -= 100;
       if (updatedMs === 0) {
         setResults(`time's up`);
-        if (turnVisibility === true) {
+        if (user.isCurrentTurn) {
           return sendResults(JSON.stringify([-100, -100, -100, -100, -100]));
         }
         return sendResults(JSON.stringify([-100]));
@@ -45,10 +46,6 @@ export default function Titanic() {
   ///////////////////////////////////////////////////////////////////////////////////////////////
 
   const navigate = useNavigate();
-  const ownerVisibility = useLocation().state.isOwner;
-  const turnVisibility = useLocation().state.isYourTurn;
-  const userData = JSON.parse(window.localStorage.getItem('userData'));
-  const [currentGameState, setCurrentGameState] = useState<Game>(Game.Cover);
   const [results, setResults] = useState<string | undefined>(undefined);
 
   const description = (
@@ -70,25 +67,21 @@ export default function Titanic() {
   );
 
   const sendResults = (selection) => {
-    //selection is a JSON.stringify() of the chosen sectors positions
     clearInterval(timer);
     setMsTimer(0);
     setTimer(null);
-    socket.pushMessage(userData.roomCode, 'player-has-selected', selection);
+    socket.pushMessage(room.code, 'player-has-selected', selection);
   };
 
   const startGame = () => {
-    socket.push('move-room-to', {
-      roomCode: userData.roomCode,
-      destination: Game.Game,
-    });
+    socket.pushMessage(room.code, 'move-to', Game.Game);
   };
 
   const nextRound = () => {
-    socket.push('update-turn', userData.roomCode);
+    socket.push('update-turn', room.code);
     clearInterval(timer);
     socket.push('move-room-to', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       destination: '/SelectNextGame',
     });
   };
@@ -97,7 +90,7 @@ export default function Titanic() {
     console.log('O usuário desejou voltar ao lobby');
     clearInterval(timer);
     socket.push('move-room-to', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       destination: '/Lobby',
     });
   };
@@ -107,13 +100,31 @@ export default function Titanic() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.push('lobby-update', userData.roomCode);
+    socket.addEventListener('lobby-update', (reply) => {
+      const newPlayerList = JSON.parse(reply);
+      setRoom((previous) => ({
+        ...previous,
+        playerList: newPlayerList,
+      }));
+    });
+
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
+      }));
+    });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
+        setRoom((previous) => ({
+          ...previous,
+          URL: destination,
+          page: undefined,
+        }));
         return navigate(destination);
       }
-      setCurrentGameState(destination);
+      setGlobalRoomPage(destination);
     });
 
     socket.addEventListener('titanic-results', (finalResults) => {
@@ -127,16 +138,19 @@ export default function Titanic() {
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
+  const setGlobalRoomPage = (newPage: Game) => {
+    setRoom((previous) => ({ ...previous, page: newPage }));
+  };
+
   useEffect(() => {
-    if (currentGameState === Game.Game) {
+    if (room.page === Game.Game) {
       startTimer();
     }
-  }, [currentGameState]);
+  }, [room.page]);
 
   useEffect(() => {
     if (typeof results === 'string') {
       if (timer !== null) {
-        console.log('parando o timer.');
         clearInterval(timer);
         setMsTimer(0);
         setTimer(null);
@@ -144,29 +158,15 @@ export default function Titanic() {
     }
   }, [results]);
 
-  switch (currentGameState) {
-    case Game.Cover:
-      return (
-        <CoverPage
-          type="round"
-          title={title}
-          coverImg={coverImg}
-          goBackPage={backToLobby}
-          turnVisibility={turnVisibility}
-          ownerVisibility={ownerVisibility}
-          description={description}
-          gamePage={startGame}
-        />
-      );
-
+  switch (room.page) {
     case Game.Game:
       return (
         <GamePage
           sendResults={sendResults}
           receiveResults={results}
-          isCurrentTurn={turnVisibility}
+          isCurrentTurn={user.isCurrentTurn}
           msTimeLeft={msTimer}
-          finishPage={() => setCurrentGameState(Game.Finish)}
+          finishPage={() => setGlobalRoomPage(Game.Finish)}
         />
       );
 
@@ -174,16 +174,23 @@ export default function Titanic() {
       return (
         <FinishPage
           results={results}
-          turnVisibility={turnVisibility}
+          thisPlayerName={user.nickname}
           roulettePage={() => nextRound()}
         />
       );
 
     default:
       return (
-        <Background>
-          <div>Erro!</div>
-        </Background>
-      );
+        <CoverPage
+          type="round"
+          title={title}
+          coverImg={coverImg}
+          goBackPage={backToLobby}
+          turnVisibility={user.isCurrentTurn}
+          ownerVisibility={user.isOwner}
+          description={description}
+          gamePage={startGame}
+        />
+    );
   }
 }

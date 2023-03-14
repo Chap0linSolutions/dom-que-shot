@@ -141,10 +141,10 @@ const games: Game[] = [
     ),
   }, 
   {
-    image: Titanic,
+    src: Titanic,
     title: 'Titanic',
     id: 10,
-    color: GameTypes.Round,
+    backgroundColor: GameTypes.Round,
     description: (
       <>
         Aparecerá um mapa na tela, e os jogadores da roda devem escolher onde vão

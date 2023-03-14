@@ -9,7 +9,7 @@ import { Content, Finish, Title } from './Finish.style';
 
 interface CoverProps {
   results: string;
-  turnVisibility: boolean;
+  thisPlayerName: string;
   roulettePage: () => void;
 }
 
@@ -29,7 +29,7 @@ enum FinishState {
 export default function FinishPage({
   results,
   roulettePage,
-  turnVisibility,
+  thisPlayerName,
 }: CoverProps) {
   const pageRef = useRef();
   const buttonRef = useRef();
@@ -162,7 +162,7 @@ export default function FinishPage({
     }, (i + 1) * 1000);
   };
 
-  const button = turnVisibility ? (
+  const button = (icebergPlayer && icebergPlayer.nickname === thisPlayerName) ? (
     <Button staysOnBottom onClick={roulettePage}>
       Continuar
     </Button>

@@ -40,7 +40,7 @@ export default function SelectNextGame() {
 
   useEffect(() => {
     socket.addEventListener('lobby-update', (reply) => {
-      const newPlayerList = JSON.parse(reply); //newPlayerList: Player[]
+      const newPlayerList = JSON.parse(reply);
       setRoom((previous) => ({
         ...previous,
         playerList: newPlayerList,
