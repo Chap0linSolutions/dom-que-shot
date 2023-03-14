@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGlobalContext } from '../../../contexts/GlobalContextProvider';
+import { Player, useGlobalContext } from '../../../contexts/GlobalContextProvider';
 import SocketConnection from '../../../lib/socket';
 import CoverPage from '../Cover';
 import HintPage from '../Hint';
@@ -46,7 +46,7 @@ export default function SimpleCardGame({
 
   useEffect(() => {
     socket.addEventListener('lobby-update', (reply) => {
-      const newPlayerList = JSON.parse(reply); //newPlayerList: Player[]
+      const newPlayerList: Player[] = JSON.parse(reply);
       setRoom((previous) => ({
         ...previous,
         playerList: newPlayerList,
