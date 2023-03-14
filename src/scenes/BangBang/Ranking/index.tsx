@@ -8,15 +8,15 @@ import crown from './img/crown.png';
 import Background from '../../../components/Background';
 import noOneVotedImage from '../../../assets/no-votes.png';
 
-type Player = {
+type Results = {
   id: string;
   nickname: string;
-  seed: string;
+  avatarSeed: string;
   shotTime: string;
 };
 
 interface RankingProps {
-  data: Player[];
+  data: Results[];
   finalRanking: boolean;
   roulettePage: () => void;
   gamePage: () => void;
@@ -29,11 +29,25 @@ export function RankingPage({
   roulettePage,
   turnVisibility,
 }: RankingProps) {
-  if (data.length === 0) {
-    return <p>Loading...</p>;
-  }
-  const winner = data[0];
-  const loser = data[data.length - 1];
+
+  const winner = (data.length > 0)
+  ? data[0]
+  : {
+    id: 0,
+    nickname: 'carregando...',
+    avatarSeed: 'a winner avatar has no seed',
+    shotTime: `${Infinity}`,
+  };
+
+  const loser = (data.length > 1)
+  ? data[data.length - 1]
+  : {
+    id: 1,
+    nickname: 'carregando...',
+    avatarSeed: 'a loser avatar has no seed',
+    shotTime: `${Infinity}`,
+  };
+
   let count = 0;
   let noOneVoted = false;
 
@@ -49,7 +63,7 @@ export function RankingPage({
 
   const button =
     turnVisibility === true ? (
-      <Button staysOnBottom onClick={roulettePage}>
+      <Button isDisabled={!finalRanking} staysOnBottom onClick={roulettePage}>
         Próximo jogo
       </Button>
     ) : null;
@@ -64,14 +78,14 @@ export function RankingPage({
                 <div className="container-winner">
                   <div className="background-avatar">
                     <img className="crown" src={crown} />
-                    <Avatar seed={winner.seed} />
+                    <Avatar seed={winner.avatarSeed} />
                   </div>
                   <p>{winner.nickname}</p>
                   <span>{(parseInt(winner.shotTime) / -1000).toFixed(2)}s</span>
                 </div>
                 <div className="container-loser">
                   <div className="background-avatar">
-                    {finalRanking && <Avatar seed={loser.seed} />}
+                    {finalRanking && <Avatar seed={loser.avatarSeed} />}
                     <img className="thumbDown" src={thumbDown} />
                   </div>
                   {finalRanking && <p>{loser.nickname}</p>}
@@ -88,7 +102,7 @@ export function RankingPage({
                   {!noOneVoted ? (
                     <>
                       <img className="only-crown" src={crown} />
-                      <Avatar seed={winner.seed} />
+                      <Avatar seed={winner.avatarSeed} />
                     </>
                   ) : (
                     <img

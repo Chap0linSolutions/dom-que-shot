@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import coverImg from '../../assets/game-covers/eu-nunca.png';
 import SocketConnection from '../../lib/socket';
-import Background from '../../components/Background';
 import CoverPage from '../../components/Game/Cover';
 import GamePage from './Game';
 import './EuNunca.css';
@@ -13,10 +13,7 @@ enum Game {
 }
 
 export default function EuNunca() {
-  const userData = JSON.parse(window.localStorage.getItem('userData'));
-  const [currentGameState, setCurrentGameState] = useState<Game>(Game.Cover);
-  const turnVisibility = useLocation().state.isYourTurn;
-  const ownerVisibility = useLocation().state.isOwner;
+  const { user, room, setUser, setRoom } = useGlobalContext();
 
   const description = (
     <>
@@ -42,21 +39,18 @@ export default function EuNunca() {
 
   const startGame = () => {
     socket.push('move-room-to', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       destination: Game.Game,
     });
   };
 
   const endOfGame = () => {
-    socket.push('move-room-to', {
-      roomCode: userData.roomCode,
-      destination: '/WhoDrank',
-    });
+    socket.pushMessage(room.code, 'end-game', coverImg);
   };
 
   const backToLobby = () => {
     socket.push('move-room-to', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       destination: '/Lobby',
     });
   };
@@ -68,21 +62,31 @@ export default function EuNunca() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
+    socket.addEventListener('room-owner-is', (ownerName) => {
+      const isOwner = user.nickname === ownerName;
+      setUser((previous) => ({
+        ...previous,
+        isOwner: isOwner,
+      }));
+    });
+
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
+        setRoom((previous) => ({
+          ...previous,
+          URL: destination,
+          page: undefined,
+        }));
         return navigate(destination, {
           state: {
             coverImg: coverImg,
-            isYourTurn: turnVisibility,
-            isOwner: ownerVisibility,
           },
         });
       }
-      setCurrentGameState(destination);
+      setGlobalRoomPage(destination);
     });
 
     socket.addEventListener('eu-nunca-suggestions', (suggestions) => {
-      console.log('Recebidas as sugestões de Eu Nunca do backend.');
       setEuNuncaSuggestions(suggestions);
     });
 
@@ -95,8 +99,21 @@ export default function EuNunca() {
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  switch (currentGameState) {
-    case Game.Cover:
+  const setGlobalRoomPage = (newPage: Game) => {
+    setRoom((previous) => ({ ...previous, page: newPage }));
+  };
+
+  switch (room.page) {
+    case Game.Game:
+      return (
+        <GamePage
+          suggestions={euNuncaSuggestions}
+          finishPage={endOfGame}
+          coverImg={coverImg}
+          turnVisibility={user.isCurrentTurn}
+        />
+      );
+    default:
       return (
         <CoverPage
           type="dynamic"
@@ -104,27 +121,10 @@ export default function EuNunca() {
           coverImg={coverImg}
           goBackPage={backToLobby}
           gamePage={startGame}
-          turnVisibility={turnVisibility}
-          ownerVisibility={ownerVisibility}
-          description={description} //full game info is now loaded here
+          turnVisibility={user.isCurrentTurn}
+          ownerVisibility={user.isOwner}
+          description={description}
         />
-      );
-
-    case Game.Game:
-      return (
-        <GamePage
-          suggestions={euNuncaSuggestions}
-          finishPage={endOfGame}
-          coverImg={coverImg}
-          turnVisibility={turnVisibility}
-        />
-      );
-
-    default:
-      return (
-        <Background>
-          <div>Erro!</div>
-        </Background>
       );
   }
 }

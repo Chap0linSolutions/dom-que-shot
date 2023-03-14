@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useGlobalContext, Player } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
 import Background from '../../components/Background';
 import Header from '../../components/Header';
@@ -10,35 +11,55 @@ import gsap from 'gsap';
 import './WhoDrank.css';
 import AwaitingBanner from '../../components/AwaitingBanner';
 
-interface PlayerProps {
-  nickname: string;
-  avatarSeed: string;
-  id: number;
-}
-
 export default function WhoDrankPage() {
+  const { user, room, setUser, setRoom } = useGlobalContext();
+
   const navigate = useNavigate();
-  const location = useLocation();
-  const coverImg = location.state.coverImg;
+  let coverImg = undefined;
+  try {
+    const location = useLocation();
+    coverImg = location.state.coverImg;
+  } catch (e) {
+    coverImg = true;
+  }
 
-  const turnVisibility = useLocation().state.isYourTurn;
-  const userData = JSON.parse(window.localStorage.getItem('userData'));
-  const [playerList, updatePlayerList] = useState<PlayerProps[]>([]);
-
-  const [selectedPlayers, setSelectedPlayers] = useState<PlayerProps[]>([]);
+  const playerList = useRef<Player[]>(room.playerList);
+  const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [SP, setSP] = useState<number>(Math.random());
   const [buttonText, setButtonText] = useState('Ninguém bebeu');
+
+  useEffect(() => {
+    gsap.config({ nullTargetWarn: false });
+  }, []);
 
   //SOCKET////////////////////////////////////////////////////////////////////////////////////////////
 
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.setLobbyUpdateListener(updatePlayerList);
-    socket.push('lobby-update', userData.roomCode);
+    socket.addEventListener('lobby-update', (reply) => {
+      const newPlayerList: Player[] = JSON.parse(reply);
+      setRoom((previous) => ({
+        ...previous,
+        playerList: newPlayerList,
+      }));
+    });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
+      setRoom((previous) => ({
+        ...previous,
+        URL: destination,
+        page: undefined,
+      }));
       navigate(destination);
+    });
+
+    socket.addEventListener('room-owner-is', (ownerName) => {
+      const isOwner = user.nickname === ownerName;
+      setUser((previous) => ({
+        ...previous,
+        isOwner: isOwner,
+      }));
     });
 
     return () => {
@@ -58,7 +79,7 @@ export default function WhoDrankPage() {
     }
   }, [SP]);
 
-  const selectPlayer = (player: PlayerProps) => {
+  const selectPlayer = (player: Player) => {
     const selectedOnes = selectedPlayers;
     const index = selectedPlayers.findIndex(
       (p) => p.nickname === player.nickname
@@ -78,20 +99,17 @@ export default function WhoDrankPage() {
 
   const backToRoulette = () => {
     socket.push('players-who-drank-are', {
-      roomCode: userData.roomCode,
+      roomCode: room.code,
       players: JSON.stringify(selectedPlayers),
     });
 
-    socket.push('update-turn', userData.roomCode);
-    socket.push('move-room-to', {
-      roomCode: userData.roomCode,
-      destination: '/SelectNextGame',
-    });
+    socket.push('update-turn', room.code);
+    socket.pushMessage(room.code, 'end-game', null);
   };
 
   const header = coverImg ? <Header logo={coverImg} /> : <Header logo />;
 
-  if (turnVisibility === true) {
+  if (user.isCurrentTurn === true) {
     return (
       <Background>
         {header}
@@ -100,10 +118,9 @@ export default function WhoDrankPage() {
             <p className="WhoDrankTitle">E aí, quem perdeu?</p>
             <p style={{ margin: 0 }}>Selecione quem bebeu uma dose:</p>
             <div className="WhoDrankPlayerListDiv">
-              {playerList.map((player) => (
+              {playerList.current.map((player) => (
                 <div
                   onClick={() => {
-                    console.log('aaah');
                     selectPlayer(player);
                   }}
                   className={
@@ -111,7 +128,7 @@ export default function WhoDrankPage() {
                       ? 'WhoDrankSelectedItem WhoDrankPlayerListItem'
                       : 'WhoDrankUnselectedItem WhoDrankPlayerListItem'
                   }
-                  key={player.id}>
+                  key={player.playerID}>
                   <p className="WhoDrankPlayerListNickname">
                     {player.nickname}
                   </p>
