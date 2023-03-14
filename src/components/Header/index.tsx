@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import { ArrowLeft, Info, Settings } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import DomQueShotLogo from '../../assets/logo-darker.png';
@@ -39,6 +40,7 @@ export default function Header({
   settingsPage,
   infoPage,
 }: HeaderProps) {
+  const { room } = useGlobalContext();
   const navigateTo = useNavigate();
   const [warningVisibility, setWarningVisibility] = useState<boolean>(false);
 
@@ -73,17 +75,8 @@ export default function Header({
     settingsPage();
   };
 
-  const getRoomCode = () => {
-    const userData = JSON.parse(window.localStorage.getItem('userData'));
-    try {
-      return userData.roomCode;
-    } catch (e) {
-      return undefined;
-    }
-  }
-
   const copyCode = () => {
-    navigator.clipboard.writeText(getRoomCode());
+    navigator.clipboard.writeText(room.code);
     setWarningVisibility(true);
     setTimeout(() => {
       setWarningVisibility(false);
@@ -117,7 +110,7 @@ export default function Header({
 
       <SettingsInfoAndLogo>
         <RoomCodeDiv onClick={copyCode} style={roomCode ? {} : { display: 'none' }}>
-          <RoomCode>Sala:<br/>{getRoomCode()}</RoomCode>
+          <RoomCode>Sala:<br/>{room.code}</RoomCode>
         </RoomCodeDiv>
 
         <InfoDiv style={infoPage ? {} : { display: 'none' }}>
