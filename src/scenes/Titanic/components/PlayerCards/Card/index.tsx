@@ -43,8 +43,9 @@ export default function Card({
       case -100:
         content = (
           <TitanicText>
-            Não jogou
-            <br />a tempo (bebe)
+            Não jogou a
+            <br/>
+            tempo (bebe)
           </TitanicText>
         );
         break;
@@ -83,8 +84,9 @@ export default function Card({
       case -100:
         content = (
           <IcebergText>
-            Não jogou
-            <br />a tempo (bebe)
+            Não jogou a
+            <br />
+            tempo (bebe)
           </IcebergText>
         );
         break;

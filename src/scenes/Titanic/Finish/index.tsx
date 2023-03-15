@@ -67,7 +67,7 @@ export default function FinishPage({
     title = 'NINGUÉM jogou a tempo!';
   } else if (everybodyFell) {
     title = `Todo mundo caiu :'(`;
-  } else if (noTitanicPlayed) {
+  } else if (noTitanicPlayed && icebergsHaveAppeared) {
     title = 'Os titanics comeram mosca!';
   } else if (everyoneSurvived && icebergsHaveAppeared) {
     if (icebergPlayer.shipPlacement[0] === -100) {

@@ -13,6 +13,14 @@ enum Game {
   Finish,
 }
 
+const Status = {
+  TimesUp: -100,
+  TitanicTimesUp: [-100],
+  IcebergTimesUp: [-100, -100, -100, -100, -100],
+  IcebergLeftAlone: [-200, -200, -200, -200, -200],
+  Disconnected: [-1],
+}
+
 export default function Titanic() {
   const {user, room, setUser, setRoom} = useGlobalContext();
   const title = 'Titanic';
@@ -35,9 +43,9 @@ export default function Titanic() {
       if (updatedMs === 0) {
         setResults(`time's up`);
         if (user.isCurrentTurn) {
-          return sendResults(JSON.stringify([-100, -100, -100, -100, -100]));
+          return sendResults(JSON.stringify(Status.IcebergTimesUp));
         }
-        return sendResults(JSON.stringify([-100]));
+        return sendResults(JSON.stringify(Status.TitanicTimesUp));
       }
       setMsTimer(updatedMs);
     }
