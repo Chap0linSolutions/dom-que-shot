@@ -44,7 +44,7 @@ export default function Card({
         content = (
           <TitanicText>
             Não jogou a
-            <br/>
+            <br />
             tempo (bebe)
           </TitanicText>
         );

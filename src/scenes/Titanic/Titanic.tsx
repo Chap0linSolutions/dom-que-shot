@@ -19,10 +19,10 @@ const Status = {
   IcebergTimesUp: [-100, -100, -100, -100, -100],
   IcebergLeftAlone: [-200, -200, -200, -200, -200],
   Disconnected: [-1],
-}
+};
 
 export default function Titanic() {
-  const {user, room, setUser, setRoom} = useGlobalContext();
+  const { user, room, setUser, setRoom } = useGlobalContext();
   const title = 'Titanic';
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////////
@@ -199,6 +199,6 @@ export default function Titanic() {
           description={description}
           gamePage={startGame}
         />
-    );
+      );
   }
 }

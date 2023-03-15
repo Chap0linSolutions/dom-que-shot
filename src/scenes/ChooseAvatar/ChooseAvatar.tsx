@@ -138,7 +138,11 @@ function ChooseAvatar() {
       avatarSeed: avatarSeed,
     };
     window.localStorage.setItem('userData', JSON.stringify(newUserData));
-    setUser((previous) => ({ ...previous, nickname: userName, avatarSeed: avatarSeed }));
+    setUser((previous) => ({
+      ...previous,
+      nickname: userName,
+      avatarSeed: avatarSeed,
+    }));
     redirect();
   };
 

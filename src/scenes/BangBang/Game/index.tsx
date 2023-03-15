@@ -23,7 +23,7 @@ const errorMsgs = [
 ];
 
 enum Times {
-  Disconnected= -20000,
+  Disconnected = -20000,
   InvalidShot = -10000,
   GameOver = 10000,
 }

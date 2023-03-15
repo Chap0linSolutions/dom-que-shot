@@ -125,7 +125,7 @@ export default function SelectNextGame() {
       if (animation.current) {
         animation.current.kill();
       }
-    }
+    };
   }, []);
 
   useEffect(() => {

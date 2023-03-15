@@ -162,11 +162,12 @@ export default function FinishPage({
     }, (i + 1) * 1000);
   };
 
-  const button = (icebergPlayer && icebergPlayer.nickname === thisPlayerName) ? (
-    <Button staysOnBottom onClick={roulettePage}>
-      Continuar
-    </Button>
-  ) : null;
+  const button =
+    icebergPlayer && icebergPlayer.nickname === thisPlayerName ? (
+      <Button staysOnBottom onClick={roulettePage}>
+        Continuar
+      </Button>
+    ) : null;
 
   return (
     <Background>

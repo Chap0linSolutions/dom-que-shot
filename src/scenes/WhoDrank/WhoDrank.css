@@ -22,7 +22,7 @@
   flex-direction: column;
 }
 
-.WhoDrankPlayerListDiv::-webkit-scrollbar{
+.WhoDrankPlayerListDiv::-webkit-scrollbar {
   display: none;
 }
 

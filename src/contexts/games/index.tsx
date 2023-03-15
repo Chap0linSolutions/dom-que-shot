@@ -139,7 +139,7 @@ const games: Game[] = [
         bicho&#41;. Quem errar vira uma dose.{' '}
       </>
     ),
-  }, 
+  },
   {
     src: Titanic,
     title: 'Titanic',
@@ -147,17 +147,19 @@ const games: Game[] = [
     backgroundColor: GameTypes.Round,
     description: (
       <>
-        Aparecerá um mapa na tela, e os jogadores da roda devem escolher onde vão
-        posicionar seus barcos. Enquanto isso, o jogador da vez escolhe onde vai
-        posicionar seus Icebergs.
+        Aparecerá um mapa na tela, e os jogadores da roda devem escolher onde
+        vão posicionar seus barcos. Enquanto isso, o jogador da vez escolhe onde
+        vai posicionar seus Icebergs.
         <br />
-        <br />Se o jogador da vez colocar um Iceberg onde algum dos demais
-        colocou um barco, o jogador atingido deve virar uma dose.
         <br />
-        <br />Boa sorte!
+        Se o jogador da vez colocar um Iceberg onde algum dos demais colocou um
+        barco, o jogador atingido deve virar uma dose.
+        <br />
+        <br />
+        Boa sorte!
       </>
     ),
-  }
+  },
 ];
 
 export default games;
