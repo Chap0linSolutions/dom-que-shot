@@ -150,11 +150,11 @@ export default function OEscolhido() {
   //////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    if(msTimer === 0 && !userVote){
+    if (msTimer === 0 && !userVote) {
       console.log('Acabou o tempo.');
       socket.pushMessage(room.code, 'times-up', user.nickname);
     }
-  }, [msTimer])
+  }, [msTimer]);
 
   useEffect(() => {
     if (userVote) {

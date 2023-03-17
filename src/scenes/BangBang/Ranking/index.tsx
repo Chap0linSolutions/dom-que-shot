@@ -29,24 +29,25 @@ export function RankingPage({
   roulettePage,
   turnVisibility,
 }: RankingProps) {
+  const winner =
+    data.length > 0
+      ? data[0]
+      : {
+          id: 0,
+          nickname: 'carregando...',
+          avatarSeed: 'a winner avatar has no seed',
+          shotTime: `${Infinity}`,
+        };
 
-  const winner = (data.length > 0)
-  ? data[0]
-  : {
-    id: 0,
-    nickname: 'carregando...',
-    avatarSeed: 'a winner avatar has no seed',
-    shotTime: `${Infinity}`,
-  };
-
-  const loser = (data.length > 1)
-  ? data[data.length - 1]
-  : {
-    id: 1,
-    nickname: 'carregando...',
-    avatarSeed: 'a loser avatar has no seed',
-    shotTime: `${Infinity}`,
-  };
+  const loser =
+    data.length > 1
+      ? data[data.length - 1]
+      : {
+          id: 1,
+          nickname: 'carregando...',
+          avatarSeed: 'a loser avatar has no seed',
+          shotTime: `${Infinity}`,
+        };
 
   let count = 0;
   let noOneVoted = false;
