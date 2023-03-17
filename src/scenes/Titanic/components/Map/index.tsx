@@ -36,7 +36,7 @@ export default function Map({
     if (type === 'game') {
       mapSectors.push(
         <GameMapSector
-          key={i + 500}
+          key={i}
           onClick={() => toggleSelection(i)}
           isCurrentTurn={isCurrentTurn}
           number={places[i]}
@@ -46,7 +46,7 @@ export default function Map({
     } else {
       mapSectors.push(
         <FinishMapSector
-          key={i + 500}
+          key={i}
           hasIceberg={icebergPlaces.includes(i)}
           number={places[i]}
           index={i}

@@ -34,25 +34,25 @@ export default function FinishMapSector({
   if (hasIceberg) {
     switch (iconCount) {
       case 0:
-        element = <ElementIcon key={1000 + index} src={iceberg} />;
+        element = <ElementIcon key={index + 26} src={iceberg} />;
         break;
       case 1:
-        element = <ElementIcon key={1000 + index} src={icebergOnShip} />;
+        element = <ElementIcon key={index + 26} src={icebergOnShip} />;
         break;
       case 2:
-        element = <ElementIcon key={1000 + index} src={icebergOnTwoShips} />;
+        element = <ElementIcon key={index + 26} src={icebergOnTwoShips} />;
         break;
       case 3:
-        element = <ElementIcon key={1000 + index} src={icebergOnTwoShips} />;
+        element = <ElementIcon key={index + 26} src={icebergOnTwoShips} />;
         break;
       default:
         element = (
           <>
-            <SmallElemetIcon key={1000 + index} src={icebergOnShip} />
-            <SmallElemetIcon key={2000 + index} src={icebergOnShip} />
-            <SmallElemetIcon key={3000 + index} src={icebergOnShip} />
-            <IconCounter key={4000 + index}>
-              <IconCount key={5000 + index}>{iconCount}</IconCount>
+            <SmallElemetIcon key={index + 26} src={icebergOnShip} />
+            <SmallElemetIcon key={index + 27} src={icebergOnShip} />
+            <SmallElemetIcon key={index + 28} src={icebergOnShip} />
+            <IconCounter key={index + 29}>
+              <IconCount key={index + 30}>{iconCount}</IconCount>
             </IconCounter>
           </>
         );
@@ -62,22 +62,22 @@ export default function FinishMapSector({
       case 0:
         break;
       case 1:
-        element = <ElementIcon key={1000 + index} src={titanic} />;
+        element = <ElementIcon key={index + 31} src={titanic} />;
         break;
       case 2:
-        element = <ElementIcon key={1000 + index} src={twoTitanics} />;
+        element = <ElementIcon key={index + 31} src={twoTitanics} />;
         break;
       case 3:
-        element = <ElementIcon key={1000 + index} src={threeTitanics} />;
+        element = <ElementIcon key={index + 31} src={threeTitanics} />;
         break;
       default:
         element = (
           <>
-            <SmallElemetIcon key={1000 + index} src={titanic} />
-            <SmallElemetIcon key={2000 + index} src={titanic} />
-            <SmallElemetIcon key={3000 + index} src={titanic} />
-            <IconCounter key={4000 + index}>
-              <IconCount key={5000 + index}>{iconCount}</IconCount>
+            <SmallElemetIcon key={index + 31} src={titanic} />
+            <SmallElemetIcon key={index + 32} src={titanic} />
+            <SmallElemetIcon key={index + 33} src={titanic} />
+            <IconCounter key={index + 34}>
+              <IconCount key={index + 35}>{iconCount}</IconCount>
             </IconCounter>
           </>
         );
@@ -94,5 +94,5 @@ export default function FinishMapSector({
     GameSector = BottomRightSector;
   }
 
-  return <GameSector key={number}>{element}</GameSector>;
+  return <GameSector key={index}>{element}</GameSector>;
 }
