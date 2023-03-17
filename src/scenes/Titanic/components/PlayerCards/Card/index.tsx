@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Avatar from '../../../../../components/Avatar';
 import ship from '../../../assets/ship.png';
 import shipWithIceberg from '../../../assets/iceberg-on-ship.png';
@@ -37,6 +38,10 @@ export default function Card({
   const CardBackground = titanic ? TitanicCard : IcebergCard;
 
   let content;
+
+  useEffect(() => {
+
+  }, []);
 
   if (titanic) {
     switch (status) {
@@ -94,7 +99,7 @@ export default function Card({
         content = (
           <>
             <IcebergCount>{hits}</IcebergCount>
-            <Icon key={Math.random()} src={iceberg} />
+            <Icon src={iceberg} />
           </>
         );
     }
@@ -105,9 +110,9 @@ export default function Card({
 
   for (let i = 0; i < 3; i++) {
     if (icebergsHaveAppeared && hits && i < hits) {
-      sunken.push(<Titanic key={i * Math.random()} src={shipWithIceberg} />);
+      sunken.push(<Titanic key={i} src={shipWithIceberg} />);
     } else if (status >= 0) {
-      survivors.push(<Titanic key={i * Math.random()} src={ship} />);
+      survivors.push(<Titanic key={i+3} src={ship} />);
     }
   }
 

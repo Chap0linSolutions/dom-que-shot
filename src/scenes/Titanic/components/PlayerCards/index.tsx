@@ -45,8 +45,9 @@ export default function PlayerCards({
     <CardSection>
       <TitanicPlayers>
         {icebergPlayerCard}
-        {titanicPlayerCards.map((player) => (
+        {titanicPlayerCards.map((player, index) => (
           <Card
+            key={index}
             nickname={player.nickname}
             avatarSeed={player.avatarSeed}
             titanic={true}

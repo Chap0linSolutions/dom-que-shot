@@ -52,7 +52,7 @@ export default function FinishMapSector({
             <SmallElemetIcon key={index + 27} src={icebergOnShip} />
             <SmallElemetIcon key={index + 28} src={icebergOnShip} />
             <IconCounter key={index + 29}>
-              <IconCount key={index + 30}>{iconCount}</IconCount>
+              <IconCount key={index + 30}>{`${iconCount}`}</IconCount>
             </IconCounter>
           </>
         );
@@ -77,7 +77,7 @@ export default function FinishMapSector({
             <SmallElemetIcon key={index + 32} src={titanic} />
             <SmallElemetIcon key={index + 33} src={titanic} />
             <IconCounter key={index + 34}>
-              <IconCount key={index + 35}>{iconCount}</IconCount>
+              <IconCount key={index + 35}>{`${iconCount}`}</IconCount>
             </IconCounter>
           </>
         );
