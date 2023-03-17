@@ -39,10 +39,6 @@ export default function Card({
 
   let content;
 
-  useEffect(() => {
-
-  }, []);
-
   if (titanic) {
     switch (status) {
       case -100:
@@ -112,7 +108,7 @@ export default function Card({
     if (icebergsHaveAppeared && hits && i < hits) {
       sunken.push(<Titanic key={i} src={shipWithIceberg} />);
     } else if (status >= 0) {
-      survivors.push(<Titanic key={i+3} src={ship} />);
+      survivors.push(<Titanic key={i + 3} src={ship} />);
     }
   }
 
