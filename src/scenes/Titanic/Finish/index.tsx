@@ -31,16 +31,25 @@ export default function FinishPage({
   roulettePage,
   thisPlayerName,
 }: CoverProps) {
+  const finalResults: Results[] = JSON.parse(results);
+
   const pageRef = useRef();
   const buttonRef = useRef();
-  const [places, setPlaces] = useState<number[]>([]);
   const [icebergPlaces, setIcebergPlaces] = useState<number[]>([]);
-  const [titanicPlayers, setTitanicPlayers] = useState<Results[]>([]);
-  const [icebergPlayer, setIcebergPlayer] = useState<Results>();
+  const [titanicPlayers, setTitanicPlayers] = useState<Results[]>(() =>
+    finalResults.filter((player) => player.shipPlacement.length < 5)
+  );
+  const [icebergPlayer, setIcebergPlayer] = useState<Results>(() =>
+    finalResults.filter((player) => player.shipPlacement.length === 5)[0]
+  );
   const [finishState, setFinishState] = useState<FinishState>(
     FinishState.Showing
   );
-  const finalResults: Results[] = JSON.parse(results);
+  const [places, setPlaces] = useState<number[]>(() => {
+    const initialValues = Array.apply(null, Array(25));
+    return initialValues.map((x, i) => i);
+  });
+
 
   const noOnePlayedInTime =
     finalResults.filter((p) => p.shipPlacement[0] === -100).length ===
@@ -97,27 +106,8 @@ export default function FinishPage({
         duration: 1,
         ease: 'linear',
       });
-
-    const initialValues: number[] = [];
-    for (let i = 0; i < 25; i++) {
-      initialValues.push(i);
-    }
-    setPlaces(initialValues);
-    setTitanicPlayers(
-      finalResults.filter((player) => player.shipPlacement.length < 5)
-    );
-    setIcebergPlayer(
-      finalResults.filter((player) => player.shipPlacement.length === 5)[0]
-    );
+    showResults();
   }, []);
-
-  useEffect(() => {
-    const hasBeenInitialized = places.filter((p) => p < 25).length === 25;
-    const showStarted = titanicPlayers.filter((p) => p.hasAppeared).length > 0;
-    if (!showStarted && hasBeenInitialized) {
-      showResults();
-    }
-  }, [places]);
 
   useEffect(() => {
     if (finishState === FinishState.Done) {

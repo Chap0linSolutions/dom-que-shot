@@ -34,25 +34,25 @@ export default function FinishMapSector({
   if (hasIceberg) {
     switch (iconCount) {
       case 0:
-        element = <ElementIcon key={index + 26} src={iceberg} />;
+        element = <ElementIcon src={iceberg} />;
         break;
       case 1:
-        element = <ElementIcon key={index + 26} src={icebergOnShip} />;
+        element = <ElementIcon src={icebergOnShip} />;
         break;
       case 2:
-        element = <ElementIcon key={index + 26} src={icebergOnTwoShips} />;
+        element = <ElementIcon src={icebergOnTwoShips} />;
         break;
       case 3:
-        element = <ElementIcon key={index + 26} src={icebergOnTwoShips} />;
+        element = <ElementIcon src={icebergOnTwoShips} />;
         break;
       default:
         element = (
           <>
-            <SmallElemetIcon key={index + 26} src={icebergOnShip} />
-            <SmallElemetIcon key={index + 27} src={icebergOnShip} />
-            <SmallElemetIcon key={index + 28} src={icebergOnShip} />
-            <IconCounter key={index + 29}>
-              <IconCount key={index + 30}>{`${iconCount}`}</IconCount>
+            <SmallElemetIcon src={icebergOnShip} />
+            <SmallElemetIcon src={icebergOnShip} />
+            <SmallElemetIcon src={icebergOnShip} />
+            <IconCounter>
+              <IconCount>{`${iconCount}`}</IconCount>
             </IconCounter>
           </>
         );
@@ -62,22 +62,22 @@ export default function FinishMapSector({
       case 0:
         break;
       case 1:
-        element = <ElementIcon key={index + 31} src={titanic} />;
+        element = <ElementIcon src={titanic} />;
         break;
       case 2:
-        element = <ElementIcon key={index + 31} src={twoTitanics} />;
+        element = <ElementIcon src={twoTitanics} />;
         break;
       case 3:
-        element = <ElementIcon key={index + 31} src={threeTitanics} />;
+        element = <ElementIcon src={threeTitanics} />;
         break;
       default:
         element = (
           <>
-            <SmallElemetIcon key={index + 31} src={titanic} />
-            <SmallElemetIcon key={index + 32} src={titanic} />
-            <SmallElemetIcon key={index + 33} src={titanic} />
-            <IconCounter key={index + 34}>
-              <IconCount key={index + 35}>{`${iconCount}`}</IconCount>
+            <SmallElemetIcon src={titanic} />
+            <SmallElemetIcon src={titanic} />
+            <SmallElemetIcon src={titanic} />
+            <IconCounter>
+              <IconCount>{`${iconCount}`}</IconCount>
             </IconCounter>
           </>
         );
