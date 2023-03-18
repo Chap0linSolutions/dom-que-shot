@@ -9,6 +9,7 @@ import OEscolhido from '../../assets/game-covers/o-escolhido.png';
 import PensaRapido from '../../assets/game-covers/pensa-rapido.png';
 import Vrum from '../../assets/game-covers/vrum.png';
 import QuemSouEu from '../../assets/game-covers/quem-sou-eu.png';
+import Titanic from '../../assets/game-covers/titanic.png';
 
 enum GameTypes {
   Simple = '#403A55',
@@ -136,6 +137,26 @@ const games: Game[] = [
         perguntando se outro animal bebe, e assim o jogo segue até alguém errar
         &#40;falando um animal que ninguém escolheu ou respondendo por outro
         bicho&#41;. Quem errar vira uma dose.{' '}
+      </>
+    ),
+  },
+  {
+    src: Titanic,
+    title: 'Titanic',
+    id: 10,
+    backgroundColor: GameTypes.Round,
+    description: (
+      <>
+        Aparecerá um mapa na tela, e os jogadores da roda devem escolher onde
+        vão posicionar seus barcos. Enquanto isso, o jogador da vez escolhe onde
+        vai posicionar seus Icebergs.
+        <br />
+        <br />
+        Se o jogador da vez colocar um Iceberg onde algum dos demais colocou um
+        barco, o jogador atingido deve virar uma dose.
+        <br />
+        <br />
+        Boa sorte!
       </>
     ),
   },

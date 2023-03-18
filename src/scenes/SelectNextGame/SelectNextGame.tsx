@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGlobalContext } from '../../contexts/GlobalContextProvider';
+import { Player, useGlobalContext } from '../../contexts/GlobalContextProvider';
 import gsap from 'gsap';
-
 import Background from '../../components/Background';
 import Header from '../../components/Header';
 import Roulette from '../../components/Roulette';
@@ -40,7 +39,7 @@ export default function SelectNextGame() {
 
   useEffect(() => {
     socket.addEventListener('lobby-update', (reply) => {
-      const newPlayerList = JSON.parse(reply); //newPlayerList: Player[]
+      const newPlayerList: Player[] = JSON.parse(reply);
       setRoom((previous) => ({
         ...previous,
         playerList: newPlayerList,
@@ -125,7 +124,7 @@ export default function SelectNextGame() {
       if (animation.current) {
         animation.current.kill();
       }
-    }
+    };
   }, []);
 
   useEffect(() => {

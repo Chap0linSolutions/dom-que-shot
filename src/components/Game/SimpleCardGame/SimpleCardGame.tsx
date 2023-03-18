@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Player, useGlobalContext } from '../../../contexts/GlobalContextProvider';
+import {
+  Player,
+  useGlobalContext,
+} from '../../../contexts/GlobalContextProvider';
 import SocketConnection from '../../../lib/socket';
 import CoverPage from '../Cover';
 import HintPage from '../Hint';
