@@ -46,7 +46,7 @@ export default function FinishPage({
     FinishState.Showing
   );
   const [places, setPlaces] = useState<number[]>(() => {
-    const initialValues = Array.apply(null, Array(25));
+    const initialValues = [...Array(25)];
     return initialValues.map((x, i) => i);
   });
 
