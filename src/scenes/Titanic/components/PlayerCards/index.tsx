@@ -1,4 +1,5 @@
 import Card from './Card';
+import { Status } from '../../Titanic';
 import { Results } from '../../Finish';
 import { CardSection, TitanicPlayers } from './PlayerCards.style';
 
@@ -18,13 +19,13 @@ export default function PlayerCards({
 
   let icebergStatus = icebergPlayer ? icebergPlayer.shipPlacement[0] : 0;
   if (whoFell.length === titanicPlayers.length) {
-    icebergStatus = -200;
+    icebergStatus = Status.IcebergLeftAlone[0];
   } else if (
     survivors.length > 0 &&
     survivors.length === whoPlayed.length &&
-    icebergStatus !== -100
+    icebergStatus !== Status.TimesUp
   ) {
-    icebergStatus = -300; //-300 = o jogador da vez errou todo mundo
+    icebergStatus = Status.IcebergMissedEveryone;
   }
 
   const icebergPlayerCard = hasIcebergs ? (

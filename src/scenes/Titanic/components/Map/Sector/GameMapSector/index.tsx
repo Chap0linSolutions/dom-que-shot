@@ -25,8 +25,7 @@ export default function GameMapSector({
   let GameSector = RegularSector;
   const icon = isCurrentTurn ? iceberg : titanic;
 
-  const element =
-    number >= 100 ? <ElementIcon src={icon} /> : null;
+  const element = number >= 100 ? <ElementIcon src={icon} /> : null;
 
   if (index === 0) {
     GameSector = TopLeftSector;
@@ -38,9 +37,5 @@ export default function GameMapSector({
     GameSector = BottomRightSector;
   }
 
-  return (
-    <GameSector onClick={onClick}>
-      {element}
-    </GameSector>
-  );
+  return <GameSector onClick={onClick}>{element}</GameSector>;
 }

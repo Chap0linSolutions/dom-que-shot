@@ -39,8 +39,8 @@ export default function FinishPage({
   const [titanicPlayers, setTitanicPlayers] = useState<Results[]>(() =>
     finalResults.filter((player) => player.shipPlacement.length < 5)
   );
-  const [icebergPlayer, setIcebergPlayer] = useState<Results>(() =>
-    finalResults.filter((player) => player.shipPlacement.length === 5)[0]
+  const [icebergPlayer, setIcebergPlayer] = useState<Results>(
+    () => finalResults.filter((player) => player.shipPlacement.length === 5)[0]
   );
   const [finishState, setFinishState] = useState<FinishState>(
     FinishState.Showing
@@ -49,7 +49,6 @@ export default function FinishPage({
     const initialValues = Array.apply(null, Array(25));
     return initialValues.map((x, i) => i);
   });
-
 
   const noOnePlayedInTime =
     finalResults.filter((p) => p.shipPlacement[0] === -100).length ===
@@ -89,23 +88,25 @@ export default function FinishPage({
   }
 
   useLayoutEffect(() => {
-    gsap
-      .timeline()
-      .to(pageRef.current, {
-        opacity: 0,
-        duration: 0,
-        ease: 'linear',
-      })
-      .to(buttonRef.current, {
-        yPercent: 200,
-        duration: 0,
-        ease: 'back',
-      })
-      .to(pageRef.current, {
-        opacity: 1,
-        duration: 1,
-        ease: 'linear',
-      });
+    if (pageRef && buttonRef) {
+      gsap
+        .timeline()
+        .to(pageRef.current, {
+          opacity: 0,
+          duration: 0,
+          ease: 'linear',
+        })
+        .to(buttonRef.current, {
+          yPercent: 200,
+          duration: 0,
+          ease: 'back',
+        })
+        .to(pageRef.current, {
+          opacity: 1,
+          duration: 1,
+          ease: 'linear',
+        });
+    }
     showResults();
   }, []);
 

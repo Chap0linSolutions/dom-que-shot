@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import Avatar from '../../../../../components/Avatar';
 import ship from '../../../assets/ship.png';
 import shipWithIceberg from '../../../assets/iceberg-on-ship.png';

@@ -64,11 +64,8 @@ export default function GamePage({
   const buttonRef = useRef();
 
   useEffect(() => {
-    const initialValues: number[] = [];
-    for (let i = 0; i < 25; i++) {
-      initialValues.push(i);
-    }
-    setPlaces(initialValues);
+    const initialValues = Array.apply(null, Array(25));
+    setPlaces(initialValues.map((x, i) => i));
   }, []);
 
   useEffect(() => {

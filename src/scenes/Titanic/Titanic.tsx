@@ -13,10 +13,11 @@ enum Game {
   Finish,
 }
 
-const Status = {
+export const Status = {
   TimesUp: -100,
   TitanicTimesUp: [-100],
   IcebergTimesUp: [-100, -100, -100, -100, -100],
+  IcebergMissedEveryone: -300,
   IcebergLeftAlone: [-200, -200, -200, -200, -200],
   Disconnected: [-1],
 };
