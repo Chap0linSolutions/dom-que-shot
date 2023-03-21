@@ -9,6 +9,7 @@ import OEscolhido from '../../assets/game-covers/o-escolhido.png';
 import PensaRapido from '../../assets/game-covers/pensa-rapido.png';
 import Vrum from '../../assets/game-covers/vrum.png';
 import QuemSouEu from '../../assets/game-covers/quem-sou-eu.png';
+import QualODesenho from '../../assets/game-covers/qual-o-desenho.png';
 
 enum GameTypes {
   Simple = '#403A55',
@@ -139,6 +140,25 @@ const games: Game[] = [
       </>
     ),
   },
+  {
+    src: QualODesenho,
+    title: 'Qual O Desenho',
+    id: 10,
+    backgroundColor: GameTypes.Round,
+    description: (
+      <>
+        Neste jogo, cada participante vai jogar com o seu aparelho. O jogador da vez vai escolher uma palavra para desenhar
+        (pode ser um animal, um objeto, dentre outros) e terá 1 minuto para finalizar o desenho.
+        <br />
+        <br />
+        - Os que não acertarem dentro do tempo BEBEM;
+        - Se ninguém acertar, o jogador da vez BEBE.
+        <br />
+        <br />
+        Boa sorte!
+      </>
+    )
+  }
 ];
 
 export default games;

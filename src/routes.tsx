@@ -20,6 +20,7 @@ import OEscolhido from './scenes/OEscolhido';
 import BangBang from './scenes/BangBang';
 import SelectNextGame from './scenes/SelectNextGame';
 import QuemSouEu from './scenes/QuemSouEu';
+import QualODesenho from './scenes/QualODesenho';
 
 const Router: React.FC = () => {
   return (
@@ -44,6 +45,7 @@ const Router: React.FC = () => {
         <Route path="/EuNunca" element={<EuNunca />} />
         <Route path="/BangBang" element={<BangBang />} />
         <Route path="/QuemSouEu" element={<QuemSouEu />} />
+        <Route path="/QualODesenho" element={<QualODesenho />} />
       </Routes>
     </MemoryRouter>
   );
