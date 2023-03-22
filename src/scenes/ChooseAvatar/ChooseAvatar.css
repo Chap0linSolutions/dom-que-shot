@@ -18,9 +18,21 @@
   margin-top: 0;
 }
 
-.NicknameTitle {
-  margin: 0px 0px 14px 36px;
+.NameAndCharacterCount{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  margin-bottom: 14px;
+}
+
+.Title {
+  margin: 0;
   color: rgba(255, 255, 255, 0.6);
+}
+
+.Red {
+  color: red;
 }
 
 .NicknameInput {
