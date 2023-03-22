@@ -31,9 +31,9 @@ function ChooseAvatar() {
   });
 
   const inputRef = useRef(null);
-  const characterCount = (inputRef.current)
-  ? inputRef.current.value.trim().length
-  : oldNickname && oldNickname.length;
+  const characterCount = inputRef.current
+    ? inputRef.current.value.trim().length
+    : oldNickname && oldNickname.length;
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
@@ -122,7 +122,7 @@ function ChooseAvatar() {
       });
       return;
     }
-    if(userName.length === 0){
+    if (userName.length === 0) {
       setInputErrorMsg({
         msg: 'Você deve inserir um nome primeiro!',
         visibility: 'visible',
@@ -146,7 +146,11 @@ function ChooseAvatar() {
       avatarSeed: avatarSeed,
     };
     window.localStorage.setItem('userData', JSON.stringify(newUserData));
-    setUser((previous) => ({ ...previous, nickname: userName, avatarSeed: avatarSeed }));
+    setUser((previous) => ({
+      ...previous,
+      nickname: userName,
+      avatarSeed: avatarSeed,
+    }));
     redirect();
   };
 
@@ -187,7 +191,7 @@ function ChooseAvatar() {
           <div className="NicknameDiv">
             <div className="NameAndCharacterCount">
               <p className="Title">Nome:</p>
-              <p className={(characterCount > 16)? 'Title Red' : 'Title'}>
+              <p className={characterCount > 16 ? 'Title Red' : 'Title'}>
                 {characterCount}
               </p>
             </div>
