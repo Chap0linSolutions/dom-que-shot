@@ -6,7 +6,6 @@ import Alert from '../../../components/Alert';
 import Popup from '../../../components/Popup';
 import {
   GameDiv,
-  Content,
   DrawingDiv,
   DrawingCanvas,
   GuessingDiv,
@@ -53,8 +52,8 @@ export default function GamePage({
   const contextRef = useRef<CanvasRenderingContext2D>();
 
   const sizeRef = useRef<HTMLDivElement>();
-  const h = sizeRef.current? sizeRef.current.offsetHeight : 640;
-  const w = sizeRef.current? sizeRef.current.offsetWidth : 360;
+  const baseW = sizeRef.current? sizeRef.current.offsetWidth : 306
+  const w = turnVisibility? 0.85*baseW : 0.7*baseW;
 
   const endGame = () => {
     //here's where we set the id field of each player to either 1000 (winner) or 0 (loser).
@@ -125,12 +124,11 @@ export default function GamePage({
         <Header infoPage={() => setPopupVisibility(true)} />
         <Alert message={guidanceText} />
         <GameDiv>
-          <Content>
             <DrawingDiv ref={sizeRef}>
               <WordDiv>{category}</WordDiv>
               <DrawingCanvas
-                width={0.85 * w}
-                height={0.75 * h}
+                width={w}
+                height={w/0.75}
                 ref={canvasRef}
                 onMouseDown={startDrawing}
                 onTouchStart={startDrawing}
@@ -143,7 +141,6 @@ export default function GamePage({
                 Recomeçar
               </Button>
             </DrawingDiv>
-          </Content>
         </GameDiv>
       </Background>
     );
@@ -158,23 +155,21 @@ export default function GamePage({
           comesFromTop
         />
         <Header infoPage={() => setPopupVisibility(true)} />
-        <Alert message={guidanceText} />
+        <Alert /*noButton*/ message={guidanceText} />
         <GameDiv>
-          <Content>
             <GuessTitle>Qual é o desenho?</GuessTitle>
             <GuessingDiv ref={sizeRef}>
               <GuessesDiv />
               <DrawingCanvas
                 ref={canvasRef}
-                width={0.7 * w}
-                height={0.8 * h}
+                width={w}
+                height={w/0.75}
               />
             </GuessingDiv>
             <GuessInputDiv>
               <GuessInput />
-              <Button>Enviar</Button>
+              <Button width='80px'>Enviar</Button>
             </GuessInputDiv>
-          </Content>
         </GameDiv>
       </Background>
     )

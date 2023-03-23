@@ -1,21 +1,13 @@
 import styled from '@emotion/styled';
 
 export const GameDiv = styled.div`
+  background-color: aqua;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
   width: 100%;
-`;
-
-export const Content = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 `;
 
 export const DrawingDiv = styled.div`
@@ -54,7 +46,7 @@ export const UnderBar = styled.div`
 export const GuessTitle = styled.div`
   width: 256px;
   height: 48px;
-  padding-top: 12px;
+  padding: 12px 0px;
 
   background: #403A55;
   border-radius: 10px;
@@ -66,6 +58,7 @@ export const GuessTitle = styled.div`
 `
 
 export const GuessingDiv = styled.div`
+  background-color: red;
   width: 100%;
   height: 100%;
   display: flex;
