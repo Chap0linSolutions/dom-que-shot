@@ -37,6 +37,11 @@ interface GameProps {
   category: string;
 }
 
+type CanvasDimensions = {
+  width: number,
+  height: number,
+}
+
 export default function GamePage({
   title,
   description,
@@ -52,8 +57,53 @@ export default function GamePage({
   const contextRef = useRef<CanvasRenderingContext2D>();
 
   const sizeRef = useRef<HTMLDivElement>();
-  const baseW = sizeRef.current? sizeRef.current.offsetWidth : 306
-  const w = turnVisibility? 0.85*baseW : 0.7*baseW;
+  
+  //ajuste com o tamanho da tela///////////////////////////////////////////////////////////////
+
+  const sizeConstant = 0.7;
+
+  const [innerWidth, setInnerWidth] = useState<number>(window.innerWidth);
+  const [canvas, setCanvas] = useState<CanvasDimensions>(() => ((turnVisibility)
+    ? {
+        width: (window.innerWidth - 56),
+        height: (window.innerWidth - 56) / sizeConstant,
+      }
+    : {
+        width: sizeConstant * (window.innerWidth - 32),
+        height: (window.innerWidth - 32),
+      }
+    )
+  );
+
+  const handleResize = () => {
+      setInnerWidth((window.innerWidth < 500)
+        ? window.innerWidth
+        : 412
+      );
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    setCanvas(getCanvasSize);
+  }, [innerWidth]);
+
+  const getCanvasSize = () => {
+    return (turnVisibility)
+    ? {
+        width: (innerWidth - 56),
+        height: (innerWidth - 56) / sizeConstant,
+      }
+    : {
+        width: sizeConstant * (innerWidth - 32),
+        height: (innerWidth - 32),
+      }
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+
 
   const endGame = () => {
     //here's where we set the id field of each player to either 1000 (winner) or 0 (loser).
@@ -127,8 +177,8 @@ export default function GamePage({
             <DrawingDiv ref={sizeRef}>
               <WordDiv>{category}</WordDiv>
               <DrawingCanvas
-                width={w}
-                height={w/0.75}
+                width={canvas.width}
+                height={canvas.height}
                 ref={canvasRef}
                 onMouseDown={startDrawing}
                 onTouchStart={startDrawing}
@@ -144,34 +194,41 @@ export default function GamePage({
         </GameDiv>
       </Background>
     );
-  } else {
-    return (
-      <Background noImage>
-        <Popup
-          title={title}
-          description={description}
-          show={popupVisibility}
-          exit={() => setPopupVisibility(false)}
-          comesFromTop
-        />
-        <Header infoPage={() => setPopupVisibility(true)} />
-        <Alert /*noButton*/ message={guidanceText} />
-        <GameDiv>
-            <GuessTitle>Qual é o desenho?</GuessTitle>
-            <GuessingDiv ref={sizeRef}>
-              <GuessesDiv />
-              <DrawingCanvas
-                ref={canvasRef}
-                width={w}
-                height={w/0.75}
-              />
-            </GuessingDiv>
-            <GuessInputDiv>
-              <GuessInput />
-              <Button width='80px'>Enviar</Button>
-            </GuessInputDiv>
-        </GameDiv>
-      </Background>
-    )
-  }
+  } 
+  return (
+    <Background noImage>
+      <Alert /*noButton*/ message={guidanceText} />
+      <Popup
+        title={title}
+        description={description}
+        show={popupVisibility}
+        exit={() => setPopupVisibility(false)}
+        comesFromTop
+      />
+      <Header infoPage={() => setPopupVisibility(true)} />
+      <GameDiv>
+          <GuessTitle>
+            Qual é o desenho?
+          </GuessTitle>
+          <GuessingDiv ref={sizeRef}>
+            <GuessesDiv
+              style={{
+                width: innerWidth - (canvas.width + 32),
+              }}
+            />
+            <DrawingCanvas
+              ref={canvasRef}
+              width={canvas.width}
+              height={canvas.height}
+            /> 
+          </GuessingDiv>
+          <GuessInputDiv>
+            <GuessInput
+              placeholder="Digite sua resposta..."
+            />
+            <Button width='120px' height='40px'>Enviar</Button>
+          </GuessInputDiv>
+      </GameDiv>
+    </Background>
+  )
 }
