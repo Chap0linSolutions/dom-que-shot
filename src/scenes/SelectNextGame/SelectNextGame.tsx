@@ -198,9 +198,9 @@ export default function SelectNextGame() {
 
   const header =
     user.isOwner === true ? (
-      <Header goBackArrow={backToLobby} logo />
+      <Header goBackArrow={backToLobby} roomCode logo />
     ) : (
-      <Header logo />
+      <Header roomCode logo />
     );
 
   return (
