@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Background from '../../../components/Background';
 import Button from '../../../components/Button';
 import Header from '../../../components/Header';
@@ -62,6 +62,8 @@ export default function GamePage({
 
   const sizeConstant = 0.7;
 
+  const [canvasOffsetX, setCanvasOffsetX] = useState(0)
+  const [canvasOffsetY, setCanvasOffsetY] = useState(0)
   const [innerWidth, setInnerWidth] = useState<number>(window.innerWidth);
   const [canvas, setCanvas] = useState<CanvasDimensions>(() => ((turnVisibility)
     ? {
@@ -88,6 +90,8 @@ export default function GamePage({
 
   useEffect(() => {
     setCanvas(getCanvasSize);
+    setCanvasOffsetX(canvasRef.current.offsetLeft);
+    setCanvasOffsetY(canvasRef.current.offsetTop);
   }, [innerWidth]);
 
   const getCanvasSize = () => {
@@ -137,21 +141,38 @@ export default function GamePage({
     contextRef.current = context;
   }, []);
 
-  function startDrawing(e) {
+  function startMouseDrawing(e: React.MouseEvent) {
     const { offsetX, offsetY } = e.nativeEvent;
     contextRef.current.beginPath();
     contextRef.current.moveTo(offsetX, offsetY);
     setIsDrawing(true);
   }
 
-  function draw(e) {
+  function startTouchDrawing(e: React.TouchEvent) {
+    const offsetX = e.touches[0].clientX - canvasOffsetX;
+    const offsetY = e.touches[0].clientY - canvasOffsetY;
+    contextRef.current.beginPath();
+    contextRef.current.moveTo(offsetX, offsetY);
+    setIsDrawing(true);
+  }
+
+  function mouseDrawing(e: React.MouseEvent) {
     if (!isDrawing) return;
     const { offsetX, offsetY } = e.nativeEvent;
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
   }
 
+  function touchDrawing(e: React.TouchEvent) {
+    if (!isDrawing) return;
+    const offsetX = e.touches[0].clientX - canvasOffsetX;
+    const offsetY = e.touches[0].clientY - canvasOffsetY;
+    contextRef.current.lineTo(offsetX, offsetY);
+    contextRef.current.stroke();
+  }
+
   function finishDrawing() {
+    if (!isDrawing) return;
     contextRef.current.closePath();
     setIsDrawing(false);
   }
@@ -159,7 +180,6 @@ export default function GamePage({
   function clearDrawing() {
     contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
   }
-
 
   if (turnVisibility) {
     return (
@@ -180,10 +200,10 @@ export default function GamePage({
                 width={canvas.width}
                 height={canvas.height}
                 ref={canvasRef}
-                onMouseDown={startDrawing}
-                onTouchStart={startDrawing}
-                onTouchMove={draw}
-                onMouseMove={draw}
+                onMouseDown={startMouseDrawing}
+                onTouchStart={startTouchDrawing}
+                onMouseMove={mouseDrawing}
+                onTouchMove={touchDrawing}
                 onMouseUp={finishDrawing}
                 onTouchEnd={finishDrawing}
               />
