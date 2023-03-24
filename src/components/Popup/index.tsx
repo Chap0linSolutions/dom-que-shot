@@ -30,7 +30,6 @@ export default function Popup({
   backgroundColor,
   exit,
 }: PopupProps) {
-
   const infoRef = useRef();
   const warningRef = useRef();
 
@@ -63,13 +62,13 @@ export default function Popup({
       };
 
   const releasePopup = () => {
-    const ref = (type === 'info')? infoRef : warningRef;
-    gsap.to( ref.current, releaseProps);
+    const ref = type === 'info' ? infoRef : warningRef;
+    gsap.to(ref.current, releaseProps);
   };
 
   const hidePopup = () => {
-    const ref = (type === 'info')? infoRef : warningRef;
-    gsap.to( ref.current, hideProps);
+    const ref = type === 'info' ? infoRef : warningRef;
+    gsap.to(ref.current, hideProps);
   };
 
   useEffect(() => {
@@ -78,26 +77,32 @@ export default function Popup({
     } else {
       hidePopup();
     }
-  }, [show])
+  }, [show]);
 
   const popupStyle = {
     height: height ? `${height}px` : 'auto',
-    backgroundColor: (backgroundColor)? backgroundColor : '#ffffff',
-    paddingTop: (title)? '20px' : 0,
+    backgroundColor: backgroundColor ? backgroundColor : '#ffffff',
+    paddingTop: title ? '20px' : 0,
   };
 
   const getIcon = () => {
-    switch(warningType){
-      case 'success': return <CheckCircle color="lime" width={24} height={24}/>
-      case 'alert': return <AlertTriangle color='gold' width={24} height={24}/>
-      case 'failure': return <XCircle color='red' width={24} height={24}/>
-      default: return null;
+    switch (warningType) {
+      case 'success':
+        return <CheckCircle color="lime" width={24} height={24} />;
+      case 'alert':
+        return <AlertTriangle color="gold" width={24} height={24} />;
+      case 'failure':
+        return <XCircle color="red" width={24} height={24} />;
+      default:
+        return null;
     }
-  }
+  };
 
-  if(type === 'info'){
+  if (type === 'info') {
     return (
-      <div ref={infoRef} className={`PopupContainer ${comesFromTop ? 'Top' : 'Bottom'}`}>
+      <div
+        ref={infoRef}
+        className={`PopupContainer ${comesFromTop ? 'Top' : 'Bottom'}`}>
         <div className="PopupDiv" style={popupStyle}>
           <div className="PopupHeader">
             <p
@@ -115,7 +120,7 @@ export default function Popup({
         </div>
       </div>
     );
-  } 
+  }
   return (
     <div ref={warningRef} className={`PopupContainer Bottom`}>
       <div className="PopupDiv" style={popupStyle}>

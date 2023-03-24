@@ -45,7 +45,7 @@ export default function CoverPage({
       roomCode
     />
   ) : (
-    <Header infoPage={() => setPopupVisibility(true)} roomCode/>
+    <Header infoPage={() => setPopupVisibility(true)} roomCode />
   );
 
   const coverCard = useRef();
@@ -152,7 +152,7 @@ export default function CoverPage({
   return (
     <Background>
       <Popup
-        type='info'
+        type="info"
         height={sizeOfDescription ? sizeOfDescription : undefined}
         title={title}
         description={description}

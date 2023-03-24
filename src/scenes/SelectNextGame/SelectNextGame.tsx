@@ -90,10 +90,10 @@ export default function SelectNextGame() {
   }, [number]);
 
   useEffect(() => {
-    if(!rouletteIsSpinning && nextGameName !== ''){
+    if (!rouletteIsSpinning && nextGameName !== '') {
       startSelectedGame();
     }
-  }, [rouletteIsSpinning])
+  }, [rouletteIsSpinning]);
 
   const startSelectedGame = () => {
     if (user.isCurrentTurn === true) {
@@ -101,8 +101,7 @@ export default function SelectNextGame() {
         socket.pushMessage(room.code, 'start-game', nextGameName);
       }, 1000);
     }
-  }
-
+  };
 
   //ajuste com o tamanho da tela///////////////////////////////////////////////////////////////
 

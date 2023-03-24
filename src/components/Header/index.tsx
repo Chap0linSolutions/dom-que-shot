@@ -25,7 +25,7 @@ interface HeaderProps {
   logo?: boolean | string;
   title?: string;
   goBackArrow?: true | (() => void);
-  roomCode?: boolean,
+  roomCode?: boolean;
   timer?: number;
   settingsPage?: string | (() => void);
   infoPage?: string | (() => void);
@@ -81,19 +81,18 @@ export default function Header({
     setTimeout(() => {
       setWarningVisibility(false);
     }, 2000);
-  }
-
-  
+  };
 
   return (
     <HeaderDiv>
       {roomCode && (
-      <Popup
-        type = 'warning'
-        warningType='success'
-        description={'código da sala copiado!'}
-        show={warningVisibility}
-      />)}
+        <Popup
+          type="warning"
+          warningType="success"
+          description={'código da sala copiado!'}
+          show={warningVisibility}
+        />
+      )}
       <ArrowAndTitle>
         <ArrowDiv style={goBackArrow ? {} : { display: 'none' }}>
           <ArrowLeft width="30px" height="30px" onClick={goToPreviousPage} />
@@ -109,8 +108,14 @@ export default function Header({
       </Timer>
 
       <SettingsInfoAndLogo>
-        <RoomCodeDiv onClick={copyCode} style={roomCode ? {} : { display: 'none' }}>
-          <RoomCode>Sala:<br/>{room.code}</RoomCode>
+        <RoomCodeDiv
+          onClick={copyCode}
+          style={roomCode ? {} : { display: 'none' }}>
+          <RoomCode>
+            Sala:
+            <br />
+            {room.code}
+          </RoomCode>
         </RoomCodeDiv>
 
         <InfoDiv style={infoPage ? {} : { display: 'none' }}>
