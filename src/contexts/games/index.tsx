@@ -177,7 +177,7 @@ const games: Game[] = [
     id: 12,
     backgroundColor: GameTypes.Dynamic,
     description: `O sorteado da rodada deverá decidir entre realizar 
-    um dos Desafios sugeridos pelo jogo, ou virar duas doses.`
+    um dos Desafios sugeridos pelo jogo, ou virar duas doses.`,
   },
 ];
 

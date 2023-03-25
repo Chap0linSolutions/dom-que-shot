@@ -58,7 +58,7 @@ export default function JogoDaVerdade() {
     socket.push('players-who-drank-are', {
       roomCode: room.code,
       beers: 2,
-      players: JSON.stringify([user])
+      players: JSON.stringify([user]),
     });
 
     roulettePage();
