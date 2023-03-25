@@ -5,7 +5,6 @@ import Button from '../../../components/Button';
 import AwaitingBanner from '../../../components/AwaitingBanner';
 import beer from '../../../assets/beer.png';
 import gsap from 'gsap';
-import './Game.css';
 
 import {
   GameContainer,
