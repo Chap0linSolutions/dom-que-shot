@@ -20,9 +20,7 @@ export default function JogoDaVerdade() {
   const navigateTo = useNavigate();
   const socket = SocketConnection.getInstance();
 
-  const [suggestions, setSuggestions] = useState<
-    string[]
-  >([]);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
 
   const description = (
