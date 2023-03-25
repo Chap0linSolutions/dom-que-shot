@@ -57,7 +57,6 @@ export default function JogoDaVerdade() {
   };
 
   const finishDrinking = () => {
-    console.log('Ihhhh bebeu');
     socket.push('current-player-drink', {
       roomCode: room.code,
       qtdBeers: 2,
@@ -103,9 +102,8 @@ export default function JogoDaVerdade() {
     if (user.isCurrentTurn) {
       socket.pushMessage(gameRoom, 'get-suggestions', '');
     }
-    socket.addEventListener('get-suggestions', (suggestions) => {
-      console.log('Recebidas as sugestões Jogo da Verdade do backend.');
-      setSuggestions(suggestions);
+    socket.addEventListener('get-suggestions', (suggs) => {
+      setSuggestions(suggs);
     });
 
     socket.addEventListener('show-suggestions', () => {
@@ -124,7 +122,6 @@ export default function JogoDaVerdade() {
   };
 
   const showSuggs = () => {
-    console.log('REVELANDO AS PERGUNTAS');
     socket.pushMessage(gameRoom, 'show-suggestions');
     setShowSuggestions(true);
   };
