@@ -10,6 +10,7 @@ import PensaRapido from '../../assets/game-covers/pensa-rapido.png';
 import Vrum from '../../assets/game-covers/vrum.png';
 import QuemSouEu from '../../assets/game-covers/quem-sou-eu.png';
 import Titanic from '../../assets/game-covers/titanic.png';
+import JogoDoDesafio from '../../assets/game-covers/jogo-do-desafio.png';
 
 enum GameTypes {
   Simple = '#403A55',
@@ -159,6 +160,14 @@ const games: Game[] = [
         Boa sorte!
       </>
     ),
+  },
+  {
+    src: JogoDoDesafio,
+    title: 'Jogo do Desafio',
+    id: 11,
+    backgroundColor: GameTypes.Dynamic,
+    description: `O sorteado da rodada deverá decidir entre realizar 
+    um dos Desafios sugeridos pelo jogo, ou virar duas doses.`,
   },
 ];
 
