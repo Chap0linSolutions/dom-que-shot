@@ -55,9 +55,10 @@ export default function JogoDaVerdade() {
   };
 
   const finishDrinking = () => {
-    socket.push('current-player-drink', {
+    socket.push('players-who-drink-are', {
       roomCode: room.code,
-      qtdBeers: 2,
+      beers: 2,
+      players: JSON.stringify([user.nickname])
     });
 
     roulettePage();
