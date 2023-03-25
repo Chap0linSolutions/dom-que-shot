@@ -55,10 +55,10 @@ export default function JogoDoDesafio() {
   };
 
   const finishDrinking = () => {
-    console.log('Ihhhh bebeu');
-    socket.push('current-player-drink', {
+    socket.push('players-who-drank-are', {
       roomCode: room.code,
-      qtdBeers: 2,
+      beers: 2,
+      players: JSON.stringify([user]),
     });
 
     roulettePage();
@@ -101,9 +101,8 @@ export default function JogoDoDesafio() {
     if (user.isCurrentTurn) {
       socket.pushMessage(gameRoom, 'get-suggestions', '');
     }
-    socket.addEventListener('get-suggestions', (suggestions) => {
-      console.log('Recebidas as sugestões Jogo do Desafio do backend.');
-      setSuggestions(suggestions);
+    socket.addEventListener('get-suggestions', (suggs) => {
+      setSuggestions(suggs);
     });
 
     socket.addEventListener('show-suggestions', () => {
@@ -122,7 +121,6 @@ export default function JogoDoDesafio() {
   };
 
   const showSuggs = () => {
-    console.log('REVELANDO OS DESAFIOS');
     socket.pushMessage(gameRoom, 'show-suggestions');
     setShowSuggestions(true);
   };

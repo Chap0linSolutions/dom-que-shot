@@ -4,7 +4,6 @@ import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 import AwaitingBanner from '../../../components/AwaitingBanner';
 import beer from '../../../assets/beer.png';
-import gsap from 'gsap';
 
 import {
   GameContainer,
@@ -44,15 +43,6 @@ export default function GamePage({
       setCountdown((p) => (p > 0 ? p - 1 : 0));
     }, 1000);
   };
-
-  useEffect(() => {
-    gsap.to('.JogoDoDesafioAwaitingIcon', {
-      rotate: -360,
-      duration: 5,
-      ease: 'linear',
-      repeat: -1,
-    });
-  });
 
   useEffect(() => {
     if (show) {
@@ -121,9 +111,7 @@ export default function GamePage({
               icon={beer}
               firstText={`Aguardando o jogador da vez escolher algum desafio
                 para realizar...`}
-              secondText={
-                'Se ele demorar, pode dar um pescotapa. Eu deixo.'
-              }
+              secondText={'Se ele demorar, pode dar um pescotapa. Eu deixo.'}
             />
           </AwaitingDiv>
         </GameContainer>
