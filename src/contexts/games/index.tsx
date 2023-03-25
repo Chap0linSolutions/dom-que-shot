@@ -11,6 +11,7 @@ import PensaRapido from '../../assets/game-covers/pensa-rapido.png';
 import Vrum from '../../assets/game-covers/vrum.png';
 import QuemSouEu from '../../assets/game-covers/quem-sou-eu.png';
 import Titanic from '../../assets/game-covers/titanic.png';
+import JogoDoDesafio from '../../assets/game-covers/jogo-do-desafio.png';
 import JogoDaVerdade from '../../assets/game-covers/jogo-da-verdade.png';
 
 enum GameTypes {
@@ -169,6 +170,14 @@ const games: Game[] = [
     backgroundColor: GameTypes.Dynamic,
     description: `O jogador da vez deverá decidir entre contar uma Verdade, 
     respondendo a uma das perguntas de forma sincera, ou virar duas doses.`,
+  },
+  {
+    src: JogoDoDesafio,
+    title: 'Jogo do Desafio',
+    id: 12,
+    backgroundColor: GameTypes.Dynamic,
+    description: `O sorteado da rodada deverá decidir entre realizar 
+    um dos Desafios sugeridos pelo jogo, ou virar duas doses.`,
   },
 ];
 

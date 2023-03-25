@@ -4,19 +4,19 @@ import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
 import CoverPage from '../../components/Game/Cover';
 import GamePage from './Game';
-import coverImg from '../../assets/game-covers/jogo-da-verdade.png';
+import coverImg from '../../assets/game-covers/jogo-do-desafio.png';
 
 enum Game {
   Cover,
   Game,
 }
 
-export default function JogoDaVerdade() {
+export default function JogoDoDesafio() {
   const { user, room, setUser, setRoom } = useGlobalContext();
 
   const gameRoom = room.code;
 
-  const title = 'Jogo da Verdade';
+  const title = 'Jogo do Desafio';
   const navigateTo = useNavigate();
   const socket = SocketConnection.getInstance();
 
@@ -25,8 +25,8 @@ export default function JogoDaVerdade() {
 
   const description = (
     <>
-      O sorteado da rodada deverá decidir entre contar uma Verdade, respondendo
-      a uma pergunta de forma sincera, ou virar duas doses.
+      O jogador da vez deverá decidir entre realizar um dos Desafios
+      sugeridos pelo jogo, ou virar duas doses.
       <br />
       <br />E aí? Vai escolher o que?
     </>

@@ -21,6 +21,7 @@ import BangBang from './scenes/BangBang';
 import SelectNextGame from './scenes/SelectNextGame';
 import Titanic from './scenes/Titanic';
 import QuemSouEu from './scenes/QuemSouEu';
+import JogoDoDesafio from './scenes/JogoDoDesafio';
 import JogoDaVerdade from './scenes/JogoDaVerdade';
 
 const Router: React.FC = () => {
@@ -47,6 +48,7 @@ const Router: React.FC = () => {
         <Route path="/BangBang" element={<BangBang />} />
         <Route path="/Titanic" element={<Titanic />} />
         <Route path="/QuemSouEu" element={<QuemSouEu />} />
+        <Route path="/JogoDoDesafio" element={<JogoDoDesafio />} />
         <Route path="/JogoDaVerdade" element={<JogoDaVerdade />} />
       </Routes>
     </MemoryRouter>
