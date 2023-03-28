@@ -32,7 +32,7 @@ export default function QualODesenho() {
     const title = 'Qual é o desenho?';
 
     const navigate = useNavigate();
-    const [drawingPoints, setDrawingPoints] = useState<string>();
+    const [drawingPaths, setDrawingPaths] = useState<string>();
     const [wordSuggestions, setWordSuggestions] = useState<string[]>([]);
     const [word, setWord] = useState<string>(undefined);
     const [playersAndGuesses, setPlayersAndGuesses] =
@@ -54,7 +54,7 @@ export default function QualODesenho() {
 
     //TIMER//////////////////////////////////////////////////////////////////////////////////
 
-    const gameTime = 60000;        
+    const gameTime = 120000;        
 
     const [msTimer, setMsTimer] = useState(gameTime);
     const [timer, setTimer] = useState<NodeJS.Timer>();
@@ -172,7 +172,9 @@ export default function QualODesenho() {
         });
 
         socket.addEventListener('drawing-points', (DPs) => {
-            setDrawingPoints(DPs);
+            if(!user.isCurrentTurn){
+                setDrawingPaths(DPs);
+            }
         })
 
         socket.addEventListener('new-guess', (newGuess) => {
@@ -217,7 +219,7 @@ export default function QualODesenho() {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    const updateDrawing = (stringifiedArray: string) => {
+    const sendDrawingUpdate = (stringifiedArray: string) => {
         socket.pushMessage(room.code, 'drawing-points', stringifiedArray);
     }
 
@@ -242,8 +244,8 @@ export default function QualODesenho() {
                     turnVisibility={user.isCurrentTurn}
                     msTimeLeft={msTimer}
                     startGame={startGame}
-                    updateDrawingPoints={updateDrawing}
-                    drawingPoints={drawingPoints}
+                    updateDrawingPaths={sendDrawingUpdate}
+                    drawingPaths={drawingPaths}
                 />
             );
 

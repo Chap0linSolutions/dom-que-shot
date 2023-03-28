@@ -23,14 +23,19 @@ interface GameProps {
   description: string | JSX.Element;
   turnVisibility: boolean;
   category: string;
-  drawingPoints: string;
-  updateDrawingPoints: (value: string) => void;
+  drawingPaths: string;
+  updateDrawingPaths: (value: string) => void;
   startGame: () => void;
 }
 
 type Coordinates = {
   x: number,
   y: number,
+}
+
+type Path = {
+  color: string,
+  points: Coordinates[];
 }
 
 type CanvasDimensions = {
@@ -44,8 +49,8 @@ export default function GamePage({
   category,
   turnVisibility,
   msTimeLeft,
-  drawingPoints,
-  updateDrawingPoints,
+  drawingPaths,
+  updateDrawingPaths,
   startGame,
 }: GameProps) {
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
@@ -56,13 +61,23 @@ export default function GamePage({
 
   const sizeRef = useRef<HTMLDivElement>();
   
-  const counter = useRef<number>(59000);
-  const drawingPts = useRef<Coordinates[]>([]).current;
+  const counter = useRef<number>(119000);
+  const oldLength = useRef<number>(0);
+  const paths = useRef<Path[]>([]);
 
   useEffect(() => {
-    if(counter.current > msTimeLeft){ 
-      updateDrawingPoints(JSON.stringify(drawingPts));
+    if(counter.current > msTimeLeft){
       counter.current -= 1000;
+      if(paths.current.length > 0){
+        const currentPath = paths.current.at(-1);
+        if(currentPath.points.length === oldLength.current) return; 
+        oldLength.current = currentPath.points.length;
+      } else if(oldLength.current > -1){
+        oldLength.current = -1;
+        return updateDrawingPaths(JSON.stringify([]));
+      } else if(oldLength.current === -1) return;
+
+      updateDrawingPaths(JSON.stringify(paths.current));
     }
   }, [msTimeLeft]);
   
@@ -75,7 +90,6 @@ export default function GamePage({
   const [innerWidth, setInnerWidth] = useState<number>((window.innerWidth < 500)? window.innerWidth : 412);
   const [canvas, setCanvas] = useState<CanvasDimensions>(() => {
     const innerW = window.innerWidth < 500? window.innerWidth: 412;
-    console.log(innerW);
     return (turnVisibility)
     ? {
         width: (innerW - 56),
@@ -127,15 +141,56 @@ export default function GamePage({
     context.fillStyle = 'white';
     context.lineCap = 'round';
     context.strokeStyle = '#000000';
-    context.lineWidth = 5;
-
+    context.lineWidth = (innerWidth) > 500? 5 : 3;
     contextRef.current = context;
   }, []);
+
+  
+  useEffect(() => {
+    if(drawingPaths){
+      const updatedPaths: Path[] = JSON.parse(drawingPaths);
+      const constant = sizeConstant * 1.1;
+      clearDrawing();
+      if(updatedPaths.length > 0){
+        updatedPaths.forEach(path => {
+          if(path.points.length > 0){
+            contextRef.current.strokeStyle = path.color;
+            const initialCoordinate = path.points.splice(0, 1).at(0);
+            contextRef.current.beginPath();
+            contextRef.current.moveTo(constant * initialCoordinate.x, constant * initialCoordinate.y);
+          
+            path.points.forEach(p => {
+              contextRef.current.lineTo(constant * p.x, constant * p.y);
+              contextRef.current.stroke();
+            })
+
+            contextRef.current.closePath();
+          }
+        })
+      }
+    } 
+  }, [drawingPaths]);
+
+
+  const floorXY = (x: number, y: number) => {
+    return {x: Math.floor(x), y: Math.floor(y)}
+  }
+
+  const initiateNewPath = (x: number, y: number) => {
+    paths.current.push({color: 'red', points: [floorXY(x, y)]});
+  }
+
+  const updateCurrentPath = (x: number, y: number) => {
+    if(paths.current.length > 0){
+      paths.current.at(-1).points.push(floorXY(x, y));
+    }
+  }
 
   function startMouseDrawing(e: React.MouseEvent) {
     const { offsetX, offsetY } = e.nativeEvent;
     contextRef.current.beginPath();
     contextRef.current.moveTo(offsetX, offsetY);
+    initiateNewPath(offsetX, offsetY);
     setIsDrawing(true);
   }
 
@@ -144,7 +199,8 @@ export default function GamePage({
     const offsetY = e.touches[0].clientY - canvasOffsetY;
     contextRef.current.beginPath();
     contextRef.current.moveTo(offsetX, offsetY);
-    setIsDrawing(true);
+    initiateNewPath(offsetX, offsetY);
+    setIsDrawing(true);    
   }
 
   function mouseDrawing(e: React.MouseEvent) {
@@ -152,6 +208,7 @@ export default function GamePage({
     const { offsetX, offsetY } = e.nativeEvent;
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
+    updateCurrentPath(offsetX, offsetY);
   }
 
   function touchDrawing(e: React.TouchEvent) {
@@ -160,16 +217,19 @@ export default function GamePage({
     const offsetY = e.touches[0].clientY - canvasOffsetY;
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
+    updateCurrentPath(offsetX, offsetY);
   }
 
   function finishDrawing() {
     if (!isDrawing) return;
     contextRef.current.closePath();
+    console.log(paths.current);
     setIsDrawing(false);
   }
 
   function clearDrawing() {
     contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    paths.current.length = 0;
   }
 
   if (turnVisibility) {
@@ -207,7 +267,7 @@ export default function GamePage({
     );
   } 
 
-  const alert = (msTimeLeft === 60000)
+  const alert = (msTimeLeft === 120000)
   ? <Alert noButton message={guidanceText} icon={beer}/>
   : null;
 
