@@ -4,6 +4,7 @@ import Button from '../../../components/Button';
 import Header from '../../../components/Header';
 import Alert from '../../../components/Alert';
 import Popup from '../../../components/Popup';
+import beer from '../../../assets/beer.png';
 import {
   GameDiv,
   DrawingDiv,
@@ -16,25 +17,18 @@ import {
   GuessInputDiv,
 } from './Game.style';
 
-interface ListedPlayerProps {
-  nickname: string;
-  avatarSeed: string;
-  id: number;
-}
-
-interface WhoPlayersProps extends ListedPlayerProps {
-  selected: boolean;
-  isNameVisible: boolean;
-}
-
 interface GameProps {
   title: string;
   msTimeLeft: number;
   description: string | JSX.Element;
-  players: ListedPlayerProps[];
-  setWinners: () => void;
   turnVisibility: boolean;
   category: string;
+  startGame: () => void;
+}
+
+type Coordinates = {
+  x: number,
+  y: number,
 }
 
 type CanvasDimensions = {
@@ -47,8 +41,8 @@ export default function GamePage({
   description,
   category,
   turnVisibility,
-  players,
-  setWinners,
+  msTimeLeft,
+  startGame,
 }: GameProps) {
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -58,24 +52,30 @@ export default function GamePage({
 
   const sizeRef = useRef<HTMLDivElement>();
   
+
+
+
+  
   //ajuste com o tamanho da tela///////////////////////////////////////////////////////////////
 
   const sizeConstant = 0.7;
 
-  const [canvasOffsetX, setCanvasOffsetX] = useState(0)
-  const [canvasOffsetY, setCanvasOffsetY] = useState(0)
-  const [innerWidth, setInnerWidth] = useState<number>(window.innerWidth);
-  const [canvas, setCanvas] = useState<CanvasDimensions>(() => ((turnVisibility)
+  const [canvasOffsetX, setCanvasOffsetX] = useState(0);
+  const [canvasOffsetY, setCanvasOffsetY] = useState(0);
+  const [innerWidth, setInnerWidth] = useState<number>((window.innerWidth < 500)? window.innerWidth : 412);
+  const [canvas, setCanvas] = useState<CanvasDimensions>(() => {
+    const innerW = window.innerWidth < 500? window.innerWidth: 412;
+    console.log(innerW);
+    return (turnVisibility)
     ? {
-        width: (window.innerWidth - 56),
-        height: (window.innerWidth - 56) / sizeConstant,
+        width: (innerW - 56),
+        height: (innerW - 56) / sizeConstant,
       }
     : {
-        width: sizeConstant * (window.innerWidth - 32),
-        height: (window.innerWidth - 32),
+        width: sizeConstant * (innerW - 32),
+        height: (innerW - 32),
       }
-    )
-  );
+  });
 
   const handleResize = () => {
       setInnerWidth((window.innerWidth < 500)
@@ -108,28 +108,9 @@ export default function GamePage({
 
   ///////////////////////////////////////////////////////////////////////////////////////////
 
-
-  const endGame = () => {
-    //here's where we set the id field of each player to either 1000 (winner) or 0 (loser).
-  };
-
-  const guidanceText =
-    turnVisibility === true
-      ? 'Aperte "fechar" para iniciar o timer.'
-      : 'Aguardando o da Vinci começar a desenhar';
-
-  const cardStyle = (isSelected: boolean) => {
-    return { background: isSelected === true ? '#8877DF' : '#403A55' };
-  };
-
-  const button = (
-    <Button
-      staysOnBottom
-      onClick={endGame}
-      isDisabled={true}>
-      Finalizar
-    </Button>
-  );
+  const guidanceText = (turnVisibility)
+  ? 'Pronto? Aperte o botão abaixo e pode começar!'
+  : 'Aguardando o Da Vinci começar a desenhar...';
 
   useEffect(() => {
     const context = canvasRef.current.getContext('2d');
@@ -192,7 +173,7 @@ export default function GamePage({
           comesFromTop
         />
         <Header infoPage={() => setPopupVisibility(true)} />
-        <Alert message={guidanceText} />
+        <Alert message={guidanceText} buttonText="Pronto!" onButtonClick={startGame}/>
         <GameDiv>
             <DrawingDiv ref={sizeRef}>
               <WordDiv>{category}</WordDiv>
@@ -215,9 +196,14 @@ export default function GamePage({
       </Background>
     );
   } 
+
+  const alert = (msTimeLeft === 60000)
+  ? <Alert noButton message={guidanceText} icon={beer}/>
+  : null;
+
   return (
     <Background noImage>
-      <Alert /*noButton*/ message={guidanceText} />
+      {alert}
       <Popup
         title={title}
         description={description}

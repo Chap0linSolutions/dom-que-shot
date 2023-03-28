@@ -6,9 +6,11 @@ interface AlertProps {
   message: string | JSX.Element;
   icon?: string;
   noButton?: boolean;
+  buttonText?: string;
+  onButtonClick?: () => void;
 }
 
-export default function Alert({ message, icon, noButton }: AlertProps) {
+export default function Alert({ message, icon, noButton, buttonText, onButtonClick }: AlertProps) {
   const background = useRef();
   const alert = useRef();
   const img = useRef();
@@ -16,7 +18,12 @@ export default function Alert({ message, icon, noButton }: AlertProps) {
   const image = icon ? <Image ref={img} src={icon} /> : null;
 
   const button = noButton ? null : (
-    <Button onClick={() => dismissAlert()}>Fechar</Button>
+    <Button onClick={() => {
+      dismissAlert();
+      onButtonClick && onButtonClick();
+    }}>
+      {buttonText? buttonText : 'Fechar'}
+    </Button>
   );
 
   useEffect(() => {
