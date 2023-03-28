@@ -23,6 +23,8 @@ interface GameProps {
   description: string | JSX.Element;
   turnVisibility: boolean;
   category: string;
+  drawingPoints: string;
+  updateDrawingPoints: (value: string) => void;
   startGame: () => void;
 }
 
@@ -42,6 +44,8 @@ export default function GamePage({
   category,
   turnVisibility,
   msTimeLeft,
+  drawingPoints,
+  updateDrawingPoints,
   startGame,
 }: GameProps) {
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
@@ -52,9 +56,15 @@ export default function GamePage({
 
   const sizeRef = useRef<HTMLDivElement>();
   
+  const counter = useRef<number>(59000);
+  const drawingPts = useRef<Coordinates[]>([]).current;
 
-
-
+  useEffect(() => {
+    if(counter.current > msTimeLeft){ 
+      updateDrawingPoints(JSON.stringify(drawingPts));
+      counter.current -= 1000;
+    }
+  }, [msTimeLeft]);
   
   //ajuste com o tamanho da tela///////////////////////////////////////////////////////////////
 

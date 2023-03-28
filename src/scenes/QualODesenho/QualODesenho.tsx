@@ -171,6 +171,9 @@ export default function QualODesenho() {
             startTimer();
         });
 
+        socket.addEventListener('drawing-points', (DPs) => {
+            setDrawingPoints(DPs);
+        })
 
         socket.addEventListener('new-guess', (newGuess) => {
             //TODO: CORRIGIR A LÓGICA DE ADICIONAR UM PALPITE A UM JOGADOR
@@ -214,7 +217,9 @@ export default function QualODesenho() {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+    const updateDrawing = (stringifiedArray: string) => {
+        socket.pushMessage(room.code, 'drawing-points', stringifiedArray);
+    }
 
     switch (room.page) {
         case Game.Awaiting:
@@ -237,7 +242,8 @@ export default function QualODesenho() {
                     turnVisibility={user.isCurrentTurn}
                     msTimeLeft={msTimer}
                     startGame={startGame}
-
+                    updateDrawingPoints={updateDrawing}
+                    drawingPoints={drawingPoints}
                 />
             );
 
