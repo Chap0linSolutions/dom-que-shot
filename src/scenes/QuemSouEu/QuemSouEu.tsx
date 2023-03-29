@@ -169,8 +169,9 @@ export default function OEscolhido() {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    if (!category && room.page === Game.Game) {               //só quem chegou com o jogo em andamento atende essa condição
-      socket.pushMessage(room.code, 'update-me', 'please');   //nesse caso, o update é individual
+    if (!category && room.page === Game.Game) {
+      //só quem chegou com o jogo em andamento atende essa condição
+      socket.pushMessage(room.code, 'update-me', 'please'); //nesse caso, o update é individual
     }
   }, []);
 

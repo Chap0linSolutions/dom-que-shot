@@ -1,3 +1,4 @@
+import React from 'react';
 import BangBang from '../../assets/game-covers/bang-bang.png';
 import BichoBebe from '../../assets/game-covers/bicho-bebe.png';
 import Buzz from '../../assets/game-covers/buzz.png';
@@ -10,6 +11,9 @@ import PensaRapido from '../../assets/game-covers/pensa-rapido.png';
 import Vrum from '../../assets/game-covers/vrum.png';
 import QuemSouEu from '../../assets/game-covers/quem-sou-eu.png';
 import QualODesenho from '../../assets/game-covers/qual-o-desenho.png';
+import Titanic from '../../assets/game-covers/titanic.png';
+import JogoDoDesafio from '../../assets/game-covers/jogo-do-desafio.png';
+import JogoDaVerdade from '../../assets/game-covers/jogo-da-verdade.png';
 
 enum GameTypes {
   Simple = '#403A55',
@@ -141,9 +145,29 @@ const games: Game[] = [
     ),
   },
   {
+    src: Titanic,
+    title: 'Titanic',
+    id: 10,
+    backgroundColor: GameTypes.Round,
+    description: (
+      <>
+        Aparecerá um mapa na tela, e os jogadores da roda devem escolher onde
+        vão posicionar seus barcos. Enquanto isso, o jogador da vez escolhe onde
+        vai posicionar seus Icebergs.
+        <br />
+        <br />
+        Se o jogador da vez colocar um Iceberg onde algum dos demais colocou um
+        barco, o jogador atingido deve virar uma dose.
+        <br />
+        <br />
+        Boa sorte!
+      </>
+    )
+  },
+  {
     src: QualODesenho,
     title: 'Qual O Desenho',
-    id: 10,
+    id: 11,
     backgroundColor: GameTypes.Round,
     description: (
       <>
@@ -158,7 +182,23 @@ const games: Game[] = [
         Boa sorte!
       </>
     )
-  }
+  },
+  {
+    src: JogoDaVerdade,
+    title: 'Jogo da Verdade',
+    id: 12,
+    backgroundColor: GameTypes.Dynamic,
+    description: `O jogador da vez deverá decidir entre contar uma Verdade, 
+    respondendo a uma das perguntas de forma sincera, ou virar duas doses.`,
+  },
+  {
+    src: JogoDoDesafio,
+    title: 'Jogo do Desafio',
+    id: 13,
+    backgroundColor: GameTypes.Dynamic,
+    description: `O sorteado da rodada deverá decidir entre realizar 
+    um dos Desafios sugeridos pelo jogo, ou virar duas doses.`,
+  },
 ];
 
 export default games;

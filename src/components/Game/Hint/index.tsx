@@ -21,7 +21,7 @@ export default function HintPage({
 }: HintProps) {
   return (
     <Background>
-      <Header logo={coverImg} goBackArrow={coverPage} title={title} />
+      <Header roomCode logo={coverImg} goBackArrow={coverPage} title={title} />
       <HintPageDiv>
         <HintPageDescription>{description}</HintPageDescription>
         <Button staysOnBottom onClick={gamePage}>

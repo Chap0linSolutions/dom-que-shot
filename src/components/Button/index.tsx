@@ -7,6 +7,7 @@ interface ButtonProps {
   staysOnBottom?: boolean;
   onClick?: () => void;
   isDisabled?: boolean;
+  color?: string;
   children: React.ReactNode | React.ReactNode[];
 }
 
@@ -17,10 +18,12 @@ export default function Button({
   onClick,
   children,
   isDisabled = false,
+  color,
 }: ButtonProps) {
   const buttonStyle = {
     width: width ? width : undefined,
     height: height ? height : undefined,
+    background: color? color : undefined,
     margin: staysOnBottom ? '0 auto 40px auto' : undefined,
   };
 
