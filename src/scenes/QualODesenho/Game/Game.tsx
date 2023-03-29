@@ -1,20 +1,33 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { XCircle } from 'react-feather';
 import Background from '../../../components/Background';
 import Button from '../../../components/Button';
 import Header from '../../../components/Header';
 import Alert from '../../../components/Alert';
 import Popup from '../../../components/Popup';
 import beer from '../../../assets/beer.png';
+import undo from '../../../assets/undo.svg';
 import {
   GameDiv,
   DrawingDiv,
   DrawingCanvas,
+  CanvasActions,
+  UndoButtons,
+  Options,
+  Undo,
+  Option,
+  Color,
+  Width,
+  Legend,
   GuessingDiv,
   WordDiv,
   GuessesDiv,
   GuessTitle,
   GuessInput,
   GuessInputDiv,
+  Palette,
+  PaletteColor,
+  PaletteWidth,
 } from './Game.style';
 
 interface GameProps {
@@ -36,6 +49,33 @@ type CanvasDimensions = {
   height: number,
 }
 
+const colors = [
+  '#000000',
+  '#FFFFFF',
+  '#00FF0A',
+  '#000AFF',
+  '#FF0000',
+  '#858585',
+  '#731682',
+  '#FAFF00', 
+  '#00F0FF', 
+  '#FF8A00',
+  '#F2D3B2',
+  '#F2AE75',
+  '#946635',
+  '#502F18',
+  '#351F09',
+]
+
+const widths = [
+  3,
+  5,
+  7,
+  11,
+  17,
+]
+
+
 export default function GamePage({
   title,
   description,
@@ -45,20 +85,24 @@ export default function GamePage({
   startGame,
 }: GameProps) {
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
+  const [colorPaletteVisibility, setColorPaletteVisibility] = useState<boolean>(false);
+  const [widthPaletteVisibility, setWidthPaletteVisibility] = useState<boolean>(false);
+  const [clearConfirmation, setClearConfirmation] = useState<boolean>(false);
+
+  const [selectedColor, setSelectedColor] = useState<string>('#000000');
+  const [selectedWidth, setSelectedWidth] = useState<number>(3);
   const [isDrawing, setIsDrawing] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>();
   const contextRef = useRef<CanvasRenderingContext2D>();
 
   const sizeRef = useRef<HTMLDivElement>();
-  
-
 
 
   
   //ajuste com o tamanho da tela///////////////////////////////////////////////////////////////
 
-  const sizeConstant = 0.7;
+  const sizeConstant = 0.75;
 
   const [canvasOffsetX, setCanvasOffsetX] = useState(0);
   const [canvasOffsetY, setCanvasOffsetY] = useState(0);
@@ -112,18 +156,42 @@ export default function GamePage({
   ? 'Pronto? Aperte o botão abaixo e pode começar!'
   : 'Aguardando o Da Vinci começar a desenhar...';
 
+  const colorPalette = <Palette>
+    {colors.map(color => (
+      <PaletteColor 
+        style={{backgroundColor: color}}
+        onClick={() => {
+          setSelectedColor(color);
+          setColorPaletteVisibility(false);
+        }}  
+      />
+    ))}
+  </Palette>;
+
+  const widthPalette = <Palette>
+    {widths.map(size => (
+      <PaletteWidth
+        style={{backgroundColor: selectedColor, width: 2*size, height: 2*size}}
+        onClick={() => {
+          setSelectedWidth(size);
+          setWidthPaletteVisibility(false);
+        }}  
+      />
+    ))}
+  </Palette>;
+
+
   useEffect(() => {
     const context = canvasRef.current.getContext('2d');
     context.fillStyle = 'white';
     context.lineCap = 'round';
-    context.strokeStyle = '#000000';
-    context.lineWidth = 5;
-
     contextRef.current = context;
   }, []);
 
   function startMouseDrawing(e: React.MouseEvent) {
     const { offsetX, offsetY } = e.nativeEvent;
+    contextRef.current.strokeStyle = selectedColor;
+    contextRef.current.lineWidth = selectedWidth;
     contextRef.current.beginPath();
     contextRef.current.moveTo(offsetX, offsetY);
     setIsDrawing(true);
@@ -132,6 +200,8 @@ export default function GamePage({
   function startTouchDrawing(e: React.TouchEvent) {
     const offsetX = e.touches[0].clientX - canvasOffsetX;
     const offsetY = e.touches[0].clientY - canvasOffsetY;
+    contextRef.current.strokeStyle = selectedColor;
+    contextRef.current.lineWidth = selectedWidth;
     contextRef.current.beginPath();
     contextRef.current.moveTo(offsetX, offsetY);
     setIsDrawing(true);
@@ -162,6 +232,18 @@ export default function GamePage({
     contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
   }
 
+  const confirmationAlert = (clearConfirmation)
+  ? <Alert 
+      noButton
+      yes={() => {
+        clearDrawing();
+        setClearConfirmation(false);
+      }}
+      no={() => setClearConfirmation(false)}
+      message='Apagar tudo?'
+    />
+  : null;
+
   if (turnVisibility) {
     return (
       <Background noImage>
@@ -172,8 +254,23 @@ export default function GamePage({
           exit={() => setPopupVisibility(false)}
           comesFromTop
         />
+        <Popup
+          title={'Cores'}
+          description={colorPalette}
+          show={colorPaletteVisibility}
+          exit={() => setColorPaletteVisibility(false)}
+          border='1px solid black'
+        />
+        <Popup
+          title={'Larguras de linha'}
+          description={widthPalette}
+          show={widthPaletteVisibility}
+          exit={() => setWidthPaletteVisibility(false)}
+          border='1px solid black'
+        />
         <Header infoPage={() => setPopupVisibility(true)} />
         <Alert message={guidanceText} buttonText="Pronto!" onButtonClick={startGame}/>
+        {confirmationAlert}
         <GameDiv>
             <DrawingDiv ref={sizeRef}>
               <WordDiv>{category}</WordDiv>
@@ -188,9 +285,30 @@ export default function GamePage({
                 onMouseUp={finishDrawing}
                 onTouchEnd={finishDrawing}
               />
-              <Button onClick={clearDrawing}>
-                Recomeçar
-              </Button>
+              <CanvasActions>
+                <UndoButtons>
+                  <Button width='60px' height='55px'>
+                    <Undo src={undo} />
+                  </Button>
+                  <Button width='60px' height='55px' color='#AD0000' onClick={() => setClearConfirmation(true)}>
+                    <XCircle width='30px' height='30px' color='white'/>
+                  </Button>
+                </UndoButtons>
+                <Options>
+                  <Option>
+                    <Width style={{width: selectedWidth}} onClick={() => setWidthPaletteVisibility(true)}/>
+                    <Legend>
+                      Linha
+                    </Legend>
+                  </Option>
+                  <Option>
+                    <Color style={{backgroundColor: selectedColor}} onClick={() => setColorPaletteVisibility(true)}/>
+                    <Legend>
+                      Cor
+                    </Legend>
+                  </Option>
+                </Options>
+              </CanvasActions>
             </DrawingDiv>
         </GameDiv>
       </Background>

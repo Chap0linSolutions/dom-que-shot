@@ -1,3 +1,4 @@
+import React, { useRef } from 'react';
 import { X } from 'react-feather';
 import gsap from 'gsap';
 import './Popup.css';
@@ -11,6 +12,7 @@ interface PopupProps {
   titleColor?: string;
   descriptionColor?: string;
   backgroundColor?: string;
+  border?: string;
   exit: () => void;
 }
 
@@ -23,8 +25,12 @@ export default function Popup({
   titleColor,
   descriptionColor,
   backgroundColor,
+  border,
   exit,
 }: PopupProps) {
+
+  const popupRef = useRef();
+
   const releaseProps = comesFromTop
     ? {
         scale: 1,
@@ -54,11 +60,11 @@ export default function Popup({
       };
 
   const releasePopup = () => {
-    gsap.to('.PopupContainer', releaseProps);
+    gsap.to(popupRef.current, releaseProps);
   };
 
   const hidePopup = () => {
-    gsap.to('.PopupContainer', hideProps);
+    gsap.to(popupRef.current, hideProps);
   };
 
   if (show === true) {
@@ -70,11 +76,12 @@ export default function Popup({
   const popupStyle = {
     height: height ? `${height}px` : 'auto',
     backgroundColor: backgroundColor ? backgroundColor : '#ffffff',
+    border: border? border : 'none',
     opacity: 0.95,
   };
 
   return (
-    <div className={`PopupContainer ${comesFromTop ? 'Top' : 'Bottom'}`}>
+    <div ref={popupRef} className={`PopupContainer ${comesFromTop ? 'Top' : 'Bottom'}`}>
       <div className="PopupDiv" style={popupStyle}>
         <div className="PopupHeader">
           <p

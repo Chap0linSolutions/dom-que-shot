@@ -19,7 +19,7 @@ export const DrawingDiv = styled.div`
 export const WordDiv = styled.p`
   margin: 0;
   width: 256px;
-  height: 48px;
+  height: 60px;
   background: #403A55;
   border-radius: 10px 10px 0px 0px;
   font-family: Roboto;
@@ -40,6 +40,78 @@ export const DrawingCanvas = styled.canvas`
   border-radius: 10px;
   flex-grow: 0;
 `
+
+export const CanvasActions = styled.div`
+  margin-top: 10px;
+  width: 100%;
+  padding: 0 28px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const UndoButtons = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 37%;
+`;
+
+export const Undo = styled.img`
+  width: 30px;
+  object-fit: scale-down;
+`;
+
+export const Color = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  border: 2px solid #858585;
+`;
+
+export const Width = styled.div`
+  background-color: #656565;
+  height: 40px;
+  border-radius: 10px;
+  margin: 5px 0;
+`;
+
+export const Legend = styled.p`
+  margin: 0;
+  margin-top: 5px;
+`;
+
+export const Options = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 27%;
+`;
+
+export const Option = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const Palette = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+`;
+
+export const PaletteColor = styled.div`
+  border: 1px solid black;
+  width: 40px;
+  height: 40px;
+  margin: 10px;
+  border-radius: 20px;
+`;
+
+export const PaletteWidth = styled.div`
+  border: 1px solid black;
+  margin: 10px;
+  border-radius: 20px;
+`;
 
 export const UnderBar = styled.div``
 
