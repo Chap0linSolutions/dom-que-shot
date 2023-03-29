@@ -48,6 +48,7 @@ type Coordinates = {
 
 type Path = {
   color: string,
+  width: number,
   points: Coordinates[];
 }
 
@@ -224,6 +225,7 @@ export default function GamePage({
         updatedPaths.forEach(path => {
           if(path.points.length > 0){
             contextRef.current.strokeStyle = path.color;
+            contextRef.current.lineWidth = path.width;
             const initialCoordinate = path.points.splice(0, 1).at(0);
             contextRef.current.beginPath();
             contextRef.current.moveTo(constant * initialCoordinate.x, constant * initialCoordinate.y);
@@ -246,7 +248,7 @@ export default function GamePage({
   }
 
   const initiateNewPath = (x: number, y: number) => {
-    paths.current.push({color: 'red', points: [floorXY(x, y)]});
+    paths.current.push({color: selectedColor, width: selectedWidth, points: [floorXY(x, y)]});
   }
 
   const updateCurrentPath = (x: number, y: number) => {
