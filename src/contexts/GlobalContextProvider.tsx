@@ -92,8 +92,6 @@ export default function GlobalProvider(props: GlobalProviderProps) {
   };
 
   return (
-    <GlobalContext.Provider value={value}>
-      {children}
-    </GlobalContext.Provider>
+    <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>
   );
 }

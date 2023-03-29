@@ -106,6 +106,7 @@ export default function Lobby() {
       switch (URL) {
         case '/BangBang':
         case '/OEscolhido':
+        case '/Titanic':
           if (!page || page === 0) {
             //se o jogo ainda estiver na capa é possível entrar tardiamente
             setAlertMessage('Reconectando...');

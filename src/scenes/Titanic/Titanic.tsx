@@ -1,41 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import SocketConnection from '../../lib/socket';
 import CoverPage from '../../components/Game/Cover';
 import GamePage from './Game';
 import FinishPage from './Finish';
-import AwaitingResults from './Awaiting';
-import coverImg from '../../assets/game-covers/o-escolhido.png';
-import { Player, useGlobalContext } from '../../contexts/GlobalContextProvider';
-import './OEscolhido.css';
-
-export type MostVoted = {
-  nickname: string;
-  avatarSeed: string;
-};
-
-type VoteResults = {
-  players: MostVoted[];
-  numberOfVotes: number;
-};
+import coverImg from '../../assets/game-covers/titanic.png';
 
 enum Game {
   Cover,
   Game,
-  AwaitingResults,
   Finish,
 }
 
-export default function OEscolhido() {
+export const Status = {
+  TimesUp: -100,
+  TitanicTimesUp: [-100],
+  IcebergTimesUp: [-100, -100, -100, -100, -100],
+  IcebergMissedEveryone: -300,
+  IcebergLeftAlone: [-200, -200, -200, -200, -200],
+  Disconnected: [-1],
+};
+
+export default function Titanic() {
   const { user, room, setUser, setRoom } = useGlobalContext();
-  const title = 'O Escolhido';
+  const title = 'Titanic';
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////////
 
-  const gameTime = 10000;
+  const gameTime = 15000;
 
   const [msTimer, setMsTimer] = useState(gameTime);
-  const [timer, setTimer] = useState<NodeJS.Timer>();
+  const [timer, setTimer] = useState<NodeJS.Timer | null>(null);
 
   const startTimer = () => {
     setTimer(setInterval(run, 100));
@@ -46,7 +42,11 @@ export default function OEscolhido() {
     if (updatedMs > 0) {
       updatedMs -= 100;
       if (updatedMs === 0) {
-        setMsTimer(0);
+        setResults(`time's up`);
+        if (user.isCurrentTurn) {
+          return sendResults(JSON.stringify(Status.IcebergTimesUp));
+        }
+        return sendResults(JSON.stringify(Status.TitanicTimesUp));
       }
       setMsTimer(updatedMs);
     }
@@ -55,24 +55,31 @@ export default function OEscolhido() {
   ///////////////////////////////////////////////////////////////////////////////////////////////
 
   const navigate = useNavigate();
-  const [userVote, setUserVote] = useState<Player>(undefined);
-  const [voteResults, setVoteResults] = useState<VoteResults>(undefined);
+  const [results, setResults] = useState<string | undefined>(undefined);
 
   const description = (
     <>
       Neste jogo, cada participante vai jogar com o seu aparelho.
       <br />
       <br />
-      Aparecerá uma lista com todos os participantes da sala e cada um votará em
-      uma pessoa da lista para virar uma dose.
+      Aparecerá um mapa na tela, e os jogadores da roda devem escolher onde vão
+      posicionar seus barcos. Enquanto isso, o jogador da vez escolhe onde vai
+      posicionar seus Icebergs.
+      <br />
+      <br />
+      Se o jogador da vez colocar um Iceberg onde algum dos demais colocou um
+      barco, o jogador atingido deve virar uma dose.
       <br />
       <br />
       Boa sorte!
     </>
   );
 
-  const setGlobalRoomPage = (newPage: Game) => {
-    setRoom((previous) => ({ ...previous, page: newPage }));
+  const sendResults = (selection) => {
+    clearInterval(timer);
+    setMsTimer(0);
+    setTimer(null);
+    socket.pushMessage(room.code, 'player-has-selected', selection);
   };
 
   const startGame = () => {
@@ -110,24 +117,11 @@ export default function OEscolhido() {
       }));
     });
 
-    socket.addEventListener('room-owner-is', (ownerName) => {
-      const isOwner = user.nickname === ownerName;
+    socket.addEventListener('player-turn-is', (turnName) => {
       setUser((previous) => ({
         ...previous,
-        isOwner: isOwner,
+        isCurrentTurn: user.nickname === turnName,
       }));
-    });
-
-    socket.addEventListener('vote-results', (mostVoted) => {
-      const results = JSON.parse(mostVoted);
-      console.log('Mais votados:');
-      console.log(results);
-      const amount = results.at(0).votesReceived;
-      setVoteResults({
-        players: results,
-        numberOfVotes: amount,
-      });
-      setGlobalRoomPage(Game.Finish);
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
@@ -142,6 +136,10 @@ export default function OEscolhido() {
       setGlobalRoomPage(destination);
     });
 
+    socket.addEventListener('titanic-results', (finalResults) => {
+      setResults(finalResults);
+    });
+
     return () => {
       socket.removeAllListeners();
     };
@@ -149,48 +147,34 @@ export default function OEscolhido() {
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
-  useEffect(() => {
-    if (msTimer === 0 && !userVote) {
-      console.log('Acabou o tempo.');
-      socket.pushMessage(room.code, 'times-up', user.nickname);
-    }
-  }, [msTimer]);
-
-  useEffect(() => {
-    if (userVote) {
-      setGlobalRoomPage(Game.AwaitingResults);
-      socket.pushMessage(room.code, 'voted-player', {
-        roomCode: room.code,
-        player: JSON.stringify(userVote),
-      });
-    }
-  }, [userVote]);
+  const setGlobalRoomPage = (newPage: Game) => {
+    setRoom((previous) => ({ ...previous, page: newPage }));
+  };
 
   useEffect(() => {
     if (room.page === Game.Game) {
       startTimer();
-    } else if (room.page === Game.Finish) {
-      clearInterval(timer);
-      setMsTimer(gameTime);
     }
   }, [room.page]);
+
+  useEffect(() => {
+    if (typeof results === 'string') {
+      if (timer !== null) {
+        clearInterval(timer);
+        setMsTimer(0);
+        setTimer(null);
+      }
+    }
+  }, [results]);
 
   switch (room.page) {
     case Game.Game:
       return (
         <GamePage
+          sendResults={sendResults}
+          receiveResults={results}
+          isCurrentTurn={user.isCurrentTurn}
           msTimeLeft={msTimer}
-          playerList={room.playerList}
-          vote={setUserVote}
-        />
-      );
-
-    case Game.AwaitingResults:
-      return (
-        <AwaitingResults
-          votedPlayer={userVote}
-          msTimeLeft={msTimer}
-          gamePage={() => setGlobalRoomPage(Game.Game)}
           finishPage={() => setGlobalRoomPage(Game.Finish)}
         />
       );
@@ -198,9 +182,8 @@ export default function OEscolhido() {
     case Game.Finish:
       return (
         <FinishPage
-          numberOfVotes={voteResults.numberOfVotes}
-          votedPlayer={voteResults.players}
-          turnVisibility={user.isCurrentTurn}
+          results={results}
+          thisPlayerName={user.nickname}
           roulettePage={() => nextRound()}
         />
       );
