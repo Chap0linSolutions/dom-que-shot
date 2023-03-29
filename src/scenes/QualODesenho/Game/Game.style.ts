@@ -93,6 +93,7 @@ export const Option = styled.div`
 `;
 
 export const Palette = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
