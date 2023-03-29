@@ -1,14 +1,18 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { Background, AlertDiv, Message, Button, Image } from './Alert.style';
+import { Background, AlertDiv, Message, Button, YesOrNo, Yes, No, Image } from './Alert.style';
 
 interface AlertProps {
   message: string | JSX.Element;
   icon?: string;
   noButton?: boolean;
+  buttonText?: string;
+  yes?: () => void;
+  no?: () => void;
+  onButtonClick?: () => void;
 }
 
-export default function Alert({ message, icon, noButton }: AlertProps) {
+export default function Alert({ message, icon, noButton, buttonText, yes, no, onButtonClick }: AlertProps) {
   const background = useRef();
   const alert = useRef();
   const img = useRef();
@@ -16,8 +20,24 @@ export default function Alert({ message, icon, noButton }: AlertProps) {
   const image = icon ? <Image ref={img} src={icon} /> : null;
 
   const button = noButton ? null : (
-    <Button onClick={() => dismissAlert()}>Fechar</Button>
+    <Button onClick={() => {
+      dismissAlert();
+      onButtonClick && onButtonClick();
+    }}>
+      {buttonText? buttonText : 'Fechar'}
+    </Button>
   );
+
+  const yesOrNo = (yes && no)
+  ? <YesOrNo>
+    <Yes onClick={yes}>
+      Sim
+    </Yes>
+    <No onClick={no}>
+      Não
+    </No>
+  </YesOrNo>
+  : null;
 
   useEffect(() => {
     const loop = gsap.to(img.current, {
@@ -51,6 +71,7 @@ export default function Alert({ message, icon, noButton }: AlertProps) {
       <AlertDiv ref={alert}>
         {image}
         <Message>{message}</Message>
+        {yesOrNo}
         {button}
       </AlertDiv>
     </Background>

@@ -90,19 +90,18 @@ export default function SelectNextGame() {
   }, [number]);
 
   useEffect(() => {
-    if(!rouletteIsSpinning && nextGameName !== ''){
+    if (!rouletteIsSpinning && nextGameName !== '') {
       startSelectedGame();
     }
-  }, [rouletteIsSpinning])
+  }, [rouletteIsSpinning]);
 
   const startSelectedGame = () => {
     if (user.isCurrentTurn === true) {
       setTimeout(() => {
-        socket.pushMessage(room.code, 'start-game', 'Qual O Desenho');//nextGame);
+        socket.pushMessage(room.code, 'start-game', 'Qual O Desenho');//nextGameName);
       }, 1000);
     }
-  }
-
+  };
 
   //ajuste com o tamanho da tela///////////////////////////////////////////////////////////////
 
@@ -198,9 +197,9 @@ export default function SelectNextGame() {
 
   const header =
     user.isOwner === true ? (
-      <Header goBackArrow={backToLobby} logo />
+      <Header goBackArrow={backToLobby} roomCode logo />
     ) : (
-      <Header logo />
+      <Header roomCode logo />
     );
 
   return (

@@ -22,6 +22,8 @@ import SelectNextGame from './scenes/SelectNextGame';
 import Titanic from './scenes/Titanic';
 import QuemSouEu from './scenes/QuemSouEu';
 import QualODesenho from './scenes/QualODesenho';
+import JogoDoDesafio from './scenes/JogoDoDesafio';
+import JogoDaVerdade from './scenes/JogoDaVerdade';
 
 const Router: React.FC = () => {
   return (
@@ -48,6 +50,8 @@ const Router: React.FC = () => {
         <Route path="/Titanic" element={<Titanic />} />
         <Route path="/QuemSouEu" element={<QuemSouEu />} />
         <Route path="/QualODesenho" element={<QualODesenho />} />
+        <Route path="/JogoDoDesafio" element={<JogoDoDesafio />} />
+        <Route path="/JogoDaVerdade" element={<JogoDaVerdade />} />
       </Routes>
     </MemoryRouter>
   );

@@ -32,6 +32,7 @@ export default function QualODesenho() {
     const title = 'Qual é o desenho?';
 
     const navigate = useNavigate();
+    const [drawingPoints, setDrawingPoints] = useState<string>();
     const [wordSuggestions, setWordSuggestions] = useState<string[]>([]);
     const [word, setWord] = useState<string>(undefined);
     const [playersAndGuesses, setPlayersAndGuesses] =
@@ -51,12 +52,36 @@ export default function QualODesenho() {
         </>
     );
 
-    //////////////////////////////////////TIMER///////////////////////////////////////
-    const [msTimer, setMsTimer] = useState(60000);
+    //TIMER//////////////////////////////////////////////////////////////////////////////////
+
+    const gameTime = 60000;        
+
+    const [msTimer, setMsTimer] = useState(gameTime);
     const [timer, setTimer] = useState<NodeJS.Timer>();
 
+    const startTimer = () => {
+        setTimer(setInterval(run, 1000));
+    };
+
+    let updatedMs = msTimer;
+
+    const run = () => {
+        if (updatedMs > 0) {
+        updatedMs -= 1000;
+        if (updatedMs === 0) {
+            console.log('Acabou o tempo.');
+            socket.pushMessage(room.code, 'times-up', null);
+            clearInterval(timer);
+            setTimer(null);
+        }
+        setMsTimer(updatedMs);
+        }
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+
     const startWordSelection = () => {
-        socket.pushMessage(room.code, 'start-game');
+        socket.pushMessage(room.code, 'que-desenho-suggestions');
         socket.push('move-room-to', {
             roomCode: room.code,
             destination: Game.Awaiting,
@@ -64,10 +89,7 @@ export default function QualODesenho() {
     };
 
     const startGame = () => {
-        socket.push('move-room-to', {
-            roomCode: room.code,
-            destination: Game.Game,
-        });
+        socket.pushMessage(room.code, 'start-game');
     };
 
     const finishGame = () => {
@@ -145,8 +167,12 @@ export default function QualODesenho() {
             setGlobalRoomPage(destination);
         });
 
-        socket.addEventListener('new-guess', (newGuess) => {
+        socket.addEventListener('start-game', () => {
+            startTimer();
+        });
 
+
+        socket.addEventListener('new-guess', (newGuess) => {
             //TODO: CORRIGIR A LÓGICA DE ADICIONAR UM PALPITE A UM JOGADOR
             setPlayersAndGuesses(
                 JSON.parse(newGuess).map((p) => {
@@ -173,7 +199,6 @@ export default function QualODesenho() {
         });
 
         socket.addEventListener('que-desenho-suggestions', (suggestions) => {
-
             setWordSuggestions(suggestions);
         });
 
@@ -189,17 +214,7 @@ export default function QualODesenho() {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    useEffect(() => {
-        if (!word && room.page === Game.Game) {               //só quem chegou com o jogo em andamento atende essa condição
-            socket.pushMessage(room.code, 'update-me', 'please');   //nesse caso, o update é individual
-        }
-    }, []);
 
-    useEffect(() => {
-        if (playersAndGuesses && user.isCurrentTurn && room.page === Game.Awaiting) {
-            startGame();
-        }
-    }, [playersAndGuesses]);
 
     switch (room.page) {
         case Game.Awaiting:
@@ -218,11 +233,11 @@ export default function QualODesenho() {
                 <GamePage
                     title={title}
                     description={description}
-                    players={[]}
                     category={word}
                     turnVisibility={user.isCurrentTurn}
                     msTimeLeft={msTimer}
-                    setWinners={finishGame}
+                    startGame={startGame}
+
                 />
             );
 

@@ -21,6 +21,7 @@ export const CardTitle = styled.p`
   font-size: 20px;
   margin: 10px 0;
   color: white;
+  text-align: center;
   @media (max-height: 740px) {
     font-size: 17px;
   }
