@@ -248,6 +248,7 @@ export default function GamePage({
     return (
       <Background noImage>
         <Popup
+          type='info'
           title={title}
           description={description}
           show={popupVisibility}
@@ -255,6 +256,7 @@ export default function GamePage({
           comesFromTop
         />
         <Popup
+          type='info'
           title={'Cores'}
           description={colorPalette}
           show={colorPaletteVisibility}
@@ -262,6 +264,7 @@ export default function GamePage({
           border='1px solid black'
         />
         <Popup
+          type='info'
           title={'Larguras de linha'}
           description={widthPalette}
           show={widthPaletteVisibility}
@@ -323,6 +326,7 @@ export default function GamePage({
     <Background noImage>
       {alert}
       <Popup
+        type='info'
         title={title}
         description={description}
         show={popupVisibility}
