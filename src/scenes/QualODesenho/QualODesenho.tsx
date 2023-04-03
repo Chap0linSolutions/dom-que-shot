@@ -54,7 +54,7 @@ export default function QualODesenho() {
 
     //TIMER//////////////////////////////////////////////////////////////////////////////////
 
-    const gameTime = 120000;        
+    const gameTime = 360000;        
 
     const [msTimer, setMsTimer] = useState(gameTime);
     const [timer, setTimer] = useState<NodeJS.Timer>();
@@ -171,11 +171,11 @@ export default function QualODesenho() {
             startTimer();
         });
 
-        socket.addEventListener('drawing-points', (DPs) => {
-            if(!user.isCurrentTurn){
+        if(!user.isCurrentTurn){
+            socket.addEventListener('drawing-points', (DPs) => {
                 setDrawingPaths(DPs);
-            }
-        })
+            })
+        }
 
         socket.addEventListener('new-guess', (newGuess) => {
             //TODO: CORRIGIR A LÓGICA DE ADICIONAR UM PALPITE A UM JOGADOR
