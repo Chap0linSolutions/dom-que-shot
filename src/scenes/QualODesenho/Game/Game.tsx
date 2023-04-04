@@ -197,6 +197,12 @@ export default function GamePage({
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
+    document.body.style.overscrollBehavior = 'none';                    //prevent pull-to-refresh on this page 
+    document.querySelector('html').style.overflow = 'hidden';
+    return () => {
+      document.body.style.overscrollBehavior = 'auto';
+      document.querySelector('html').style.overflow = 'auto';
+    }
   }, []);
 
   useEffect(() => {
@@ -344,7 +350,8 @@ export default function GamePage({
     if(paths.current.length > 0) setClearConfirmation(true);
   }
 
-  function startMouseDrawing(e: React.MouseEvent) {
+  const startMouseDrawing = (e: React.MouseEvent) => {
+    e.preventDefault();
     const { offsetX, offsetY } = e.nativeEvent;
     contextRef.current.strokeStyle = selectedColor;
     contextRef.current.lineWidth = selectedWidth;
@@ -354,7 +361,8 @@ export default function GamePage({
     setIsDrawing(true);
   }
 
-  function startTouchDrawing(e: React.TouchEvent) {
+  const startTouchDrawing = (e: React.TouchEvent) => {
+    e.preventDefault();
     const offsetX = e.touches[0].clientX - canvasOffsetX;
     const offsetY = e.touches[0].clientY - canvasOffsetY;
     contextRef.current.strokeStyle = selectedColor;
@@ -365,16 +373,18 @@ export default function GamePage({
     setIsDrawing(true);    
   }
 
-  function mouseDrawing(e: React.MouseEvent) {
+  const mouseDrawing = (e: React.MouseEvent) => {
     if (!isDrawing) return;
+    e.preventDefault();
     const { offsetX, offsetY } = e.nativeEvent;
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
     updateCurrentPath(offsetX, offsetY);
   }
 
-  function touchDrawing(e: React.TouchEvent) {
+  const touchDrawing = (e: React.TouchEvent) => {
     if (!isDrawing) return;
+    e.preventDefault();
     const offsetX = e.touches[0].clientX - canvasOffsetX;
     const offsetY = e.touches[0].clientY - canvasOffsetY;
     contextRef.current.lineTo(offsetX, offsetY);
@@ -382,7 +392,7 @@ export default function GamePage({
     updateCurrentPath(offsetX, offsetY);
   }
 
-  function finishDrawing() {
+  const finishDrawing = () => {
     if (!isDrawing) return;
     contextRef.current.closePath();
     setIsDrawing(false);
