@@ -130,6 +130,12 @@ export default function GamePage({
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
+    document.body.style.overscrollBehavior = 'none';                    //prevent pull-to-refresh on this page 
+    document.querySelector('html').style.overflow = 'hidden';
+    return () => {
+      document.body.style.overscrollBehavior = 'auto';
+      document.querySelector('html').style.overflow = 'auto';
+    }
   }, []);
 
   useEffect(() => {
@@ -189,6 +195,7 @@ export default function GamePage({
   }, []);
 
   function startMouseDrawing(e: React.MouseEvent) {
+    e.preventDefault();
     const { offsetX, offsetY } = e.nativeEvent;
     contextRef.current.strokeStyle = selectedColor;
     contextRef.current.lineWidth = selectedWidth;
@@ -198,6 +205,7 @@ export default function GamePage({
   }
 
   function startTouchDrawing(e: React.TouchEvent) {
+    e.preventDefault();
     const offsetX = e.touches[0].clientX - canvasOffsetX;
     const offsetY = e.touches[0].clientY - canvasOffsetY;
     contextRef.current.strokeStyle = selectedColor;
@@ -209,6 +217,7 @@ export default function GamePage({
 
   function mouseDrawing(e: React.MouseEvent) {
     if (!isDrawing) return;
+    e.preventDefault();
     const { offsetX, offsetY } = e.nativeEvent;
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
@@ -216,6 +225,7 @@ export default function GamePage({
 
   function touchDrawing(e: React.TouchEvent) {
     if (!isDrawing) return;
+    e.preventDefault();
     const offsetX = e.touches[0].clientX - canvasOffsetX;
     const offsetY = e.touches[0].clientY - canvasOffsetY;
     contextRef.current.lineTo(offsetX, offsetY);
