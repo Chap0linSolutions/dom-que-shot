@@ -194,7 +194,7 @@ export default function GamePage({
     contextRef.current = context;
   }, []);
 
-  function startMouseDrawing(e: React.MouseEvent) {
+  const startMouseDrawing = (e: React.MouseEvent) => {
     e.preventDefault();
     const { offsetX, offsetY } = e.nativeEvent;
     contextRef.current.strokeStyle = selectedColor;
@@ -204,7 +204,7 @@ export default function GamePage({
     setIsDrawing(true);
   }
 
-  function startTouchDrawing(e: React.TouchEvent) {
+  const startTouchDrawing = (e: React.TouchEvent) => {
     e.preventDefault();
     const offsetX = e.touches[0].clientX - canvasOffsetX;
     const offsetY = e.touches[0].clientY - canvasOffsetY;
@@ -215,7 +215,7 @@ export default function GamePage({
     setIsDrawing(true);
   }
 
-  function mouseDrawing(e: React.MouseEvent) {
+  const mouseDrawing = (e: React.MouseEvent) => {
     if (!isDrawing) return;
     e.preventDefault();
     const { offsetX, offsetY } = e.nativeEvent;
@@ -223,7 +223,7 @@ export default function GamePage({
     contextRef.current.stroke();
   }
 
-  function touchDrawing(e: React.TouchEvent) {
+  const touchDrawing = (e: React.TouchEvent) => {
     if (!isDrawing) return;
     e.preventDefault();
     const offsetX = e.touches[0].clientX - canvasOffsetX;
@@ -232,13 +232,13 @@ export default function GamePage({
     contextRef.current.stroke();
   }
 
-  function finishDrawing() {
+  const finishDrawing = () => {
     if (!isDrawing) return;
     contextRef.current.closePath();
     setIsDrawing(false);
   }
 
-  function clearDrawing() {
+  const clearDrawing = () => {
     contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
   }
 
