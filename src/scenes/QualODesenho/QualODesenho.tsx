@@ -54,7 +54,7 @@ export default function QualODesenho() {
 
     //TIMER//////////////////////////////////////////////////////////////////////////////////
 
-    const gameTime = 360000;        
+    const gameTime = 60000;        
 
     const [msTimer, setMsTimer] = useState(gameTime);
     const [timer, setTimer] = useState<NodeJS.Timer>();

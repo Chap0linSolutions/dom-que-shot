@@ -46,20 +46,21 @@ type Coordinates = {
   y: number,
 }
 
+type Last = {
+  id: number,
+  length: number,
+}
+
 type Path = {
+  id: number,
   color: string | undefined,
   width: number,
   points: Coordinates[];
 }
 
 type Message = {
-  type: 'new' | 'update' | 'everything' | 'undo' | 'clear' | 'my-canvas-width-is',
-  payload?: Path[] | Path | number,
-}
-
-type Previous = {
-  lineLength: number,
-  pathCount: number,
+  type: 'paths' | 'everything' | 'undo' | 'clear' | 'my-canvas-width-is',
+  payload?: Path[] | number,
 }
 
 type CanvasDimensions = {
@@ -115,9 +116,6 @@ function draw(context: CanvasRenderingContext2D,  paths: Path[], canvasRatio: nu
   })
 }
 
-
-
-
 export default function GamePage({
   title,
   description,
@@ -140,71 +138,30 @@ export default function GamePage({
   const interCanvasRatio = useRef<number>(1);
   const canvasRef = useRef<HTMLCanvasElement>();
   const contextRef = useRef<CanvasRenderingContext2D>();
-  const counter = useRef<number>(359000);
+  const counter = useRef<number>(59000);
 
   const paths = useRef<Path[]>([]);
-  const previous = useRef<Previous>({
-    lineLength: 0,
-    pathCount: 0
-  });
+  const last = useRef<Last>({id: 0, length: 0});
 
   useEffect(() => {
     if(turnVisibility && counter.current > msTimeLeft){
-      
       counter.current -= 1000;
-      const currentPath = paths.current.at(-1);
-
-      if(currentPath){
-        const currentPathCount = paths.current.length;
-        const currentLineLength = currentPath.points.length;
-        
-        console.log(paths.current);
-
-        let previousPathCount = previous.current.pathCount;
-        let previousLineLength = previous.current.lineLength;
-
-        if(previousPathCount === 0){  
-          updateDrawingPaths(JSON.stringify({type: 'my-canvas-width-is', payload: canvas.width}));
-        }
-
-        if(currentPathCount > previousPathCount) {
-          if(previousPathCount > 0 && currentLineLength > previousLineLength) {   //se sobrou algo do path iniciado no último update para mandar
-            const lastPathSent = paths.current.at(previousPathCount);
-            const remainingPoints = lastPathSent.points.slice(previousLineLength);
-            const remaining: Path = {
-              ...lastPathSent,
-              points: remainingPoints,
-            }
-            //console.log('now sending remains of path', previousPathCount - 1);
-            updateDrawingPaths(JSON.stringify({type: 'update', payload: remaining}));
-            previousPathCount += 1;  
-          }
-          while(currentPathCount > previousPathCount) {             //se há novos paths acumulados para mandar
-            //console.log('now sending new path', previousPathCount);
-            const newPath = paths.current.at(previousPathCount);
-            updateDrawingPaths(JSON.stringify({type: 'new', payload: newPath}));
-            previousPathCount += 1;
-            previousLineLength = newPath.points.length;
+      
+      if(last.current.id === 0){
+        updateDrawingPaths(JSON.stringify({type: 'my-canvas-width-is', payload: canvas.width}));
+      }
+      if(paths.current.length > 0) {
+        const current = paths.current.at(-1);
+        if(current.id === last.current.id){
+          if(current.points.length > last.current.length){
+            updateDrawingPaths(JSON.stringify({type: 'paths', payload: [current]}));
+            last.current = {...last.current, length: current.points.length};
           }
         }
-        else {
-          if(currentPath && previousLineLength > 0) {
-            const hasNewLines = currentPath.points.length > previousLineLength;
-            if(hasNewLines){
-              const deltaP: Path = {
-                ...currentPath,
-                points: currentPath.points.slice(previousLineLength),
-              }
-              //console.log('now sending new points of path', previousPathCount - 1);
-              updateDrawingPaths(JSON.stringify({type: 'update', payload: deltaP}));
-              previousLineLength = currentPath.points.length;
-            }
-          }
-        }
-
-        previous.current = {
-          lineLength: previousLineLength,
-          pathCount: previousPathCount,
+        else if(current.id > last.current.id){
+          const whatToSend = paths.current.slice(last.current.id);
+          updateDrawingPaths(JSON.stringify({type: 'paths', payload: whatToSend}));
+          last.current = {id: current.id, length: current.points.length};
         }
       }
     }
@@ -304,7 +261,6 @@ export default function GamePage({
   useEffect(() => {
     if(drawingPaths){
       const { type, payload }:Message = JSON.parse(drawingPaths);
-      // console.log(type);
 
       switch(type){
         case 'everything':
@@ -314,34 +270,33 @@ export default function GamePage({
           clearDrawing();
           break;
         case 'undo':
+
           undoLastPath();
           break;
         case 'my-canvas-width-is':
           const ratio = canvas.width / (payload as number);
           interCanvasRatio.current = ratio;
           break;
-        case 'new':
-          const newPath = (payload as Path)
-          previous.current.lineLength = newPath.points.length; 
-          paths.current.push(newPath);
-          draw(contextRef.current, [newPath], interCanvasRatio.current);
-          break;
-        case 'update':
-          const pathSoFar = paths.current[paths.current.length - 1].points; 
-          const update = (payload as Path);
-          
-          paths.current[paths.current.length - 1] = {
-            color: update.color,
-            width: update.width,
-            points: [...pathSoFar, ...update.points], 
-          }
-
-          const newSegment:Path = {
-            ...update,
-            points: [pathSoFar.at(-1), ...update.points]
-          }
-          previous.current.lineLength += update.points.length;
-          draw(contextRef.current, [newSegment], interCanvasRatio.current);
+        case 'paths':
+          const newPaths = (payload as Path[]);
+          newPaths.forEach(path => { 
+            const index = paths.current.findIndex(p => p.id === path.id);
+            if(index > -1){
+              paths.current = paths.current.map(p => {
+                if(p.id === path.id){
+                  return {
+                    ...p,
+                    points: path.points,
+                  } 
+                }
+                return p;
+              })
+            }
+            else {
+              paths.current.push(path);
+            }
+            draw(contextRef.current, [path], interCanvasRatio.current);
+          })
           break;
       }
     } 
@@ -352,7 +307,7 @@ export default function GamePage({
   }
 
   const initiateNewPath = (x: number, y: number) => {
-    paths.current.push({color: selectedColor, width: selectedWidth, points: [floorXY(x, y)]});
+    paths.current.push({id: paths.current.length, color: selectedColor, width: selectedWidth, points: [floorXY(x, y)]});
   }
 
   const updateCurrentPath = (x: number, y: number) => {
@@ -364,7 +319,7 @@ export default function GamePage({
   const clearDrawing = () => {
     contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     paths.current = [];
-    previous.current = {pathCount: 0, lineLength: 0}
+    last.current = {id: 0, length: 0};
   }
 
   const undoLastPath = () => {
@@ -372,9 +327,10 @@ export default function GamePage({
     contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     const pathsMinusOne = paths.current.filter((p, index) => (index + 1) < paths.current.length);
     paths.current = pathsMinusOne;
-    previous.current = {
-      lineLength: 0,
-      pathCount: pathsMinusOne.length,
+    const newLast = pathsMinusOne.at(-1);
+    last.current = {
+      id: (newLast)? newLast.id : 0,
+      length: (newLast)? newLast.points.length : 0,
     }
     
     draw(contextRef.current, pathsMinusOne, interCanvasRatio.current, true, canvasRef.current);
@@ -519,7 +475,7 @@ export default function GamePage({
     );
   } 
 
-  const alert = (msTimeLeft === 360000)
+  const alert = (msTimeLeft === 60000)
   ? <Alert noButton message={guidanceText} icon={beer}/>
   : null;
 
