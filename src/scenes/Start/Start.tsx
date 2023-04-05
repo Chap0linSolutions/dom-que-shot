@@ -7,7 +7,6 @@ import PrivacyPolicy from './PrivacyPolicy';
 import AboutUs from './AboutUs';
 import Contact from './Contact';
 
-
 export enum Pages {
   Welcome,
   AboutUs,
@@ -50,27 +49,16 @@ export default function Start() {
     }
   }, []);
 
-  switch(page){
+  switch (page) {
     case Pages.AboutUs:
-      return (
-        <AboutUs goBack={() => setPage(Pages.Welcome)}/>
-      )
+      return <AboutUs goBack={() => setPage(Pages.Welcome)} />;
     case Pages.Contact:
-      return (
-        <Contact goBack={() => setPage(Pages.Welcome)}/>
-      )
+      return <Contact goBack={() => setPage(Pages.Welcome)} />;
     case Pages.PrivacyPolicy:
-      return (
-        <PrivacyPolicy goBack={() => setPage(Pages.Welcome)}/>
-      )
+      return <PrivacyPolicy goBack={() => setPage(Pages.Welcome)} />;
     default:
       return (
-        <Welcome
-          setPage={setPage}
-          navigate={navigate}
-          setRoom={setRoom}
-        />
+        <Welcome setPage={setPage} navigate={navigate} setRoom={setRoom} />
       );
   }
 }
-

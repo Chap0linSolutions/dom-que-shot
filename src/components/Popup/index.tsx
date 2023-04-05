@@ -1,10 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { X, CheckCircle, AlertTriangle, XCircle } from 'react-feather';
-import cookieIcon from './assets/cookie256.png'
+import cookieIcon from './assets/cookie256.png';
 import gsap from 'gsap';
 import './Popup.css';
-;
-
 interface PopupProps {
   type: 'info' | 'warning' | 'cookies';
   warningType?: 'success' | 'alert' | 'failure';
@@ -66,15 +64,15 @@ export default function Popup({
 
   const releasePopup = () => {
     let ref = infoRef;
-    if(type === 'warning') ref = warningRef;
-    if(type === 'cookies') ref = cookieRef;
+    if (type === 'warning') ref = warningRef;
+    if (type === 'cookies') ref = cookieRef;
     gsap.to(ref.current, releaseProps);
   };
 
   const hidePopup = () => {
     let ref = infoRef;
-    if(type === 'warning') ref = warningRef;
-    if(type === 'cookies') ref = cookieRef;
+    if (type === 'warning') ref = warningRef;
+    if (type === 'cookies') ref = cookieRef;
     gsap.to(ref.current, hideProps);
   };
 
@@ -105,18 +103,14 @@ export default function Popup({
     }
   };
 
-  switch(type){
+  switch (type) {
     case 'cookies':
       return (
-        <div
-          ref={cookieRef}
-          className={`CookieContainer Bottom`}>
+        <div ref={cookieRef} className={`CookieContainer Bottom`}>
           <div className="PopupDiv">
             <div className="PopupHeader">
-              <p className="PopupTitle" >
-                Nham... cookies
-              </p>
-              <img src={cookieIcon} className="Cookie"/>
+              <p className="PopupTitle">Nham... cookies</p>
+              <img src={cookieIcon} className="Cookie" />
             </div>
             <div
               className="PopupDescription"
@@ -151,7 +145,12 @@ export default function Popup({
                 style={titleColor ? { color: titleColor } : {}}>
                 {title}
               </p>
-              <X color="#170C32" width="24px" strokeWidth="5px" onClick={exit} />
+              <X
+                color="#170C32"
+                width="24px"
+                strokeWidth="5px"
+                onClick={exit}
+              />
             </div>
             <div
               className="PopupDescription"

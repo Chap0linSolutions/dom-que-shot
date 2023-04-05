@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const WelcomePage = styled.div`
   position: relative;
@@ -33,7 +33,7 @@ export const BurguerDiv = styled.div`
 export const Options = styled.div`
   display: flex;
   flex-direction: column;
-  background: #C2C2C2;
+  background: #c2c2c2;
   border-radius: 5px;
   padding: 4px;
   @media (max-height: 740px) {
@@ -44,9 +44,9 @@ export const Options = styled.div`
 export const Option = styled.button`
   font-family: Roboto;
   font-size: 14px;
-  color: black;  
+  color: black;
   margin: 1px;
-  background: #F2F2F2;
+  background: #f2f2f2;
   border-radius: 5px;
   padding: 10px;
   text-align: left;

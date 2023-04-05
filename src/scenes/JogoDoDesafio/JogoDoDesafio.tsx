@@ -25,8 +25,8 @@ export default function JogoDoDesafio() {
 
   const description = (
     <>
-      O jogador da vez deverá decidir entre realizar um dos Desafios
-      sugeridos pelo jogo, ou virar duas doses.
+      O jogador da vez deverá decidir entre realizar um dos Desafios sugeridos
+      pelo jogo, ou virar duas doses.
       <br />
       <br />E aí? Vai escolher o que?
     </>
