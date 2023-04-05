@@ -1,7 +1,7 @@
 import React from 'react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
-import Welcome from './scenes/Welcome';
+import Start from './scenes/Start';
 import Tutorial from './scenes/Tutorial';
 import Login from './scenes/Login';
 import Home from './scenes/Home';
@@ -28,7 +28,7 @@ const Router: React.FC = () => {
   return (
     <MemoryRouter>
       <Routes>
-        <Route path="/" element={<Welcome />} />
+        <Route path="/" element={<Start />} />
         <Route path="/Tutorial" element={<Tutorial />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Home" element={<Home />} />

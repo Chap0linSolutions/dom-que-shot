@@ -8,9 +8,15 @@
   opacity: 0.95;
 }
 
+.Cookie {
+  width: 40px;
+  object-fit: scale-down;
+}
+
 .PopupHeader {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .PopupTitle {
@@ -43,6 +49,14 @@
 }
 
 .PopupContainer {
+  scale: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.CookieContainer {
   scale: 0;
   width: 100%;
   display: flex;

@@ -57,7 +57,7 @@ const initialValues: GlobalContextValue = {
     code: undefined,
     gameList: [],
     playerList: [],
-    URL: '/Welcome',
+    URL: '/',
     page: undefined,
   },
   setUser: () => null,

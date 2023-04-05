@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useGlobalContext } from '../../contexts/GlobalContextProvider';
-import { ArrowLeft, Info, Settings } from 'react-feather';
+import { ArrowLeft, Info, Settings, Menu } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import DomQueShotLogo from '../../assets/logo-darker.png';
 import Popup from '../Popup';
@@ -29,6 +29,7 @@ interface HeaderProps {
   timer?: number;
   settingsPage?: string | (() => void);
   infoPage?: string | (() => void);
+  burguer?: (() => void);
 }
 
 export default function Header({
@@ -39,6 +40,7 @@ export default function Header({
   timer,
   settingsPage,
   infoPage,
+  burguer,
 }: HeaderProps) {
   const { room } = useGlobalContext();
   const navigateTo = useNavigate();
@@ -93,11 +95,11 @@ export default function Header({
           show={warningVisibility}
         />
       )}
-      <ArrowAndTitle>
+
+      <ArrowAndTitle>        
         <ArrowDiv style={goBackArrow ? {} : { display: 'none' }}>
           <ArrowLeft width="30px" height="30px" onClick={goToPreviousPage} />
         </ArrowDiv>
-
         <TitleDiv style={title ? {} : { display: 'none' }}>
           <Title>{title}</Title>
         </TitleDiv>
