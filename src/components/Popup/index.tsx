@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { X, CheckCircle, AlertTriangle, XCircle } from 'react-feather';
-import cookieIcon from './assets/cookie256.png';
+import cookieIcon from './assets/cookie.png';
 import gsap from 'gsap';
 import './Popup.css';
 interface PopupProps {
