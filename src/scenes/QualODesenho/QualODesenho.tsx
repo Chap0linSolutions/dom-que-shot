@@ -32,7 +32,7 @@ export default function QualODesenho() {
     const title = 'Qual é o desenho?';
 
     const navigate = useNavigate();
-    const [drawingPoints, setDrawingPoints] = useState<string>();
+    const [drawingPaths, setDrawingPaths] = useState<string>();
     const [wordSuggestions, setWordSuggestions] = useState<string[]>([]);
     const [word, setWord] = useState<string>(undefined);
     const [playersAndGuesses, setPlayersAndGuesses] =
@@ -171,6 +171,11 @@ export default function QualODesenho() {
             startTimer();
         });
 
+        if(!user.isCurrentTurn){
+            socket.addEventListener('drawing-points', (DPs) => {
+                setDrawingPaths(DPs);
+            })
+        }
 
         socket.addEventListener('new-guess', (newGuess) => {
             //TODO: CORRIGIR A LÓGICA DE ADICIONAR UM PALPITE A UM JOGADOR
@@ -214,7 +219,9 @@ export default function QualODesenho() {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+    const sendDrawingUpdate = (stringifiedArray: string) => {
+        socket.pushMessage(room.code, 'drawing-points', stringifiedArray);
+    }
 
     switch (room.page) {
         case Game.Awaiting:
@@ -237,7 +244,8 @@ export default function QualODesenho() {
                     turnVisibility={user.isCurrentTurn}
                     msTimeLeft={msTimer}
                     startGame={startGame}
-
+                    updateDrawingPaths={sendDrawingUpdate}
+                    drawingPaths={drawingPaths}
                 />
             );
 
