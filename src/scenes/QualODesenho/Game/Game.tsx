@@ -195,7 +195,6 @@ export default function GamePage({
   }, []);
 
   const startMouseDrawing = (e: React.MouseEvent) => {
-    e.preventDefault();
     const { offsetX, offsetY } = e.nativeEvent;
     contextRef.current.strokeStyle = selectedColor;
     contextRef.current.lineWidth = selectedWidth;
@@ -205,7 +204,6 @@ export default function GamePage({
   }
 
   const startTouchDrawing = (e: React.TouchEvent) => {
-    e.preventDefault();
     const offsetX = e.touches[0].clientX - canvasOffsetX;
     const offsetY = e.touches[0].clientY - canvasOffsetY;
     contextRef.current.strokeStyle = selectedColor;
@@ -217,7 +215,6 @@ export default function GamePage({
 
   const mouseDrawing = (e: React.MouseEvent) => {
     if (!isDrawing) return;
-    e.preventDefault();
     const { offsetX, offsetY } = e.nativeEvent;
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
@@ -225,7 +222,6 @@ export default function GamePage({
 
   const touchDrawing = (e: React.TouchEvent) => {
     if (!isDrawing) return;
-    e.preventDefault();
     const offsetX = e.touches[0].clientX - canvasOffsetX;
     const offsetY = e.touches[0].clientY - canvasOffsetY;
     contextRef.current.lineTo(offsetX, offsetY);
