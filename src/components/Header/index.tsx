@@ -93,11 +93,11 @@ export default function Header({
           show={warningVisibility}
         />
       )}
+
       <ArrowAndTitle>
         <ArrowDiv style={goBackArrow ? {} : { display: 'none' }}>
           <ArrowLeft width="30px" height="30px" onClick={goToPreviousPage} />
         </ArrowDiv>
-
         <TitleDiv style={title ? {} : { display: 'none' }}>
           <Title>{title}</Title>
         </TitleDiv>
