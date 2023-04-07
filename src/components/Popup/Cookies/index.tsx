@@ -59,7 +59,7 @@ export default function Cookies() {
   }, [popupVisibility]);
 
   const description = useMemo(() => {
-    if (content)
+    if (content) {
       return (
         <Content>
           <Text>Nós usamos cookies para prover nosso jogo. Tudo bem?</Text>
@@ -71,6 +71,7 @@ export default function Cookies() {
           </Buttons>
         </Content>
       );
+    }
     return (
       <Content>
         <Politica />
