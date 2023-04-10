@@ -50,7 +50,9 @@ export default function Header({
 }: HeaderProps) {
   const { room } = useGlobalContext();
   const navigate = useNavigate();
-  const [warning, setWarning] = useState<'success' | 'failure' | 'alert' | undefined>(undefined);
+  const [warning, setWarning] = useState<
+    'success' | 'failure' | 'alert' | undefined
+  >(undefined);
 
   const seconds = timer / 1000;
   const timerColor = seconds < 3 ? 'red' : 'white';
@@ -82,11 +84,11 @@ export default function Header({
     }
     settingsPage();
   };
-  
+
   const confirmLeaveRoom = () => {
-    if(!warning) return setWarning('alert');
+    if (!warning) return setWarning('alert');
     setWarning(undefined);
-  }
+  };
 
   const leaveRoom = () => {
     window.localStorage.clear();
@@ -101,13 +103,15 @@ export default function Header({
     }, 2000);
   };
 
-  const leaveWarning = <ConfirmDiv>
-    <Confirm>Quer mesmo sair?</Confirm>
-    <Buttons>
-      <ConfirmYes onClick={leaveRoom}>Sim</ConfirmYes>
-      <ConfirmNo onClick={() => setWarning(undefined)}>Não</ConfirmNo>
-    </Buttons>
-  </ConfirmDiv>
+  const leaveWarning = (
+    <ConfirmDiv>
+      <Confirm>Quer mesmo sair?</Confirm>
+      <Buttons>
+        <ConfirmYes onClick={leaveRoom}>Sim</ConfirmYes>
+        <ConfirmNo onClick={() => setWarning(undefined)}>Não</ConfirmNo>
+      </Buttons>
+    </ConfirmDiv>
+  );
 
   return (
     <HeaderDiv>
@@ -116,14 +120,14 @@ export default function Header({
           type="warning"
           warningType="success"
           description="código da sala copiado!"
-          show={warning === "success"}
+          show={warning === 'success'}
         />
       )}
 
       <Popup
         type="warning"
         description={leaveWarning}
-        show={warning === "alert"}
+        show={warning === 'alert'}
       />
 
       <ArrowAndTitle>
@@ -177,4 +181,3 @@ export default function Header({
     </HeaderDiv>
   );
 }
-

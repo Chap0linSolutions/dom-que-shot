@@ -40,7 +40,7 @@ export const Confirm = styled.p`
   margin: 0;
   font-size: 17px;
   color: black;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 16px;
   }
 `;
@@ -54,7 +54,7 @@ export const ConfirmButton = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 16px;
     padding: 0 17px;
     margin-left: 6px;
@@ -75,7 +75,6 @@ export const Buttons = styled.div`
   display: flex;
   align-items: center;
 `;
-
 
 export const RoomCodeDiv = styled.div`
   display: flex;
