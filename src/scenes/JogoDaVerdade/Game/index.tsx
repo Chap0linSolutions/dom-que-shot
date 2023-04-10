@@ -92,7 +92,7 @@ export default function GamePage({
       <Header logo={coverImg} />
       {show ? (
         <GameContainer>
-          <Title>Responda à uma das perguntas:</Title>
+          <Title>Estas eram as perguntas:</Title>
           <SuggestionsDiv>
             {suggestions.map((suggestion, i) => (
               <SuggestionItem key={i}>
@@ -102,7 +102,9 @@ export default function GamePage({
             ))}
           </SuggestionsDiv>
 
-          <AnotherSuggestion>Ou beba duas doses!!!</AnotherSuggestion>
+          <AnotherSuggestion>
+            {countdown > 0 ? `Aguardando... ${countdown}` : 'Esperando o jogador da vez continuar.'}
+          </AnotherSuggestion>
         </GameContainer>
       ) : (
         <GameContainer>
@@ -112,7 +114,7 @@ export default function GamePage({
               firstText={`Aguardando o jogador da vez responder alguma das perguntas do
                 Jogo da Verdade...`}
               secondText={
-                'Se ele demorar a falar, pode dar um pescotapa. Eu deixo.'
+                'Brigadeiro é o melhor doce da história. Ponto.'
               }
             />
           </AwaitingDiv>

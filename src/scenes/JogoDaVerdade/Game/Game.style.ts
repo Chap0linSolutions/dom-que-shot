@@ -78,7 +78,7 @@ export const AnotherSuggestion = styled.div`
 `;
 
 export const AwaitingDiv = styled.div`
-  margin-top: 6em;
+  margin-top: 3em;
   padding: 0;
   width: 80%;
   height: 400px;
