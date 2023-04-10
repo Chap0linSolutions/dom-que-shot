@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGlobalContext } from '../../contexts/GlobalContextProvider';
+import { Player, useGlobalContext } from '../../contexts/GlobalContextProvider';
 import gsap from 'gsap';
-
 import Background from '../../components/Background';
 import Header from '../../components/Header';
 import Roulette from '../../components/Roulette';
@@ -40,7 +39,7 @@ export default function SelectNextGame() {
 
   useEffect(() => {
     socket.addEventListener('lobby-update', (reply) => {
-      const newPlayerList = JSON.parse(reply); //newPlayerList: Player[]
+      const newPlayerList: Player[] = JSON.parse(reply);
       setRoom((previous) => ({
         ...previous,
         playerList: newPlayerList,
@@ -90,10 +89,16 @@ export default function SelectNextGame() {
     }
   }, [number]);
 
+  useEffect(() => {
+    if (!rouletteIsSpinning && nextGameName !== '') {
+      startSelectedGame();
+    }
+  }, [rouletteIsSpinning]);
+
   const startSelectedGame = () => {
     if (user.isCurrentTurn === true) {
       setTimeout(() => {
-        socket.pushMessage(room.code, 'start-game', nextGame);
+        socket.pushMessage(room.code, 'start-game', nextGameName);
       }, 1000);
     }
   };
@@ -176,7 +181,7 @@ export default function SelectNextGame() {
         duration: 1,
         ease: 'power2',
       })
-      .call(startSelectedGame);
+      .call(() => setRouletteIsSpinning(false));
   };
 
   const turnTheWheel = () => {
@@ -192,9 +197,9 @@ export default function SelectNextGame() {
 
   const header =
     user.isOwner === true ? (
-      <Header exit goBackArrow={backToLobby} logo />
+      <Header exit goBackArrow={backToLobby} roomCode logo />
     ) : (
-      <Header exit logo />
+      <Header exit roomCode logo />
     );
 
   return (
@@ -258,7 +263,7 @@ export default function SelectNextGame() {
 
           <WaitingMessageDiv
             style={
-              currentPlayer !== user.nickname && !rouletteIsSpinning
+              currentPlayer !== user.nickname && nextGameName === ''
                 ? { visibility: 'visible' }
                 : { display: 'none' }
             }>

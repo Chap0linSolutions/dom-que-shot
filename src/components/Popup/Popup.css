@@ -4,12 +4,19 @@
   padding: 20px 20px 0 20px;
   width: 360px;
   border-radius: 15px;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255);
+  opacity: 0.95;
+}
+
+.Cookie {
+  width: 40px;
+  object-fit: scale-down;
 }
 
 .PopupHeader {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .PopupTitle {
@@ -20,6 +27,8 @@
 }
 
 .PopupDescription {
+  display: flex;
+  justify-content: space-between;
   color: black;
   font-family: 'Roboto';
   font-size: 18px;
@@ -40,6 +49,14 @@
 }
 
 .PopupContainer {
+  scale: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.CookieContainer {
   scale: 0;
   width: 100%;
   display: flex;

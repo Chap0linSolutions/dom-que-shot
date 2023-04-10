@@ -1,6 +1,9 @@
+import { useState } from 'react';
+import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import { ArrowLeft, Info, Settings, Power } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import DomQueShotLogo from '../../assets/logo-darker.png';
+import Popup from '../Popup';
 import {
   ArrowDiv,
   ArrowAndTitle,
@@ -15,6 +18,8 @@ import {
   LogoDiv,
   LogoBackground,
   Logo,
+  RoomCodeDiv,
+  RoomCode,
 } from './Header.style';
 
 interface HeaderProps {
@@ -22,6 +27,7 @@ interface HeaderProps {
   logo?: boolean | string;
   title?: string;
   goBackArrow?: true | (() => void);
+  roomCode?: boolean;
   timer?: number;
   settingsPage?: string | (() => void);
   infoPage?: string | (() => void);
@@ -32,11 +38,14 @@ export default function Header({
   logo,
   title,
   goBackArrow,
+  roomCode,
   timer,
   settingsPage,
   infoPage,
 }: HeaderProps) {
+  const { room } = useGlobalContext();
   const navigate = useNavigate();
+  const [warningVisibility, setWarningVisibility] = useState<boolean>(false);
 
   const seconds = timer / 1000;
   const timerColor = seconds < 3 ? 'red' : 'white';
@@ -74,8 +83,25 @@ export default function Header({
     navigate('/Home');
   };
 
+  const copyCode = () => {
+    navigator.clipboard.writeText(room.code);
+    setWarningVisibility(true);
+    setTimeout(() => {
+      setWarningVisibility(false);
+    }, 2000);
+  };
+
   return (
     <HeaderDiv>
+      {roomCode && (
+        <Popup
+          type="warning"
+          warningType="success"
+          description={'código da sala copiado!'}
+          show={warningVisibility}
+        />
+      )}
+
       <ArrowAndTitle>
         <ArrowDiv style={goBackArrow ? {} : { display: 'none' }}>
           <ArrowLeft width="30px" height="30px" onClick={goToPreviousPage} />
@@ -95,6 +121,16 @@ export default function Header({
       </Timer>
 
       <SettingsInfoAndLogo>
+        <RoomCodeDiv
+          onClick={copyCode}
+          style={roomCode ? {} : { display: 'none' }}>
+          <RoomCode>
+            Sala:
+            <br />
+            {room.code}
+          </RoomCode>
+        </RoomCodeDiv>
+
         <InfoDiv style={infoPage ? {} : { display: 'none' }}>
           <Info
             color="#FBBC05"
@@ -117,3 +153,4 @@ export default function Header({
     </HeaderDiv>
   );
 }
+

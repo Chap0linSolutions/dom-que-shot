@@ -1,7 +1,7 @@
 import React from 'react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
-import Welcome from './scenes/Welcome';
+import Start from './scenes/Start';
 import Tutorial from './scenes/Tutorial';
 import Login from './scenes/Login';
 import Home from './scenes/Home';
@@ -19,13 +19,16 @@ import EuNunca from './scenes/EuNunca';
 import OEscolhido from './scenes/OEscolhido';
 import BangBang from './scenes/BangBang';
 import SelectNextGame from './scenes/SelectNextGame';
+import Titanic from './scenes/Titanic';
 import QuemSouEu from './scenes/QuemSouEu';
+import JogoDoDesafio from './scenes/JogoDoDesafio';
+import JogoDaVerdade from './scenes/JogoDaVerdade';
 
 const Router: React.FC = () => {
   return (
     <MemoryRouter>
       <Routes>
-        <Route path="/" element={<Welcome />} />
+        <Route path="/" element={<Start />} />
         <Route path="/Tutorial" element={<Tutorial />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Home" element={<Home />} />
@@ -43,7 +46,10 @@ const Router: React.FC = () => {
         <Route path="/Buzz" element={<Buzz />} />
         <Route path="/EuNunca" element={<EuNunca />} />
         <Route path="/BangBang" element={<BangBang />} />
+        <Route path="/Titanic" element={<Titanic />} />
         <Route path="/QuemSouEu" element={<QuemSouEu />} />
+        <Route path="/JogoDoDesafio" element={<JogoDoDesafio />} />
+        <Route path="/JogoDaVerdade" element={<JogoDaVerdade />} />
       </Routes>
     </MemoryRouter>
   );

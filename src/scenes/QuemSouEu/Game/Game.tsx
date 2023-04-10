@@ -125,13 +125,14 @@ export default function GamePage({
   return (
     <Background noImage>
       <Popup
+        type="info"
         title={title}
         description={description}
         show={popupVisibility}
         exit={() => setPopupVisibility(false)}
         comesFromTop
       />
-      <Header infoPage={() => setPopupVisibility(true)} />
+      <Header roomCode infoPage={() => setPopupVisibility(true)} />
       {turnVisibility === true ? alert : null}
       <GameDiv>
         <Content>

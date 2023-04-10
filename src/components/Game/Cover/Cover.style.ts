@@ -6,6 +6,7 @@ export const CoverDiv = styled.div`
   align-items: center;
   height: 100%;
   justify-content: space-between;
+  overflow: hidden;
 `;
 
 export const CoverCard = styled.div`

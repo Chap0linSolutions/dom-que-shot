@@ -46,8 +46,7 @@ export default function OEscolhido() {
     if (updatedMs > 0) {
       updatedMs -= 100;
       if (updatedMs === 0) {
-        console.log('Acabou o tempo.');
-        socket.pushMessage(room.code, 'vote-results', null);
+        setMsTimer(0);
       }
       setMsTimer(updatedMs);
     }
@@ -149,6 +148,13 @@ export default function OEscolhido() {
   }, []);
 
   //////////////////////////////////////////////////////////////////////////////////////////////
+
+  useEffect(() => {
+    if (msTimer === 0 && !userVote) {
+      console.log('Acabou o tempo.');
+      socket.pushMessage(room.code, 'times-up', user.nickname);
+    }
+  }, [msTimer]);
 
   useEffect(() => {
     if (userVote) {
