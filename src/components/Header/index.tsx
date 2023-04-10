@@ -20,6 +20,11 @@ import {
   Logo,
   RoomCodeDiv,
   RoomCode,
+  Confirm,
+  ConfirmDiv,
+  ConfirmYes,
+  ConfirmNo,
+  Buttons,
 } from './Header.style';
 
 interface HeaderProps {
@@ -45,7 +50,7 @@ export default function Header({
 }: HeaderProps) {
   const { room } = useGlobalContext();
   const navigate = useNavigate();
-  const [warningVisibility, setWarningVisibility] = useState<boolean>(false);
+  const [warning, setWarning] = useState<'success' | 'failure' | 'alert' | undefined>(undefined);
 
   const seconds = timer / 1000;
   const timerColor = seconds < 3 ? 'red' : 'white';
@@ -77,6 +82,11 @@ export default function Header({
     }
     settingsPage();
   };
+  
+  const confirmLeaveRoom = () => {
+    if(!warning) return setWarning('alert');
+    setWarning(undefined);
+  }
 
   const leaveRoom = () => {
     window.localStorage.clear();
@@ -85,11 +95,19 @@ export default function Header({
 
   const copyCode = () => {
     navigator.clipboard.writeText(room.code);
-    setWarningVisibility(true);
+    setWarning('success');
     setTimeout(() => {
-      setWarningVisibility(false);
+      setWarning(undefined);
     }, 2000);
   };
+
+  const leaveWarning = <ConfirmDiv>
+    <Confirm>Quer mesmo sair?</Confirm>
+    <Buttons>
+      <ConfirmYes onClick={leaveRoom}>Sim</ConfirmYes>
+      <ConfirmNo onClick={() => setWarning(undefined)}>Não</ConfirmNo>
+    </Buttons>
+  </ConfirmDiv>
 
   return (
     <HeaderDiv>
@@ -97,10 +115,16 @@ export default function Header({
         <Popup
           type="warning"
           warningType="success"
-          description={'código da sala copiado!'}
-          show={warningVisibility}
+          description="código da sala copiado!"
+          show={warning === "success"}
         />
       )}
+
+      <Popup
+        type="warning"
+        description={leaveWarning}
+        show={warning === "alert"}
+      />
 
       <ArrowAndTitle>
         <ArrowDiv style={goBackArrow ? {} : { display: 'none' }}>
@@ -108,7 +132,7 @@ export default function Header({
         </ArrowDiv>
 
         <LeaveDiv style={exit ? {} : { display: 'none' }}>
-          <Power width="22px" height="22px" onClick={leaveRoom} />
+          <Power width="22px" height="22px" onClick={confirmLeaveRoom} />
         </LeaveDiv>
 
         <TitleDiv style={title ? {} : { display: 'none' }}>
