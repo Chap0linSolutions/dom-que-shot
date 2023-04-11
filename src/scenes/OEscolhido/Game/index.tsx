@@ -5,7 +5,7 @@ import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
-import { Content, Game, Title, PlayerList, Nickname, SelectedAvatar, UnselectedAvatar, SelectedPlayer, UnselectedPlayer } from './Game.style';
+import { Content, Game, Title, PlayerList, Nickname, SelectedAvatar, UnselectedAvatar, SelectedPlayer, UnselectedPlayer, ItemContainer } from './Game.style';
 
 interface GameProps {
   vote: React.Dispatch<React.SetStateAction<Player>>;
@@ -47,25 +47,27 @@ export default function GamePage({ vote, msTimeLeft, playerList }: GameProps) {
           </Title>
           <PlayerList>
             {players.current.map((player, i) => {
-              let ListItem = UnselectedPlayer;
+              let Item = UnselectedPlayer;
               let AvatarDiv = UnselectedAvatar;
               let state = 'unselected';
 
               if(player.nickname === selectedPlayer.nickname){
-                ListItem = SelectedPlayer;
+                Item = SelectedPlayer;
                 AvatarDiv = SelectedAvatar;
                 state = 'selected';
               }
 
               return (
-                <ListItem key={i} className={state} onClick={() => selectPlayer(player)}>
-                  <Nickname>
-                    {player.nickname}
-                  </Nickname>
-                  <AvatarDiv>               
-                      <Avatar size={avatarSize} seed={player.avatarSeed} />
-                  </AvatarDiv>
-                </ListItem>
+                <ItemContainer className={state}>
+                  <Item key={i} onClick={() => selectPlayer(player)}>
+                    <Nickname>
+                      {player.nickname}
+                    </Nickname>
+                    <AvatarDiv>               
+                        <Avatar size={avatarSize} seed={player.avatarSeed} />
+                    </AvatarDiv>
+                  </Item>
+                </ItemContainer>
               )
             })}
           </PlayerList>

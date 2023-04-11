@@ -43,18 +43,21 @@ export const PlayerList = styled.div`
   }
 `;
 
-export const PlayerItem = styled.div`
-  border-radius: 10px;
-  height: 48px;
+export const ItemContainer = styled.div`
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  height: 48px;
   margin-bottom: 8px;
   @media(max-height: 740px){
     height: 44px;
     margin-bottom: 7px;
   }
+`;
+
+export const PlayerItem = styled(ItemContainer)`
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const SelectedPlayer = styled(PlayerItem)`
