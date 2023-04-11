@@ -104,7 +104,7 @@ export default function WhoDrankPage() {
     socket.pushMessage(room.code, 'end-game', null);
   };
 
-  const avatarSize = (window.innerHeight <= 740)? '40px' : '44px';
+  //const avatarSize = (window.innerHeight <= 740)? '40px' : '44px';
 
   const header = coverImg ? (
     <Header roomCode logo={coverImg} />
@@ -143,7 +143,7 @@ export default function WhoDrankPage() {
                     </Nickname>
                     <AvatarDiv
                       className={avatarState}>
-                      <Avatar size={avatarSize} seed={player.avatarSeed} />
+                      <Avatar seed={player.avatarSeed} />
                     </AvatarDiv>
                   </ListItem>
                 )

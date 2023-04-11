@@ -35,7 +35,7 @@ export default function GamePage({ vote, msTimeLeft, playerList }: GameProps) {
   };
 
   const hasSelected = selectedPlayer.nickname != '';
-  const avatarSize = (window.innerHeight <= 740)? '40px' : '44px';
+  //const avatarSize = (window.innerHeight <= 740)? '40px' : '44px';
 
   return (
     <Background noImage>
@@ -64,7 +64,7 @@ export default function GamePage({ vote, msTimeLeft, playerList }: GameProps) {
                       {player.nickname}
                     </Nickname>
                     <AvatarDiv>               
-                        <Avatar size={avatarSize} seed={player.avatarSeed} />
+                        <Avatar seed={player.avatarSeed} />
                     </AvatarDiv>
                   </Item>
                 </ItemContainer>

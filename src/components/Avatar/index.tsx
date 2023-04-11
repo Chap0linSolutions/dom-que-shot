@@ -12,6 +12,6 @@ export default function ({ seed, size }: AvatarProps) {
     createAvatar(style, { seed: seed })
   )}`;
 
-  if(size) return <img width={size} height={size} src={source} alt="" />;
-  return <img src={source} alt="" />;
+  if(size) return <img width={size} height={size} src={source} alt="avatar" />;
+  return <img src={source} width="100%" height="100%" alt="avatar" />;
 }
