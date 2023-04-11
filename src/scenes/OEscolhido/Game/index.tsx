@@ -5,7 +5,7 @@ import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
-import './Game.css';
+import { Content, Game, Title, PlayerList, Nickname, SelectedAvatar, UnselectedAvatar, SelectedPlayer, UnselectedPlayer } from './Game.style';
 
 interface GameProps {
   vote: React.Dispatch<React.SetStateAction<Player>>;
@@ -25,8 +25,8 @@ export default function GamePage({ vote, msTimeLeft, playerList }: GameProps) {
 
   useLayoutEffect(() => {
     if (selectedPlayer) {
-      gsap.to('.selectedItem', { scale: 1.08, duration: 0.5 });
-      gsap.to('.unselectedItem', { scale: 1, duration: 0.5 });
+      gsap.to('.selected', { scale: 1.08, duration: 0.5 });
+      gsap.to('.unselected', { scale: 1, duration: 0.5 });
     }
   }, [selectedPlayer]);
 
@@ -35,45 +35,48 @@ export default function GamePage({ vote, msTimeLeft, playerList }: GameProps) {
   };
 
   const hasSelected = selectedPlayer.nickname != '';
+  const avatarSize = (window.innerHeight <= 740)? '40px' : '44px';
 
   return (
     <Background noImage>
       <Header timer={msTimeLeft} />
-      <div className="OEscolhidoContainer">
-        <div className="OEscolhidoTitleAndList">
-          <p className="OEscolhidoTitle">Vote em quem deve beber:</p>
-          <div className="GamePlayerListDiv">
-            {players.current.map((player, i) => (
-              <div
-                key={`${i}`}
-                onClick={() => {
-                  selectPlayer(player);
-                }}
-                className={
-                  player.nickname === selectedPlayer.nickname
-                    ? 'selectedItem GamePlayerListItem'
-                    : 'unselectedItem GamePlayerListItem'
-                }>
-                <p className="GamePlayerListNickname">{player.nickname}</p>
-                <div
-                  className={
-                    player.nickname === selectedPlayer.nickname
-                      ? 'selectedAvatar GamePlayerListAvatar'
-                      : 'unselectedAvatar GamePlayerListAvatar'
-                  }>
-                  <Avatar seed={player.avatarSeed} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      <Game>
+        <Content>
+          <Title>
+            Vote em quem deve beber:
+          </Title>
+          <PlayerList>
+            {players.current.map((player, i) => {
+              let ListItem = UnselectedPlayer;
+              let AvatarDiv = UnselectedAvatar;
+              let state = 'unselected';
+
+              if(player.nickname === selectedPlayer.nickname){
+                ListItem = SelectedPlayer;
+                AvatarDiv = SelectedAvatar;
+                state = 'selected';
+              }
+
+              return (
+                <ListItem key={i} className={state} onClick={() => selectPlayer(player)}>
+                  <Nickname>
+                    {player.nickname}
+                  </Nickname>
+                  <AvatarDiv>               
+                      <Avatar size={avatarSize} seed={player.avatarSeed} />
+                  </AvatarDiv>
+                </ListItem>
+              )
+            })}
+          </PlayerList>
+        </Content>
         <Button
           staysOnBottom
           isDisabled={!hasSelected}
           onClick={() => vote(selectedPlayer)}>
           Votar
         </Button>
-      </div>
+      </Game>
     </Background>
   );
 }
