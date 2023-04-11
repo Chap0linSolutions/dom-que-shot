@@ -61,7 +61,7 @@ export default function GamePage({
   return (
     <Background>
       <Header roomCode logo={coverImg} />
-      <div className="WhoDrankContainer" style={{ marginTop: '3em' }}>
+      <div className="EuNuncaDiv" style={{ marginTop: '3em' }}>
         <AwaitingBanner
           icon={glassIcon}
           firstText={`Aguardando o jogador da vez falar uma frase começada por "EU NUNCA"...`}

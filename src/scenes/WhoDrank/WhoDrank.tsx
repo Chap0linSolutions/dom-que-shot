@@ -123,7 +123,7 @@ export default function WhoDrankPage() {
               Selecione quem bebeu uma dose:
             </Subtitle>
             <PlayerList>
-              {playerList.current.map((player) => {
+              {playerList.current.map((player, i) => {
                 let bgColor = {background: '#8877df'};
                 let state = 'unselected'; 
                 let avatarState = 'unselectedAvatar';
@@ -135,7 +135,7 @@ export default function WhoDrankPage() {
                 }
 
                 return (
-                  <ListItem className={state} style={bgColor} onClick={() => selectPlayer(player)} key={player.playerID}>
+                  <ListItem className={state} style={bgColor} onClick={() => selectPlayer(player)} key={`${i}`}>
                     <Nickname>
                       {player.nickname}
                     </Nickname>

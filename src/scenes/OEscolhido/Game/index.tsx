@@ -57,8 +57,8 @@ export default function GamePage({ vote, msTimeLeft, playerList }: GameProps) {
               }
 
               return (
-                <ItemContainer className={state}>
-                  <Item key={i} onClick={() => selectPlayer(player)}>
+                <ItemContainer className={state} key={`${i}`}>
+                  <Item onClick={() => selectPlayer(player)}>
                     <Nickname>
                       {player.nickname}
                     </Nickname>
