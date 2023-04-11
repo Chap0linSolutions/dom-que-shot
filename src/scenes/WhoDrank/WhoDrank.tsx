@@ -104,8 +104,6 @@ export default function WhoDrankPage() {
     socket.pushMessage(room.code, 'end-game', null);
   };
 
-  //const avatarSize = (window.innerHeight <= 740)? '40px' : '44px';
-
   const header = coverImg ? (
     <Header roomCode logo={coverImg} />
   ) : (

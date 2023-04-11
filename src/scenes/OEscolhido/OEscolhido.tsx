@@ -168,7 +168,7 @@ export default function OEscolhido() {
 
   useEffect(() => {
     if (room.page === Game.Game) {
-      //startTimer();
+      startTimer();
     } else if (room.page === Game.Finish) {
       clearInterval(timer);
       setMsTimer(gameTime);

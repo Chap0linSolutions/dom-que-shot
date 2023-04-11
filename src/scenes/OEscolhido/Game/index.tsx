@@ -35,7 +35,6 @@ export default function GamePage({ vote, msTimeLeft, playerList }: GameProps) {
   };
 
   const hasSelected = selectedPlayer.nickname != '';
-  //const avatarSize = (window.innerHeight <= 740)? '40px' : '44px';
 
   return (
     <Background noImage>
