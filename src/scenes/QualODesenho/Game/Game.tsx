@@ -39,6 +39,10 @@ interface GameProps {
   drawingPaths: string;
   updateDrawingPaths: (value: string) => void;
   startGame: () => void;
+  sendWinner: () => void;
+  sendGuess: (value: string) => void;
+  receiveGuess: () => string;
+  goToRankingPage: () => void;
 }
 
 type Coordinates = {
@@ -125,6 +129,10 @@ export default function GamePage({
   drawingPaths,
   updateDrawingPaths,
   startGame,
+  sendWinner,
+  sendGuess,
+  receiveGuess,
+  goToRankingPage,
 }: GameProps) {
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
   const [colorPaletteVisibility, setColorPaletteVisibility] = useState<boolean>(false);
@@ -136,6 +144,7 @@ export default function GamePage({
   const [isDrawing, setIsDrawing] = useState(false);
 
   const interCanvasRatio = useRef<number>(1);
+  const guessRef = useRef<HTMLInputElement>();
   const canvasRef = useRef<HTMLCanvasElement>();
   const contextRef = useRef<CanvasRenderingContext2D>();
   const counter = useRef<number>(59000);
@@ -485,6 +494,19 @@ export default function GamePage({
   ? <Alert noButton message={guidanceText} icon={beer}/>
   : null;
 
+  const checkGuess = () => {
+    const guess = guessRef.current.value;
+
+    if (guess === category) {
+      sendWinner();
+      goToRankingPage();
+      return;
+    }
+
+    console.log('TENTE NOVAMENTE!');
+    sendGuess(guess);
+  }
+
   return (
     <Background noImage>
       {alert}
@@ -515,9 +537,10 @@ export default function GamePage({
           </GuessingDiv>
           <GuessInputDiv>
             <GuessInput
+              ref={guessRef}
               placeholder="Digite sua resposta..."
             />
-            <Button width='120px' height='40px'>Enviar</Button>
+            <Button width='120px' height='40px' onClick={checkGuess}>Enviar</Button>
           </GuessInputDiv>
       </GameDiv>
     </Background>

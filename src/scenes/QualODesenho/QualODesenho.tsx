@@ -5,18 +5,14 @@ import SocketConnection from '../../lib/socket';
 import CoverPage from '../../components/Game/Cover';
 import coverImg from '../../assets/game-covers/qual-o-desenho.png';
 import GamePage from './Game';
-//import FinishPage from './Ranking';
+import RankingPage from './Ranking';
 import WordPage from './Word';
 
-interface drawingPlayer {
-    //Lista de pontos
-    //nome
-    //id
-}
-
-interface guessingPlayer {
-    player: string;
-    guessList: string[];
+export interface guessingPlayer {
+    id: string;
+    nickname: string;
+    seed: string;
+    guessTime: string;
     guessedCorrectly: boolean;
 }
 
@@ -27,6 +23,16 @@ enum Game {
     Finish,
 }
 
+const dummyPlayer = [];
+
+dummyPlayer.push({
+    id: '12345',
+    nickname: 'Dummy Player',
+    seed: 'dummy',
+    guessTime: '-1800',
+    guessedCorrectly: true,
+})
+
 export default function QualODesenho() {
     const { user, room, setUser, setRoom } = useGlobalContext();
     const title = 'Qual é o desenho?';
@@ -35,6 +41,7 @@ export default function QualODesenho() {
     const [drawingPaths, setDrawingPaths] = useState<string>();
     const [wordSuggestions, setWordSuggestions] = useState<string[]>([]);
     const [word, setWord] = useState<string>(undefined);
+    const [latestGuess, setLatestGuess] = useState<string>('');
     const [playersAndGuesses, setPlayersAndGuesses] =
         useState<guessingPlayer[]>(undefined);
 
@@ -73,6 +80,7 @@ export default function QualODesenho() {
             socket.pushMessage(room.code, 'times-up', null);
             clearInterval(timer);
             setTimer(null);
+            finishGame();
         }
         setMsTimer(updatedMs);
         }
@@ -107,16 +115,20 @@ export default function QualODesenho() {
         });
     };
 
-    const sendWinners = (winners: string[]) => {
-        socket.pushMessage(room.code, 'winners-are', JSON.stringify(winners));
-    };
+    const sendWinner = () => {
+        socket.pushMessage(room.code, 'correct-guess', user.nickname);
+    }
+
+    const sendGuess = (guess: string) => {
+        socket.pushMessage(room.code, 'wrong-guess', guess);
+    }
+
+    const receiveGuess = () =>  {
+        console.log(`Último palpite: ${latestGuess}`);
+        return latestGuess;
+    }
 
     const backToRoulette = () => {
-        socket.push('players-who-drank-are', {
-            roomCode: room.code,
-            players: JSON.stringify(playersAndGuesses.filter((p) => !p.guessedCorrectly)),
-        });
-
         socket.push('update-turn', room.code);
         socket.push('move-room-to', {
             roomCode: room.code,
@@ -147,6 +159,11 @@ export default function QualODesenho() {
             }));
         });
 
+        socket.addEventListener('new-guess-attempt', (reply: string) => {
+            console.log(reply);
+            setLatestGuess(reply);
+        })
+
         socket.addEventListener('room-owner-is', (ownerName) => {
             const isOwner = user.nickname === ownerName;
             setUser((previous) => ({
@@ -176,32 +193,6 @@ export default function QualODesenho() {
                 setDrawingPaths(DPs);
             })
         }
-
-        socket.addEventListener('new-guess', (newGuess) => {
-            //TODO: CORRIGIR A LÓGICA DE ADICIONAR UM PALPITE A UM JOGADOR
-            setPlayersAndGuesses(
-                JSON.parse(newGuess).map((p) => {
-                    return {
-                        player: p.player,
-                        whoPlayerIs: p.whoPlayerIs,
-                        winner: false,
-                    };
-                })
-            );
-        });
-
-        socket.addEventListener('winners-are', (players) => {
-            const winners: string[] = JSON.parse(players);
-            setPlayersAndGuesses((previous) =>
-                previous.map((p) => {
-                    return {
-                        ...p,
-                        winner: winners.includes(p.player),
-                    };
-                })
-            );
-            finishGame();
-        });
 
         socket.addEventListener('que-desenho-suggestions', (suggestions) => {
             setWordSuggestions(suggestions);
@@ -245,17 +236,24 @@ export default function QualODesenho() {
                     msTimeLeft={msTimer}
                     startGame={startGame}
                     updateDrawingPaths={sendDrawingUpdate}
+                    sendWinner={sendWinner}
+                    sendGuess={sendGuess}
+                    receiveGuess={receiveGuess}
+                    goToRankingPage={() => setGlobalRoomPage(Game.Finish)}
                     drawingPaths={drawingPaths}
                 />
             );
 
-        // case Game.Finish:
-        //     return (
-        //         <RankingPage
-        //             turnVisibility={turnVisibility}
-        //             roulettePage={() => nextRound()}
-        //         />
-        //     );
+        case Game.Finish:
+            return (
+                <RankingPage
+                    data={dummyPlayer}
+                    turnVisibility={user.isCurrentTurn}
+                    roulettePage={() => backToRoulette()}
+                    finalRanking={false}
+                    gamePage={() => setGlobalRoomPage(Game.Game)}
+                />
+            );
 
         default:
             return (
