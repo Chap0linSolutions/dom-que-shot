@@ -9,7 +9,7 @@ import Avatar from '../../components/Avatar';
 import beer from '../../assets/beer.png';
 import gsap from 'gsap';
 import AwaitingBanner from '../../components/AwaitingBanner';
-import { Content, Page, Subtitle, Title, PlayerList, UnselectedPlayer, SelectedPlayer, Nickname, AvatarDiv } from './WhoDrank.style';
+import { Content, Page, Subtitle, Title, PlayerList, Nickname, AvatarDiv, ListItem } from './WhoDrank.style';
 
 export default function WhoDrankPage() {
   const { user, room, setUser, setRoom } = useGlobalContext();
@@ -126,17 +126,18 @@ export default function WhoDrankPage() {
             </Subtitle>
             <PlayerList>
               {playerList.current.map((player) => {
-                let Player = UnselectedPlayer; 
+                let bgColor = {background: '#8877df'};
                 let state = 'unselected'; 
                 let avatarState = 'unselectedAvatar';
+                
                 if(selectedPlayers.find((p) => p.nickname === player.nickname)){
-                  Player = SelectedPlayer;
+                  bgColor = {background: '#403a55'};
                   state = 'selected';
                   avatarState = 'selectedAvatar';
                 }
 
                 return (
-                  <Player onClick={() => selectPlayer(player)} className={state} key={player.playerID}>
+                  <ListItem className={state} style={bgColor} onClick={() => selectPlayer(player)} key={player.playerID}>
                     <Nickname>
                       {player.nickname}
                     </Nickname>
@@ -144,7 +145,7 @@ export default function WhoDrankPage() {
                       className={avatarState}>
                       <Avatar size={avatarSize} seed={player.avatarSeed} />
                     </AvatarDiv>
-                  </Player>
+                  </ListItem>
                 )
               })}
             </PlayerList>

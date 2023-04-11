@@ -36,25 +36,18 @@ export const PlayerList = styled.div`
   }
 `;
 
-const Player = styled.div`
-  border-radius: 10px;
+export const ListItem = styled.div`
   height: 48px;
   width: 100%;
+  margin-bottom: 8px;
+  border-radius: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
-`;
+`; 
 
-export const SelectedPlayer = styled(Player)`
-  background: #403a55;
-`;
 
-export const UnselectedPlayer = styled(Player)`
-  background: #8877df;
-`;
-
-export const Nickname = styled(Player)`
+export const Nickname = styled.p`
   margin: 0;
   padding: 0 1em;
 `;
