@@ -69,7 +69,11 @@ export default function CategoryPage({
           exit={() => setPopupVisibility(false)}
           comesFromTop
         />
-        <Header participants={owner} roomCode infoPage={() => setPopupVisibility(true)} />
+        <Header
+          participants={owner}
+          roomCode
+          infoPage={() => setPopupVisibility(true)}
+        />
         <CategoryDiv>
           <Content>
             <Title>Escolha uma categoria para o grupo:</Title>

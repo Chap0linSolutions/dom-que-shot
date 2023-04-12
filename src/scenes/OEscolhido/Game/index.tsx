@@ -14,7 +14,12 @@ interface GameProps {
   owner: boolean;
 }
 
-export default function GamePage({ vote, msTimeLeft, playerList, owner }: GameProps) {
+export default function GamePage({
+  vote,
+  msTimeLeft,
+  playerList,
+  owner,
+}: GameProps) {
   const [selectedPlayer, setSelectedPlayer] = useState<Player>({
     nickname: '',
     avatarSeed: '',

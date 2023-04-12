@@ -52,39 +52,40 @@ export default function Header({
   const { room } = useGlobalContext();
   const navigateTo = useNavigate();
   const [warningVisibility, setWarningVisibility] = useState<boolean>(false);
-  const [playerListVisibility, setPlayerListVisibility] = useState<boolean>(false);
+  const [playerListVisibility, setPlayerListVisibility] =
+    useState<boolean>(false);
 
   const seconds = timer / 1000;
   const timerColor = seconds < 3 ? 'red' : 'white';
   const formattedTimer = `${seconds.toFixed(1)}s`;
 
-  const playerList = useMemo(() => (
-    <>
-      {room.playerList.map((p, i) => (
-        <ListItem key={i}>
-          <PlayerInfo>
-            <AvatarDiv>
-              <Avatar seed={p.avatarSeed}/>
-            </AvatarDiv>
-            <Name>
-              {p.nickname}
-            </Name>
-          </PlayerInfo>
-          <Kick onClick={() => kickPlayer(p)}>
-            Expulsar
-          </Kick>
-        </ListItem>
-      ))}
-    </>
-  ), [room.playerList]);
+  const playerList = useMemo(
+    () => (
+      <>
+        {room.playerList.map((p, i) => (
+          <ListItem key={i}>
+            <PlayerInfo>
+              <AvatarDiv>
+                <Avatar seed={p.avatarSeed} />
+              </AvatarDiv>
+              <Name>{p.nickname}</Name>
+            </PlayerInfo>
+            <Kick onClick={() => kickPlayer(p)}>Expulsar</Kick>
+          </ListItem>
+        ))}
+      </>
+    ),
+    [room.playerList]
+  );
 
   const kickPlayer = (p: Player) => {
     const socket = SocketConnection.getInstance();
-    socket && socket.push('kick-player', {
-      nickname: p.nickname,
-      roomCode: room.code
-    });
-  }
+    socket &&
+      socket.push('kick-player', {
+        nickname: p.nickname,
+        roomCode: room.code,
+      });
+  };
 
   const goToPreviousPage = () => {
     if (goBackArrow === true) {
@@ -121,75 +122,80 @@ export default function Header({
     }, 2000);
   };
 
-  if(!timer) return (
-    <HeaderDiv>
-      {roomCode && (
-        <Popup
-          type="warning"
-          warningType="success"
-          description={'código da sala copiado!'}
-          show={warningVisibility}
-        />
-      )}
-
-      {participants && (
-        <Popup
-          type="info"
-          title="Jogadores"
-          description={playerList}
-          show={playerListVisibility}
-          exit={() => setPlayerListVisibility(false)}
-          backgroundColor='white'
-        />
-      )}
-
-      <ArrowAndTitle>
-        <LeftSideItem style={goBackArrow ? {} : { display: 'none' }}>
-          <ArrowLeft width="30px" height="30px" onClick={goToPreviousPage} />
-        </LeftSideItem>
-        <LeftSideItem style={participants ? {} : { display: 'none' }}>
-          <Users width="26px" height="26px" onClick={() => setPlayerListVisibility(p => !p)} />
-        </LeftSideItem>
-        <LeftSideItem style={title ? {} : { display: 'none' }}>
-          <Title>{title}</Title>
-        </LeftSideItem>
-      </ArrowAndTitle>
-
-      <SettingsInfoAndLogo>
-        <RoomCodeDiv
-          onClick={copyCode}
-          style={roomCode ? {} : { display: 'none' }}>
-          <RoomCode>
-            Sala:
-            <br />
-            {room.code}
-          </RoomCode>
-        </RoomCodeDiv>
-
-        <InfoDiv style={infoPage ? {} : { display: 'none' }}>
-          <Info
-            color="#FBBC05"
-            width="22px"
-            height="22px"
-            onClick={goToInfoPage}
+  if (!timer)
+    return (
+      <HeaderDiv>
+        {roomCode && (
+          <Popup
+            type="warning"
+            warningType="success"
+            description={'código da sala copiado!'}
+            show={warningVisibility}
           />
-        </InfoDiv>
+        )}
 
-        <SettingsDiv style={settingsPage ? {} : { display: 'none' }}>
-          <Settings width="22px" height="22px" onClick={goToSettingPage} />
-        </SettingsDiv>
+        {participants && (
+          <Popup
+            type="info"
+            title="Jogadores"
+            description={playerList}
+            show={playerListVisibility}
+            exit={() => setPlayerListVisibility(false)}
+            backgroundColor="white"
+          />
+        )}
 
-        <LogoDiv style={logo ? {} : { display: 'none' }}>
-          <LogoBackground>
-            <Logo src={typeof logo === 'string' ? logo : DomQueShotLogo}></Logo>
-          </LogoBackground>
-        </LogoDiv>
-      </SettingsInfoAndLogo>
-    </HeaderDiv>
-  );
+        <ArrowAndTitle>
+          <LeftSideItem style={goBackArrow ? {} : { display: 'none' }}>
+            <ArrowLeft width="30px" height="30px" onClick={goToPreviousPage} />
+          </LeftSideItem>
+          <LeftSideItem style={participants ? {} : { display: 'none' }}>
+            <Users
+              width="26px"
+              height="26px"
+              onClick={() => setPlayerListVisibility((p) => !p)}
+            />
+          </LeftSideItem>
+          <LeftSideItem style={title ? {} : { display: 'none' }}>
+            <Title>{title}</Title>
+          </LeftSideItem>
+        </ArrowAndTitle>
+
+        <SettingsInfoAndLogo>
+          <RoomCodeDiv
+            onClick={copyCode}
+            style={roomCode ? {} : { display: 'none' }}>
+            <RoomCode>
+              Sala:
+              <br />
+              {room.code}
+            </RoomCode>
+          </RoomCodeDiv>
+
+          <InfoDiv style={infoPage ? {} : { display: 'none' }}>
+            <Info
+              color="#FBBC05"
+              width="22px"
+              height="22px"
+              onClick={goToInfoPage}
+            />
+          </InfoDiv>
+
+          <SettingsDiv style={settingsPage ? {} : { display: 'none' }}>
+            <Settings width="22px" height="22px" onClick={goToSettingPage} />
+          </SettingsDiv>
+
+          <LogoDiv style={logo ? {} : { display: 'none' }}>
+            <LogoBackground>
+              <Logo
+                src={typeof logo === 'string' ? logo : DomQueShotLogo}></Logo>
+            </LogoBackground>
+          </LogoDiv>
+        </SettingsInfoAndLogo>
+      </HeaderDiv>
+    );
   return (
     <HeaderDiv>
-
       {participants && (
         <Popup
           type="info"
@@ -197,26 +203,31 @@ export default function Header({
           description={playerList}
           show={playerListVisibility}
           exit={() => setPlayerListVisibility(false)}
-          backgroundColor='white'
+          backgroundColor="white"
         />
       )}
 
-      {participants &&
-      <LeftSideItem style={participants ? {} : { display: 'none' }}>
-          <Users width="26px" height="26px" onClick={() => setPlayerListVisibility(p => !p)} />
-      </LeftSideItem>}
-      
-      <LeftSideItem/>
+      {participants && (
+        <LeftSideItem style={participants ? {} : { display: 'none' }}>
+          <Users
+            width="26px"
+            height="26px"
+            onClick={() => setPlayerListVisibility((p) => !p)}
+          />
+        </LeftSideItem>
+      )}
+
+      <LeftSideItem />
       <Timer style={timer ? { color: timerColor } : { display: 'none' }}>
         <p style={{ margin: '0' }}>{formattedTimer}</p>
       </Timer>
-      <RightSideItem/>
-      
-      {participants &&
+      <RightSideItem />
+
+      {participants && (
         <RightSideItem>
-          <Users width="26px" height="26px" color='#170c32' />
+          <Users width="26px" height="26px" color="#170c32" />
         </RightSideItem>
-      }
+      )}
     </HeaderDiv>
-  )
+  );
 }

@@ -74,7 +74,7 @@ export function RankingPage({
 
   return (
     <Background>
-      <Header participants={owner}/>
+      <Header participants={owner} />
       <div id="ranking-page" className="ranking-page">
         <div className="RankingDiv">
           <div className="container-header">

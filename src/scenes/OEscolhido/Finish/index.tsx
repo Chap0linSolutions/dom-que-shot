@@ -88,7 +88,7 @@ export default function FinishPage({
   if (numberOfVotes === 0) {
     return (
       <Background noImage>
-        <Header participants={owner}/>
+        <Header participants={owner} />
         <Finish>
           <Content>
             <Title>POXA! Ninguém votou?</Title>
@@ -117,7 +117,7 @@ export default function FinishPage({
   if (votedPlayer.length == 1) {
     return (
       <Background noImage>
-        <Header participants={owner}/>
+        <Header participants={owner} />
         <Finish>
           <Content>
             <Title>E o mais votado foi:</Title>
@@ -144,7 +144,7 @@ export default function FinishPage({
   if (votedPlayer.length == 2) {
     return (
       <Background noImage>
-        <Header participants={owner}/>
+        <Header participants={owner} />
         <Finish>
           <Content>
             <Title>Tivemos um empate!</Title>
@@ -193,7 +193,7 @@ export default function FinishPage({
 
   return (
     <Background noImage>
-      <Header participants={owner}/>
+      <Header participants={owner} />
       <Finish>
         <Content>
           <MultipleTiesTitle>Tivemos um empate!</MultipleTiesTitle>

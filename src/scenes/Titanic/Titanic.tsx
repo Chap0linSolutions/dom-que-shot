@@ -118,7 +118,7 @@ export default function Titanic() {
     });
 
     socket.addEventListener('kick-player', (nickname) => {
-      if(user.nickname === nickname){
+      if (user.nickname === nickname) {
         window.localStorage.clear();
         navigate('/Home');
       }

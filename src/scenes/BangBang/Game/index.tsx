@@ -119,7 +119,7 @@ export function GamePage({
         delay: 0.9,
       })
       .to('.target-image', { opacity: 1, duration: 0.1 })
-      // .call(startTimer);
+      .call(startTimer);
   };
 
   const shotValidation = () => {

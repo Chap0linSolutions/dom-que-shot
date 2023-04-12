@@ -25,7 +25,7 @@ interface GameProps {
   show: boolean;
   coverImg: string;
   turnVisibility: boolean;
-  owner,
+  owner;
 }
 
 export default function GamePage({

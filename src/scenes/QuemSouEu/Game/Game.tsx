@@ -134,7 +134,11 @@ export default function GamePage({
         exit={() => setPopupVisibility(false)}
         comesFromTop
       />
-      <Header participants={owner} roomCode infoPage={() => setPopupVisibility(true)} />
+      <Header
+        participants={owner}
+        roomCode
+        infoPage={() => setPopupVisibility(true)}
+      />
       {turnVisibility === true ? alert : null}
       <GameDiv>
         <Content>
