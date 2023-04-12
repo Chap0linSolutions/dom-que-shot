@@ -5,7 +5,18 @@ import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
-import { Content, Game, Title, PlayerList, Nickname, SelectedAvatar, UnselectedAvatar, SelectedPlayer, UnselectedPlayer, ItemContainer } from './Game.style';
+import {
+  Content,
+  Game,
+  Title,
+  PlayerList,
+  Nickname,
+  SelectedAvatar,
+  UnselectedAvatar,
+  SelectedPlayer,
+  UnselectedPlayer,
+  ItemContainer,
+} from './Game.style';
 
 interface GameProps {
   vote: React.Dispatch<React.SetStateAction<Player>>;
@@ -41,16 +52,14 @@ export default function GamePage({ vote, msTimeLeft, playerList }: GameProps) {
       <Header timer={msTimeLeft} />
       <Game>
         <Content>
-          <Title>
-            Vote em quem deve beber:
-          </Title>
+          <Title>Vote em quem deve beber:</Title>
           <PlayerList>
             {players.current.map((player, i) => {
               let Item = UnselectedPlayer;
               let AvatarDiv = UnselectedAvatar;
               let state = 'unselected';
 
-              if(player.nickname === selectedPlayer.nickname){
+              if (player.nickname === selectedPlayer.nickname) {
                 Item = SelectedPlayer;
                 AvatarDiv = SelectedAvatar;
                 state = 'selected';
@@ -59,15 +68,13 @@ export default function GamePage({ vote, msTimeLeft, playerList }: GameProps) {
               return (
                 <ItemContainer className={state} key={`${i}`}>
                   <Item onClick={() => selectPlayer(player)}>
-                    <Nickname>
-                      {player.nickname}
-                    </Nickname>
-                    <AvatarDiv>               
-                        <Avatar seed={player.avatarSeed} />
+                    <Nickname>{player.nickname}</Nickname>
+                    <AvatarDiv>
+                      <Avatar seed={player.avatarSeed} />
                     </AvatarDiv>
                   </Item>
                 </ItemContainer>
-              )
+              );
             })}
           </PlayerList>
         </Content>

@@ -5,7 +5,15 @@ import Header from '../../../components/Header';
 import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
 import { Player } from '../../../contexts/GlobalContextProvider';
-import { AvatarDiv, Check, Content, InnerCard, OuterCard, Text, Title } from './Awaiting.style';
+import {
+  AvatarDiv,
+  Check,
+  Content,
+  InnerCard,
+  OuterCard,
+  Text,
+  Title,
+} from './Awaiting.style';
 interface AwaitingProps {
   votedPlayer: Player;
   msTimeLeft: number;
@@ -16,7 +24,6 @@ export default function AwaitingResults({
   votedPlayer,
   msTimeLeft,
 }: AwaitingProps) {
-
   const titleRef = useRef(null);
   const checkRef = useRef(null);
   const cardRef = useRef(null);
@@ -42,9 +49,7 @@ export default function AwaitingResults({
     <Background noImage>
       <Header timer={msTimeLeft} />
       <Content>
-        <Title ref={titleRef}>
-          Você votou!
-        </Title>
+        <Title ref={titleRef}>Você votou!</Title>
 
         <Check ref={checkRef}>
           <CheckCircle color="lime" width="100%" height="100%" />
@@ -55,13 +60,11 @@ export default function AwaitingResults({
             <AvatarDiv>
               <Avatar seed={votedPlayer.avatarSeed} />
             </AvatarDiv>
-            <Text>
-              {votedPlayer.nickname}
-            </Text>
+            <Text>{votedPlayer.nickname}</Text>
           </InnerCard>
         </OuterCard>
         <Text>
-          Aguardando os <br/>
+          Aguardando os <br />
           demais jogadores...
         </Text>
       </Content>

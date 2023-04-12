@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const Page = styled.div`
   display: flex;
@@ -44,8 +44,7 @@ export const ListItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`; 
-
+`;
 
 export const Nickname = styled.p`
   margin: 0;
@@ -59,10 +58,8 @@ export const AvatarDiv = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 10px;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     width: 44px;
     height: 44px;
   }
 `;
-
-

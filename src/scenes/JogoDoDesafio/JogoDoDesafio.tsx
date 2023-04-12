@@ -122,11 +122,11 @@ export default function JogoDoDesafio() {
   };
 
   useEffect(() => {
-    if(user.isCurrentTurn && suggestions){
+    if (user.isCurrentTurn && suggestions) {
       socket.push('move-room-to', {
         roomCode: room.code,
         destination: Game.Game,
-      });    
+      });
     }
   }, [suggestions]);
 

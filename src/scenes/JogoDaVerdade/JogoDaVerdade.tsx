@@ -25,8 +25,8 @@ export default function JogoDaVerdade() {
 
   const description = (
     <>
-      O jogador da vez deverá decidir entre contar uma Verdade, respondendo
-      a uma pergunta dada pelo jogo de forma sincera, ou virar duas doses.
+      O jogador da vez deverá decidir entre contar uma Verdade, respondendo a
+      uma pergunta dada pelo jogo de forma sincera, ou virar duas doses.
       <br />
       <br />E aí? Vai escolher o que?
     </>
@@ -122,11 +122,11 @@ export default function JogoDaVerdade() {
   };
 
   useEffect(() => {
-    if(user.isCurrentTurn && suggestions){
+    if (user.isCurrentTurn && suggestions) {
       socket.push('move-room-to', {
         roomCode: room.code,
         destination: Game.Game,
-      });    
+      });
     }
   }, [suggestions]);
 

@@ -9,7 +9,16 @@ import Avatar from '../../components/Avatar';
 import beer from '../../assets/beer.png';
 import gsap from 'gsap';
 import AwaitingBanner from '../../components/AwaitingBanner';
-import { Content, Page, Subtitle, Title, PlayerList, Nickname, AvatarDiv, ListItem } from './WhoDrank.style';
+import {
+  Content,
+  Page,
+  Subtitle,
+  Title,
+  PlayerList,
+  Nickname,
+  AvatarDiv,
+  ListItem,
+} from './WhoDrank.style';
 
 export default function WhoDrankPage() {
   const { user, room, setUser, setRoom } = useGlobalContext();
@@ -27,7 +36,6 @@ export default function WhoDrankPage() {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [SP, setSP] = useState<number>(Math.random());
   const [buttonText, setButtonText] = useState('Ninguém bebeu');
-
 
   //SOCKET////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -116,35 +124,34 @@ export default function WhoDrankPage() {
         {header}
         <Page>
           <Content>
-            <Title>
-              E aí, quem perdeu?
-            </Title>
-            <Subtitle>
-              Selecione quem bebeu uma dose:
-            </Subtitle>
+            <Title>E aí, quem perdeu?</Title>
+            <Subtitle>Selecione quem bebeu uma dose:</Subtitle>
             <PlayerList>
               {playerList.current.map((player, i) => {
-                let bgColor = {background: '#8877df'};
-                let state = 'unselected'; 
+                let bgColor = { background: '#8877df' };
+                let state = 'unselected';
                 let avatarState = 'unselectedAvatar';
-                
-                if(selectedPlayers.find((p) => p.nickname === player.nickname)){
-                  bgColor = {background: '#403a55'};
+
+                if (
+                  selectedPlayers.find((p) => p.nickname === player.nickname)
+                ) {
+                  bgColor = { background: '#403a55' };
                   state = 'selected';
                   avatarState = 'selectedAvatar';
                 }
 
                 return (
-                  <ListItem className={state} style={bgColor} onClick={() => selectPlayer(player)} key={`${i}`}>
-                    <Nickname>
-                      {player.nickname}
-                    </Nickname>
-                    <AvatarDiv
-                      className={avatarState}>
+                  <ListItem
+                    className={state}
+                    style={bgColor}
+                    onClick={() => selectPlayer(player)}
+                    key={`${i}`}>
+                    <Nickname>{player.nickname}</Nickname>
+                    <AvatarDiv className={avatarState}>
                       <Avatar seed={player.avatarSeed} />
                     </AvatarDiv>
                   </ListItem>
-                )
+                );
               })}
             </PlayerList>
           </Content>

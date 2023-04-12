@@ -103,7 +103,9 @@ export default function GamePage({
           </SuggestionsDiv>
 
           <AnotherSuggestion>
-            {countdown > 0 ? `Aguardando... ${countdown}` : 'Esperando o jogador da vez continuar.'}
+            {countdown > 0
+              ? `Aguardando... ${countdown}`
+              : 'Esperando o jogador da vez continuar.'}
           </AnotherSuggestion>
         </GameContainer>
       ) : (
@@ -113,9 +115,7 @@ export default function GamePage({
               icon={beer}
               firstText={`Aguardando o jogador da vez responder alguma das perguntas do
                 Jogo da Verdade...`}
-              secondText={
-                'Brigadeiro é o melhor doce da história. Ponto.'
-              }
+              secondText={'Brigadeiro é o melhor doce da história. Ponto.'}
             />
           </AwaitingDiv>
         </GameContainer>

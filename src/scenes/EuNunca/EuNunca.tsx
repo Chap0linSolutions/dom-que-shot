@@ -99,11 +99,11 @@ export default function EuNunca() {
   };
 
   useEffect(() => {
-    if(euNuncaSuggestions){
+    if (euNuncaSuggestions) {
       socket.push('move-room-to', {
         roomCode: room.code,
         destination: Game.Game,
-      });    
+      });
     }
   }, [euNuncaSuggestions]);
 

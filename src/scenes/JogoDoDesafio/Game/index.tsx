@@ -102,7 +102,9 @@ export default function GamePage({
             ))}
           </SuggestionsDiv>
           <AnotherSuggestion>
-            {countdown > 0 ? `Aguardando... ${countdown}` : 'Esperando o jogador da vez continuar.'}
+            {countdown > 0
+              ? `Aguardando... ${countdown}`
+              : 'Esperando o jogador da vez continuar.'}
           </AnotherSuggestion>
         </GameContainer>
       ) : (
