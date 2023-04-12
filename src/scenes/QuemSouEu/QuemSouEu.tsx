@@ -112,6 +112,13 @@ export default function OEscolhido() {
       }));
     });
 
+    socket.addEventListener('kick-player', (nickname) => {
+      if(user.nickname === nickname){
+        window.localStorage.clear();
+        navigate('/Home');
+      }
+    });
+
     socket.addEventListener('room-owner-is', (ownerName) => {
       const isOwner = user.nickname === ownerName;
       setUser((previous) => ({
@@ -203,6 +210,7 @@ export default function OEscolhido() {
           description={description}
           setCategory={selectCategory}
           turnVisibility={user.isCurrentTurn}
+          owner={user.isOwner}
         />
       );
 
@@ -216,6 +224,7 @@ export default function OEscolhido() {
           players={listOfPlayers}
           setWinners={sendWinners}
           turnVisibility={user.isCurrentTurn}
+          owner={user.isOwner}
         />
       );
 
@@ -226,6 +235,7 @@ export default function OEscolhido() {
           players={playersAndNames}
           turnVisibility={user.isCurrentTurn}
           roulettePage={backToRoulette}
+          owner={user.isOwner}
         />
       );
 

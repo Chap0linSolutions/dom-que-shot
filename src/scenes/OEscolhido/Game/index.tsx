@@ -11,9 +11,10 @@ interface GameProps {
   vote: React.Dispatch<React.SetStateAction<Player>>;
   msTimeLeft: number;
   playerList: Player[];
+  owner: boolean;
 }
 
-export default function GamePage({ vote, msTimeLeft, playerList }: GameProps) {
+export default function GamePage({ vote, msTimeLeft, playerList, owner }: GameProps) {
   const [selectedPlayer, setSelectedPlayer] = useState<Player>({
     nickname: '',
     avatarSeed: '',
@@ -38,7 +39,7 @@ export default function GamePage({ vote, msTimeLeft, playerList }: GameProps) {
 
   return (
     <Background noImage>
-      <Header timer={msTimeLeft} />
+      <Header participants={owner} timer={msTimeLeft} />
       <div className="OEscolhidoContainer">
         <div className="OEscolhidoTitleAndList">
           <p className="OEscolhidoTitle">Vote em quem deve beber:</p>

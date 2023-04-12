@@ -31,6 +31,7 @@ interface CategoryProps {
   description: string | JSX.Element;
   setCategory: (value: string) => void;
   turnVisibility: boolean;
+  owner: boolean;
 }
 
 export default function CategoryPage({
@@ -38,6 +39,7 @@ export default function CategoryPage({
   description,
   setCategory,
   turnVisibility,
+  owner,
 }: CategoryProps) {
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>(undefined);
@@ -67,7 +69,7 @@ export default function CategoryPage({
           exit={() => setPopupVisibility(false)}
           comesFromTop
         />
-        <Header roomCode infoPage={() => setPopupVisibility(true)} />
+        <Header participants={owner} roomCode infoPage={() => setPopupVisibility(true)} />
         <CategoryDiv>
           <Content>
             <Title>Escolha uma categoria para o grupo:</Title>
@@ -106,6 +108,7 @@ export default function CategoryPage({
         comesFromTop
       />
       <Header
+        participants={owner}
         roomCode
         infoPage={() => {
           setPopupVisibility(true);

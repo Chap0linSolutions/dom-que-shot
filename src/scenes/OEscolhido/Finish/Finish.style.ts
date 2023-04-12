@@ -159,12 +159,7 @@ export const TieText = styled(Text)`
   margin: 4px;
 `;
 
-export const MultipleTiesTitle = styled(Title)`
-  margin-top: 60px;
-  @media (max-height: 740px) {
-    margin-top: 40px;
-  }
-`;
+export const MultipleTiesTitle = styled(Title)``;
 
 export const TieTitle = styled(Text)`
   font-size: 20px;

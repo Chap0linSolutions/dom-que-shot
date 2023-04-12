@@ -43,6 +43,7 @@ interface GameProps {
   shot: (ms: number) => void;
   everyoneIsReady: boolean;
   iAmReady: () => void;
+  owner: boolean;
 }
 
 export function GamePage({
@@ -50,6 +51,7 @@ export function GamePage({
   shot,
   everyoneIsReady,
   iAmReady,
+  owner,
 }: GameProps) {
   const [balloonText, setBalloonText] = useState('Prontos?');
   const [msTimer, setMsTimer] = useState(1); //tem de ter valor inicial > 0
@@ -117,7 +119,7 @@ export function GamePage({
         delay: 0.9,
       })
       .to('.target-image', { opacity: 1, duration: 0.1 })
-      .call(startTimer);
+      // .call(startTimer);
   };
 
   const shotValidation = () => {
@@ -148,7 +150,7 @@ export function GamePage({
   return (
     <Background>
       <div id="game-bang-bang" className="game-bang-bang">
-        <Header timer={formatedTime()} />
+        <Header participants={owner} timer={formatedTime()} />
 
         <div onClick={popNewError} className="target-image">
           <img src={targetImage} className="target-img" />

@@ -30,6 +30,7 @@ interface CoverProps {
   players: whoPlayer[];
   turnVisibility: boolean;
   roulettePage: () => void;
+  owner: boolean;
 }
 
 export default function FinishPage({
@@ -37,6 +38,7 @@ export default function FinishPage({
   players,
   roulettePage,
   turnVisibility,
+  owner,
 }: CoverProps) {
   const rouletteButtonText = 'Próximo jogo';
   const finishButton = useRef();
@@ -158,7 +160,7 @@ export default function FinishPage({
 
   return (
     <Background>
-      <Header logo={logo} />
+      <Header participants={owner} logo={logo} />
       <FinishDiv>
         <Content>
           <Title>Quem acertou primeiro:</Title>

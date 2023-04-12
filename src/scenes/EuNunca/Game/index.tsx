@@ -12,6 +12,7 @@ interface GameProps {
   finishPage: () => void;
   coverImg: string;
   turnVisibility: boolean;
+  owner: boolean;
 }
 
 export default function GamePage({
@@ -19,6 +20,7 @@ export default function GamePage({
   finishPage,
   coverImg,
   turnVisibility,
+  owner,
 }: GameProps) {
   useEffect(() => {
     gsap.to('.EuNuncaSuggestionIcon', {
@@ -32,7 +34,7 @@ export default function GamePage({
   if (turnVisibility === true) {
     return (
       <Background>
-        <Header roomCode logo={coverImg} />
+        <Header participants={owner} roomCode logo={coverImg} />
         <div className="EuNuncaDiv">
           <div className="EuNuncaTitleAndSuggestions">
             <p className="EuNuncaGameTitle">
@@ -60,7 +62,7 @@ export default function GamePage({
 
   return (
     <Background>
-      <Header roomCode logo={coverImg} />
+      <Header participants={owner} roomCode logo={coverImg} />
       <div className="WhoDrankContainer" style={{ marginTop: '3em' }}>
         <AwaitingBanner
           icon={glassIcon}

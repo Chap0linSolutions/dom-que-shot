@@ -7,6 +7,7 @@ import thumbDown from './img/thumbs-down.png';
 import crown from './img/crown.png';
 import Background from '../../../components/Background';
 import noOneVotedImage from '../../../assets/no-votes.png';
+import Header from '../../../components/Header';
 
 type Results = {
   id: string;
@@ -21,6 +22,7 @@ interface RankingProps {
   roulettePage: () => void;
   gamePage: () => void;
   turnVisibility: boolean;
+  owner: boolean;
 }
 
 export function RankingPage({
@@ -28,6 +30,7 @@ export function RankingPage({
   finalRanking,
   roulettePage,
   turnVisibility,
+  owner,
 }: RankingProps) {
   const winner =
     data.length > 0
@@ -71,6 +74,7 @@ export function RankingPage({
 
   return (
     <Background>
+      <Header participants={owner}/>
       <div id="ranking-page" className="ranking-page">
         <div className="RankingDiv">
           <div className="container-header">

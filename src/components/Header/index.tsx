@@ -25,6 +25,7 @@ import {
   AvatarDiv,
   Kick,
   PlayerInfo,
+  RightSideItem,
 } from './Header.style';
 
 interface HeaderProps {
@@ -77,15 +78,12 @@ export default function Header({
     </>
   ), [room.playerList]);
 
-
   const kickPlayer = (p: Player) => {
     const socket = SocketConnection.getInstance();
-    if (!socket) return;
-    socket.push('kick-player', {
+    socket && socket.push('kick-player', {
       nickname: p.nickname,
       roomCode: room.code
     });
-    setPlayerListVisibility(false);
   }
 
   const goToPreviousPage = () => {
@@ -123,7 +121,7 @@ export default function Header({
     }, 2000);
   };
 
-  return (
+  if(!timer) return (
     <HeaderDiv>
       {roomCode && (
         <Popup
@@ -157,10 +155,6 @@ export default function Header({
         </LeftSideItem>
       </ArrowAndTitle>
 
-      <Timer style={timer ? { color: timerColor } : { display: 'none' }}>
-        <p style={{ margin: '0' }}>{formattedTimer}</p>
-      </Timer>
-
       <SettingsInfoAndLogo>
         <RoomCodeDiv
           onClick={copyCode}
@@ -193,4 +187,36 @@ export default function Header({
       </SettingsInfoAndLogo>
     </HeaderDiv>
   );
+  return (
+    <HeaderDiv>
+
+      {participants && (
+        <Popup
+          type="info"
+          title="Jogadores"
+          description={playerList}
+          show={playerListVisibility}
+          exit={() => setPlayerListVisibility(false)}
+          backgroundColor='white'
+        />
+      )}
+
+      {participants &&
+      <LeftSideItem style={participants ? {} : { display: 'none' }}>
+          <Users width="26px" height="26px" onClick={() => setPlayerListVisibility(p => !p)} />
+      </LeftSideItem>}
+      
+      <LeftSideItem/>
+      <Timer style={timer ? { color: timerColor } : { display: 'none' }}>
+        <p style={{ margin: '0' }}>{formattedTimer}</p>
+      </Timer>
+      <RightSideItem/>
+      
+      {participants &&
+        <RightSideItem>
+          <Users width="26px" height="26px" color='#170c32' />
+        </RightSideItem>
+      }
+    </HeaderDiv>
+  )
 }

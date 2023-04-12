@@ -98,6 +98,13 @@ export function BangBang() {
       }));
     });
 
+    socket.addEventListener('kick-player', (nickname) => {
+      if(user.nickname === nickname){
+        window.localStorage.clear();
+        navigate('/Home');
+      }
+    });
+
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
         setRoom((previous) => ({
@@ -145,6 +152,7 @@ export function BangBang() {
           iAmReady={thisPlayerIsReady}
           shot={handleShot}
           rankingPage={() => setGlobalRoomPage(Game.Ranking)}
+          owner={user.isOwner}
         />
       );
     case Game.Ranking:
@@ -158,6 +166,7 @@ export function BangBang() {
             socket.push('update-turn', room.code);
             goTo('/SelectNextGame');
           }}
+          owner={user.isOwner}
         />
       );
     default:

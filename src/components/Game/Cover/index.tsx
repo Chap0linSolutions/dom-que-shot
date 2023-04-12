@@ -40,6 +40,7 @@ export default function CoverPage({
 
   const header = ownerVisibility ? (
     <Header
+      participants
       goBackArrow={goBackPage}
       infoPage={() => setPopupVisibility(true)}
       roomCode

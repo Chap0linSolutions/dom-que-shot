@@ -6,6 +6,7 @@ export const HeaderDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   height: 107px;
   @media (max-height: 740px) {
     height: 85px;
@@ -19,6 +20,10 @@ export const ArrowAndTitle = styled.div`
 
 export const LeftSideItem = styled.div`
   padding-left: 1em;
+`;
+
+export const RightSideItem = styled.div`
+  padding-right: 1em;
 `;
 
 export const Title = styled.p`
@@ -40,7 +45,6 @@ export const RoomCode = styled.p`
 `;
 
 export const Timer = styled.div`
-  align-self: center;
   color: red;
   font-size: 20px;
   text-align: center;
@@ -148,4 +152,5 @@ export const Kick = styled.p`
   margin: 0;
   color: white;
   border-radius: 20px;
+  cursor: pointer;
 `;

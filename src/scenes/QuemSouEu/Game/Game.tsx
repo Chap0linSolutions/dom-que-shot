@@ -45,6 +45,7 @@ interface GameProps {
   setWinners: (value: string[]) => void;
   turnVisibility: boolean;
   category: string;
+  owner: boolean;
 }
 
 export default function GamePage({
@@ -55,6 +56,7 @@ export default function GamePage({
   turnVisibility,
   players,
   setWinners,
+  owner,
 }: GameProps) {
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
   const [whoPlayers, setWhoPlayers] = useState<WhoPlayersSelectable[]>(
@@ -132,7 +134,7 @@ export default function GamePage({
         exit={() => setPopupVisibility(false)}
         comesFromTop
       />
-      <Header roomCode infoPage={() => setPopupVisibility(true)} />
+      <Header participants={owner} roomCode infoPage={() => setPopupVisibility(true)} />
       {turnVisibility === true ? alert : null}
       <GameDiv>
         <Content>
