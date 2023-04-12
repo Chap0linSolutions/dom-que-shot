@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { useGlobalContext } from '../../contexts/GlobalContextProvider';
-import { ArrowLeft, Info, Settings } from 'react-feather';
+import { useState, useMemo } from 'react';
+import { Player, useGlobalContext } from '../../contexts/GlobalContextProvider';
+import { ArrowLeft, Info, Settings, Users } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import DomQueShotLogo from '../../assets/logo-darker.png';
 import Popup from '../Popup';
+import Avatar from '../Avatar';
+import SocketConnection from '../../lib/socket';
 import {
-  ArrowDiv,
   ArrowAndTitle,
   HeaderDiv,
-  TitleDiv,
   Title,
   Timer,
   SettingsInfoAndLogo,
@@ -19,12 +19,19 @@ import {
   Logo,
   RoomCodeDiv,
   RoomCode,
+  LeftSideItem,
+  ListItem,
+  Name,
+  AvatarDiv,
+  Kick,
+  PlayerInfo,
 } from './Header.style';
 
 interface HeaderProps {
   logo?: boolean | string;
   title?: string;
   goBackArrow?: true | (() => void);
+  participants?: boolean;
   roomCode?: boolean;
   timer?: number;
   settingsPage?: string | (() => void);
@@ -36,6 +43,7 @@ export default function Header({
   title,
   goBackArrow,
   roomCode,
+  participants,
   timer,
   settingsPage,
   infoPage,
@@ -43,10 +51,42 @@ export default function Header({
   const { room } = useGlobalContext();
   const navigateTo = useNavigate();
   const [warningVisibility, setWarningVisibility] = useState<boolean>(false);
+  const [playerListVisibility, setPlayerListVisibility] = useState<boolean>(false);
 
   const seconds = timer / 1000;
   const timerColor = seconds < 3 ? 'red' : 'white';
   const formattedTimer = `${seconds.toFixed(1)}s`;
+
+  const playerList = useMemo(() => (
+    <>
+      {room.playerList.map((p, i) => (
+        <ListItem key={i}>
+          <PlayerInfo>
+            <AvatarDiv>
+              <Avatar seed={p.avatarSeed}/>
+            </AvatarDiv>
+            <Name>
+              {p.nickname}
+            </Name>
+          </PlayerInfo>
+          <Kick onClick={() => kickPlayer(p)}>
+            Expulsar
+          </Kick>
+        </ListItem>
+      ))}
+    </>
+  ), [room.playerList]);
+
+
+  const kickPlayer = (p: Player) => {
+    const socket = SocketConnection.getInstance();
+    if (!socket) return;
+    socket.push('kick-player', {
+      nickname: p.nickname,
+      roomCode: room.code
+    });
+    setPlayerListVisibility(false);
+  }
 
   const goToPreviousPage = () => {
     if (goBackArrow === true) {
@@ -94,13 +134,27 @@ export default function Header({
         />
       )}
 
+      {participants && (
+        <Popup
+          type="info"
+          title="Jogadores"
+          description={playerList}
+          show={playerListVisibility}
+          exit={() => setPlayerListVisibility(false)}
+          backgroundColor='white'
+        />
+      )}
+
       <ArrowAndTitle>
-        <ArrowDiv style={goBackArrow ? {} : { display: 'none' }}>
+        <LeftSideItem style={goBackArrow ? {} : { display: 'none' }}>
           <ArrowLeft width="30px" height="30px" onClick={goToPreviousPage} />
-        </ArrowDiv>
-        <TitleDiv style={title ? {} : { display: 'none' }}>
+        </LeftSideItem>
+        <LeftSideItem style={participants ? {} : { display: 'none' }}>
+          <Users width="26px" height="26px" onClick={() => setPlayerListVisibility(p => !p)} />
+        </LeftSideItem>
+        <LeftSideItem style={title ? {} : { display: 'none' }}>
           <Title>{title}</Title>
-        </TitleDiv>
+        </LeftSideItem>
       </ArrowAndTitle>
 
       <Timer style={timer ? { color: timerColor } : { display: 'none' }}>

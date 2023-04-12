@@ -17,11 +17,7 @@ export const ArrowAndTitle = styled.div`
   align-items: center;
 `;
 
-export const ArrowDiv = styled.div`
-  padding-left: 1em;
-`;
-
-export const TitleDiv = styled.div`
+export const LeftSideItem = styled.div`
   padding-left: 1em;
 `;
 
@@ -110,4 +106,46 @@ export const Logo = styled.img`
   border-radius: 28px;
   object-fit: scale-down;
   overflow: hidden;
+`;
+
+export const ListItem = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
+  border: 2px solid #666666;
+  margin-bottom: 5px;
+  border-radius: 20px;
+`;
+
+export const PlayerInfo = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const Name = styled.p`
+  margin: 0;
+  margin-left: 5px;
+  color: #666666;
+  font-weight: 500;
+  font-size: 18px;
+  font-family: Roboto;
+`;
+
+export const AvatarDiv = styled.div`
+  width: 35px;
+  height: 35px;
+`;
+
+export const Kick = styled.p`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 10px;
+  background-color: red;
+  font-size: 15px;
+  margin: 0;
+  color: white;
+  border-radius: 20px;
 `;

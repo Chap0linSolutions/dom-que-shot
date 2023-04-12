@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { ArrowRight, AlertTriangle } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../contexts/GlobalContextProvider';
+import SocketConnection from '../../lib/socket';
 import ImageSlider from './ImageSlider';
 import Background from '../../components/Background';
 import Header from '../../components/Header';
@@ -94,6 +95,11 @@ function Home() {
       state: { option: option },
     });
   };
+
+  useEffect(() => {
+    const socket = SocketConnection.getInstance();
+    socket && socket.disconnect();
+  }, []);
 
   ////Listener para remover foco do <input> quando o usuário aperta Enter/////////////////////////
 
