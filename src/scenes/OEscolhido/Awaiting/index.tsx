@@ -1,72 +1,70 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { CheckCircle } from 'react-feather';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
-import Button from '../../../components/Button';
 import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
-import './Awaiting.css';
 import { Player } from '../../../contexts/GlobalContextProvider';
+import { AvatarDiv, Check, Content, InnerCard, OuterCard, Text, Title } from './Awaiting.style';
 interface AwaitingProps {
   votedPlayer: Player;
   msTimeLeft: number;
-  gamePage: () => void;
   finishPage: () => void;
 }
 
 export default function AwaitingResults({
   votedPlayer,
-  gamePage,
   msTimeLeft,
 }: AwaitingProps) {
+
+  const titleRef = useRef(null);
+  const checkRef = useRef(null);
+  const cardRef = useRef(null);
+
   useEffect(() => {
-    gsap.from('.AwaitingTitle, .AwaitingCheck', {
+    gsap.from([titleRef.current, checkRef.current], {
       opacity: 0,
       yPercent: 600,
       delay: 0.25,
       duration: 1,
       ease: 'power1',
     });
-    gsap.from('.AwaitingOuterCard', {
+    gsap.from(cardRef.current, {
       scale: 0,
       rotation: 45,
       opacity: 0,
       duration: 1,
       ease: 'power3',
     });
-    gsap.from('.ChangeVoteButton', { opacity: 0, duration: 1, delay: 1 });
   }, []);
-
-  const voteAgain = () => {
-    gamePage();
-  };
 
   return (
     <Background noImage>
       <Header timer={msTimeLeft} />
-      <div className="AwaitingVotesDiv">
-        <p className="AwaitingTitle">Você votou!</p>
+      <Content>
+        <Title ref={titleRef}>
+          Você votou!
+        </Title>
 
-        <div className="AwaitingCheck">
+        <Check ref={checkRef}>
           <CheckCircle color="lime" width="100%" height="100%" />
-        </div>
+        </Check>
 
-        <div className="AwaitingOuterCard">
-          <div className="AwaitingInnerCard">
-            <div className="AwaitingAvatar">
+        <OuterCard ref={cardRef}>
+          <InnerCard>
+            <AvatarDiv>
               <Avatar seed={votedPlayer.avatarSeed} />
-            </div>
-            <p className="AwaitingText">{votedPlayer.nickname}</p>
-          </div>
-        </div>
-        <div className="ChangeVoteButton">
-          <p className="AwaitingText">Aguardando os demais jogadores...</p>
-          {/* sumir com o div abaixo quando for possível alterar o voto */}
-          <div style={{ display: 'none' }}>
-            <Button onClick={voteAgain}>Alterar voto</Button>
-          </div>
-        </div>
-      </div>
+            </AvatarDiv>
+            <Text>
+              {votedPlayer.nickname}
+            </Text>
+          </InnerCard>
+        </OuterCard>
+        <Text>
+          Aguardando os <br/>
+          demais jogadores...
+        </Text>
+      </Content>
     </Background>
   );
 }

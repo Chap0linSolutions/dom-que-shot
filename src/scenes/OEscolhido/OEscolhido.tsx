@@ -7,7 +7,6 @@ import FinishPage from './Finish';
 import AwaitingResults from './Awaiting';
 import coverImg from '../../assets/game-covers/o-escolhido.png';
 import { Player, useGlobalContext } from '../../contexts/GlobalContextProvider';
-import './OEscolhido.css';
 
 export type MostVoted = {
   nickname: string;
@@ -190,7 +189,6 @@ export default function OEscolhido() {
         <AwaitingResults
           votedPlayer={userVote}
           msTimeLeft={msTimer}
-          gamePage={() => setGlobalRoomPage(Game.Game)}
           finishPage={() => setGlobalRoomPage(Game.Finish)}
         />
       );
