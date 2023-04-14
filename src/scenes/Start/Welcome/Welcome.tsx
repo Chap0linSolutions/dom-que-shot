@@ -50,6 +50,7 @@ export default function Welcome({ navigate, setRoom, setPage }: WelcomeProps) {
       <WelcomePage>
         <BurguerDiv>
           <Menu
+            data-testid="burguer-menu"
             width={30}
             height={30}
             onClick={toggleOptions}
@@ -66,7 +67,7 @@ export default function Welcome({ navigate, setRoom, setPage }: WelcomeProps) {
           )}
         </BurguerDiv>
         <Content>
-          <MainLogo src={logo} />
+          <MainLogo src={logo} alt='Logo' />
           <Button onClick={goHome}>Entrar</Button>
         </Content>
       </WelcomePage>

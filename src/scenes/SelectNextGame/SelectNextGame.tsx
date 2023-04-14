@@ -210,6 +210,7 @@ export default function SelectNextGame() {
           <RouletteDiv>
             <SideIconSpace>&nbsp;</SideIconSpace>
             <Roulette
+              data-testid="roulette"
               width={rouletteDimensions.width}
               height={rouletteDimensions.height}>
               {room.gameList.map((rouletteCard, index) => (

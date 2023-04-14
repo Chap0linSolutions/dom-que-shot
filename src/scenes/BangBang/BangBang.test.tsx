@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
-// import { BangBang } from './Game';
+import { BangBang } from './BangBang';
+import '@testing-library/jest-dom/extend-expect';
 
 describe('Bang Bang Game', () => {
   it('should render label', () => {
