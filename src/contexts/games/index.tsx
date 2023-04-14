@@ -171,17 +171,19 @@ const games: Game[] = [
     backgroundColor: GameTypes.Round,
     description: (
       <>
-        Neste jogo, cada participante vai jogar com o seu aparelho. O jogador da vez vai escolher uma palavra para desenhar
-        (pode ser um animal, um objeto, dentre outros) e terá 1 minuto para finalizar o desenho.
+        Neste jogo, cada participante vai jogar com o seu aparelho. O jogador da
+        vez vai escolher uma palavra para desenhar (pode ser um animal, um
+        objeto, dentre outros) e terá 1 minuto para finalizar o desenho.
         <br />
         <br />
-        - Os que não acertarem dentro do tempo BEBEM;
+        - Os que não acertarem dentro do tempo BEBEM; 
+        <br />
         - Se ninguém acertar, o jogador da vez BEBE.
         <br />
         <br />
         Boa sorte!
       </>
-    )
+    ),
   },
   {
     src: JogoDaVerdade,

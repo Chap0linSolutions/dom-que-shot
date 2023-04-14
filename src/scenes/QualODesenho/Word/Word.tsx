@@ -18,7 +18,6 @@ import {
   DrawingIcon,
 } from './Word.style';
 
-
 interface WordProps {
   title: string;
   suggestions: string[];
@@ -69,7 +68,9 @@ export default function WordPage({
         <Header infoPage={() => setPopupVisibility(true)} />
         <WordDiv>
           <Content>
-            <DrawingIconDiv><DrawingIcon src={drawingIcon} /></DrawingIconDiv>
+            <DrawingIconDiv>
+              <DrawingIcon src={drawingIcon} />
+            </DrawingIconDiv>
             <Title>Escolha uma palavra para começar:</Title>
             <Words>
               {words.map((word) => {
@@ -94,7 +95,6 @@ export default function WordPage({
       </Background>
     );
   } else {
-
     return (
       <Background>
         <Popup

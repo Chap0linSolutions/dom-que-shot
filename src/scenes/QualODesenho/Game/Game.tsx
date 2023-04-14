@@ -46,31 +46,31 @@ interface GameProps {
 }
 
 type Coordinates = {
-  x: number,
-  y: number,
-}
+  x: number;
+  y: number;
+};
 
 type Last = {
-  id: number,
-  length: number,
-}
+  id: number;
+  length: number;
+};
 
 type Path = {
-  id: number,
-  color: string | undefined,
-  width: number,
+  id: number;
+  color: string | undefined;
+  width: number;
   points: Coordinates[];
-}
+};
 
 type Message = {
-  type: 'paths' | 'everything' | 'undo' | 'clear' | 'my-canvas-width-is',
-  payload?: Path[] | number,
-}
+  type: 'paths' | 'everything' | 'undo' | 'clear' | 'my-canvas-width-is';
+  payload?: Path[] | number;
+};
 
 type CanvasDimensions = {
-  width: number,
-  height: number,
-}
+  width: number;
+  height: number;
+};
 
 const colors = [
   '#000000',
@@ -80,44 +80,49 @@ const colors = [
   '#FF0000',
   '#858585',
   '#FF6289',
-  '#FAFF00', 
-  '#00F0FF', 
+  '#FAFF00',
+  '#00F0FF',
   '#FF8A00',
   '#F2D3B2',
   '#F2AE75',
   '#946635',
   '#502F18',
   '#351F09',
-]
+];
 
-const widths = [
-  3,
-  5,
-  7,
-  11,
-  17,
-]
+const widths = [3, 5, 7, 11, 17];
 
-function draw(context: CanvasRenderingContext2D,  paths: Path[], canvasRatio: number, clearFirst?: boolean, canvas?: HTMLCanvasElement){
-  if(paths.length === 0) return;
+const guesses: string[] = [];
 
-  if(clearFirst && canvas){
+function draw(
+  context: CanvasRenderingContext2D,
+  paths: Path[],
+  canvasRatio: number,
+  clearFirst?: boolean,
+  canvas?: HTMLCanvasElement
+) {
+  if (paths.length === 0) return;
+
+  if (clearFirst && canvas) {
     context.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  paths.forEach(path => {
+  paths.forEach((path) => {
     context.strokeStyle = path.color;
     context.lineWidth = path.width * canvasRatio;
     const initialCoordinate = path.points.at(0);
     context.beginPath();
-    context.moveTo(canvasRatio * initialCoordinate.x, canvasRatio * initialCoordinate.y);
+    context.moveTo(
+      canvasRatio * initialCoordinate.x,
+      canvasRatio * initialCoordinate.y
+    );
 
-    path.points.forEach(p => {
+    path.points.forEach((p) => {
       context.lineTo(canvasRatio * p.x, canvasRatio * p.y);
       context.stroke();
-    })
+    });
     context.closePath();
-  })
+  });
 }
 
 export default function GamePage({
@@ -135,8 +140,10 @@ export default function GamePage({
   goToRankingPage,
 }: GameProps) {
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
-  const [colorPaletteVisibility, setColorPaletteVisibility] = useState<boolean>(false);
-  const [widthPaletteVisibility, setWidthPaletteVisibility] = useState<boolean>(false);
+  const [colorPaletteVisibility, setColorPaletteVisibility] =
+    useState<boolean>(false);
+  const [widthPaletteVisibility, setWidthPaletteVisibility] =
+    useState<boolean>(false);
   const [clearConfirmation, setClearConfirmation] = useState<boolean>(false);
 
   const [selectedColor, setSelectedColor] = useState<string>('#000000');
@@ -150,32 +157,36 @@ export default function GamePage({
   const counter = useRef<number>(59000);
 
   const paths = useRef<Path[]>([]);
-  const last = useRef<Last>({id: 0, length: 0});
+  const last = useRef<Last>({ id: 0, length: 0 });
 
   useEffect(() => {
-    if(turnVisibility && counter.current > msTimeLeft){
+    if (turnVisibility && counter.current > msTimeLeft) {
       counter.current -= 1000;
-      
-      if(last.current.id === 0){
-        updateDrawingPaths(JSON.stringify({type: 'my-canvas-width-is', payload: canvas.width}));
+
+      if (last.current.id === 0) {
+        updateDrawingPaths(
+          JSON.stringify({ type: 'my-canvas-width-is', payload: canvas.width })
+        );
       }
-      if(paths.current.length > 0) {
+      if (paths.current.length > 0) {
         const current = paths.current.at(-1);
-        if(current.id === last.current.id){
-          if(current.points.length > last.current.length){
-            updateDrawingPaths(JSON.stringify({type: 'paths', payload: [current]}));
-            last.current = {...last.current, length: current.points.length};
+        if (current.id === last.current.id) {
+          if (current.points.length > last.current.length) {
+            updateDrawingPaths(
+              JSON.stringify({ type: 'paths', payload: [current] })
+            );
+            last.current = { ...last.current, length: current.points.length };
           }
-        }
-        else if(current.id > last.current.id){
+        } else if (current.id > last.current.id) {
           const whatToSend = paths.current.slice(last.current.id);
-          updateDrawingPaths(JSON.stringify({type: 'paths', payload: whatToSend}));
-          last.current = {id: current.id, length: current.points.length};
+          updateDrawingPaths(
+            JSON.stringify({ type: 'paths', payload: whatToSend })
+          );
+          last.current = { id: current.id, length: current.points.length };
         }
       }
     }
   }, [msTimeLeft]);
-
 
   //ajuste com o tamanho da tela///////////////////////////////////////////////////////////////
 
@@ -183,35 +194,34 @@ export default function GamePage({
 
   const [canvasOffsetX, setCanvasOffsetX] = useState(0);
   const [canvasOffsetY, setCanvasOffsetY] = useState(0);
-  const [innerWidth, setInnerWidth] = useState<number>((window.innerWidth < 500)? window.innerWidth : 412);
+  const [innerWidth, setInnerWidth] = useState<number>(
+    window.innerWidth < 500 ? window.innerWidth : 412
+  );
   const [canvas, setCanvas] = useState<CanvasDimensions>(() => {
-    const innerW = window.innerWidth < 500? window.innerWidth: 412;
-    return (turnVisibility)
-    ? {
-        width: (innerW - 56),
-        height: (innerW - 56) / sizeConstant,
-      }
-    : {
-        width: sizeConstant * (innerW - 32),
-        height: (innerW - 32),
-      }
+    const innerW = window.innerWidth < 500 ? window.innerWidth : 412;
+    return turnVisibility
+      ? {
+          width: innerW - 56,
+          height: (innerW - 56) / sizeConstant,
+        }
+      : {
+          width: sizeConstant * (innerW - 32),
+          height: innerW - 32,
+        };
   });
 
   const handleResize = () => {
-      setInnerWidth((window.innerWidth < 500)
-        ? window.innerWidth
-        : 412
-      );
+    setInnerWidth(window.innerWidth < 500 ? window.innerWidth : 412);
   };
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
-    document.body.style.overscrollBehavior = 'none';                    //prevent pull-to-refresh on this page 
+    document.body.style.overscrollBehavior = 'none'; //prevent pull-to-refresh on this page
     document.querySelector('html').style.overflow = 'hidden';
     return () => {
       document.body.style.overscrollBehavior = 'auto';
       document.querySelector('html').style.overflow = 'auto';
-    }
+    };
   }, []);
 
   useEffect(() => {
@@ -221,49 +231,56 @@ export default function GamePage({
   }, [innerWidth]);
 
   const getCanvasSize = () => {
-    return (turnVisibility)
-    ? {
-        width: (innerWidth - 56),
-        height: (innerWidth - 56) / sizeConstant,
-      }
-    : {
-        width: sizeConstant * (innerWidth - 32),
-        height: (innerWidth - 32),
-      }
-  }
+    return turnVisibility
+      ? {
+          width: innerWidth - 56,
+          height: (innerWidth - 56) / sizeConstant,
+        }
+      : {
+          width: sizeConstant * (innerWidth - 32),
+          height: innerWidth - 32,
+        };
+  };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
 
-  const guidanceText = (turnVisibility)
-  ? 'Pronto? Aperte o botão abaixo e pode começar!'
-  : 'Aguardando o Da Vinci começar a desenhar...';
+  const guidanceText = turnVisibility
+    ? 'Pronto? Aperte o botão abaixo e pode começar!'
+    : 'Aguardando o Da Vinci começar a desenhar...';
 
-  const colorPalette = <Palette>
-    {colors.map((color, i) => (
-      <PaletteColor 
-        key={i}
-        style={{backgroundColor: color}}
-        onClick={() => {
-          setSelectedColor(color);
-          setColorPaletteVisibility(false);
-        }}  
-      />
-    ))}
-  </Palette>;
+  const colorPalette = (
+    <Palette>
+      {colors.map((color, i) => (
+        <PaletteColor
+          key={i}
+          style={{ backgroundColor: color }}
+          onClick={() => {
+            setSelectedColor(color);
+            setColorPaletteVisibility(false);
+          }}
+        />
+      ))}
+    </Palette>
+  );
 
-  const widthPalette = <Palette>
-    {widths.map((size, i) => (
-      <PaletteWidth 
-        key={i}
-        style={{backgroundColor: selectedColor, width: 2*size, height: 2*size}}
-        onClick={() => {
-          setSelectedWidth(size);
-          setWidthPaletteVisibility(false);
-        }}  
-      />
-    ))}
-  </Palette>;
-
+  const widthPalette = (
+    <Palette>
+      {widths.map((size, i) => (
+        <PaletteWidth
+          key={i}
+          style={{
+            backgroundColor: selectedColor,
+            width: 2 * size,
+            height: 2 * size,
+          }}
+          onClick={() => {
+            setSelectedWidth(size);
+            setWidthPaletteVisibility(false);
+          }}
+        />
+      ))}
+    </Palette>
+  );
 
   useEffect(() => {
     const context = canvasRef.current.getContext('2d');
@@ -272,20 +289,24 @@ export default function GamePage({
     contextRef.current = context;
   }, []);
 
-  
   useEffect(() => {
-    if(drawingPaths){
-      const { type, payload }:Message = JSON.parse(drawingPaths);
+    if (drawingPaths) {
+      const { type, payload }: Message = JSON.parse(drawingPaths);
 
-      switch(type){
+      switch (type) {
         case 'everything':
-          draw(contextRef.current, payload as Path[], interCanvasRatio.current, true, canvasRef.current);
+          draw(
+            contextRef.current,
+            payload as Path[],
+            interCanvasRatio.current,
+            true,
+            canvasRef.current
+          );
           break;
         case 'clear':
           clearDrawing();
           break;
         case 'undo':
-
           undoLastPath();
           break;
         case 'my-canvas-width-is':
@@ -293,71 +314,95 @@ export default function GamePage({
           interCanvasRatio.current = ratio;
           break;
         case 'paths':
-          const newPaths = (payload as Path[]);
-          newPaths.forEach(path => { 
-            const index = paths.current.findIndex(p => p.id === path.id);
-            if(index > -1){
-              paths.current = paths.current.map(p => {
-                if(p.id === path.id){
+          const newPaths = payload as Path[];
+          newPaths.forEach((path) => {
+            const index = paths.current.findIndex((p) => p.id === path.id);
+            if (index > -1) {
+              paths.current = paths.current.map((p) => {
+                if (p.id === path.id) {
                   return {
                     ...p,
                     points: path.points,
-                  } 
+                  };
                 }
                 return p;
-              })
-            }
-            else {
+              });
+            } else {
               paths.current.push(path);
             }
             draw(contextRef.current, [path], interCanvasRatio.current);
-          })
+          });
           break;
       }
-    } 
+    }
   }, [drawingPaths]);
 
   const floorXY = (x: number, y: number) => {
-    return {x: Math.floor(x), y: Math.floor(y)}
-  }
+    return { x: Math.floor(x), y: Math.floor(y) };
+  };
 
   const initiateNewPath = (x: number, y: number) => {
-    paths.current.push({id: paths.current.length, color: selectedColor, width: selectedWidth, points: [floorXY(x, y)]});
-  }
+    paths.current.push({
+      id: paths.current.length,
+      color: selectedColor,
+      width: selectedWidth,
+      points: [floorXY(x, y)],
+    });
+  };
 
   const updateCurrentPath = (x: number, y: number) => {
-    if(paths.current.length > 0){
+    if (paths.current.length > 0) {
       paths.current.at(-1).points.push(floorXY(x, y));
     }
-  }
+  };
 
   const clearDrawing = () => {
-    contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    contextRef.current.clearRect(
+      0,
+      0,
+      canvasRef.current.width,
+      canvasRef.current.height
+    );
     paths.current = [];
-    last.current = {id: 0, length: 0};
-  }
+    last.current = { id: 0, length: 0 };
+  };
 
   const undoLastPath = () => {
-    if(paths.current.length === 0) return console.log('nada para desfazer.');
-    contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-    const pathsMinusOne = paths.current.filter((p, index) => (index + 1) < paths.current.length);
+    if (paths.current.length === 0) return console.log('nada para desfazer.');
+    contextRef.current.clearRect(
+      0,
+      0,
+      canvasRef.current.width,
+      canvasRef.current.height
+    );
+    const pathsMinusOne = paths.current.filter(
+      (p, index) => index + 1 < paths.current.length
+    );
     paths.current = pathsMinusOne;
     const newLast = pathsMinusOne.at(-1);
     last.current = {
-      id: (newLast)? newLast.id : 0,
-      length: (newLast)? newLast.points.length : 0,
+      id: newLast ? newLast.id : 0,
+      length: newLast ? newLast.points.length : 0,
+    };
+
+    draw(
+      contextRef.current,
+      pathsMinusOne,
+      interCanvasRatio.current,
+      true,
+      canvasRef.current
+    );
+
+    if (turnVisibility) {
+      updateDrawingPaths(
+        JSON.stringify({ type: 'undo', payload: pathsMinusOne.length })
+      );
     }
-    
-    draw(contextRef.current, pathsMinusOne, interCanvasRatio.current, true, canvasRef.current);
-    
-    if(turnVisibility){
-      updateDrawingPaths(JSON.stringify({type: 'undo', payload: pathsMinusOne.length}));
-    }
-  }
+  };
 
   const confirmIntention = () => {
-    if(paths.current.length > 0) setClearConfirmation(true);
-  }
+    if (paths.current.length > 0) setClearConfirmation(true);
+  };
 
   const startMouseDrawing = (e: React.MouseEvent) => {
     const { offsetX, offsetY } = e.nativeEvent;
@@ -367,7 +412,7 @@ export default function GamePage({
     contextRef.current.moveTo(offsetX, offsetY);
     initiateNewPath(offsetX, offsetY);
     setIsDrawing(true);
-  }
+  };
 
   const startTouchDrawing = (e: React.TouchEvent) => {
     const offsetX = e.touches[0].clientX - canvasOffsetX;
@@ -377,8 +422,8 @@ export default function GamePage({
     contextRef.current.beginPath();
     contextRef.current.moveTo(offsetX, offsetY);
     initiateNewPath(offsetX, offsetY);
-    setIsDrawing(true);    
-  }
+    setIsDrawing(true);
+  };
 
   const mouseDrawing = (e: React.MouseEvent) => {
     if (!isDrawing) return;
@@ -386,7 +431,7 @@ export default function GamePage({
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
     updateCurrentPath(offsetX, offsetY);
-  }
+  };
 
   const touchDrawing = (e: React.TouchEvent) => {
     if (!isDrawing) return;
@@ -395,32 +440,32 @@ export default function GamePage({
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
     updateCurrentPath(offsetX, offsetY);
-  }
+  };
 
   const finishDrawing = () => {
     if (!isDrawing) return;
     contextRef.current.closePath();
     setIsDrawing(false);
-  }
+  };
 
-  const confirmationAlert = (clearConfirmation)
-  ? <Alert 
+  const confirmationAlert = clearConfirmation ? (
+    <Alert
       noButton
       yes={() => {
         clearDrawing();
-        updateDrawingPaths(JSON.stringify({type: 'clear'}));
+        updateDrawingPaths(JSON.stringify({ type: 'clear' }));
         setClearConfirmation(false);
       }}
       no={() => setClearConfirmation(false)}
-      message='Apagar tudo?'
+      message="Apagar tudo?"
     />
-  : null;
+  ) : null;
 
   if (turnVisibility) {
     return (
       <Background noImage>
         <Popup
-          type='info'
+          type="info"
           title={title}
           description={description}
           show={popupVisibility}
@@ -428,74 +473,86 @@ export default function GamePage({
           comesFromTop
         />
         <Popup
-          type='info'
+          type="info"
           title={'Cores'}
           description={colorPalette}
           show={colorPaletteVisibility}
           exit={() => setColorPaletteVisibility(false)}
-          border='1px solid black'
+          border="1px solid black"
         />
         <Popup
-          type='info'
+          type="info"
           title={'Larguras de linha'}
           description={widthPalette}
           show={widthPaletteVisibility}
           exit={() => setWidthPaletteVisibility(false)}
-          border='1px solid black'
+          border="1px solid black"
         />
         <Header infoPage={() => setPopupVisibility(true)} />
-        <Alert message={guidanceText} buttonText="Pronto!" onButtonClick={startGame}/>
+        <Alert
+          message={guidanceText}
+          buttonText="Pronto!"
+          onButtonClick={startGame}
+        />
         {confirmationAlert}
         <GameDiv>
-            <DrawingDiv>
-              <WordDiv>{category}</WordDiv>
-              <DrawingCanvas
-                width={canvas.width}
-                height={canvas.height}
-                ref={canvasRef}
-                onMouseDown={startMouseDrawing}
-                onTouchStart={startTouchDrawing}
-                onMouseMove={mouseDrawing}
-                onTouchMove={touchDrawing}
-                onMouseUp={finishDrawing}
-                onTouchEnd={finishDrawing}
-              />
-              <CanvasActions>
-                <UndoButtons>
-                  <Button width='60px' height='55px' onClick={undoLastPath}>
-                    <Undo src={undoIcon} />
-                  </Button>
-                  <Button width='60px' height='55px' color='#AD0000' onClick={confirmIntention}>
-                    <XCircle width='30px' height='30px' color='white'/>
-                  </Button>
-                </UndoButtons>
-                <Options>
-                  <Option>
-                    <Width style={{width: selectedWidth}} onClick={() => setWidthPaletteVisibility(true)}/>
-                    <Legend>
-                      Linha
-                    </Legend>
-                  </Option>
-                  <Option>
-                    <Color style={{backgroundColor: selectedColor}} onClick={() => setColorPaletteVisibility(true)}/>
-                    <Legend>
-                      Cor
-                    </Legend>
-                  </Option>
-                </Options>
-              </CanvasActions>
-            </DrawingDiv>
+          <DrawingDiv>
+            <WordDiv>{category}</WordDiv>
+            <DrawingCanvas
+              width={canvas.width}
+              height={canvas.height}
+              ref={canvasRef}
+              onMouseDown={startMouseDrawing}
+              onTouchStart={startTouchDrawing}
+              onMouseMove={mouseDrawing}
+              onTouchMove={touchDrawing}
+              onMouseUp={finishDrawing}
+              onTouchEnd={finishDrawing}
+            />
+            <CanvasActions>
+              <UndoButtons>
+                <Button width="60px" height="55px" onClick={undoLastPath}>
+                  <Undo src={undoIcon} />
+                </Button>
+                <Button
+                  width="60px"
+                  height="55px"
+                  color="#AD0000"
+                  onClick={confirmIntention}>
+                  <XCircle width="30px" height="30px" color="white" />
+                </Button>
+              </UndoButtons>
+              <Options>
+                <Option>
+                  <Width
+                    style={{ width: selectedWidth }}
+                    onClick={() => setWidthPaletteVisibility(true)}
+                  />
+                  <Legend>Linha</Legend>
+                </Option>
+                <Option>
+                  <Color
+                    style={{ backgroundColor: selectedColor }}
+                    onClick={() => setColorPaletteVisibility(true)}
+                  />
+                  <Legend>Cor</Legend>
+                </Option>
+              </Options>
+            </CanvasActions>
+          </DrawingDiv>
         </GameDiv>
       </Background>
     );
-  } 
+  }
 
-  const alert = (msTimeLeft === 60000)
-  ? <Alert noButton message={guidanceText} icon={beer}/>
-  : null;
+  const alert =
+    msTimeLeft === 60000 ? (
+      <Alert noButton message={guidanceText} icon={beer} />
+    ) : null;
 
   const checkGuess = () => {
     const guess = guessRef.current.value;
+    guessRef.current.value = '';
 
     if (guess === category) {
       sendWinner();
@@ -503,15 +560,32 @@ export default function GamePage({
       return;
     }
 
-    console.log('TENTE NOVAMENTE!');
     sendGuess(guess);
-  }
+    guesses.push(guess);
+  };
+
+  //TODO: implementar todos os palpites
+  //TODO: implementar verificação por RegEx
+  if (receiveGuess()) console.log('Recebeu palpite de outro jogador!');
+
+  const detectKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      checkGuess();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', detectKeyDown);
+    return () => {
+      document.removeEventListener('keydown', detectKeyDown);
+    };
+  }, [guessRef]);
 
   return (
     <Background noImage>
       {alert}
       <Popup
-        type='info'
+        type="info"
         title={title}
         description={description}
         show={popupVisibility}
@@ -520,29 +594,34 @@ export default function GamePage({
       />
       <Header infoPage={() => setPopupVisibility(true)} />
       <GameDiv>
-          <GuessTitle>
-            Qual é o desenho?
-          </GuessTitle>
-          <GuessingDiv>
-            <GuessesDiv
-              style={{
-                width: innerWidth - (canvas.width + 32),
-              }}
-            />
-            <DrawingCanvas
-              ref={canvasRef}
-              width={canvas.width}
-              height={canvas.height}
-            /> 
-          </GuessingDiv>
-          <GuessInputDiv>
-            <GuessInput
-              ref={guessRef}
-              placeholder="Digite sua resposta..."
-            />
-            <Button width='120px' height='40px' onClick={checkGuess}>Enviar</Button>
-          </GuessInputDiv>
+        <GuessTitle>Qual é o desenho?</GuessTitle>
+        <GuessingDiv>
+          <GuessesDiv
+            style={{
+              width: innerWidth - (canvas.width + 32),
+            }}>
+            {guesses.map((guess) => {
+              return (
+                <span>
+                  {guess}
+                  <br />
+                </span>
+              );
+            })}
+          </GuessesDiv>
+          <DrawingCanvas
+            ref={canvasRef}
+            width={canvas.width}
+            height={canvas.height}
+          />
+        </GuessingDiv>
+        <GuessInputDiv>
+          <GuessInput ref={guessRef} placeholder="Digite sua resposta..." />
+          <Button width="120px" height="40px" onClick={checkGuess}>
+            Enviar
+          </Button>
+        </GuessInputDiv>
       </GameDiv>
     </Background>
-  )
+  );
 }

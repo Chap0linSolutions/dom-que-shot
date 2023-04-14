@@ -18,8 +18,7 @@ import {
   BackgroundAvatar,
   ContainerBody,
   RankingContainer,
-} from './Ranking.style'
-
+} from './Ranking.style';
 
 interface RankingProps {
   data: guessingPlayer[];
@@ -43,8 +42,12 @@ export function RankingPage({
   let count = 0;
   let noOneVoted = false;
 
+  const convertTime = (strTime: string) => {
+    return 60 - parseFloat(strTime) / 1000;
+  };
+
   data.forEach((player) => {
-    if (parseInt(player.guessTime) / -1000 >= 10) {
+    if (convertTime(player.guessTime) >= 60) {
       count++;
     }
   });
@@ -70,22 +73,18 @@ export function RankingPage({
                 <ContainerWinner>
                   <BackgroundAvatar>
                     <img className="crown" src={crown} />
-                    <Avatar seed={winner.seed} />
+                    <Avatar seed={winner.avatarSeed} />
                   </BackgroundAvatar>
                   <p>{winner.nickname}</p>
-                  <span>{(parseInt(winner.guessTime) / -1000).toFixed(2)}s</span>
+                  <span>{convertTime(winner.guessTime)}s</span>
                 </ContainerWinner>
                 <ContainerLoser>
                   <BackgroundAvatar>
-                    {finalRanking && <Avatar seed={loser.seed} />}
+                    {finalRanking && <Avatar seed={loser.avatarSeed} />}
                     <img className="thumbDown" src={thumbDown} />
                   </BackgroundAvatar>
                   {finalRanking && <p>{loser.nickname}</p>}
-                  {finalRanking && (
-                    <span>
-                      {(parseInt(loser.guessTime) / -1000).toFixed(2)}s
-                    </span>
-                  )}
+                  {finalRanking && <span>{convertTime(loser.guessTime)}s</span>}
                 </ContainerLoser>
               </>
             ) : (
@@ -94,7 +93,7 @@ export function RankingPage({
                   {!noOneVoted ? (
                     <>
                       <img className="only-crown" src={crown} />
-                      <Avatar seed={winner.seed} />
+                      <Avatar seed={winner.avatarSeed} />
                     </>
                   ) : (
                     <img
@@ -107,15 +106,13 @@ export function RankingPage({
                 {!noOneVoted ? (
                   <>
                     <p>{winner.nickname}</p>
-                    <span>
-                      {(parseInt(winner.guessTime) / -1000).toFixed(2)}s
-                    </span>
+                    <span>{convertTime(winner.guessTime)}s</span>
                   </>
                 ) : (
                   <p style={{ textAlign: 'center' }}>
-                    Todo mundo
+                    Ninguem
                     <br />
-                    morreu!
+                    acertou!
                   </p>
                 )}
               </ContainerOnlyWinner>
@@ -128,7 +125,7 @@ export function RankingPage({
                 <RankingItem
                   key={i}
                   name={player.nickname}
-                  time={parseInt(player.guessTime) / -1000}
+                  time={convertTime(player.guessTime)}
                   position={i}
                 />
               ))}

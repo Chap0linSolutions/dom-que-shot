@@ -73,8 +73,8 @@ export const DrawingIconDiv = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`
+`;
 export const DrawingIcon = styled.img`
   width: 240px;
   object-fit: conatin;
-`
+`;
