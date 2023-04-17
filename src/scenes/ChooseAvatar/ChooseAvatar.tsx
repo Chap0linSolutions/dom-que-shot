@@ -25,11 +25,15 @@ function ChooseAvatar() {
   const roomCode = room.code;
   const oldNickname = user.nickname;
   const [inputText, setInputText] = useState(oldNickname ? oldNickname : '');
-  const [userName, setUserName] = useState(oldNickname ? oldNickname : '');
   const [inputErrorMsg, setInputErrorMsg] = useState({
     msg: '',
     visibility: 'hidden',
   });
+
+  const inputRef = useRef(null);
+  const characterCount = inputRef.current
+    ? inputRef.current.value.trim().length
+    : oldNickname && oldNickname.length;
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
@@ -52,13 +56,20 @@ function ChooseAvatar() {
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
-  const updateUserName = (e) => {
-    const input = e.target.value;
+  const updateUserName = () => {
+    const input = inputRef.current.value;
     setInputText(input);
-    if (input.trim().length !== 0) {
-      setUserName(input);
-      setInputErrorMsg({ msg: '', visibility: 'hidden' });
+    const inputLength = input.trim().length;
+
+    if (inputLength > 16) {
+      setInputErrorMsg({
+        msg: 'O nome deve ter no máximo 16 caracteres.',
+        visibility: 'visible',
+      });
       return;
+    }
+    if (inputLength !== 0) {
+      setInputErrorMsg({ msg: '', visibility: 'hidden' });
     }
   };
 
@@ -86,6 +97,7 @@ function ChooseAvatar() {
   };
 
   function checkNameInput() {
+    const userName = inputRef.current.value.trim();
     if (userName.length > 2 && userName.length <= 16) {
       api
         .get(`/nicknameCheck/${roomCode}/${userName}`)
@@ -103,24 +115,19 @@ function ChooseAvatar() {
         });
       return;
     }
-    if (userName.length > 16) {
-      setInputErrorMsg({
-        msg: 'O nome deve ter no máximo 16 caracteres.',
-        visibility: 'visible',
-      });
-      return;
-    }
-    if (userName.length > 0) {
+    if (userName.length < 3) {
       setInputErrorMsg({
         msg: 'O nome deve ter no mínimo 3 caracteres.',
         visibility: 'visible',
       });
       return;
     }
-    setInputErrorMsg({
-      msg: 'Você deve inserir um nome primeiro!',
-      visibility: 'visible',
-    });
+    if (userName.length === 0) {
+      setInputErrorMsg({
+        msg: 'Você deve inserir um nome primeiro!',
+        visibility: 'visible',
+      });
+    }
   }
 
   const proceedTo = (nextURL) => {
@@ -132,6 +139,7 @@ function ChooseAvatar() {
   };
 
   const storeInfo = () => {
+    const userName = inputRef.current.value.trim();
     const newUserData = {
       roomCode: roomCode,
       nickname: userName,
@@ -148,8 +156,6 @@ function ChooseAvatar() {
 
   ////Listener para remover foco do <input> quando o usuário aperta Enter/////////////////////////
 
-  const ref = useRef(null);
-
   useEffect(() => {
     document.addEventListener('keydown', detectKeyDown);
     return () => {
@@ -159,7 +165,7 @@ function ChooseAvatar() {
 
   const detectKeyDown = (e) => {
     if (e.key === 'Enter') {
-      ref.current.blur();
+      inputRef.current.blur();
     }
   };
 
@@ -183,11 +189,15 @@ function ChooseAvatar() {
 
         <div className="ChooseAvatarSection">
           <div className="NicknameDiv">
-            <p className="NicknameTitle">Nome:</p>
-
+            <div className="NameAndCharacterCount">
+              <p className="Title">Nome:</p>
+              <p className={characterCount > 16 ? 'Title Red' : 'Title'}>
+                {characterCount}
+              </p>
+            </div>
             <input
               value={inputText}
-              ref={ref}
+              ref={inputRef}
               id="nickname"
               className="NicknameInput"
               placeholder="Digite seu nome"
