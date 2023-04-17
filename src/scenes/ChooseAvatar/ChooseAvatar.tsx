@@ -172,7 +172,6 @@ function ChooseAvatar() {
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
   const leaveMatch = () => {
-    socket && socket.disconnect();
     const nextURL = '/Home';
     setRoom((previous) => ({
       ...previous,
