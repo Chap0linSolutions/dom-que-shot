@@ -45,32 +45,27 @@ export default function Guesser({title, description, msTimeLeft, category, drawi
     const guessRef = useRef<HTMLInputElement>();
     const guidanceText = 'Aguardando o Da Vinci começar a desenhar...';
 
-    const alert =
-        msTimeLeft === 60000 ? (
-            <Alert noButton message={guidanceText} icon={beer} />
-        ) : null;
+    const alert = msTimeLeft === 60000
+    ? (
+      <Alert noButton message={guidanceText} icon={beer} />
+    ) : null;
 
-    const checkGuess = () => {
-        const guess = guessRef.current.value;
-        guessRef.current.value = '';
+    const checkGuess = () => {                       
+      const guess = format(guessRef.current.value);                 
+      const answer = format(category);
+      if (guess === answer) {
+          sendWinner();
+          goToRankingPage();
+          return;
+      }
+      guesses.current.push(guess);
+      guessRef.current.value = '';
+    };
 
-        if (guess === category) {
-            sendWinner();
-            goToRankingPage();
-            return;
-        }
-
-        guesses.current.push(guess);
-        };
-
-        //TODO: implementar todos os palpites
-        //TODO: implementar verificação por RegEx
-        // if (receiveGuess()) console.log('Recebeu palpite de outro jogador!');
-
-        const detectKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            checkGuess();
-        }
+    const detectKeyDown = (e) => {
+      if (e.key === 'Enter') {
+        checkGuess();
+      }
     };
 
     useEffect(() => {
@@ -174,3 +169,22 @@ export default function Guesser({title, description, msTimeLeft, category, drawi
     </Background>
     );
 }
+
+const format = (input) => {
+  const output = input
+    .toLowerCase()
+    .replace(/ /g, '')
+    .replace(/,/g, '')
+    .replace(/-/g, '')
+    .replace(/á/g, 'a')
+    .replace(/â/g, 'a')
+    .replace(/ã/g, 'a')
+    .replace(/é/g, 'e')
+    .replace(/ê/g, 'e')
+    .replace(/í/g, 'i')
+    .replace(/ó/g, 'o')
+    .replace(/ô/g, 'o')
+    .replace(/ú/g, 'u')
+    .replace(/ç/g, 'c')
+  return output;
+};
