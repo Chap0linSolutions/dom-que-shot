@@ -67,7 +67,7 @@ export default function CategoryPage({
           exit={() => setPopupVisibility(false)}
           comesFromTop
         />
-        <Header roomCode infoPage={() => setPopupVisibility(true)} />
+        <Header exit roomCode infoPage={() => setPopupVisibility(true)} />
         <CategoryDiv>
           <Content>
             <Title>Escolha uma categoria para o grupo:</Title>
@@ -106,6 +106,7 @@ export default function CategoryPage({
         comesFromTop
       />
       <Header
+        exit
         roomCode
         infoPage={() => {
           setPopupVisibility(true);

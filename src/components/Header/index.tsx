@@ -5,11 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import DomQueShotLogo from '../../assets/logo-darker.png';
 import Popup from '../Popup';
 import {
-  ArrowDiv,
+  IconDiv,
   ArrowAndTitle,
   HeaderDiv,
-  TitleDiv,
-  LeaveDiv,
   Title,
   Timer,
   SettingsInfoAndLogo,
@@ -131,17 +129,17 @@ export default function Header({
       />
 
       <ArrowAndTitle>
-        <ArrowDiv style={goBackArrow ? {} : { display: 'none' }}>
+        <IconDiv style={goBackArrow ? {} : { display: 'none' }}>
           <ArrowLeft width="30px" height="30px" onClick={goToPreviousPage} />
-        </ArrowDiv>
+        </IconDiv>
 
-        <LeaveDiv style={exit ? {} : { display: 'none' }}>
+        <IconDiv style={exit ? {} : { display: 'none' }}>
           <Power width="22px" height="22px" onClick={confirmLeaveRoom} />
-        </LeaveDiv>
+        </IconDiv>
 
-        <TitleDiv style={title ? {} : { display: 'none' }}>
+        <IconDiv style={title ? {} : { display: 'none' }}>
           <Title>{title}</Title>
-        </TitleDiv>
+        </IconDiv>
       </ArrowAndTitle>
 
       <Timer style={timer ? { color: timerColor } : { display: 'none' }}>
