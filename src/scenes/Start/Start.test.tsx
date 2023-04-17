@@ -46,7 +46,7 @@ describe('Start page', () => {
   });
 
   it('Should render the page Contact when clicks on that button', () => {
-    const { getByText, getByTestId, getByAltText } = render(<Start />);
+    const { getByText, getByTestId } = render(<Start />);
 
     fireEvent.click(getByTestId('burguer-menu'));
     fireEvent.click(getByText('Contato'));
