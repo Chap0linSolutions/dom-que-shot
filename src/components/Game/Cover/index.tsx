@@ -42,9 +42,10 @@ export default function CoverPage({
     <Header
       goBackArrow={goBackPage}
       infoPage={() => setPopupVisibility(true)}
+      roomCode
     />
   ) : (
-    <Header infoPage={() => setPopupVisibility(true)} />
+    <Header infoPage={() => setPopupVisibility(true)} roomCode />
   );
 
   const coverCard = useRef();
@@ -151,6 +152,7 @@ export default function CoverPage({
   return (
     <Background>
       <Popup
+        type="info"
         height={sizeOfDescription ? sizeOfDescription : undefined}
         title={title}
         description={description}
