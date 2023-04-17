@@ -24,7 +24,6 @@ interface RankingProps {
   data: guessingPlayer[];
   finalRanking: boolean;
   roulettePage: () => void;
-  gamePage: () => void;
   turnVisibility: boolean;
 }
 

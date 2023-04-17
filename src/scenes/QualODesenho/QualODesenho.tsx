@@ -13,7 +13,6 @@ export interface guessingPlayer {
   nickname: string;
   avatarSeed: string;
   guessTime: string;
-  guessedCorrectly: boolean;
 }
 
 enum Game {
@@ -69,7 +68,6 @@ export default function QualODesenho() {
   };
 
   useEffect(() => {
-    console.log(msTimer);
     if(msTimer === 0 || room.page === Game.Finish){
       if(user.isCurrentTurn){
         console.log('acabou o tempo do jogo.');
@@ -94,7 +92,10 @@ export default function QualODesenho() {
   };
 
   const finishGame = () => {
-    setGlobalRoomPage(Game.Finish);
+    user.isCurrentTurn && socket.push('move-room-to', {
+      roomCode: room.code,
+      destination: Game.Finish,
+    });
     setFinalRanking(true);
   };
 
@@ -107,9 +108,10 @@ export default function QualODesenho() {
   };
 
   const sendWinner = () => {
-    const winner = `${user.nickname}:${msTimer}`;
-    clearInterval(msTimer);
+    const winner = JSON.stringify({nickname: user.nickname, time: gameTime - msTimer});
     socket.pushMessage(room.code, 'correct-guess', winner);
+    clearInterval(msTimer);
+    setGlobalRoomPage(Game.Finish);
   };
 
   const backToRoulette = () => {
@@ -128,6 +130,14 @@ export default function QualODesenho() {
     console.log(`palavra selecionada: ${word}`);
     setWord(word);
     socket.pushMessage(room.code, 'game-word-is', word);
+    socket.push('move-room-to', {
+      roomCode: room.code,
+      destination: Game.Game,
+    });
+  };
+
+  const sendDrawingUpdate = (stringifiedArray: string) => {
+    socket.pushMessage(room.code, 'drawing-points', stringifiedArray);
   };
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
@@ -183,15 +193,13 @@ export default function QualODesenho() {
 
     socket.addEventListener('game-word-is', (word) => {
       setWord(word);
-      setGlobalRoomPage(Game.Game);
     });
 
-    if (user.isCurrentTurn) {
-      socket.addEventListener('end-game', () => {
-        finishGame();
-        clearInterval(timer);
-      });
-    }
+    socket.addEventListener('results', (results) => {
+      console.log(results);
+      setPlayersAndGuesses(JSON.parse(results));
+      finishGame();
+    });
 
     return () => {
       socket.removeAllListeners();
@@ -200,9 +208,13 @@ export default function QualODesenho() {
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  const sendDrawingUpdate = (stringifiedArray: string) => {
-    socket.pushMessage(room.code, 'drawing-points', stringifiedArray);
-  };
+  useEffect(() => {
+    if(finalRanking){
+      console.log('resultado parcial:', playersAndGuesses.map(p => ({name: p.nickname, time: p.guessTime})));
+    } else {
+      console.log('resultado FINAL:', playersAndGuesses.map(p => ({name: p.nickname, time: p.guessTime})));
+    }
+  }, [playersAndGuesses, finalRanking]);
 
   switch (room.page) {
     case Game.Awaiting:
@@ -239,7 +251,6 @@ export default function QualODesenho() {
           turnVisibility={user.isCurrentTurn}
           roulettePage={() => backToRoulette()}
           finalRanking={finalRanking}
-          gamePage={() => setGlobalRoomPage(Game.Game)}
         />
       );
 
