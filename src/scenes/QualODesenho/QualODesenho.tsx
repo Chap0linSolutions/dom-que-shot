@@ -29,13 +29,10 @@ export default function QualODesenho() {
 
   const navigate = useNavigate();
   const [word, setWord] = useState<string>(undefined);
-  const [latestGuess, setLatestGuess] = useState<string>();
   const [drawingPaths, setDrawingPaths] = useState<string>();
   const [finalRanking, setFinalRanking] = useState<boolean>(false);
   const [wordSuggestions, setWordSuggestions] = useState<string[]>([]);
-  const [playersAndGuesses, setPlayersAndGuesses] = useState<guessingPlayer[]>(
-    []
-  );
+  const [playersAndGuesses, setPlayersAndGuesses] = useState<guessingPlayer[]>([]);
 
   const description = (
     <>
@@ -55,29 +52,32 @@ export default function QualODesenho() {
   //TIMER//////////////////////////////////////////////////////////////////////////////////
 
   const gameTime = 60000;
+  const deltaT = 1000;
 
   const [msTimer, setMsTimer] = useState(gameTime);
   const [timer, setTimer] = useState<NodeJS.Timer>();
 
   const startTimer = () => {
-    setTimer(setInterval(run, 1000));
+    setTimer(setInterval(run, deltaT));
   };
-
-  let updatedMs = msTimer;
 
   const run = () => {
-    if (updatedMs > 0) {
-      updatedMs -= 1000;
-      if (updatedMs === 0) {
-        console.log('Acabou o tempo.');
-        socket.pushMessage(room.code, 'times-up', null);
-        clearInterval(timer);
-        setTimer(null);
-        finishGame();
-      }
-      setMsTimer(updatedMs);
-    }
+    setMsTimer(previous => ((previous > 0)
+      ? previous - deltaT
+      : previous
+    ));
   };
+
+  useEffect(() => {
+    console.log(msTimer);
+    if(msTimer === 0 || room.page === Game.Finish){
+      if(user.isCurrentTurn){
+        console.log('acabou o tempo do jogo.');
+        socket.pushMessage(room.code, 'times-up');
+      }
+      clearInterval(timer);
+    }
+  }, [msTimer, room.page]);
 
   ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -94,10 +94,8 @@ export default function QualODesenho() {
   };
 
   const finishGame = () => {
-    socket.push('move-room-to', {
-      roomCode: room.code,
-      destination: Game.Finish,
-    });
+    setGlobalRoomPage(Game.Finish);
+    setFinalRanking(true);
   };
 
   const backToLobby = () => {
@@ -112,15 +110,6 @@ export default function QualODesenho() {
     const winner = `${user.nickname}:${msTimer}`;
     clearInterval(msTimer);
     socket.pushMessage(room.code, 'correct-guess', winner);
-  };
-
-  const sendGuess = (guess: string) => {
-    socket.pushMessage(room.code, 'wrong-guess', guess);
-  };
-
-  const receiveGuess = () => {
-    console.log(`Último palpite: ${latestGuess}`);
-    return latestGuess;
   };
 
   const backToRoulette = () => {
@@ -154,13 +143,8 @@ export default function QualODesenho() {
       }));
     });
 
-    socket.addEventListener('new-guess-attempt', (reply: string) => {
-      setLatestGuess(reply);
-    });
-
     socket.addEventListener('updated-winners', (winners: string) => {
-      const winnersObject = JSON.parse(winners);
-      setPlayersAndGuesses(winnersObject);
+      setPlayersAndGuesses(JSON.parse(winners));
     });
 
     socket.addEventListener('room-owner-is', (ownerName) => {
@@ -205,12 +189,9 @@ export default function QualODesenho() {
     if (user.isCurrentTurn) {
       socket.addEventListener('end-game', () => {
         finishGame();
+        clearInterval(timer);
       });
     }
-
-    socket.addEventListener('final-ranking', () => {
-      setFinalRanking(true);
-    });
 
     return () => {
       socket.removeAllListeners();
@@ -246,9 +227,7 @@ export default function QualODesenho() {
           startGame={startGame}
           updateDrawingPaths={sendDrawingUpdate}
           sendWinner={sendWinner}
-          sendGuess={sendGuess}
-          receiveGuess={receiveGuess}
-          goToRankingPage={() => setGlobalRoomPage(Game.Finish)}
+          goToRankingPage={finishGame}
           drawingPaths={drawingPaths}
         />
       );

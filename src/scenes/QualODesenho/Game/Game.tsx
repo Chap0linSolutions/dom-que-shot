@@ -1,34 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { XCircle } from 'react-feather';
-import Background from '../../../components/Background';
-import Button from '../../../components/Button';
-import Header from '../../../components/Header';
-import Alert from '../../../components/Alert';
-import Popup from '../../../components/Popup';
-import beer from '../../../assets/beer.png';
-import undoIcon from '../../../assets/undo.svg';
-import {
-  GameDiv,
-  DrawingDiv,
-  DrawingCanvas,
-  CanvasActions,
-  UndoButtons,
-  Options,
-  Undo,
-  Option,
-  Color,
-  Width,
-  Legend,
-  GuessingDiv,
-  WordDiv,
-  GuessesDiv,
-  GuessTitle,
-  GuessInput,
-  GuessInputDiv,
-  Palette,
-  PaletteColor,
-  PaletteWidth,
-} from './Game.style';
+import Drawer from './Drawer';
+import Guesser from './Guesser';
 
 interface GameProps {
   title: string;
@@ -40,8 +12,6 @@ interface GameProps {
   updateDrawingPaths: (value: string) => void;
   startGame: () => void;
   sendWinner: () => void;
-  sendGuess: (value: string) => void;
-  receiveGuess: () => string;
   goToRankingPage: () => void;
 }
 
@@ -50,51 +20,24 @@ type Coordinates = {
   y: number;
 };
 
-type Last = {
+export type Last = {
   id: number;
   length: number;
 };
 
-type Path = {
+export type Path = {
   id: number;
   color: string | undefined;
   width: number;
   points: Coordinates[];
 };
 
-type Message = {
-  type: 'paths' | 'everything' | 'undo' | 'clear' | 'my-canvas-width-is';
-  payload?: Path[] | number;
-};
-
-type CanvasDimensions = {
+export type CanvasDimensions = {
   width: number;
   height: number;
 };
 
-const colors = [
-  '#000000',
-  '#FFFFFF',
-  '#00FF0A',
-  '#000AFF',
-  '#FF0000',
-  '#858585',
-  '#FF6289',
-  '#FAFF00',
-  '#00F0FF',
-  '#FF8A00',
-  '#F2D3B2',
-  '#F2AE75',
-  '#946635',
-  '#502F18',
-  '#351F09',
-];
-
-const widths = [3, 5, 7, 11, 17];
-
-const guesses: string[] = [];
-
-function draw(
+export function draw(
   context: CanvasRenderingContext2D,
   paths: Path[],
   canvasRatio: number,
@@ -135,27 +78,14 @@ export default function GamePage({
   updateDrawingPaths,
   startGame,
   sendWinner,
-  sendGuess,
-  receiveGuess,
   goToRankingPage,
 }: GameProps) {
-  const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
-  const [colorPaletteVisibility, setColorPaletteVisibility] =
-    useState<boolean>(false);
-  const [widthPaletteVisibility, setWidthPaletteVisibility] =
-    useState<boolean>(false);
-  const [clearConfirmation, setClearConfirmation] = useState<boolean>(false);
-
   const [selectedColor, setSelectedColor] = useState<string>('#000000');
   const [selectedWidth, setSelectedWidth] = useState<number>(3);
-  const [isDrawing, setIsDrawing] = useState(false);
-
   const interCanvasRatio = useRef<number>(1);
-  const guessRef = useRef<HTMLInputElement>();
   const canvasRef = useRef<HTMLCanvasElement>();
   const contextRef = useRef<CanvasRenderingContext2D>();
   const counter = useRef<number>(59000);
-
   const paths = useRef<Path[]>([]);
   const last = useRef<Last>({ id: 0, length: 0 });
 
@@ -244,117 +174,12 @@ export default function GamePage({
 
   ///////////////////////////////////////////////////////////////////////////////////////////
 
-  const guidanceText = turnVisibility
-    ? 'Pronto? Aperte o botão abaixo e pode começar!'
-    : 'Aguardando o Da Vinci começar a desenhar...';
-
-  const colorPalette = (
-    <Palette>
-      {colors.map((color, i) => (
-        <PaletteColor
-          key={i}
-          style={{ backgroundColor: color }}
-          onClick={() => {
-            setSelectedColor(color);
-            setColorPaletteVisibility(false);
-          }}
-        />
-      ))}
-    </Palette>
-  );
-
-  const widthPalette = (
-    <Palette>
-      {widths.map((size, i) => (
-        <PaletteWidth
-          key={i}
-          style={{
-            backgroundColor: selectedColor,
-            width: 2 * size,
-            height: 2 * size,
-          }}
-          onClick={() => {
-            setSelectedWidth(size);
-            setWidthPaletteVisibility(false);
-          }}
-        />
-      ))}
-    </Palette>
-  );
-
   useEffect(() => {
     const context = canvasRef.current.getContext('2d');
     context.fillStyle = 'white';
     context.lineCap = 'round';
     contextRef.current = context;
   }, []);
-
-  useEffect(() => {
-    if (drawingPaths) {
-      const { type, payload }: Message = JSON.parse(drawingPaths);
-
-      switch (type) {
-        case 'everything':
-          draw(
-            contextRef.current,
-            payload as Path[],
-            interCanvasRatio.current,
-            true,
-            canvasRef.current
-          );
-          break;
-        case 'clear':
-          clearDrawing();
-          break;
-        case 'undo':
-          undoLastPath();
-          break;
-        case 'my-canvas-width-is':
-          const ratio = canvas.width / (payload as number);
-          interCanvasRatio.current = ratio;
-          break;
-        case 'paths':
-          const newPaths = payload as Path[];
-          newPaths.forEach((path) => {
-            const index = paths.current.findIndex((p) => p.id === path.id);
-            if (index > -1) {
-              paths.current = paths.current.map((p) => {
-                if (p.id === path.id) {
-                  return {
-                    ...p,
-                    points: path.points,
-                  };
-                }
-                return p;
-              });
-            } else {
-              paths.current.push(path);
-            }
-            draw(contextRef.current, [path], interCanvasRatio.current);
-          });
-          break;
-      }
-    }
-  }, [drawingPaths]);
-
-  const floorXY = (x: number, y: number) => {
-    return { x: Math.floor(x), y: Math.floor(y) };
-  };
-
-  const initiateNewPath = (x: number, y: number) => {
-    paths.current.push({
-      id: paths.current.length,
-      color: selectedColor,
-      width: selectedWidth,
-      points: [floorXY(x, y)],
-    });
-  };
-
-  const updateCurrentPath = (x: number, y: number) => {
-    if (paths.current.length > 0) {
-      paths.current.at(-1).points.push(floorXY(x, y));
-    }
-  };
 
   const clearDrawing = () => {
     contextRef.current.clearRect(
@@ -400,228 +225,44 @@ export default function GamePage({
     }
   };
 
-  const confirmIntention = () => {
-    if (paths.current.length > 0) setClearConfirmation(true);
-  };
 
-  const startMouseDrawing = (e: React.MouseEvent) => {
-    const { offsetX, offsetY } = e.nativeEvent;
-    contextRef.current.strokeStyle = selectedColor;
-    contextRef.current.lineWidth = selectedWidth;
-    contextRef.current.beginPath();
-    contextRef.current.moveTo(offsetX, offsetY);
-    initiateNewPath(offsetX, offsetY);
-    setIsDrawing(true);
-  };
-
-  const startTouchDrawing = (e: React.TouchEvent) => {
-    const offsetX = e.touches[0].clientX - canvasOffsetX;
-    const offsetY = e.touches[0].clientY - canvasOffsetY;
-    contextRef.current.strokeStyle = selectedColor;
-    contextRef.current.lineWidth = selectedWidth;
-    contextRef.current.beginPath();
-    contextRef.current.moveTo(offsetX, offsetY);
-    initiateNewPath(offsetX, offsetY);
-    setIsDrawing(true);
-  };
-
-  const mouseDrawing = (e: React.MouseEvent) => {
-    if (!isDrawing) return;
-    const { offsetX, offsetY } = e.nativeEvent;
-    contextRef.current.lineTo(offsetX, offsetY);
-    contextRef.current.stroke();
-    updateCurrentPath(offsetX, offsetY);
-  };
-
-  const touchDrawing = (e: React.TouchEvent) => {
-    if (!isDrawing) return;
-    const offsetX = e.touches[0].clientX - canvasOffsetX;
-    const offsetY = e.touches[0].clientY - canvasOffsetY;
-    contextRef.current.lineTo(offsetX, offsetY);
-    contextRef.current.stroke();
-    updateCurrentPath(offsetX, offsetY);
-  };
-
-  const finishDrawing = () => {
-    if (!isDrawing) return;
-    contextRef.current.closePath();
-    setIsDrawing(false);
-  };
-
-  const confirmationAlert = clearConfirmation ? (
-    <Alert
-      noButton
-      yes={() => {
-        clearDrawing();
-        updateDrawingPaths(JSON.stringify({ type: 'clear' }));
-        setClearConfirmation(false);
-      }}
-      no={() => setClearConfirmation(false)}
-      message="Apagar tudo?"
+  if(turnVisibility) {
+    return <Drawer
+      title={title}
+      description={description}
+      category={category}
+      msTimeLeft={msTimeLeft}
+      paths={paths}
+      canvas={canvas}
+      canvasRef={canvasRef}
+      contextRef={contextRef}
+      canvasOffsetX={canvasOffsetX}
+      canvasOffsetY={canvasOffsetY}
+      selectedColor={selectedColor}
+      selectedWidth={selectedWidth}
+      setSelectedColor={setSelectedColor}
+      setSelectedWidth={setSelectedWidth}
+      clearDrawing={clearDrawing}
+      undoLastPath={undoLastPath}
+      updateDrawingPaths={updateDrawingPaths}
+      startGame={startGame}
     />
-  ) : null;
-
-  if (turnVisibility) {
-    return (
-      <Background noImage>
-        <Popup
-          type="info"
-          title={title}
-          description={description}
-          show={popupVisibility}
-          exit={() => setPopupVisibility(false)}
-          comesFromTop
-        />
-        <Popup
-          type="info"
-          title={'Cores'}
-          description={colorPalette}
-          show={colorPaletteVisibility}
-          exit={() => setColorPaletteVisibility(false)}
-          border="1px solid black"
-        />
-        <Popup
-          type="info"
-          title={'Larguras de linha'}
-          description={widthPalette}
-          show={widthPaletteVisibility}
-          exit={() => setWidthPaletteVisibility(false)}
-          border="1px solid black"
-        />
-        <Header infoPage={() => setPopupVisibility(true)} />
-        <Alert
-          message={guidanceText}
-          buttonText="Pronto!"
-          onButtonClick={startGame}
-        />
-        {confirmationAlert}
-        <GameDiv>
-          <DrawingDiv>
-            <WordDiv>{category}</WordDiv>
-            <DrawingCanvas
-              width={canvas.width}
-              height={canvas.height}
-              ref={canvasRef}
-              onMouseDown={startMouseDrawing}
-              onTouchStart={startTouchDrawing}
-              onMouseMove={mouseDrawing}
-              onTouchMove={touchDrawing}
-              onMouseUp={finishDrawing}
-              onTouchEnd={finishDrawing}
-            />
-            <CanvasActions>
-              <UndoButtons>
-                <Button width="60px" height="55px" onClick={undoLastPath}>
-                  <Undo src={undoIcon} />
-                </Button>
-                <Button
-                  width="60px"
-                  height="55px"
-                  color="#AD0000"
-                  onClick={confirmIntention}>
-                  <XCircle width="30px" height="30px" color="white" />
-                </Button>
-              </UndoButtons>
-              <Options>
-                <Option>
-                  <Width
-                    style={{ width: selectedWidth }}
-                    onClick={() => setWidthPaletteVisibility(true)}
-                  />
-                  <Legend>Linha</Legend>
-                </Option>
-                <Option>
-                  <Color
-                    style={{ backgroundColor: selectedColor }}
-                    onClick={() => setColorPaletteVisibility(true)}
-                  />
-                  <Legend>Cor</Legend>
-                </Option>
-              </Options>
-            </CanvasActions>
-          </DrawingDiv>
-        </GameDiv>
-      </Background>
-    );
   }
 
-  const alert =
-    msTimeLeft === 60000 ? (
-      <Alert noButton message={guidanceText} icon={beer} />
-    ) : null;
-
-  const checkGuess = () => {
-    const guess = guessRef.current.value;
-    guessRef.current.value = '';
-
-    if (guess === category) {
-      sendWinner();
-      goToRankingPage();
-      return;
-    }
-
-    sendGuess(guess);
-    guesses.push(guess);
-  };
-
-  //TODO: implementar todos os palpites
-  //TODO: implementar verificação por RegEx
-  if (receiveGuess()) console.log('Recebeu palpite de outro jogador!');
-
-  const detectKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      checkGuess();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('keydown', detectKeyDown);
-    return () => {
-      document.removeEventListener('keydown', detectKeyDown);
-    };
-  }, [guessRef]);
-
-  return (
-    <Background noImage>
-      {alert}
-      <Popup
-        type="info"
-        title={title}
-        description={description}
-        show={popupVisibility}
-        exit={() => setPopupVisibility(false)}
-        comesFromTop
-      />
-      <Header infoPage={() => setPopupVisibility(true)} />
-      <GameDiv>
-        <GuessTitle>Qual é o desenho?</GuessTitle>
-        <GuessingDiv>
-          <GuessesDiv
-            style={{
-              width: innerWidth - (canvas.width + 32),
-            }}>
-            {guesses.map((guess) => {
-              return (
-                <span>
-                  {guess}
-                  <br />
-                </span>
-              );
-            })}
-          </GuessesDiv>
-          <DrawingCanvas
-            ref={canvasRef}
-            width={canvas.width}
-            height={canvas.height}
-          />
-        </GuessingDiv>
-        <GuessInputDiv>
-          <GuessInput ref={guessRef} placeholder="Digite sua resposta..." />
-          <Button width="120px" height="40px" onClick={checkGuess}>
-            Enviar
-          </Button>
-        </GuessInputDiv>
-      </GameDiv>
-    </Background>
-  );
+  return <Guesser
+    category={category}
+    description={description}
+    drawingPaths={drawingPaths}
+    msTimeLeft={msTimeLeft}
+    canvas={canvas}
+    canvasRef={canvasRef}
+    contextRef={contextRef}
+    interCanvasRatio={interCanvasRatio}
+    paths={paths}
+    sendWinner={sendWinner}
+    title={title}
+    undoLastPath={undoLastPath}
+    goToRankingPage={goToRankingPage}
+    clearDrawing={clearDrawing}
+  />
 }
