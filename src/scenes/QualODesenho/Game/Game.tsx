@@ -254,6 +254,7 @@ export default function GamePage({
     description={description}
     drawingPaths={drawingPaths}
     msTimeLeft={msTimeLeft}
+    innerWidth={innerWidth}
     canvas={canvas}
     canvasRef={canvasRef}
     contextRef={contextRef}

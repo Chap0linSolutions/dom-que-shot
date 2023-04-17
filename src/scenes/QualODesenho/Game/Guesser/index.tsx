@@ -26,7 +26,8 @@ interface GuesserProps {
     description: string | JSX.Element,
     msTimeLeft: number,
     category: string,
-    drawingPaths: string;
+    drawingPaths: string,
+    innerWidth: number,
     canvas: CanvasDimensions,
     canvasRef: React.MutableRefObject<HTMLCanvasElement>,
     contextRef: React.MutableRefObject<CanvasRenderingContext2D>,
@@ -38,7 +39,7 @@ interface GuesserProps {
     undoLastPath: () => void,
 }
 
-export default function Guesser({title, description, msTimeLeft, category, drawingPaths, canvas, canvasRef, contextRef, interCanvasRatio, paths, sendWinner, goToRankingPage, undoLastPath, clearDrawing}: GuesserProps){
+export default function Guesser({title, description, msTimeLeft, category, drawingPaths, innerWidth, canvas, canvasRef, contextRef, interCanvasRatio, paths, sendWinner, goToRankingPage, undoLastPath, clearDrawing}: GuesserProps){
   
     const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
     const guesses = useRef<string[]>([]);
