@@ -19,7 +19,8 @@ import {
     Color,
     Width,
     Legend,
-    WordDiv,
+    Head,
+    Category,
     Palette,
     PaletteColor,
     PaletteWidth,
@@ -245,7 +246,14 @@ export default function Drawer({description, title, category, msTimeLeft, canvas
       {confirmationAlert}
       <GameDiv>
         <DrawingDiv>
-          <WordDiv>{category}</WordDiv>
+          <Head style={{width: canvas.width}}>
+            <Category>
+              {category}
+            </Category>
+            <Timer>
+              {timeLeft[0]}:{timeLeft[1]}
+            </Timer>
+          </Head>
           <DrawingCanvas
             width={canvas.width}
             height={canvas.height}
@@ -257,9 +265,6 @@ export default function Drawer({description, title, category, msTimeLeft, canvas
             onMouseUp={finishDrawing}
             onTouchEnd={finishDrawing}
           />
-          <Timer>
-            {timeLeft[0]}:{timeLeft[1]}
-          </Timer>
           <CanvasActions>
             <UndoButtons>
               <Button width="60px" height="55px" onClick={undoLastPath}>

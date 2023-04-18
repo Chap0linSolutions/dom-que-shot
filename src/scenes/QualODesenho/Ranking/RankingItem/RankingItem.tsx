@@ -1,6 +1,6 @@
 import React from 'react';
-import thumbDown from '../img/thumbs-down.png';
-import { RankingItemDiv } from './RankingItem.styles';
+import thumbDown from '../../../../assets/thumbs-down.png';
+import { CircleBorder, LoserName, LoserTime, PlayerInfo, Position, RankingItemDiv, ThumbsDown, WinnerText } from './RankingItem.styles';
 
 interface RankingItemProps {
   position: number;
@@ -8,48 +8,33 @@ interface RankingItemProps {
   time: number;
 }
 
-const RankingItem: React.FC<RankingItemProps> = ({ position, name, time }) => {
+export default function RankingItem({ position, name, time }: RankingItemProps){
+  
+  const Info = () => {
+    const details = (time < 0)
+    ? (<>
+        <LoserName>{name}</LoserName>
+        <LoserTime>Não acertou</LoserTime>
+      </>)
+    : (<>
+      <WinnerText>{name}</WinnerText>
+      <WinnerText>{time}s</WinnerText>
+    </>);
+    return details;
+  }
+
   return (
     <RankingItemDiv>
-      <div className="position">
-        <div className="circle-border">
-          {time >= 60 ? <img src={thumbDown} /> : <p>{position + 1}º</p>}
-        </div>
-      </div>
-      <div className="infos">
-        {time < 60 ? (
-          <>
-            <p>{name}</p>
-            <p>{time}s</p>
-          </>
-        ) : (
-          <></>
-        )}
-
-        {time === 60 ? (
-          <>
-            <p style={{ color: 'red', textDecoration: 'line-through' }}>
-              {name}
-            </p>
-            <p style={{ color: 'red' }}>{time}s</p>
-          </>
-        ) : (
-          <></>
-        )}
-
-        {time > 60 ? (
-          <>
-            <p style={{ color: 'red', textDecoration: 'line-through' }}>
-              {name}
-            </p>
-            <p style={{ color: 'red', fontSize: '14px' }}>Não acertou...</p>
-          </>
-        ) : (
-          <></>
-        )}
-      </div>
+      <Position>
+        <CircleBorder>
+          {time < 0
+          ? <ThumbsDown src={thumbDown} />
+          : <WinnerText>{position + 1}º</WinnerText>}
+        </CircleBorder>
+      </Position>
+      <PlayerInfo>
+        <Info />
+      </PlayerInfo>
     </RankingItemDiv>
   );
 };
-
-export default RankingItem;

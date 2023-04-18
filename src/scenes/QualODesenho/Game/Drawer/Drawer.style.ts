@@ -16,10 +16,10 @@ export const DrawingDiv = styled.div`
   align-items: center;
 `;
 
-export const WordDiv = styled.p`
-  margin: 0;
-  width: 256px;
+export const Head = styled.div`
   height: 60px;
+  margin: 0;
+  padding: 0 10px;
   background: #403a55;
   border-radius: 10px 10px 0px 0px;
   font-family: Roboto;
@@ -27,17 +27,16 @@ export const WordDiv = styled.p`
   font-weight: 400;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   @media (max-height: 740px) {
     font-size: 20px;
     height: 44px;
-    width: 230px;
   }
 `;
 
 export const DrawingCanvas = styled.canvas`
   background-color: white;
-  border-radius: 10px;
+  border-radius: 0 0 10px 10px;
   flex-grow: 0;
 `;
 
@@ -45,16 +44,16 @@ export const Timer = styled.p`
   right: 28px;
   top: 60px;
   width: 80px;
-  height: 50px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0 10px 0 0;
+  border-radius: 10px;
   margin: 0;
   color: red;
   font-weight: 600;
   font-size: 20px;
-  background: rgba(213, 213, 213, 0.5);
+  background: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   @media (max-height: 740px){
     top: 44px;
@@ -62,6 +61,10 @@ export const Timer = styled.p`
     width: 70px;
     height: 44px;
   }
+`;
+
+export const Category = styled.div`
+
 `;
 
 export const CanvasActions = styled.div`

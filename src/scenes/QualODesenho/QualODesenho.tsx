@@ -8,11 +8,11 @@ import GamePage from './Game';
 import RankingPage from './Ranking';
 import WordPage from './Word';
 
-export interface guessingPlayer {
+export interface GuessingPlayer {
   id: string;
   nickname: string;
   avatarSeed: string;
-  guessTime: string;
+  guessTime: number;
 }
 
 enum Game {
@@ -28,10 +28,10 @@ export default function QualODesenho() {
 
   const navigate = useNavigate();
   const [word, setWord] = useState<string>(undefined);
+  const [finalResults, setFinalResults] = useState<boolean>(false);
   const [drawingPaths, setDrawingPaths] = useState<string>();
-  const [finalRanking, setFinalRanking] = useState<boolean>(false);
   const [wordSuggestions, setWordSuggestions] = useState<string[]>([]);
-  const [playersAndGuesses, setPlayersAndGuesses] = useState<guessingPlayer[]>([]);
+  const [playersAndGuesses, setPlayersAndGuesses] = useState<GuessingPlayer[]>([]);
 
   const description = (
     <>
@@ -96,7 +96,6 @@ export default function QualODesenho() {
       roomCode: room.code,
       destination: Game.Finish,
     });
-    setFinalRanking(true);
   };
 
   const backToLobby = () => {
@@ -108,7 +107,7 @@ export default function QualODesenho() {
   };
 
   const sendWinner = () => {
-    const winner = JSON.stringify({nickname: user.nickname, time: gameTime - msTimer});
+    const winner = JSON.stringify({nickname: user.nickname, time: ((gameTime - msTimer) / 1000)});
     socket.pushMessage(room.code, 'correct-guess', winner);
     clearInterval(msTimer);
     setGlobalRoomPage(Game.Finish);
@@ -196,9 +195,9 @@ export default function QualODesenho() {
     });
 
     socket.addEventListener('results', (results) => {
-      console.log(results);
       setPlayersAndGuesses(JSON.parse(results));
       finishGame();
+      setFinalResults(true);
     });
 
     return () => {
@@ -207,14 +206,6 @@ export default function QualODesenho() {
   }, []);
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  useEffect(() => {
-    if(finalRanking){
-      console.log('resultado parcial:', playersAndGuesses.map(p => ({name: p.nickname, time: p.guessTime})));
-    } else {
-      console.log('resultado FINAL:', playersAndGuesses.map(p => ({name: p.nickname, time: p.guessTime})));
-    }
-  }, [playersAndGuesses, finalRanking]);
 
   switch (room.page) {
     case Game.Awaiting:
@@ -250,7 +241,8 @@ export default function QualODesenho() {
           data={playersAndGuesses}
           turnVisibility={user.isCurrentTurn}
           roulettePage={() => backToRoulette()}
-          finalRanking={finalRanking}
+          word={word}
+          finalResults={finalResults}
         />
       );
 

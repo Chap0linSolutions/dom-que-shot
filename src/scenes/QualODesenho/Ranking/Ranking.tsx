@@ -1,59 +1,92 @@
-import React from 'react';
-import './Ranking.style';
 import Avatar from '../../../components/Avatar';
 import Button from '../../../components/Button';
 import RankingItem from './RankingItem';
-import thumbDown from './img/thumbs-down.png';
-import crown from './img/crown.png';
 import Background from '../../../components/Background';
-import noOneVotedImage from '../../../assets/no-votes.png';
-import { guessingPlayer } from '../QualODesenho';
+import thumbDown from '../../../assets/thumbs-down.png';
+import crown from '../../../assets/crown.png';
+import noOneGuessed from '../../../assets/no-votes.png';
+import { GuessingPlayer } from '../QualODesenho';
 import {
   Content,
   RankingDiv,
-  ContainerHeader,
-  ContainerOnlyWinner,
-  ContainerWinner,
-  ContainerLoser,
-  BackgroundAvatar,
-  ContainerBody,
-  RankingContainer,
+  Header,
+  OnlyWinner,
+  Winner,
+  Loser,
+  AvatarBackground,
+  Body,
+  Ranking,
+  Crown,
+  NoOneGuessed,
+  ThumbsDown,
+  Text,
+  Subtitle,
+  Word,
+  Guidance,
 } from './Ranking.style';
 
 interface RankingProps {
-  data: guessingPlayer[];
-  finalRanking: boolean;
+  data: GuessingPlayer[];
   roulettePage: () => void;
   turnVisibility: boolean;
+  word: string;
+  finalResults: boolean;
 }
 
 export function RankingPage({
   data,
-  finalRanking,
   roulettePage,
   turnVisibility,
+  word,
+  finalResults,
 }: RankingProps) {
-  if (data.length === 0) {
-    return <p>Loading...</p>;
+  
+  const whoGuessed = data.filter(d => d.guessTime > -1);
+  const whoDidnt = data.filter(d => d.guessTime < 0);
+
+  whoGuessed.length > 0 && whoGuessed.sort((a, b) => (a.guessTime - b.guessTime));
+  //PAREI AQUI
+
+  const winner: GuessingPlayer =
+    whoGuessed.length > 0
+      ? whoGuessed[0]
+      : {
+          id: '',
+          nickname: 'carregando...',
+          avatarSeed: 'a winner avatar has no seed',
+          guessTime: -1,
+        };
+
+  const loser: GuessingPlayer =
+    data.length > 1
+      ? data[data.length - 1]
+      : {
+          id: '',
+          nickname: 'carregando...',
+          avatarSeed: 'a loser avatar has no seed',
+          guessTime: -1,
+        };
+
+  let guidanceText = [];
+
+  if(!finalResults){
+    guidanceText = ['Aguardando os demais jogadores...']
+  } else if(whoDidnt.length > 0){
+    guidanceText = ['Quem não acertou bebe!'];
+  } else if(whoGuessed.length === 1) {
+    guidanceText = [
+      'Mas só tinha um pra tentar adivinhar? Aff',
+      `Ainda assim, 'todo mundo' acertou.`,
+      'Logo, quem desenhou bebe.',
+    ];
+  } else {
+    guidanceText = [
+      'Todo mundo acertou!',
+      'Nesse caso, azar do desenhista.',
+      'Ele bebe. (facilitou demais)',
+    ]
   }
-  const winner = data[0];
-  const loser = data[data.length - 1];
-  let count = 0;
-  let noOneVoted = false;
 
-  const convertTime = (strTime: string) => {
-    return 60 - parseFloat(strTime) / 1000;
-  };
-
-  data.forEach((player) => {
-    if (convertTime(player.guessTime) >= 60) {
-      count++;
-    }
-  });
-
-  if (count === data.length) {
-    noOneVoted = true;
-  }
 
   const button =
     turnVisibility === true ? (
@@ -66,70 +99,79 @@ export function RankingPage({
     <Background>
       <Content>
         <RankingDiv>
-          <ContainerHeader>
-            {count < 2 ? (
+          <Subtitle>E a palavra era:</Subtitle>
+          <Word>{word}</Word>
+          <Header>
+            {whoGuessed.length > 1 ? (
               <>
-                <ContainerWinner>
-                  <BackgroundAvatar>
-                    <img className="crown" src={crown} />
+                <Winner>
+                  <AvatarBackground>
+                    <Crown src={crown} />
                     <Avatar seed={winner.avatarSeed} />
-                  </BackgroundAvatar>
-                  <p>{winner.nickname}</p>
-                  <span>{convertTime(winner.guessTime)}s</span>
-                </ContainerWinner>
-                <ContainerLoser>
-                  <BackgroundAvatar>
-                    {finalRanking && <Avatar seed={loser.avatarSeed} />}
-                    <img className="thumbDown" src={thumbDown} />
-                  </BackgroundAvatar>
-                  {finalRanking && <p>{loser.nickname}</p>}
-                  {finalRanking && <span>{convertTime(loser.guessTime)}s</span>}
-                </ContainerLoser>
-              </>
+                  </AvatarBackground>
+                  <Text>{winner.nickname}</Text>
+                  <Text>{winner.guessTime}s</Text>
+                </Winner>
+                <Loser>
+                  <AvatarBackground>
+                    <Avatar seed={loser.avatarSeed} />
+                    <ThumbsDown src={thumbDown} />
+                  </AvatarBackground>
+                  <Text>{loser.nickname}</Text>
+                  <Text>{loser.guessTime}s</Text>
+                </Loser>
+             </>
             ) : (
-              <ContainerOnlyWinner>
-                <BackgroundAvatar>
-                  {!noOneVoted ? (
+              <OnlyWinner>
+                <AvatarBackground>
+                  {whoDidnt.length < data.length ? (
                     <>
-                      <img className="only-crown" src={crown} />
+                      <Crown src={crown} />
                       <Avatar seed={winner.avatarSeed} />
                     </>
                   ) : (
-                    <img
-                      src={noOneVotedImage}
-                      width="63px;"
-                      style={{ transform: 'rotate(10deg)' }}
-                    />
+                    <NoOneGuessed src={noOneGuessed}/>
                   )}
-                </BackgroundAvatar>
-                {!noOneVoted ? (
+                </AvatarBackground>
+                {whoDidnt.length < data.length ? (
                   <>
-                    <p>{winner.nickname}</p>
-                    <span>{convertTime(winner.guessTime)}s</span>
+                    <Text>{winner.nickname}</Text>
+                    <Text>{winner.guessTime}s</Text>
                   </>
                 ) : (
-                  <p style={{ textAlign: 'center' }}>
-                    Ninguem
-                    <br />
-                    acertou!
-                  </p>
+                  <Text>
+                    Ninguém <br/> acertou!
+                  </Text>
                 )}
-              </ContainerOnlyWinner>
+              </OnlyWinner>
             )}
-          </ContainerHeader>
+          </Header>
 
-          <ContainerBody>
-            <RankingContainer>
-              {data.map((player, i) => (
+          <Body>
+            <Ranking>
+              {whoGuessed.map((player, i) => (
                 <RankingItem
                   key={i}
                   name={player.nickname}
-                  time={convertTime(player.guessTime)}
+                  time={player.guessTime}
                   position={i}
                 />
               ))}
-            </RankingContainer>
-          </ContainerBody>
+              {whoDidnt.map((player, i) => (
+                <RankingItem
+                  key={i}
+                  name={player.nickname}
+                  time={player.guessTime}
+                  position={i}
+                />
+              ))}
+            </Ranking>
+            {guidanceText.map(text => (
+              <Guidance>
+                {text}
+              </Guidance>
+            ))}
+          </Body>
         </RankingDiv>
         {button}
       </Content>
