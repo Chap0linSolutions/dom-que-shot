@@ -17,6 +17,7 @@ export interface GuessingPlayer {
 
 enum Game {
   Cover,
+  Word,
   Game,
   Awaiting,
   Finish,
@@ -83,7 +84,7 @@ export default function QualODesenho() {
     socket.pushMessage(room.code, 'que-desenho-suggestions');
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: Game.Awaiting,
+      destination: Game.Word,
     });
   };
 
@@ -208,7 +209,7 @@ export default function QualODesenho() {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   switch (room.page) {
-    case Game.Awaiting:
+    case Game.Word:
       return (
         <WordPage
           title={title}

@@ -45,6 +45,7 @@ export function RankingPage({
   const whoDidnt = data.filter(d => d.guessTime < 0);
 
   whoGuessed.length > 0 && whoGuessed.sort((a, b) => (a.guessTime - b.guessTime));
+  whoDidnt.length > 0 && whoDidnt.sort((a, b) => (b.guessTime - a.guessTime));
   //PAREI AQUI
 
   const winner: GuessingPlayer =
@@ -72,7 +73,11 @@ export function RankingPage({
   if(!finalResults){
     guidanceText = ['Aguardando os demais jogadores...']
   } else if(whoDidnt.length > 0){
-    guidanceText = ['Quem não acertou bebe!'];
+    if(whoDidnt.length === data.length){
+      guidanceText = ['Todo mundo bebe! (menos quem desenhou)'];
+    } else {
+      guidanceText = ['Quem não acertou bebe!'];
+    } 
   } else if(whoGuessed.length === 1) {
     guidanceText = [
       'Mas só tinha um pra tentar adivinhar? Aff',

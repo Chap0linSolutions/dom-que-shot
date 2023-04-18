@@ -115,6 +115,15 @@ export default function Lobby() {
             setAlertMessage('Aguardando finalizar jogo em andamento.');
           }
           break;
+        case '/QualODesenho':
+          if (!page || page < 2) {
+            //para o qual-desenho ainda é possível entrar nas duas primeiras telas
+            setAlertMessage('Reconectando...');
+            goTo(URL, page);
+          } else {
+            setAlertMessage('Aguardando finalizar jogo em andamento.');
+          }
+          break;
         case '/QuemSouEu':
           if (page !== 3) {
             //no caso do Quem Sou Eu os jogadores podem entrar a qualquer momento, com exceção da tela de resultados

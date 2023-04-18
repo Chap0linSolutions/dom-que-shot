@@ -59,7 +59,7 @@ export const Timer = styled.p`
     top: 44px;
     font-size: 16px; 
     width: 70px;
-    height: 44px;
+    height: 30px;
   }
 `;
 

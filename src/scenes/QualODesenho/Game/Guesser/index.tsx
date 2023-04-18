@@ -52,6 +52,7 @@ export default function Guesser({title, description, msTimeLeft, category, drawi
     ) : null;
 
     const checkGuess = () => {                       
+      guesses.current.push(guessRef.current.value);
       const guess = format(guessRef.current.value);                 
       const answer = format(category);
       if (guess === answer) {
@@ -59,7 +60,6 @@ export default function Guesser({title, description, msTimeLeft, category, drawi
           goToRankingPage();
           return;
       }
-      guesses.current.push(guess);
       guessRef.current.value = '';
     };
 

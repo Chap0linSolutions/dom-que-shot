@@ -14,7 +14,13 @@ export default function RankingItem({ position, name, time }: RankingItemProps){
     const details = (time < 0)
     ? (<>
         <LoserName>{name}</LoserName>
-        <LoserTime>Não acertou</LoserTime>
+        <LoserTime>
+          {
+            (time > -100)
+            ? 'Não acertou'
+            : 'Caiu da partida'
+          }
+        </LoserTime>
       </>)
     : (<>
       <WinnerText>{name}</WinnerText>
