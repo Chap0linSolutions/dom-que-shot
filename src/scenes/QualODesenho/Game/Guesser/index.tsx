@@ -9,11 +9,14 @@ import { draw, Path, CanvasDimensions } from '../Game';
 import {
   GameDiv,
   DrawingCanvas,
-  GuessingDiv,
+  GuessesAndCanvas,
   GuessesDiv,
   GuessTitle,
   GuessInput,
   GuessInputDiv,
+  Guesses,
+  Guess,
+  GuessesTitle,
 } from './Guesser.style';
 
 type Message = {
@@ -139,27 +142,30 @@ export default function Guesser({title, description, msTimeLeft, category, drawi
         />
         <Header infoPage={() => setPopupVisibility(true)} />
         <GameDiv>
-            <GuessTitle>Qual é o desenho?</GuessTitle>
-            <GuessingDiv>
-                <GuessesDiv
-                    style={{
-                        width: innerWidth - (canvas.width + 32),
-                    }}>
-                    {guesses.current.map((guess) => {
-                        return (
-                        <span>
-                            {guess}
-                            <br />
-                        </span>
-                        );
-                    })}
-                </GuessesDiv>
+            <GuessTitle>Que desenho é esse?</GuessTitle>
+            <GuessesAndCanvas>
                 <DrawingCanvas
                     ref={canvasRef}
                     width={canvas.width}
                     height={canvas.height}
                 />
-            </GuessingDiv>
+                <GuessesDiv style={{
+                  width: innerWidth - (canvas.width + 28),
+                }}>
+                  <GuessesTitle>
+                    Chutes
+                  </GuessesTitle>
+                  <Guesses>
+                    {guesses.current.map((guess) => {
+                      return (
+                        <Guess>
+                          {guess}
+                        </Guess>
+                      );
+                    })}
+                  </Guesses>
+                </GuessesDiv>
+            </GuessesAndCanvas>
             <GuessInputDiv>
                 <GuessInput ref={guessRef} placeholder="Digite sua resposta..." />
                 <Button width="120px" height="40px" onClick={checkGuess}>
