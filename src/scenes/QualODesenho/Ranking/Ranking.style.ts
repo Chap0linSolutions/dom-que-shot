@@ -155,7 +155,7 @@ export const ThumbsDown = styled(Icon)`
 `;
 
 export const NoOneGuessed = styled.img`
-  width: 63px;
+  width: 100%;
   object-fit: scale-down;
-  transform: rotate(10deg);
+  padding: 7px;
 `;

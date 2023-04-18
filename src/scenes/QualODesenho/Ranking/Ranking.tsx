@@ -73,11 +73,14 @@ export function RankingPage({
   if(!finalResults){
     guidanceText = ['Aguardando os demais jogadores...']
   } else if(whoDidnt.length > 0){
-    if(whoDidnt.length === data.length){
+    const noobs = whoDidnt.filter(p => p.guessTime === -1);
+    if(noobs.length === data.length){
       guidanceText = ['Todo mundo bebe! (menos quem desenhou)'];
-    } else {
+    } else if(noobs.length > 0) {
       guidanceText = ['Quem não acertou bebe!'];
-    } 
+    } else {
+      guidanceText = ['Todo mundo caiu. Ninguém bebe.'];
+    }
   } else if(whoGuessed.length === 1) {
     guidanceText = [
       'Mas só tinha um pra tentar adivinhar? Aff',
@@ -144,9 +147,10 @@ export function RankingPage({
                     <Text>{winner.guessTime}s</Text>
                   </>
                 ) : (
-                  <Text>
-                    Ninguém <br/> acertou!
-                  </Text>
+                  <>
+                    <Text>Tragédia</Text>
+                    <Text>total!</Text>
+                  </>
                 )}
               </OnlyWinner>
             )}
