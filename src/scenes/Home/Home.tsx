@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { ArrowRight, AlertTriangle } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../contexts/GlobalContextProvider';
+import SocketConnection from '../../lib/socket';
 import ImageSlider from './ImageSlider';
 import Background from '../../components/Background';
 import Header from '../../components/Header';
@@ -31,6 +32,8 @@ function Home() {
     visibility: 'hidden',
   });
 
+  const inputRef = useRef(null);
+
   const newRoom = () => {
     api
       .put(`/createRoom`)
@@ -45,8 +48,8 @@ function Home() {
     return;
   };
 
-  const updateRoomCode = (e) => {
-    const newRoom: string = e.target.value.trim().toUpperCase();
+  const updateRoomCode = () => {
+    const newRoom: string = inputRef.current.value.trim().toUpperCase();
     if (newRoom.length !== 0) {
       setRoomCode(newRoom);
       setInputErrorMsg({ msg: '', visibility: 'hidden' });
@@ -95,9 +98,12 @@ function Home() {
     });
   };
 
-  ////Listener para remover foco do <input> quando o usuário aperta Enter/////////////////////////
+  useEffect(() => {
+    const socket = SocketConnection.getInstance();
+    socket && socket.disconnect();
+  }, []);
 
-  const ref = useRef(null);
+  ////Listener para remover foco do <input> quando o usuário aperta Enter/////////////////////////
 
   useEffect(() => {
     document.addEventListener('keydown', detectKeyDown);
@@ -123,7 +129,7 @@ function Home() {
         <p className="HelpInfo">Já possui uma sala?</p>
         <div className="JoinRoomInputAndButton">
           <input
-            ref={ref}
+            ref={inputRef}
             onChange={updateRoomCode}
             className="JoinRoomEnterCode"
             placeholder="Digite o código da sala"

@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { X, CheckCircle, AlertTriangle, XCircle } from 'react-feather';
+import cookieIcon from './assets/cookie.png';
 import gsap from 'gsap';
 import './Popup.css';
-
 interface PopupProps {
-  type: 'info' | 'warning';
+  type: 'info' | 'warning' | 'cookies';
   warningType?: 'success' | 'alert' | 'failure';
   height?: number;
   title?: string;
@@ -34,6 +34,7 @@ export default function Popup({
 }: PopupProps) {
   const infoRef = useRef();
   const warningRef = useRef();
+  const cookieRef = useRef();
 
   const releaseProps = comesFromTop
     ? {
@@ -64,12 +65,16 @@ export default function Popup({
       };
 
   const releasePopup = () => {
-    const ref = type === 'info' ? infoRef : warningRef;
+    let ref = infoRef;
+    if (type === 'warning') ref = warningRef;
+    if (type === 'cookies') ref = cookieRef;
     gsap.to(ref.current, releaseProps);
   };
 
   const hidePopup = () => {
-    const ref = type === 'info' ? infoRef : warningRef;
+    let ref = infoRef;
+    if (type === 'warning') ref = warningRef;
+    if (type === 'cookies') ref = cookieRef;
     gsap.to(ref.current, hideProps);
   };
 
@@ -102,39 +107,62 @@ export default function Popup({
     }
   };
 
-  if (type === 'info') {
-    return (
-      <div
-        ref={infoRef}
-        className={`PopupContainer ${comesFromTop ? 'Top' : 'Bottom'}`}>
-        <div className="PopupDiv" style={popupStyle}>
-          <div className="PopupHeader">
-            <p
-              className="PopupTitle"
-              style={titleColor ? { color: titleColor } : {}}>
-              {title}
-            </p>
-            <X color="#170C32" width="24px" strokeWidth="5px" onClick={exit} />
-          </div>
-          <div
-            className="PopupDescription"
-            style={descriptionColor ? { color: descriptionColor } : {}}>
-            {description}
+  switch (type) {
+    case 'cookies':
+      return (
+        <div ref={cookieRef} className={`CookieContainer Bottom`}>
+          <div className="PopupDiv">
+            <div className="PopupHeader">
+              <p className="PopupTitle">Nham... cookies</p>
+              <img src={cookieIcon} className="Cookie" />
+            </div>
+            <div
+              className="PopupDescription"
+              style={descriptionColor ? { color: descriptionColor } : {}}>
+              {description}
+            </div>
           </div>
         </div>
-      </div>
-    );
-  }
-  return (
-    <div ref={warningRef} className={`PopupContainer Bottom`}>
-      <div className="PopupDiv" style={popupStyle}>
+      );
+    case 'warning':
+      return (
+        <div ref={warningRef} className={`PopupContainer Bottom`}>
+          <div className="PopupDiv" style={popupStyle}>
+            <div
+              className="PopupDescription"
+              style={descriptionColor ? { color: descriptionColor } : {}}>
+              {description}
+              {getIcon()}
+            </div>
+          </div>
+        </div>
+      );
+    default:
+      return (
         <div
-          className="PopupDescription"
-          style={descriptionColor ? { color: descriptionColor } : {}}>
-          {description}
-          {getIcon()}
+          ref={infoRef}
+          className={`PopupContainer ${comesFromTop ? 'Top' : 'Bottom'}`}>
+          <div className="PopupDiv" style={popupStyle}>
+            <div className="PopupHeader">
+              <p
+                className="PopupTitle"
+                style={titleColor ? { color: titleColor } : {}}>
+                {title}
+              </p>
+              <X
+                color="#170C32"
+                width="24px"
+                strokeWidth="5px"
+                onClick={exit}
+              />
+            </div>
+            <div
+              className="PopupDescription"
+              style={descriptionColor ? { color: descriptionColor } : {}}>
+              {description}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  );
+      );
+  }
 }
