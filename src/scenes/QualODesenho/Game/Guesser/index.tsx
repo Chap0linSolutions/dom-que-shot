@@ -196,7 +196,7 @@ export default function Guesser({title, description, timeLeft, category, drawing
               <GuessesTitle>
                 Chutes
               </GuessesTitle>
-              <Guesses>
+              <Guesses style={{maxHeight: 0.75 * canvas.height}}>
                 {guesses.map((guess, i) => {
                   if(playerGuessed && (i === guesses.length - 1)) return (
                     <RightGuess key={i}>
