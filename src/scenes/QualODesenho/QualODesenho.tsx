@@ -19,7 +19,6 @@ enum Game {
   Cover,
   Word,
   Game,
-  Awaiting,
   Finish,
 }
 
@@ -52,7 +51,7 @@ export default function QualODesenho() {
   //TIMER//////////////////////////////////////////////////////////////////////////////////
 
   const gameTime = 60000;
-  const deltaT = 1000;
+  const deltaT = 500;
 
   const [msTimer, setMsTimer] = useState(gameTime);
   const [timer, setTimer] = useState<NodeJS.Timer>();
@@ -108,10 +107,9 @@ export default function QualODesenho() {
   };
 
   const sendWinner = () => {
-    const winner = JSON.stringify({nickname: user.nickname, time: ((gameTime - msTimer) / 1000)});
+    const winner = JSON.stringify({nickname: user.nickname, time: (60000 - msTimer)/1000});
     socket.pushMessage(room.code, 'correct-guess', winner);
     clearInterval(msTimer);
-    setGlobalRoomPage(Game.Finish);
   };
 
   const backToRoulette = () => {
@@ -231,7 +229,6 @@ export default function QualODesenho() {
           startGame={startGame}
           updateDrawingPaths={sendDrawingUpdate}
           sendWinner={sendWinner}
-          goToRankingPage={finishGame}
           drawingPaths={drawingPaths}
         />
       );

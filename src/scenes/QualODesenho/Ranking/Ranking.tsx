@@ -83,21 +83,18 @@ export function RankingPage({
       guidanceText = ['Quem não acertou bebe!'];
     } else {
       guidanceText = [
-        'Todos os que conseguiram jogar acertaram.',
-        'Nesse caso, o desenhista bebe.',
+        'Todos os que conseguiram jogar acertaram!',
+        'Nesse caso, ninguém bebe.',
       ];
     } 
   } else if(whoGuessed.length === 1) {
     guidanceText = [
       'Mas só tinha um pra tentar adivinhar? Aff',
-      `Ainda assim, 'todo mundo' acertou.`,
-      'Logo, quem desenhou bebe.',
     ];
   } else {
     guidanceText = [
       'Todo mundo acertou!',
-      'Nesse caso, azar do desenhista.',
-      'Ele bebe. (facilitou demais)',
+      'Nesse caso, ninguém bebe.',
     ]
   }
 

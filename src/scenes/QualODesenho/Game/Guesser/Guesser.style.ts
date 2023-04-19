@@ -16,14 +16,12 @@ export const DrawingCanvas = styled.canvas`
 
 export const UnderBar = styled.div``;
 
-export const GuessTitle = styled.p`
-  width: 256px;
-  height: 48px;
-  background: #403a55;
+export const Title = styled.p`
   border-radius: 10px;
+  width: 300px;
   margin: 0;
-  margin-bottom: 24px;
-  font-family: Roboto;
+  padding: 10px 30px;
+  font-family: Adumu;
   font-size: 18px;
   font-weight: 400;
   display: flex;
@@ -31,8 +29,6 @@ export const GuessTitle = styled.p`
   align-items: center;
   @media (max-height: 740px) {
     font-size: 16px;
-    height: 44px;
-    width: 230px;
   }
 `;
 
@@ -65,14 +61,18 @@ export const GuessesTitle = styled.div`
 
 export const Guesses = styled.div`
   width: 100%;
-  height: 80%;
+  height: 85%;
+  border-radius: 0 0 10px;
   background: #403a55;
-  border-radius: 0 0 10px 0;
-  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  ::webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const Guess = styled.p`
@@ -85,10 +85,34 @@ export const Guess = styled.p`
   }
 `;
 
+export const RightGuess = styled(Guess)`
+  font-weight: 600;
+  color: lime;
+`;
+
+export const Timer = styled.p`
+  margin: 0;
+  margin-left: 5px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 5px);
+  height: calc(12% - 5px);
+  background: rgba(255, 255, 255, 0.5);
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 10px;
+  @media(max-height: 740px){
+    font-size: 16px;
+  }
+`;
+
 export const GuessInputDiv = styled.div`
   width: 100%;
   margin: 0;
-  padding: 24px 16px;
+  padding: 10px 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,12 +120,41 @@ export const GuessInputDiv = styled.div`
 `;
 
 export const GuessInput = styled.input`
-  font-size: 16px;
   color: black;
-  padding-left: 4px;
-  margin-right: 5px;
-  width: 100%;
-  height: 40px;
-  background: #d9d9d9;
-  border-radius: 0px 10px 10px 0px;
+  background-color: white;
+  border-radius: 10px 0 0 10px;
+  font-weight: 400;
+  border: none;
+  height: 50px;
+  text-align: center;
+  font-size: 20px;
+`;
+
+export const Banner = styled.div`
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 14px 20px;
+  border-radius: 20px;
+  background: #800080;
+  background-size: 300% 100%;
+  @media (max-height: 740px) {
+    padding: 10px 20px;
+  }
+`; 
+
+export const BannerBeer = styled.img`
+  width: 30px;
+  object-fit: scale-down;
+`;
+
+export const Text = styled.p`
+  margin: 0;
+  margin-left: 14px;
+  font-size: 16px;
+  @media (max-height: 740px) {
+    font-size: 14px;
+  }
 `;

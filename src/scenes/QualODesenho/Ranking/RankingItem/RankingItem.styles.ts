@@ -28,7 +28,7 @@ const Text = styled.p`
   margin: 0;
   font-size: 20px;
   @media(max-height: 740px){
-    font-size: 18px;
+    font-size: 16px;
   }
 `;
 
@@ -37,11 +37,11 @@ export const WinnerText = styled(Text)`
 `;
 
 export const LoserName = styled(Text)`
-  color: firebrick;
+  color: #ad0909;
 `;
 
 export const LoserTime = styled(Text)`
-  color: firebrick;
+  color: #ad0909;
   font-size: 14px;
 `;
 

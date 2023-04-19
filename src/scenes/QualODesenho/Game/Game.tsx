@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import Drawer from './Drawer';
 import Guesser from './Guesser';
 
@@ -12,7 +12,6 @@ interface GameProps {
   updateDrawingPaths: (value: string) => void;
   startGame: () => void;
   sendWinner: () => void;
-  goToRankingPage: () => void;
 }
 
 type Coordinates = {
@@ -78,7 +77,6 @@ export default function GamePage({
   updateDrawingPaths,
   startGame,
   sendWinner,
-  goToRankingPage,
 }: GameProps) {
   const [selectedColor, setSelectedColor] = useState<string>('#000000');
   const [selectedWidth, setSelectedWidth] = useState<number>(3);
@@ -225,13 +223,23 @@ export default function GamePage({
     }
   };
 
+  const timeLeft = useMemo(() => {
+    const mins = (msTimeLeft >= 60000)
+      ? Math.floor(msTimeLeft / 60000)
+      : 0;
+    const secs = Math.floor(
+      (msTimeLeft / 1000) - (60 * mins)
+    );
+    return [mins, secs];
+  }, [msTimeLeft]);
+
 
   if(turnVisibility) {
     return <Drawer
       title={title}
       description={description}
       category={category}
-      msTimeLeft={msTimeLeft}
+      timeLeft={timeLeft}
       paths={paths}
       canvas={canvas}
       canvasRef={canvasRef}
@@ -253,7 +261,7 @@ export default function GamePage({
     category={category}
     description={description}
     drawingPaths={drawingPaths}
-    msTimeLeft={msTimeLeft}
+    timeLeft={timeLeft}
     innerWidth={innerWidth}
     canvas={canvas}
     canvasRef={canvasRef}
@@ -263,7 +271,6 @@ export default function GamePage({
     sendWinner={sendWinner}
     title={title}
     undoLastPath={undoLastPath}
-    goToRankingPage={goToRankingPage}
     clearDrawing={clearDrawing}
   />
 }

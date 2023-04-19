@@ -44,6 +44,10 @@ export const Subtitle = styled.p`
 
 export const Guidance = styled(Subtitle)`
   margin: 0;
+  font-size: 16px;
+  @media(max-height: 740px){
+    font-size: 15px;
+  }
 `
 
 export const Text = styled.p`

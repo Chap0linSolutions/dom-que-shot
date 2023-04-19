@@ -19,10 +19,8 @@ export const DrawingDiv = styled.div`
 export const Head = styled.div`
   height: 60px;
   margin: 0;
-  padding: 0 10px;
-  background: #403a55;
-  border-radius: 10px 10px 0px 0px;
   font-family: Roboto;
+  border-radius: 10px 10px 0 0;
   font-size: 24px;
   font-weight: 400;
   display: flex;
@@ -34,37 +32,43 @@ export const Head = styled.div`
   }
 `;
 
-export const DrawingCanvas = styled.canvas`
-  background-color: white;
-  border-radius: 0 0 10px 10px;
-  flex-grow: 0;
+export const Category = styled.p`
+  margin: 0;
+  margin-right: 5px;
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  border-radius: 10px 10px 0 0;
+  font-family: Adumu;
+  width: calc(75% - 5px);
+  height: 100%;
+  background-color: #403a55;
 `;
 
-export const Timer = styled.p`
-  right: 28px;
-  top: 60px;
-  width: 80px;
-  height: 40px;
+export const Timer = styled.div`
+  margin: 0;
+  margin-bottom: 5px;
+  width: 25%;
+  height: calc(100% - 5px);
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  margin: 0;
-  color: red;
+  color: white;
   font-weight: 600;
   font-size: 20px;
   background: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   @media (max-height: 740px){
-    top: 44px;
-    font-size: 16px; 
-    width: 70px;
-    height: 30px;
+    font-size: 16px;
   }
 `;
 
-export const Category = styled.div`
-
+export const DrawingCanvas = styled.canvas`
+  background-color: white;
+  border-radius: 0 10px 10px 10px;
+  flex-grow: 0;
 `;
 
 export const CanvasActions = styled.div`

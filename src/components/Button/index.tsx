@@ -9,6 +9,7 @@ interface ButtonProps {
   isDisabled?: boolean;
   color?: string;
   children: React.ReactNode | React.ReactNode[];
+  borderRadius?: string;
 }
 
 export default function Button({
@@ -19,12 +20,14 @@ export default function Button({
   children,
   isDisabled = false,
   color,
+  borderRadius,
 }: ButtonProps) {
   const buttonStyle = {
     width: width ? width : undefined,
     height: height ? height : undefined,
     background: color? color : undefined,
     margin: staysOnBottom ? '0 auto 40px auto' : undefined,
+    borderRadius: borderRadius? borderRadius : undefined,
   };
 
   return (

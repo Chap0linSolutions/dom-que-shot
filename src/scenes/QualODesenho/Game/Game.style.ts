@@ -200,3 +200,4 @@ export const GuessInput = styled.input`
   background: #d9d9d9;
   border-radius: 0px 10px 10px 0px;
 `;
+

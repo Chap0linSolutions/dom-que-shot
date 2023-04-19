@@ -50,7 +50,7 @@ const widths = [3, 5, 7, 11, 17];
 interface DrawerProps {
     title: string,
     category: string,
-    msTimeLeft: number,
+    timeLeft: number[],
     description: string | JSX.Element,
     canvasRef: React.MutableRefObject<HTMLCanvasElement>,
     contextRef: React.MutableRefObject<CanvasRenderingContext2D>,
@@ -68,14 +68,14 @@ interface DrawerProps {
     clearDrawing: () => void,
 }
 
-export default function Drawer({description, title, category, msTimeLeft, canvasRef, contextRef, paths, canvas, canvasOffsetX, canvasOffsetY, selectedColor, selectedWidth, setSelectedWidth, setSelectedColor, updateDrawingPaths, undoLastPath, clearDrawing, startGame}:DrawerProps){
+export default function Drawer({description, title, category, timeLeft, canvasRef, contextRef, paths, canvas, canvasOffsetX, canvasOffsetY, selectedColor, selectedWidth, setSelectedWidth, setSelectedColor, updateDrawingPaths, undoLastPath, clearDrawing, startGame}:DrawerProps){
     const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
     const [colorPaletteVisibility, setColorPaletteVisibility] = useState<boolean>(false);
     const [widthPaletteVisibility, setWidthPaletteVisibility] = useState<boolean>(false);
     const [clearConfirmation, setClearConfirmation] = useState<boolean>(false);
     const [isDrawing, setIsDrawing] = useState(false);
 
-    const guidanceText = 'Pronto? Aperte o botão abaixo e pode começar!';
+    const guidanceText = 'Tudo pronto? Aperte o botão abaixo e pode começar!';
 
     const colorPalette = (
         <Palette>
@@ -178,25 +178,6 @@ export default function Drawer({description, title, category, msTimeLeft, canvas
       setIsDrawing(false);
     };
 
-    const timeLeft = useMemo(() => {
-      const mins = (msTimeLeft >= 60000)
-        ? Math.floor(msTimeLeft / 60000)
-        : 0;
-      const secs = Math.floor(
-        (msTimeLeft / 1000) - (60 * mins)
-      );
-
-      const minutes = (mins < 10)
-      ? `0${mins}`
-      : `${mins}`;
-
-      const seconds = (secs < 10)
-      ? `0${secs}`
-      : `${secs}`;
-
-      return [minutes, seconds];
-    }, [msTimeLeft]);
-
     const confirmationAlert = clearConfirmation
     ? (
       <Alert
@@ -210,6 +191,14 @@ export default function Drawer({description, title, category, msTimeLeft, canvas
         message="Apagar tudo?"
       />
     ) : null;
+
+    const minutes = (timeLeft[0] < 10)
+    ? `0${timeLeft[0]}`
+    : `${timeLeft[0]}`;
+
+    const seconds = (timeLeft[1] < 10)
+    ? `0${timeLeft[1]}`
+    : `${timeLeft[1]}`;
 
   return (
     <Background noImage>
@@ -237,7 +226,7 @@ export default function Drawer({description, title, category, msTimeLeft, canvas
         exit={() => setWidthPaletteVisibility(false)}
         border="1px solid black"
       />
-      <Header infoPage={() => setPopupVisibility(true)} />
+      <Header exit infoPage={() => setPopupVisibility(true)} />
       <Alert
         message={guidanceText}
         buttonText="Pronto!"
@@ -251,7 +240,7 @@ export default function Drawer({description, title, category, msTimeLeft, canvas
               {category}
             </Category>
             <Timer>
-              {timeLeft[0]}:{timeLeft[1]}
+              {minutes}:{seconds}
             </Timer>
           </Head>
           <DrawingCanvas
