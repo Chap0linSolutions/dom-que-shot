@@ -76,7 +76,7 @@ export function RankingPage({
     const noobs = whoDidnt.filter(p => p.guessTime === -1);
     const disconnected = whoDidnt.filter(p => p.guessTime === -100);
     if(noobs.length === data.length){
-      guidanceText = ['Todo mundo bebe! (menos quem desenhou)'];
+      guidanceText = ['Ninguém conseguiu acertar.', 'Nesse caso, o desenhista bebe.'];
     } else if(disconnected.length === data.length){
       guidanceText = ['Todo mundo caiu. Ninguém bebe.'];
     } else if(noobs.length > 0) {

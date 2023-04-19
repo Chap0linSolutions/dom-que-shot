@@ -53,8 +53,6 @@ export default function QualODesenho() {
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////
 
-  
-
   const [msTimer, setMsTimer] = useState(GAME_DURATION);
   const [timer, setTimer] = useState<NodeJS.Timer>();
 
@@ -82,7 +80,7 @@ export default function QualODesenho() {
   ////////////////////////////////////////////////////////////////////////////////////////
 
   const startWordSelection = () => {
-    socket.pushMessage(room.code, 'que-desenho-suggestions');
+    socket.pushMessage(room.code, 'que-desenho-suggestions', user.nickname);
     socket.push('move-room-to', {
       roomCode: room.code,
       destination: Game.Word,
