@@ -162,15 +162,6 @@ export default function Guesser({title, description, timeLeft, category, drawing
       }
   }, [drawingPaths]);
 
-
-  useEffect(() => {
-      document.addEventListener('keydown', detectKeyDown);
-      return () => {
-          document.removeEventListener('keydown', detectKeyDown);
-      };
-  }, [guessRef]);
-
-
   const minutes = (timeLeft[0] < 10)
   ? `0${timeLeft[0]}`
   : `${timeLeft[0]}`;
@@ -208,12 +199,12 @@ export default function Guesser({title, description, timeLeft, category, drawing
               <Guesses>
                 {guesses.map((guess, i) => {
                   if(playerGuessed && (i === guesses.length - 1)) return (
-                    <RightGuess>
+                    <RightGuess key={i}>
                       {guess}
                     </RightGuess>
                   ); 
                   return (
-                    <Guess>
+                    <Guess key={i}>
                       {guess}
                     </Guess>
                   );
@@ -231,6 +222,7 @@ export default function Guesser({title, description, timeLeft, category, drawing
               autoComplete="off"
               placeholder={placeholder}
               style={{width: canvas.width}}
+              onKeyDown={detectKeyDown}
             />
             <Button isDisabled={playerGuessed} borderRadius='0 10px 10px 0' width={`${innerWidth - (canvas.width + 28)}px`} height="50px" onClick={checkGuess}>
                 Enviar

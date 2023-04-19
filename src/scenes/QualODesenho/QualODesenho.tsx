@@ -22,6 +22,9 @@ enum Game {
   Finish,
 }
 
+const GAME_DURATION = 60000;
+const DELTA_TIME = 500;
+
 export default function QualODesenho() {
   const { user, room, setUser, setRoom } = useGlobalContext();
   const title = 'Qual é o desenho?';
@@ -50,19 +53,18 @@ export default function QualODesenho() {
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////
 
-  const gameTime = 60000;
-  const deltaT = 500;
+  
 
-  const [msTimer, setMsTimer] = useState(gameTime);
+  const [msTimer, setMsTimer] = useState(GAME_DURATION);
   const [timer, setTimer] = useState<NodeJS.Timer>();
 
   const startTimer = () => {
-    setTimer(setInterval(run, deltaT));
+    setTimer(setInterval(run, DELTA_TIME));
   };
 
   const run = () => {
     setMsTimer(previous => ((previous > 0)
-      ? previous - deltaT
+      ? previous - DELTA_TIME
       : previous
     ));
   };
@@ -109,7 +111,7 @@ export default function QualODesenho() {
   const sendWinner = () => {
     const winner = JSON.stringify({nickname: user.nickname, time: (60000 - msTimer)/1000});
     socket.pushMessage(room.code, 'correct-guess', winner);
-    clearInterval(msTimer);
+    clearInterval(timer);
   };
 
   const backToRoulette = () => {

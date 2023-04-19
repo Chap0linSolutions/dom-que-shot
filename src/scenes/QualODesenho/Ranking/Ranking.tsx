@@ -178,8 +178,8 @@ export function RankingPage({
                 />
               ))}
             </Ranking>
-            {guidanceText.map(text => (
-              <Guidance>
+            {guidanceText.map((text, i) => (
+              <Guidance key={i}>
                 {text}
               </Guidance>
             ))}
