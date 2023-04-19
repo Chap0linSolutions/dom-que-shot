@@ -1,17 +1,23 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import Drawer from './Drawer';
 import Guesser from './Guesser';
+import { Room } from '../../../contexts/GlobalContextProvider';
+import { Game } from '../QualODesenho';
 
+const GAME_DURATION = 60000;
+const DELTA_TIME = 400;
 interface GameProps {
   title: string;
-  msTimeLeft: number;
   description: string | JSX.Element;
   turnVisibility: boolean;
   category: string;
   drawingPaths: string;
+  gameCanStart: boolean;
   updateDrawingPaths: (value: string) => void;
   startGame: () => void;
-  sendWinner: () => void;
+  sendWinner: (value: number) => void;
+  timesUp: () => void;
+  room: Room;
 }
 
 type Coordinates = {
@@ -72,11 +78,13 @@ export default function GamePage({
   description,
   category,
   turnVisibility,
-  msTimeLeft,
   drawingPaths,
+  gameCanStart,
+  room,
   updateDrawingPaths,
   startGame,
   sendWinner,
+  timesUp,
 }: GameProps) {
   const [selectedColor, setSelectedColor] = useState<string>('#000000');
   const [selectedWidth, setSelectedWidth] = useState<number>(3);
@@ -87,8 +95,40 @@ export default function GamePage({
   const paths = useRef<Path[]>([]);
   const last = useRef<Last>({ id: 0, length: 0 });
 
+  //TIMER//////////////////////////////////////////////////////////////////////////////////
+
   useEffect(() => {
-    if (turnVisibility && counter.current > msTimeLeft) {
+    gameCanStart && startTimer();
+  }, [gameCanStart])
+
+  const [msTimer, setMsTimer] = useState(GAME_DURATION);
+  const [timer, setTimer] = useState<NodeJS.Timer>();
+
+  const startTimer = () => {
+    setTimer(setInterval(run, DELTA_TIME));
+  };
+
+  const run = () => {
+    setMsTimer(previous => ((previous > 0)
+      ? previous - DELTA_TIME
+      : previous
+    ));
+  };
+
+  useEffect(() => {
+    if(msTimer === 0 || room.page === Game.Finish){
+      if(turnVisibility){
+        console.log('acabou o tempo do jogo.');
+        timesUp();
+      }
+      clearInterval(timer);
+    }
+  }, [msTimer, room.page]);
+
+  ////////////////////////////////////////////////////////////////////////////////////////
+
+  useEffect(() => {
+    if (turnVisibility && counter.current > msTimer) {
       counter.current -= 1000;
 
       if (last.current.id === 0) {
@@ -114,7 +154,7 @@ export default function GamePage({
         }
       }
     }
-  }, [msTimeLeft]);
+  }, [msTimer]);
 
   //ajuste com o tamanho da tela///////////////////////////////////////////////////////////////
 
@@ -173,11 +213,19 @@ export default function GamePage({
   ///////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
+    clearInterval(timer);
+  }, [])
+
+  useEffect(() => {
     const context = canvasRef.current.getContext('2d');
     context.fillStyle = 'white';
     context.lineCap = 'round';
     contextRef.current = context;
   }, []);
+
+  const sendGuessTime = () => {
+    sendWinner(msTimer);
+  }
 
   const clearDrawing = () => {
     contextRef.current.clearRect(
@@ -224,14 +272,14 @@ export default function GamePage({
   };
 
   const timeLeft = useMemo(() => {
-    const mins = (msTimeLeft >= 60000)
-      ? Math.floor(msTimeLeft / 60000)
+    const mins = (msTimer >= 60000)
+      ? Math.floor(msTimer / 60000)
       : 0;
     const secs = Math.floor(
-      (msTimeLeft / 1000) - (60 * mins)
+      (msTimer / 1000) - (60 * mins)
     );
     return [mins, secs];
-  }, [msTimeLeft]);
+  }, [msTimer]);
 
 
   if(turnVisibility) {
@@ -268,7 +316,7 @@ export default function GamePage({
     contextRef={contextRef}
     interCanvasRatio={interCanvasRatio}
     paths={paths}
-    sendWinner={sendWinner}
+    sendGuessTime={sendGuessTime}
     title={title}
     undoLastPath={undoLastPath}
     clearDrawing={clearDrawing}

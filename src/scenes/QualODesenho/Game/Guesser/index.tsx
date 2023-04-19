@@ -31,23 +31,23 @@ type Message = {
 };
 
 interface GuesserProps {
-    title: string,
-    description: string | JSX.Element,
-    timeLeft: number[],
-    category: string,
-    drawingPaths: string,
-    innerWidth: number,
-    canvas: CanvasDimensions,
-    canvasRef: React.MutableRefObject<HTMLCanvasElement>,
-    contextRef: React.MutableRefObject<CanvasRenderingContext2D>,
-    interCanvasRatio: React.MutableRefObject<number>,
-    paths: React.MutableRefObject<Path[]>,
-    sendWinner: () => void,
-    clearDrawing: () => void,
-    undoLastPath: () => void,
+  title: string,
+  description: string | JSX.Element,
+  timeLeft: number[],
+  category: string,
+  drawingPaths: string,
+  innerWidth: number,
+  canvas: CanvasDimensions,
+  canvasRef: React.MutableRefObject<HTMLCanvasElement>,
+  contextRef: React.MutableRefObject<CanvasRenderingContext2D>,
+  interCanvasRatio: React.MutableRefObject<number>,
+  paths: React.MutableRefObject<Path[]>,
+  sendGuessTime: () => void,
+  clearDrawing: () => void,
+  undoLastPath: () => void,
 }
 
-export default function Guesser({title, description, timeLeft, category, drawingPaths, innerWidth, canvas, canvasRef, contextRef, interCanvasRatio, paths, sendWinner, undoLastPath, clearDrawing}: GuesserProps){
+export default function Guesser({title, description, timeLeft, category, drawingPaths, innerWidth, canvas, canvasRef, contextRef, interCanvasRatio, paths, sendGuessTime, undoLastPath, clearDrawing}: GuesserProps){
   
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
   const [guesses, setGuesses] = useState<string[]>([]);
@@ -99,7 +99,7 @@ export default function Guesser({title, description, timeLeft, category, drawing
     const answer = format(category);
     if (formattedGuess === answer) {
       guessRef.current.blur();
-      sendWinner();
+      sendGuessTime();
       setPlayerGuessed(true);
       setPlaceholder('Resposta correta!');
       guess = category;

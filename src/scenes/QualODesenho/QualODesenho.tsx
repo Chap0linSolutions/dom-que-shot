@@ -15,21 +15,19 @@ export interface GuessingPlayer {
   guessTime: number;
 }
 
-enum Game {
+export enum Game {
   Cover,
   Word,
   Game,
   Finish,
 }
 
-const GAME_DURATION = 60000;
-const DELTA_TIME = 500;
-
 export default function QualODesenho() {
   const { user, room, setUser, setRoom } = useGlobalContext();
   const title = 'Qual é o desenho?';
 
   const navigate = useNavigate();
+  const [gameCanStart, setGameStart] = useState<boolean>(false);
   const [word, setWord] = useState<string>(undefined);
   const [finalResults, setFinalResults] = useState<boolean>(false);
   const [drawingPaths, setDrawingPaths] = useState<string>();
@@ -51,34 +49,6 @@ export default function QualODesenho() {
     </>
   );
 
-  //TIMER//////////////////////////////////////////////////////////////////////////////////
-
-  const [msTimer, setMsTimer] = useState(GAME_DURATION);
-  const [timer, setTimer] = useState<NodeJS.Timer>();
-
-  const startTimer = () => {
-    setTimer(setInterval(run, DELTA_TIME));
-  };
-
-  const run = () => {
-    setMsTimer(previous => ((previous > 0)
-      ? previous - DELTA_TIME
-      : previous
-    ));
-  };
-
-  useEffect(() => {
-    if(msTimer === 0 || room.page === Game.Finish){
-      if(user.isCurrentTurn){
-        console.log('acabou o tempo do jogo.');
-        socket.pushMessage(room.code, 'times-up');
-      }
-      clearInterval(timer);
-    }
-  }, [msTimer, room.page]);
-
-  ////////////////////////////////////////////////////////////////////////////////////////
-
   const startWordSelection = () => {
     socket.pushMessage(room.code, 'que-desenho-suggestions', user.nickname);
     socket.push('move-room-to', {
@@ -98,6 +68,10 @@ export default function QualODesenho() {
     });
   };
 
+  const timesUp = () => {
+    socket.pushMessage(room.code, 'times-up');
+  }
+
   const backToLobby = () => {
     console.log('O usuário desejou voltar ao lobby');
     socket.push('move-room-to', {
@@ -106,10 +80,9 @@ export default function QualODesenho() {
     });
   };
 
-  const sendWinner = () => {
-    const winner = JSON.stringify({nickname: user.nickname, time: (60000 - msTimer)/1000});
+  const sendWinner = (t: number) => {
+    const winner = JSON.stringify({nickname: user.nickname, time: (60000 - t)/1000});
     socket.pushMessage(room.code, 'correct-guess', winner);
-    clearInterval(timer);
   };
 
   const backToRoulette = () => {
@@ -176,7 +149,7 @@ export default function QualODesenho() {
     });
 
     socket.addEventListener('start-game', () => {
-      startTimer();
+      setGameStart(true);
     });
 
     if (!user.isCurrentTurn) {
@@ -225,11 +198,13 @@ export default function QualODesenho() {
           description={description}
           category={word}
           turnVisibility={user.isCurrentTurn}
-          msTimeLeft={msTimer}
+          gameCanStart={gameCanStart}
           startGame={startGame}
           updateDrawingPaths={sendDrawingUpdate}
           sendWinner={sendWinner}
           drawingPaths={drawingPaths}
+          room={room}
+          timesUp={timesUp}
         />
       );
 
