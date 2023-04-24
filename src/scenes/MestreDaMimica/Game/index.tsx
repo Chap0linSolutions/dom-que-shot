@@ -262,19 +262,19 @@ export default function GamePage({turnVisibility, suggestions, mimicState, names
                 setGuidanceText(<>Valendo!</>);
                 gsap.timeline().to(glassRef.current, {
                     rotate: 30,
-                    duration: 1,
+                    duration: 0.25,
                     ease: 'power2',
                 }).to(glassRef.current, {
                     rotate: 0,
-                    duration: 1,
+                    duration: 0.25,
                     ease: 'power2',
                 }).to(glassRef.current, {
                     rotate: -30,
-                    duration: 1,
+                    duration: 0.25,
                     ease: 'power2',
                 }).to(glassRef.current, {
                     rotate: 0,
-                    duration: 1,
+                    duration: 0.25,
                     ease: 'power2',
                 }).repeat(-1);
             }

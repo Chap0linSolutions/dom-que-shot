@@ -29,9 +29,9 @@ export const Title = styled.p`
 `;
 
 export const Subtitle = styled(Title)`
-    font-size: 17.5px;
+    font-size: 16px;
     @media(max-height: 740px){
-        font-size: 16px;
+        font-size: 15px;
     }
 `;
 
