@@ -1,25 +1,27 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Home from './Home';
 import '@testing-library/jest-dom/extend-expect';
 
-const mockNavigate = jest.fn();
-
 jest.mock('../../services/api', () => {
-  return { default: {
-    get: () => null
-  }};
+  return {
+    default: {
+      get: () => null,
+    },
+  };
 });
 
 jest.mock('../../contexts/GlobalContextProvider', () => {
-  return { useGlobalContext: () => ({
-    setUser: () => null,
-    setRoom: () => null,
-    room: { code: '123A' }
-  })};
+  return {
+    useGlobalContext: () => ({
+      setUser: () => null,
+      setRoom: () => null,
+      room: { code: '123A' },
+    }),
+  };
 });
 
 jest.mock('react-router-dom', () => {
-  return { useNavigate: () => jest.fn }
+  return { useNavigate: () => jest.fn };
 });
 
 describe('Home page', () => {
@@ -52,5 +54,4 @@ describe('Home page', () => {
 
     expect(getByText('Já conhece nossos jogos?')).toBeInTheDocument();
   });
-
 });

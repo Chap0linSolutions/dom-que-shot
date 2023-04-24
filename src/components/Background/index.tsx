@@ -7,7 +7,7 @@ interface BackgroundProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
-export default function Background (props: BackgroundProps) {
+export default function Background(props: BackgroundProps) {
   const classes = props.noImage ? 'AppBackground' : 'AppBackgroundWithImage';
   return (
     <div
