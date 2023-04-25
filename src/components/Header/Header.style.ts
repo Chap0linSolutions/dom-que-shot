@@ -35,6 +35,7 @@ export const RightSideItem = styled(LeftSideItem)`
 
 export const Title = styled.p`
   margin: 0;
+  margin-left: 1em;
 `;
 
 export const ConfirmDiv = styled.div`

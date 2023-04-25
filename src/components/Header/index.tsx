@@ -205,9 +205,7 @@ export default function Header({
             />
           </LeftSideItem>
 
-          <LeftSideItem style={title ? {} : { display: 'none' }}>
-            <Title>{title}</Title>
-          </LeftSideItem>
+          <Title style={title ? {} : { display: 'none' }}>{title}</Title>
         </ArrowAndTitle>
 
         <SettingsInfoAndLogo>
