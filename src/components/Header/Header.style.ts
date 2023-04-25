@@ -26,10 +26,6 @@ export const RightSideItem = styled.div`
   padding-right: 1em;
 `;
 
-export const IconDiv = styled.div`
-  padding-left: 1em;
-`;
-
 export const Title = styled.p`
   margin: 0;
 `;

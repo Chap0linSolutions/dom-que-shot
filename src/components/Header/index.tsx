@@ -7,7 +7,6 @@ import Popup from '../Popup';
 import Avatar from '../Avatar';
 import SocketConnection from '../../lib/socket';
 import {
-  IconDiv,
   ArrowAndTitle,
   HeaderDiv,
   Title,
@@ -121,7 +120,13 @@ export default function Header({
     settingsPage();
   };
 
+  const togglePlayerListVisibility = () => {
+    setPlayerListVisibility((p) => !p);
+    setWarning(undefined);
+  }
+
   const confirmLeaveRoom = () => {
+    setPlayerListVisibility(false);
     if (!warning) return setWarning('alert');
     setWarning(undefined);
   };
@@ -172,6 +177,14 @@ export default function Header({
           />
         )}
 
+        {exit && (
+          <Popup
+            type="warning"
+            description={leaveWarning}
+            show={warning === 'alert'}
+          />
+        )}
+
         <ArrowAndTitle>
           <LeftSideItem style={goBackArrow ? {} : { display: 'none' }}>
             <ArrowLeft width="30px" height="30px" onClick={goToPreviousPage} />
@@ -180,9 +193,18 @@ export default function Header({
             <Users
               width="26px"
               height="26px"
-              onClick={() => setPlayerListVisibility((p) => !p)}
+              onClick={togglePlayerListVisibility}
             />
           </LeftSideItem>
+
+          <LeftSideItem style={exit ? {} : { display: 'none' }}>
+            <Power
+              width="22px"
+              height="22px"
+              onClick={confirmLeaveRoom}
+            />
+          </LeftSideItem>
+
           <LeftSideItem style={title ? {} : { display: 'none' }}>
             <Title>{title}</Title>
           </LeftSideItem>
@@ -225,11 +247,13 @@ export default function Header({
 
   return (
     <HeaderDiv>
-      <Popup
-        type="warning"
-        description={leaveWarning}
-        show={warning === 'alert'}
-      />
+      {exit && (
+        <Popup
+          type="warning"
+          description={leaveWarning}
+          show={warning === 'alert'}
+        />
+      )}
 
       {participants && (
         <Popup
