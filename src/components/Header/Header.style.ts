@@ -6,6 +6,7 @@ export const HeaderDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   height: 107px;
   @media (max-height: 740px) {
     height: 85px;
@@ -17,8 +18,19 @@ export const ArrowAndTitle = styled.div`
   align-items: center;
 `;
 
-export const IconDiv = styled.div`
-  padding-left: 1em;
+export const LeftSideItem = styled.div`
+  width: 26px;
+  height: 100%;
+  margin-left: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+`;
+
+export const RightSideItem = styled(LeftSideItem)`
+  margin-left: 0;
+  margin-right: 1em;
 `;
 
 export const Title = styled.p`
@@ -87,7 +99,6 @@ export const RoomCode = styled.p`
 `;
 
 export const Timer = styled.div`
-  align-self: center;
   color: red;
   font-size: 20px;
   text-align: center;
@@ -153,4 +164,47 @@ export const Logo = styled.img`
   border-radius: 28px;
   object-fit: scale-down;
   overflow: hidden;
+`;
+
+export const ListItem = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
+  border: 2px solid #666666;
+  margin-bottom: 5px;
+  border-radius: 20px;
+`;
+
+export const PlayerInfo = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const Name = styled.p`
+  margin: 0;
+  margin-left: 5px;
+  color: #666666;
+  font-weight: 500;
+  font-size: 18px;
+  font-family: Roboto;
+`;
+
+export const AvatarDiv = styled.div`
+  width: 35px;
+  height: 35px;
+`;
+
+export const Kick = styled.p`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 10px;
+  background-color: red;
+  font-size: 15px;
+  margin: 0;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
 `;

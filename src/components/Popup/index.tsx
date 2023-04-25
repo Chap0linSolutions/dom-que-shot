@@ -15,7 +15,7 @@ interface PopupProps {
   descriptionColor?: string;
   backgroundColor?: string;
   border?: string;
-  exit: () => void;
+  exit?: () => void;
 }
 
 export default function Popup({
