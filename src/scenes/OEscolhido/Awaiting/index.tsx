@@ -18,11 +18,13 @@ interface AwaitingProps {
   votedPlayer: Player;
   msTimeLeft: number;
   finishPage: () => void;
+  owner: boolean;
 }
 
 export default function AwaitingResults({
   votedPlayer,
   msTimeLeft,
+  owner,
 }: AwaitingProps) {
   const titleRef = useRef(null);
   const checkRef = useRef(null);
@@ -47,7 +49,7 @@ export default function AwaitingResults({
 
   return (
     <Background noImage>
-      <Header timer={msTimeLeft} />
+      <Header participants={owner} timer={msTimeLeft} />
       <Content>
         <Title ref={titleRef}>Você votou!</Title>
 

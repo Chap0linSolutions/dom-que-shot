@@ -102,6 +102,17 @@ export default function JogoDaVerdade() {
       }));
     });
 
+    socket.addEventListener('kick-player', (nickname) => {
+      if (user.nickname === nickname) {
+        window.localStorage.clear();
+        navigate('/Home');
+      }
+    });
+
+    if (user.isCurrentTurn) {
+      socket.pushMessage(gameRoom, 'get-suggestions', '');
+    }
+    
     socket.addEventListener('verdade-suggestions', (suggs) => {
       setSuggestions(JSON.parse(suggs));
     });
@@ -141,6 +152,7 @@ export default function JogoDaVerdade() {
           show={showSuggestions}
           coverImg={coverImg}
           turnVisibility={user.isCurrentTurn}
+          owner={user.isOwner}
         />
       );
 

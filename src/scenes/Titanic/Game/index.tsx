@@ -26,6 +26,7 @@ interface GameProps {
   receiveResults: string | undefined;
   isCurrentTurn: boolean;
   msTimeLeft: number;
+  owner: boolean;
 }
 
 enum animationState {
@@ -40,6 +41,7 @@ export default function GamePage({
   finishPage,
   isCurrentTurn,
   msTimeLeft,
+  owner,
 }: GameProps) {
   const maxElements = isCurrentTurn ? 5 : 3;
 
@@ -187,7 +189,7 @@ export default function GamePage({
 
   return (
     <Background noImage>
-      <Header timer={msTimeLeft} />
+      <Header participants={owner} timer={msTimeLeft} />
       <OverflowHandler>
         <Titanic ref={pageRef}>
           <Content>

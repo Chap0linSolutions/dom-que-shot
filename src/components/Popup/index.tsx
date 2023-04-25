@@ -14,6 +14,7 @@ interface PopupProps {
   titleColor?: string;
   descriptionColor?: string;
   backgroundColor?: string;
+  border?: string;
   exit?: () => void;
 }
 
@@ -28,6 +29,7 @@ export default function Popup({
   titleColor,
   descriptionColor,
   backgroundColor,
+  border,
   exit,
 }: PopupProps) {
   const infoRef = useRef();
@@ -87,6 +89,8 @@ export default function Popup({
   const popupStyle = {
     height: height ? `${height}px` : 'auto',
     backgroundColor: backgroundColor ? backgroundColor : '#ffffff',
+    border: border ? border : 'none',
+    opacity: 0.95,
     paddingTop: title ? '20px' : 0,
   };
 

@@ -67,6 +67,13 @@ export default function EuNunca() {
       }));
     });
 
+    socket.addEventListener('kick-player', (nickname) => {
+      if (user.nickname === nickname) {
+        window.localStorage.clear();
+        navigate('/Home');
+      }
+    });
+
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
         setRoom((previous) => ({
@@ -115,6 +122,7 @@ export default function EuNunca() {
           finishPage={endOfGame}
           coverImg={coverImg}
           turnVisibility={user.isCurrentTurn}
+          owner={user.isOwner}
         />
       );
     default:

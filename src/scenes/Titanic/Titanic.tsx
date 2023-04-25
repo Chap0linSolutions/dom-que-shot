@@ -117,6 +117,13 @@ export default function Titanic() {
       }));
     });
 
+    socket.addEventListener('kick-player', (nickname) => {
+      if (user.nickname === nickname) {
+        window.localStorage.clear();
+        navigate('/Home');
+      }
+    });
+
     socket.addEventListener('player-turn-is', (turnName) => {
       setUser((previous) => ({
         ...previous,
@@ -176,6 +183,7 @@ export default function Titanic() {
           isCurrentTurn={user.isCurrentTurn}
           msTimeLeft={msTimer}
           finishPage={() => setGlobalRoomPage(Game.Finish)}
+          owner={user.isOwner}
         />
       );
 
@@ -185,6 +193,7 @@ export default function Titanic() {
           results={results}
           thisPlayerName={user.nickname}
           roulettePage={() => nextRound()}
+          owner={user.isOwner}
         />
       );
 
