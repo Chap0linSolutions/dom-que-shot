@@ -107,6 +107,7 @@ export default function Lobby() {
         case '/BangBang':
         case '/OEscolhido':
         case '/Titanic':
+        case '/MestreDaMimica':
           if (!page || page === 0) {
             //se o jogo ainda estiver na capa é possível entrar tardiamente
             setAlertMessage('Reconectando...');
