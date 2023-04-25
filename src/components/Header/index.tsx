@@ -278,7 +278,11 @@ export default function Header({
 
       {exit && (
         <LeftSideItem>
-          <Power width="22px" height="22px" onClick={confirmLeaveRoom} />
+          <Power
+            width="22px"
+            height="22px"
+            onClick={confirmLeaveRoom}
+          />
         </LeftSideItem>
       )}
 
@@ -289,15 +293,11 @@ export default function Header({
       <RightSideItem />
 
       {exit && (
-        <RightSideItem>
-          <Power width="22px" height="22px" color="#170c32" />
-        </RightSideItem>
+        <RightSideItem/>
       )}
 
       {participants && (
-        <RightSideItem>
-          <Users width="26px" height="26px" color="#170c32" />
-        </RightSideItem>
+        <RightSideItem/>
       )}
     </HeaderDiv>
   );

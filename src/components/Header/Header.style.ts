@@ -19,11 +19,18 @@ export const ArrowAndTitle = styled.div`
 `;
 
 export const LeftSideItem = styled.div`
-  padding-left: 1em;
+  width: 26px;
+  height: 100%;
+  margin-left: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 `;
 
-export const RightSideItem = styled.div`
-  padding-right: 1em;
+export const RightSideItem = styled(LeftSideItem)`
+  margin-left: 0;
+  margin-right: 1em;
 `;
 
 export const Title = styled.p`
