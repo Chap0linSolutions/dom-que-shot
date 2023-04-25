@@ -17,11 +17,7 @@ export const ArrowAndTitle = styled.div`
   align-items: center;
 `;
 
-export const ArrowDiv = styled.div`
-  padding-left: 1em;
-`;
-
-export const TitleDiv = styled.div`
+export const IconDiv = styled.div`
   padding-left: 1em;
 `;
 
@@ -29,8 +25,54 @@ export const Title = styled.p`
   margin: 0;
 `;
 
+export const ConfirmDiv = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const Confirm = styled.p`
+  margin: 0;
+  font-size: 17px;
+  color: black;
+  @media (max-height: 740px) {
+    font-size: 16px;
+  }
+`;
+
+export const ConfirmButton = styled.div`
+  margin-left: 10px;
+  padding: 0 20px;
+  height: 35px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  @media (max-height: 740px) {
+    font-size: 16px;
+    padding: 0 17px;
+    margin-left: 6px;
+  }
+`;
+
+export const ConfirmYes = styled(ConfirmButton)`
+  border: 1px solid #800080;
+  color: #800080;
+`;
+
+export const ConfirmNo = styled(ConfirmButton)`
+  color: white;
+  background-color: #800080;
+`;
+
+export const Buttons = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 export const RoomCodeDiv = styled.div`
-  margin-right: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,6 +83,7 @@ export const RoomCodeDiv = styled.div`
 export const RoomCode = styled.p`
   font-size: 16px;
   color: #524b6e;
+  margin-right: 10px;
 `;
 
 export const Timer = styled.div`

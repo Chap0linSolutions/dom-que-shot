@@ -55,12 +55,13 @@ export default function Main({
     user.isOwner === true ? (
       <Header
         goBackArrow={backToChooseAvatar}
+        exit
         settingsPage={() => {
           settingsPage();
         }}
       />
     ) : (
-      <Header logo goBackArrow={backToChooseAvatar} />
+      <Header exit logo goBackArrow={backToChooseAvatar} />
     );
 
   const alertBox = alertMessage ? (

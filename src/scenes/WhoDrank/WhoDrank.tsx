@@ -113,9 +113,9 @@ export default function WhoDrankPage() {
   };
 
   const header = coverImg ? (
-    <Header roomCode logo={coverImg} />
+    <Header exit roomCode logo={coverImg} />
   ) : (
-    <Header roomCode logo />
+    <Header exit roomCode logo />
   );
 
   if (user.isCurrentTurn === true) {
