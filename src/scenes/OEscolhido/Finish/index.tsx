@@ -29,7 +29,6 @@ import {
   MultipleTiesOuter,
   MultipleTiesTextDiv,
   MultipleTiesText,
-  MultipleTiesTitle,
   MultipleTiesAvatar,
 } from './Finish.style';
 
@@ -196,7 +195,7 @@ export default function FinishPage({
       <Header participants={owner} />
       <Finish>
         <Content>
-          <MultipleTiesTitle>Tivemos um empate!</MultipleTiesTitle>
+          <Title>Tivemos um empate!</Title>
           <MultipleTies>
             {votedPlayer.map((player) => (
               <MultipleTiesOuter className="OuterCard">

@@ -159,8 +159,6 @@ export const TieText = styled(Text)`
   margin: 4px;
 `;
 
-export const MultipleTiesTitle = styled(Title)``;
-
 export const TieTitle = styled(Text)`
   font-size: 20px;
   text-align: center;
