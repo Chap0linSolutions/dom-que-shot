@@ -58,8 +58,11 @@ export default function Header({
 }: HeaderProps) {
   const { room } = useGlobalContext();
   const navigate = useNavigate();
-  const [playerListVisibility, setPlayerListVisibility] = useState<boolean>(false);
-  const [warning, setWarning] = useState<'success' | 'failure' | 'alert' | undefined>(undefined);
+  const [playerListVisibility, setPlayerListVisibility] =
+    useState<boolean>(false);
+  const [warning, setWarning] = useState<
+    'success' | 'failure' | 'alert' | undefined
+  >(undefined);
 
   const seconds = timer / 1000;
   const timerColor = seconds < 3 ? 'red' : 'white';
@@ -123,7 +126,7 @@ export default function Header({
   const togglePlayerListVisibility = () => {
     setPlayerListVisibility((p) => !p);
     setWarning(undefined);
-  }
+  };
 
   const confirmLeaveRoom = () => {
     setPlayerListVisibility(false);
@@ -198,11 +201,7 @@ export default function Header({
           </LeftSideItem>
 
           <LeftSideItem style={exit ? {} : { display: 'none' }}>
-            <Power
-              width="22px"
-              height="22px"
-              onClick={confirmLeaveRoom}
-            />
+            <Power width="22px" height="22px" onClick={confirmLeaveRoom} />
           </LeftSideItem>
 
           <LeftSideItem style={title ? {} : { display: 'none' }}>
@@ -278,27 +277,19 @@ export default function Header({
 
       {exit && (
         <LeftSideItem>
-          <Power
-            width="22px"
-            height="22px"
-            onClick={confirmLeaveRoom}
-          />
+          <Power width="22px" height="22px" onClick={confirmLeaveRoom} />
         </LeftSideItem>
       )}
 
       <LeftSideItem />
-        <Timer style={timer ? { color: timerColor } : { display: 'none' }}>
-          <p style={{ margin: '0' }}>{formattedTimer}</p>
-        </Timer>
+      <Timer style={timer ? { color: timerColor } : { display: 'none' }}>
+        <p style={{ margin: '0' }}>{formattedTimer}</p>
+      </Timer>
       <RightSideItem />
 
-      {exit && (
-        <RightSideItem/>
-      )}
+      {exit && <RightSideItem />}
 
-      {participants && (
-        <RightSideItem/>
-      )}
+      {participants && <RightSideItem />}
     </HeaderDiv>
   );
 }
