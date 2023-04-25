@@ -11,6 +11,7 @@ interface CoverProps {
   results: string;
   thisPlayerName: string;
   roulettePage: () => void;
+  owner: boolean;
 }
 
 export type Results = {
@@ -30,6 +31,7 @@ export default function FinishPage({
   results,
   roulettePage,
   thisPlayerName,
+  owner,
 }: CoverProps) {
   const finalResults: Results[] = JSON.parse(results);
 
@@ -162,7 +164,7 @@ export default function FinishPage({
 
   return (
     <Background>
-      <Header logo />
+      <Header participants={owner} logo />
       <Finish ref={pageRef}>
         <Content>
           <Title>{title}</Title>

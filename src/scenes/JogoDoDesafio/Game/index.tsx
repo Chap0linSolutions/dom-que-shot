@@ -25,6 +25,7 @@ interface GameProps {
   show: boolean;
   coverImg: string;
   turnVisibility: boolean;
+  owner: boolean;
 }
 
 export default function GamePage({
@@ -35,6 +36,7 @@ export default function GamePage({
   show,
   coverImg,
   turnVisibility,
+  owner,
 }: GameProps) {
   const [countdown, setCountdown] = useState(3);
 
@@ -53,7 +55,7 @@ export default function GamePage({
   if (turnVisibility === true) {
     return (
       <Background>
-        <Header exit logo={coverImg} />
+        <Header participants={owner} exit logo={coverImg} />
         <GameContainer>
           <Title>Realize um dos desafios:</Title>
           <SuggestionsDiv>
@@ -89,7 +91,7 @@ export default function GamePage({
 
   return (
     <Background>
-      <Header exit logo={coverImg} />
+      <Header participants={owner} exit logo={coverImg} />
       {show ? (
         <GameContainer>
           <Title>Responda à uma das perguntas:</Title>
