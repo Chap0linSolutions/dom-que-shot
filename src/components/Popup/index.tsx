@@ -89,7 +89,7 @@ export default function Popup({
   const popupStyle = {
     height: height ? `${height}px` : 'auto',
     backgroundColor: backgroundColor ? backgroundColor : '#ffffff',
-    border: border? border : 'none',
+    border: border ? border : 'none',
     opacity: 0.95,
     paddingTop: title ? '20px' : 0,
   };

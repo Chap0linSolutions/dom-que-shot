@@ -83,12 +83,11 @@ export const Yes = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #07BF0F;
+  background: #07bf0f;
   color: white;
   font-size: 18px;
 `;
 
 export const No = styled(Yes)`
-  background: #AD0000;
+  background: #ad0000;
 `;
-

@@ -176,7 +176,7 @@ const games: Game[] = [
         objeto, dentre outros) e terá 1 minuto para finalizar o desenho.
         <br />
         <br />
-        - Os que não acertarem dentro do tempo BEBEM; 
+        - Os que não acertarem dentro do tempo BEBEM;
         <br />
         - Se ninguém acertar, o jogador da vez BEBE.
         <br />

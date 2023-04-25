@@ -32,7 +32,9 @@ export default function QualODesenho() {
   const [finalResults, setFinalResults] = useState<boolean>(false);
   const [drawingPaths, setDrawingPaths] = useState<string>();
   const [wordSuggestions, setWordSuggestions] = useState<string[]>([]);
-  const [playersAndGuesses, setPlayersAndGuesses] = useState<GuessingPlayer[]>([]);
+  const [playersAndGuesses, setPlayersAndGuesses] = useState<GuessingPlayer[]>(
+    []
+  );
 
   const description = (
     <>
@@ -62,15 +64,16 @@ export default function QualODesenho() {
   };
 
   const finishGame = () => {
-    user.isCurrentTurn && socket.push('move-room-to', {
-      roomCode: room.code,
-      destination: Game.Finish,
-    });
+    user.isCurrentTurn &&
+      socket.push('move-room-to', {
+        roomCode: room.code,
+        destination: Game.Finish,
+      });
   };
 
   const timesUp = () => {
     socket.pushMessage(room.code, 'times-up');
-  }
+  };
 
   const backToLobby = () => {
     console.log('O usuário desejou voltar ao lobby');
@@ -81,7 +84,10 @@ export default function QualODesenho() {
   };
 
   const sendWinner = (t: number) => {
-    const winner = JSON.stringify({nickname: user.nickname, time: (60000 - t)/1000});
+    const winner = JSON.stringify({
+      nickname: user.nickname,
+      time: (60000 - t) / 1000,
+    });
     socket.pushMessage(room.code, 'correct-guess', winner);
   };
 

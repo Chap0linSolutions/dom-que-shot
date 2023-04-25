@@ -25,9 +25,9 @@ export default function Button({
   const buttonStyle = {
     width: width ? width : undefined,
     height: height ? height : undefined,
-    background: color? color : undefined,
+    background: color ? color : undefined,
     margin: staysOnBottom ? '0 auto 40px auto' : undefined,
-    borderRadius: borderRadius? borderRadius : undefined,
+    borderRadius: borderRadius ? borderRadius : undefined,
   };
 
   return (

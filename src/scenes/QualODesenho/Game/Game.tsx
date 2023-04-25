@@ -99,7 +99,7 @@ export default function GamePage({
 
   useEffect(() => {
     gameCanStart && startTimer();
-  }, [gameCanStart])
+  }, [gameCanStart]);
 
   const [msTimer, setMsTimer] = useState(GAME_DURATION);
   const [timer, setTimer] = useState<NodeJS.Timer>();
@@ -109,15 +109,12 @@ export default function GamePage({
   };
 
   const run = () => {
-    setMsTimer(previous => ((previous > 0)
-      ? previous - DELTA_TIME
-      : previous
-    ));
+    setMsTimer((previous) => (previous > 0 ? previous - DELTA_TIME : previous));
   };
 
   useEffect(() => {
-    if(msTimer === 0 || room.page === Game.Finish){
-      if(turnVisibility){
+    if (msTimer === 0 || room.page === Game.Finish) {
+      if (turnVisibility) {
         console.log('acabou o tempo do jogo.');
         timesUp();
       }
@@ -214,7 +211,7 @@ export default function GamePage({
 
   useEffect(() => {
     clearInterval(timer);
-  }, [])
+  }, []);
 
   useEffect(() => {
     const context = canvasRef.current.getContext('2d');
@@ -225,7 +222,7 @@ export default function GamePage({
 
   const sendGuessTime = () => {
     sendWinner(msTimer);
-  }
+  };
 
   const clearDrawing = () => {
     contextRef.current.clearRect(
@@ -272,53 +269,52 @@ export default function GamePage({
   };
 
   const timeLeft = useMemo(() => {
-    const mins = (msTimer >= 60000)
-      ? Math.floor(msTimer / 60000)
-      : 0;
-    const secs = Math.floor(
-      (msTimer / 1000) - (60 * mins)
-    );
+    const mins = msTimer >= 60000 ? Math.floor(msTimer / 60000) : 0;
+    const secs = Math.floor(msTimer / 1000 - 60 * mins);
     return [mins, secs];
   }, [msTimer]);
 
+  if (turnVisibility) {
+    return (
+      <Drawer
+        title={title}
+        description={description}
+        category={category}
+        timeLeft={timeLeft}
+        paths={paths}
+        canvas={canvas}
+        canvasRef={canvasRef}
+        contextRef={contextRef}
+        canvasOffsetX={canvasOffsetX}
+        canvasOffsetY={canvasOffsetY}
+        selectedColor={selectedColor}
+        selectedWidth={selectedWidth}
+        setSelectedColor={setSelectedColor}
+        setSelectedWidth={setSelectedWidth}
+        clearDrawing={clearDrawing}
+        undoLastPath={undoLastPath}
+        updateDrawingPaths={updateDrawingPaths}
+        startGame={startGame}
+      />
+    );
+  }
 
-  if(turnVisibility) {
-    return <Drawer
-      title={title}
-      description={description}
+  return (
+    <Guesser
       category={category}
+      description={description}
+      drawingPaths={drawingPaths}
       timeLeft={timeLeft}
-      paths={paths}
+      innerWidth={innerWidth}
       canvas={canvas}
       canvasRef={canvasRef}
       contextRef={contextRef}
-      canvasOffsetX={canvasOffsetX}
-      canvasOffsetY={canvasOffsetY}
-      selectedColor={selectedColor}
-      selectedWidth={selectedWidth}
-      setSelectedColor={setSelectedColor}
-      setSelectedWidth={setSelectedWidth}
-      clearDrawing={clearDrawing}
+      interCanvasRatio={interCanvasRatio}
+      paths={paths}
+      sendGuessTime={sendGuessTime}
+      title={title}
       undoLastPath={undoLastPath}
-      updateDrawingPaths={updateDrawingPaths}
-      startGame={startGame}
+      clearDrawing={clearDrawing}
     />
-  }
-
-  return <Guesser
-    category={category}
-    description={description}
-    drawingPaths={drawingPaths}
-    timeLeft={timeLeft}
-    innerWidth={innerWidth}
-    canvas={canvas}
-    canvasRef={canvasRef}
-    contextRef={contextRef}
-    interCanvasRatio={interCanvasRatio}
-    paths={paths}
-    sendGuessTime={sendGuessTime}
-    title={title}
-    undoLastPath={undoLastPath}
-    clearDrawing={clearDrawing}
-  />
+  );
 }

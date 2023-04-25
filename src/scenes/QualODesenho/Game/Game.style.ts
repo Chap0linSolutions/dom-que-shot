@@ -56,9 +56,9 @@ export const Timer = styled.p`
   font-size: 20px;
   background: rgba(213, 213, 213, 0.5);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  @media (max-height: 740px){
+  @media (max-height: 740px) {
     top: 44px;
-    font-size: 16px; 
+    font-size: 16px;
     width: 70px;
     height: 44px;
   }
@@ -200,4 +200,3 @@ export const GuessInput = styled.input`
   background: #d9d9d9;
   border-radius: 0px 10px 10px 0px;
 `;
-

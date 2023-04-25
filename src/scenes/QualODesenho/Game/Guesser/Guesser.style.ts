@@ -54,7 +54,7 @@ export const GuessesTitle = styled.div`
   color: white;
   font-size: 16px;
   font-family: Adumu;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 14px;
   }
 `;
@@ -80,7 +80,7 @@ export const Guess = styled.p`
   font-family: Roboto;
   color: white;
   font-size: 16px;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 14px;
   }
 `;
@@ -104,7 +104,7 @@ export const Timer = styled.p`
   font-size: 18px;
   font-weight: 600;
   border-radius: 10px;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 16px;
   }
 `;
@@ -143,7 +143,7 @@ export const Banner = styled.div`
   @media (max-height: 740px) {
     padding: 10px 20px;
   }
-`; 
+`;
 
 export const BannerBeer = styled.img`
   width: 30px;

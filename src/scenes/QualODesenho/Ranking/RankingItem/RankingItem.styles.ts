@@ -27,7 +27,7 @@ export const Position = styled.div`
 const Text = styled.p`
   margin: 0;
   font-size: 20px;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 16px;
   }
 `;

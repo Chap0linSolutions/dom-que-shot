@@ -45,16 +45,16 @@ export const Subtitle = styled.p`
 export const Guidance = styled(Subtitle)`
   margin: 0;
   font-size: 16px;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 15px;
   }
-`
+`;
 
 export const Text = styled.p`
   margin: 0;
   font-size: 17px;
   font-family: Roboto;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 16px;
   }
 `;
@@ -139,10 +139,9 @@ export const Icon = styled.img`
   z-index: 5;
   width: 30px;
   object-fit: scale-down;
-  background-color: #403A55;
+  background-color: #403a55;
   padding: 2px;
   border-radius: 10px;
-  
 `;
 
 export const Crown = styled(Icon)`

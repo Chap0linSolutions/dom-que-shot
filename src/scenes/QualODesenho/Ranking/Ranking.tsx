@@ -40,12 +40,11 @@ export function RankingPage({
   word,
   finalResults,
 }: RankingProps) {
-  
-  const whoGuessed = data.filter(d => d.guessTime > -1);
-  const whoDidnt = data.filter(d => d.guessTime < 0);
+  const whoGuessed = data.filter((d) => d.guessTime > -1);
+  const whoDidnt = data.filter((d) => d.guessTime < 0);
 
-  whoGuessed.length > 0 && whoGuessed.sort((a, b) => (a.guessTime - b.guessTime));
-  whoDidnt.length > 0 && whoDidnt.sort((a, b) => (b.guessTime - a.guessTime));
+  whoGuessed.length > 0 && whoGuessed.sort((a, b) => a.guessTime - b.guessTime);
+  whoDidnt.length > 0 && whoDidnt.sort((a, b) => b.guessTime - a.guessTime);
   //PAREI AQUI
 
   const winner: GuessingPlayer =
@@ -70,34 +69,31 @@ export function RankingPage({
 
   let guidanceText = [];
 
-  if(!finalResults){
-    guidanceText = ['Aguardando os demais jogadores...']
-  } else if(whoDidnt.length > 0){
-    const noobs = whoDidnt.filter(p => p.guessTime === -1);
-    const disconnected = whoDidnt.filter(p => p.guessTime === -100);
-    if(noobs.length === data.length){
-      guidanceText = ['Ninguém conseguiu acertar.', 'Nesse caso, o desenhista bebe.'];
-    } else if(disconnected.length === data.length){
+  if (!finalResults) {
+    guidanceText = ['Aguardando os demais jogadores...'];
+  } else if (whoDidnt.length > 0) {
+    const noobs = whoDidnt.filter((p) => p.guessTime === -1);
+    const disconnected = whoDidnt.filter((p) => p.guessTime === -100);
+    if (noobs.length === data.length) {
+      guidanceText = [
+        'Ninguém conseguiu acertar.',
+        'Nesse caso, o desenhista bebe.',
+      ];
+    } else if (disconnected.length === data.length) {
       guidanceText = ['Todo mundo caiu. Ninguém bebe.'];
-    } else if(noobs.length > 0) {
+    } else if (noobs.length > 0) {
       guidanceText = ['Quem não acertou bebe!'];
     } else {
       guidanceText = [
         'Todos os que conseguiram jogar acertaram!',
         'Nesse caso, ninguém bebe.',
       ];
-    } 
-  } else if(whoGuessed.length === 1) {
-    guidanceText = [
-      'Mas só tinha um pra tentar adivinhar? Aff',
-    ];
+    }
+  } else if (whoGuessed.length === 1) {
+    guidanceText = ['Mas só tinha um pra tentar adivinhar? Aff'];
   } else {
-    guidanceText = [
-      'Todo mundo acertou!',
-      'Nesse caso, ninguém bebe.',
-    ]
+    guidanceText = ['Todo mundo acertou!', 'Nesse caso, ninguém bebe.'];
   }
-
 
   const button =
     turnVisibility === true ? (
@@ -131,7 +127,7 @@ export function RankingPage({
                   <Text>{loser.nickname}</Text>
                   <Text>{loser.guessTime}s</Text>
                 </Loser>
-             </>
+              </>
             ) : (
               <OnlyWinner>
                 <AvatarBackground>
@@ -141,7 +137,7 @@ export function RankingPage({
                       <Avatar seed={winner.avatarSeed} />
                     </>
                   ) : (
-                    <NoOneGuessed src={noOneGuessed}/>
+                    <NoOneGuessed src={noOneGuessed} />
                   )}
                 </AvatarBackground>
                 {whoDidnt.length < data.length ? (
@@ -179,9 +175,7 @@ export function RankingPage({
               ))}
             </Ranking>
             {guidanceText.map((text, i) => (
-              <Guidance key={i}>
-                {text}
-              </Guidance>
+              <Guidance key={i}>{text}</Guidance>
             ))}
           </Body>
         </RankingDiv>
