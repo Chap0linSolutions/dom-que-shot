@@ -78,7 +78,7 @@ class SocketConnection {
   }
 
   push(tag: string, message) {
-    if(this.socket) return this.socket.emit(tag, message);
+    if (this.socket) return this.socket.emit(tag, message);
   }
 
   addEventListener(eventName, callback) {
