@@ -71,6 +71,7 @@ export default function CategoryPage({
         />
         <Header
           participants={owner}
+          exit
           roomCode
           infoPage={() => setPopupVisibility(true)}
         />
@@ -113,6 +114,7 @@ export default function CategoryPage({
       />
       <Header
         participants={owner}
+        exit
         roomCode
         infoPage={() => {
           setPopupVisibility(true);

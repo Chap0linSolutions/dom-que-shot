@@ -136,6 +136,7 @@ export default function GamePage({
       />
       <Header
         participants={owner}
+        exit
         roomCode
         infoPage={() => setPopupVisibility(true)}
       />

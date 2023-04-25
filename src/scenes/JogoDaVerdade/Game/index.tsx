@@ -55,7 +55,7 @@ export default function GamePage({
   if (turnVisibility === true) {
     return (
       <Background>
-        <Header participants={owner} logo={coverImg} />
+        <Header participants={owner} exit logo={coverImg} />
         <GameContainer>
           <Title>Responda à uma das perguntas:</Title>
           <SuggestionsDiv>
@@ -91,7 +91,7 @@ export default function GamePage({
 
   return (
     <Background>
-      <Header participants={owner} logo={coverImg} />
+      <Header participants={owner} exit logo={coverImg} />
       {show ? (
         <GameContainer>
           <Title>Responda à uma das perguntas:</Title>

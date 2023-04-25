@@ -41,12 +41,13 @@ export default function CoverPage({
   const header = ownerVisibility ? (
     <Header
       participants
+      exit
       goBackArrow={goBackPage}
       infoPage={() => setPopupVisibility(true)}
       roomCode
     />
   ) : (
-    <Header infoPage={() => setPopupVisibility(true)} roomCode />
+    <Header exit infoPage={() => setPopupVisibility(true)} roomCode />
   );
 
   const coverCard = useRef();

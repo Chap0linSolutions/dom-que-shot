@@ -1,12 +1,13 @@
 import { useState, useMemo } from 'react';
 import { Player, useGlobalContext } from '../../contexts/GlobalContextProvider';
-import { ArrowLeft, Info, Settings, Users } from 'react-feather';
+import { ArrowLeft, Info, Settings, Users, Power } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import DomQueShotLogo from '../../assets/logo-darker.png';
 import Popup from '../Popup';
 import Avatar from '../Avatar';
 import SocketConnection from '../../lib/socket';
 import {
+  IconDiv,
   ArrowAndTitle,
   HeaderDiv,
   Title,
@@ -26,9 +27,15 @@ import {
   Kick,
   PlayerInfo,
   RightSideItem,
+  Confirm,
+  ConfirmDiv,
+  ConfirmYes,
+  ConfirmNo,
+  Buttons,
 } from './Header.style';
 
 interface HeaderProps {
+  exit?: boolean;
   logo?: boolean | string;
   title?: string;
   goBackArrow?: true | (() => void);
@@ -40,6 +47,7 @@ interface HeaderProps {
 }
 
 export default function Header({
+  exit,
   logo,
   title,
   goBackArrow,
@@ -50,10 +58,9 @@ export default function Header({
   infoPage,
 }: HeaderProps) {
   const { room } = useGlobalContext();
-  const navigateTo = useNavigate();
-  const [warningVisibility, setWarningVisibility] = useState<boolean>(false);
-  const [playerListVisibility, setPlayerListVisibility] =
-    useState<boolean>(false);
+  const navigate = useNavigate();
+  const [playerListVisibility, setPlayerListVisibility] = useState<boolean>(false);
+  const [warning, setWarning] = useState<'success' | 'failure' | 'alert' | undefined>(undefined);
 
   const seconds = timer / 1000;
   const timerColor = seconds < 3 ? 'red' : 'white';
@@ -90,7 +97,7 @@ export default function Header({
   const goToPreviousPage = () => {
     if (goBackArrow === true) {
       //goBackArrow pode ser boolean true OU pode ser uma arrow function
-      navigateTo(-1);
+      navigate(-1);
       return;
     }
     goBackArrow();
@@ -99,7 +106,7 @@ export default function Header({
   const goToInfoPage = () => {
     if (typeof infoPage === 'string') {
       //infoPage pode ser string com o endereço da página OU pode ser uma arrow function
-      navigateTo(infoPage);
+      navigate(infoPage);
       return;
     }
     infoPage();
@@ -108,29 +115,49 @@ export default function Header({
   const goToSettingPage = () => {
     if (typeof settingsPage === 'string') {
       //settingsPage pode ser string com o endereço da página OU pode ser uma arrow function
-      navigateTo(settingsPage);
+      navigate(settingsPage);
       return;
     }
     settingsPage();
   };
 
+  const confirmLeaveRoom = () => {
+    if (!warning) return setWarning('alert');
+    setWarning(undefined);
+  };
+
+  const leaveRoom = () => {
+    window.localStorage.clear();
+    navigate('/Home');
+  };
+
   const copyCode = () => {
     navigator.clipboard.writeText(room.code);
-    setWarningVisibility(true);
+    setWarning('success');
     setTimeout(() => {
-      setWarningVisibility(false);
+      setWarning(undefined);
     }, 2000);
   };
 
-  if (!timer)
+  const leaveWarning = (
+    <ConfirmDiv>
+      <Confirm>Quer mesmo sair?</Confirm>
+      <Buttons>
+        <ConfirmYes onClick={leaveRoom}>Sim</ConfirmYes>
+        <ConfirmNo onClick={() => setWarning(undefined)}>Não</ConfirmNo>
+      </Buttons>
+    </ConfirmDiv>
+  );
+
+  if (!timer) {
     return (
       <HeaderDiv>
         {roomCode && (
           <Popup
             type="warning"
             warningType="success"
-            description={'código da sala copiado!'}
-            show={warningVisibility}
+            description="código da sala copiado!"
+            show={warning === 'success'}
           />
         )}
 
@@ -194,8 +221,16 @@ export default function Header({
         </SettingsInfoAndLogo>
       </HeaderDiv>
     );
+  }
+
   return (
     <HeaderDiv>
+      <Popup
+        type="warning"
+        description={leaveWarning}
+        show={warning === 'alert'}
+      />
+
       {participants && (
         <Popup
           type="info"
@@ -208,7 +243,7 @@ export default function Header({
       )}
 
       {participants && (
-        <LeftSideItem style={participants ? {} : { display: 'none' }}>
+        <LeftSideItem>
           <Users
             width="26px"
             height="26px"
@@ -217,11 +252,23 @@ export default function Header({
         </LeftSideItem>
       )}
 
+      {exit && (
+        <LeftSideItem>
+          <Power width="22px" height="22px" onClick={confirmLeaveRoom} />
+        </LeftSideItem>
+      )}
+
       <LeftSideItem />
-      <Timer style={timer ? { color: timerColor } : { display: 'none' }}>
-        <p style={{ margin: '0' }}>{formattedTimer}</p>
-      </Timer>
+        <Timer style={timer ? { color: timerColor } : { display: 'none' }}>
+          <p style={{ margin: '0' }}>{formattedTimer}</p>
+        </Timer>
       <RightSideItem />
+
+      {exit && (
+        <RightSideItem>
+          <Power width="22px" height="22px" color="#170c32" />
+        </RightSideItem>
+      )}
 
       {participants && (
         <RightSideItem>
