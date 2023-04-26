@@ -233,7 +233,7 @@ export const Sand = styled.div`
     width: 200px;
     margin-bottom: 25px;
     background: #403a55;
-    border-radius: 100px;
+    border-radius: 200px 200px 100px 100px;
     @media(max-height: 740px){
         width: 180px;
     }

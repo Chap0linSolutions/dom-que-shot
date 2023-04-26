@@ -21,10 +21,13 @@ export type Suggestion = {
 const title = 'Mestre da Mímica';
 
 const description = <>
-    O jogador da vez irá receber algumas opções de palavra e deve escolher duas delas para fazer mímica.
-    Ele terá então 30 segundos para fazer seu show, e os demais jogadores vão tentar adivinhar. 
+    Enfim um jogo cooperativo nesse troço!
     <br/><br/>
-    A mímica pode ser por gesto ou som (mas não vale falar). Todo mundo bebe uma dose para cada palavra não adivinhada.
+    O jogador da vez irá receber algumas opções de palavra e deve escolher quais delas quer
+    fazer mímica. Ele terá então 30 segundos para fazer seu show, e os demais jogadores vão tentar adivinhar. 
+    <br/><br/>
+    A mímica pode ser por gesto e/ou som (mas não vale falar). A roda precisa acertar pelo menos DUAS
+    opções para que ninguém beba. Abaixo disso, todo mundo bebe uma dose para cada palavra não adivinhada.
     <br/><br/>
     Boa sorte!
 </>
@@ -46,7 +49,7 @@ export default function MimicaMaster(){
     }
 
     const getSuggestions = () => {
-      socket.pushMessage(room.code, 'mimic-suggestions');
+      socket.pushMessage(room.code, 'mimic-suggestions', Game.Game);
     };
 
     const backToLobby = () => {
@@ -108,10 +111,6 @@ export default function MimicaMaster(){
 
     socket.addEventListener('mimic-suggestions', (suggests) => {
       setSuggestions(JSON.parse(suggests));
-      socket.push('move-room-to', {
-        roomCode: room.code,
-        destination: Game.Game,
-      });
     });
 
     !user.isCurrentTurn && socket.addEventListener('mimic-state-is', (ms) => {

@@ -103,11 +103,13 @@ export default function Lobby() {
     socket.addEventListener('current-state-is', (currentState) => {
       const { URL, page } = JSON.parse(currentState);
 
+      console.log(currentState);
+
       switch (URL) {
         case '/BangBang':
         case '/OEscolhido':
         case '/Titanic':
-        case '/MestreDaMimica':
+        case '/MestredaMimica':
           if (!page || page === 0) {
             //se o jogo ainda estiver na capa é possível entrar tardiamente
             setAlertMessage('Reconectando...');

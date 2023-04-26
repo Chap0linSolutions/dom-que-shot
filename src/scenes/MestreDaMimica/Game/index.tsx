@@ -32,6 +32,7 @@ const GAME_DURATION = 33000;
 const DELTA_TIME = 1000;
 const SAND_LEVEL = 55;
 const DELTA_SAND_LEVEL = (SAND_LEVEL * DELTA_TIME) / (GAME_DURATION - 3000);
+const GLASSWATCH_PACE = 1;
 
 export default function GamePage({turnVisibility, suggestions, mimicState, namesSoFar, sendNamesSoFar, sendMimicState, sendResults}: GameProps){
     const [ correct, setCorrect ] = useState<number[]>([]);
@@ -194,7 +195,7 @@ export default function GamePage({turnVisibility, suggestions, mimicState, names
     useEffect(() => {
         gsap.to(sandRef.current, {
             height: `${10 + sandLevel}%`,
-            ease: 'back',
+            ease: 'elastic',
             duration: 0.9,
         });
     }, [sandLevel]);
@@ -262,19 +263,19 @@ export default function GamePage({turnVisibility, suggestions, mimicState, names
                 setGuidanceText(<>Valendo!</>);
                 gsap.timeline().to(glassRef.current, {
                     rotate: 30,
-                    duration: 0.25,
+                    duration: GLASSWATCH_PACE,
                     ease: 'power2',
                 }).to(glassRef.current, {
                     rotate: 0,
-                    duration: 0.25,
+                    duration: GLASSWATCH_PACE,
                     ease: 'power2',
                 }).to(glassRef.current, {
                     rotate: -30,
-                    duration: 0.25,
+                    duration: GLASSWATCH_PACE,
                     ease: 'power2',
                 }).to(glassRef.current, {
                     rotate: 0,
-                    duration: 0.25,
+                    duration: GLASSWATCH_PACE,
                     ease: 'power2',
                 }).repeat(-1);
             }
