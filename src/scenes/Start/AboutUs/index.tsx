@@ -9,7 +9,7 @@ interface AboutProps {
 export default function AboutUs({ goBack }: AboutProps) {
   const Sobre = () => (
     <>
-      <Image src={logo} />
+      <Image src={logo} alt="logo-sobre-nos" />
       <NarrowParagraph>
         Olá, seja bem-vindo à Chap0lin Solutions, nossa empresa de
         desenvolvimento de jogos online e sites!
