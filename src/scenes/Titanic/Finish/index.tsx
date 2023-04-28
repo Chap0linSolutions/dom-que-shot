@@ -37,7 +37,6 @@ export default function FinishPage({
 
   const pageRef = useRef();
   const buttonRef = useRef();
-  const [icebergPlaces, setIcebergPlaces] = useState<number[]>([]);
   const [titanicPlayers, setTitanicPlayers] = useState<Results[]>(() =>
     finalResults.filter((player) => player.shipPlacement.length < 5)
   );
@@ -147,7 +146,6 @@ export default function FinishPage({
       i++;
     });
     setTimeout(() => {
-      setIcebergPlaces(icebergPlayer.shipPlacement);
       setIcebergPlayer((previous) => {
         return { ...previous, hasAppeared: true };
       });
@@ -168,7 +166,13 @@ export default function FinishPage({
       <Finish ref={pageRef}>
         <Content>
           <Title>{title}</Title>
-          <Map type={mapType} places={places} icebergPlaces={icebergPlaces} />
+          <Map
+            type={mapType}
+            places={places}
+            icebergPlaces={
+              icebergPlayer.hasAppeared ? icebergPlayer.shipPlacement : []
+            }
+          />
           <PlayerCards
             titanicPlayers={titanicPlayers}
             icebergPlayer={icebergPlayer}

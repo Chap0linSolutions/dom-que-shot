@@ -94,7 +94,7 @@ export default function GamePage({
       <Header participants={owner} exit logo={coverImg} />
       {show ? (
         <GameContainer>
-          <Title>Responda à uma das perguntas:</Title>
+          <Title>Estes eram os desafios:</Title>
           <SuggestionsDiv>
             {suggestions.map((suggestion, i) => (
               <SuggestionItem key={i}>
@@ -103,8 +103,11 @@ export default function GamePage({
               </SuggestionItem>
             ))}
           </SuggestionsDiv>
-
-          <AnotherSuggestion>Ou beba duas doses!!!</AnotherSuggestion>
+          <AnotherSuggestion>
+            {countdown > 0
+              ? `Aguardando... ${countdown}`
+              : 'Esperando o jogador da vez continuar.'}
+          </AnotherSuggestion>
         </GameContainer>
       ) : (
         <GameContainer>
@@ -113,7 +116,7 @@ export default function GamePage({
               icon={beer}
               firstText={`Aguardando o jogador da vez escolher algum desafio
                 para realizar...`}
-              secondText={'Se ele demorar, pode dar um pescotapa. Eu deixo.'}
+              secondText={'Gato persa ou gato parça?'}
             />
           </AwaitingDiv>
         </GameContainer>

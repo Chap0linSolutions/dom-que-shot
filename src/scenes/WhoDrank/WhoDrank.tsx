@@ -8,8 +8,17 @@ import Button from '../../components/Button';
 import Avatar from '../../components/Avatar';
 import beer from '../../assets/beer.png';
 import gsap from 'gsap';
-import './WhoDrank.css';
 import AwaitingBanner from '../../components/AwaitingBanner';
+import {
+  Content,
+  Page,
+  Subtitle,
+  Title,
+  PlayerList,
+  Nickname,
+  AvatarDiv,
+  ListItem,
+} from './WhoDrank.style';
 
 export default function WhoDrankPage() {
   const { user, room, setUser, setRoom } = useGlobalContext();
@@ -27,10 +36,6 @@ export default function WhoDrankPage() {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [SP, setSP] = useState<number>(Math.random());
   const [buttonText, setButtonText] = useState('Ninguém bebeu');
-
-  useEffect(() => {
-    gsap.config({ nullTargetWarn: false });
-  }, []);
 
   //SOCKET////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -71,11 +76,11 @@ export default function WhoDrankPage() {
 
   useEffect(() => {
     if (selectedPlayers) {
-      gsap.to('.WhoDrankSelectedItem', { scale: 1.08, duration: 0.5 });
-      gsap.to('.WhoDrankUnselectedItem', { scale: 1, duration: 0.5 });
+      gsap.to('.selected', { scale: 1.08, duration: 0.5 });
+      gsap.to('.unselected', { scale: 1, duration: 0.5 });
 
-      gsap.to('.WhoDrankSelectedAvatar', { rotate: 180, duration: 0.5 });
-      gsap.to('.WhoDrankUnselectedAvatar', { rotate: 0, duration: 0.5 });
+      gsap.to('.selectedAvatar', { rotate: 180, duration: 0.5 });
+      gsap.to('.unselectedAvatar', { rotate: 0, duration: 0.5 });
     }
   }, [SP]);
 
@@ -117,43 +122,43 @@ export default function WhoDrankPage() {
     return (
       <Background>
         {header}
-        <div className="WhoDrankContainer">
-          <div className="WhoDrankDiv">
-            <p className="WhoDrankTitle">E aí, quem perdeu?</p>
-            <p style={{ margin: 0 }}>Selecione quem bebeu uma dose:</p>
-            <div className="WhoDrankPlayerListDiv">
-              {playerList.current.map((player) => (
-                <div
-                  onClick={() => {
-                    selectPlayer(player);
-                  }}
-                  className={
-                    selectedPlayers.find((p) => p.nickname === player.nickname)
-                      ? 'WhoDrankSelectedItem WhoDrankPlayerListItem'
-                      : 'WhoDrankUnselectedItem WhoDrankPlayerListItem'
-                  }
-                  key={player.playerID}>
-                  <p className="WhoDrankPlayerListNickname">
-                    {player.nickname}
-                  </p>
-                  <div
-                    className={
-                      selectedPlayers.find(
-                        (p) => p.nickname === player.nickname
-                      )
-                        ? 'WhoDrankSelectedAvatar WhoDrankPlayerListAvatar'
-                        : 'WhoDrankUnselectedAvatar WhoDrankPlayerListAvatar'
-                    }>
-                    <Avatar seed={player.avatarSeed} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        <Page>
+          <Content>
+            <Title>E aí, quem perdeu?</Title>
+            <Subtitle>Selecione quem bebeu uma dose:</Subtitle>
+            <PlayerList>
+              {playerList.current.map((player, i) => {
+                let bgColor = { background: '#8877df' };
+                let state = 'unselected';
+                let avatarState = 'unselectedAvatar';
+
+                if (
+                  selectedPlayers.find((p) => p.nickname === player.nickname)
+                ) {
+                  bgColor = { background: '#403a55' };
+                  state = 'selected';
+                  avatarState = 'selectedAvatar';
+                }
+
+                return (
+                  <ListItem
+                    className={state}
+                    style={bgColor}
+                    onClick={() => selectPlayer(player)}
+                    key={`${i}`}>
+                    <Nickname>{player.nickname}</Nickname>
+                    <AvatarDiv className={avatarState}>
+                      <Avatar seed={player.avatarSeed} />
+                    </AvatarDiv>
+                  </ListItem>
+                );
+              })}
+            </PlayerList>
+          </Content>
           <Button staysOnBottom onClick={backToRoulette}>
             {buttonText}
           </Button>
-        </div>
+        </Page>
       </Background>
     );
   }
@@ -161,13 +166,13 @@ export default function WhoDrankPage() {
   return (
     <Background>
       {header}
-      <div className="WhoDrankContainer" style={{ marginTop: '3em' }}>
+      <Page style={{ marginTop: '3em' }}>
         <AwaitingBanner
           icon={beer}
           firstText="Aguardando o jogador da vez escolher quem bebeu entre vocês..."
           secondText="vamos torcer que ele não durma no processo."
         />
-      </div>
+      </Page>
     </Background>
   );
 }

@@ -8,7 +8,7 @@ export const CardBackground = styled.div`
   justify-content: flex-start;
   align-items: center;
   border-radius: 10px;
-  padding: 1em 0;
+  padding-top: 20px;
 `;
 
 export const CardImage = styled.img`
@@ -18,11 +18,11 @@ export const CardImage = styled.img`
 
 export const CardTitle = styled.p`
   font-family: 'Adumu';
-  font-size: 20px;
+  font-size: 18px;
   margin: 10px 0;
   color: white;
   text-align: center;
   @media (max-height: 740px) {
-    font-size: 17px;
+    font-size: 16px;
   }
 `;

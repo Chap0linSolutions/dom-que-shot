@@ -23,7 +23,7 @@ export default function EuNunca() {
       <br />
       O jogador da vez deve dizer em voz alta uma frase iniciada por "Eu
       nunca...", seguida por algo ou situação que pode ter acontecido com algum
-      dos jogadores. Se faltar criatividade, na tela do celular vão aparecer
+      dos jogadores. Se faltar criatividade, na tela do aparelho vão aparecer
       algumas sugestões.
       <br />
       <br />
@@ -37,11 +37,8 @@ export default function EuNunca() {
   const title = 'Eu Nunca';
   const navigate = useNavigate();
 
-  const startGame = () => {
-    socket.push('move-room-to', {
-      roomCode: room.code,
-      destination: Game.Game,
-    });
+  const getSuggestions = () => {
+    socket.pushMessage(room.code, 'eu-nunca-suggestions', 'please');
   };
 
   const endOfGame = () => {
@@ -94,10 +91,8 @@ export default function EuNunca() {
     });
 
     socket.addEventListener('eu-nunca-suggestions', (suggestions) => {
-      setEuNuncaSuggestions(suggestions);
+      setEuNuncaSuggestions(JSON.parse(suggestions));
     });
-
-    socket.push('eu-nunca-suggestions', 'please');
 
     return () => {
       socket.removeAllListeners();
@@ -109,6 +104,15 @@ export default function EuNunca() {
   const setGlobalRoomPage = (newPage: Game) => {
     setRoom((previous) => ({ ...previous, page: newPage }));
   };
+
+  useEffect(() => {
+    if (euNuncaSuggestions) {
+      socket.push('move-room-to', {
+        roomCode: room.code,
+        destination: Game.Game,
+      });
+    }
+  }, [euNuncaSuggestions]);
 
   switch (room.page) {
     case Game.Game:
@@ -128,7 +132,7 @@ export default function EuNunca() {
           title={title}
           coverImg={coverImg}
           goBackPage={backToLobby}
-          gamePage={startGame}
+          gamePage={getSuggestions}
           turnVisibility={user.isCurrentTurn}
           ownerVisibility={user.isOwner}
           description={description}

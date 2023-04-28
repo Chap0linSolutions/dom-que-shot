@@ -25,11 +25,7 @@ export const Title = styled.p`
 
 export const Card = styled.div`
   width: 48%;
-  height: 220px;
   margin: 8px 0;
-  @media (max-height: 740px) {
-    height: 198px;
-  }
 `;
 
 export const Cards = styled.div`

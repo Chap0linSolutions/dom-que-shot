@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PlaceholderImage from '../../../components/Placeholder/Image';
 import { Game } from '../../../contexts/games';
-import './ImageSlider.css';
+import { Card, Image, Slider, Title } from './ImageSlider.style';
 
 type GameInformation = {
   title: string;
@@ -44,31 +44,27 @@ export default function ImageSlider({
   ///////////////////////////////////////////////////////////////////////////////////////////
 
   return (
-    <div className="slider">
+    <Slider>
       {content.map((slide) => (
-        <div
+        <Card
           key={`${slide.id}`}
-          className="card"
           onClick={() => updateInfoCard(slide.title, slide.description)}
           style={{ background: slide.backgroundColor }}>
-          <div className="HomeImageDiv">
-            <img
-              className="image"
-              style={loaded === true ? {} : { display: 'none' }}
-              src={slide.src}
-              alt={`${slide.title}`}
-              onLoad={finishedLoading}
-            />
-            <PlaceholderImage
-              width={placeholderSize}
-              height={placeholderSize}
-              loaded={loaded}
-              borderRadius="10px"
-            />
-          </div>
-          <p className="title">{slide.title}</p>
-        </div>
+          <Image
+            style={loaded === true ? {} : { display: 'none' }}
+            src={slide.src}
+            alt={`${slide.title}`}
+            onLoad={finishedLoading}
+          />
+          <PlaceholderImage
+            width={placeholderSize}
+            height={placeholderSize}
+            loaded={loaded}
+            borderRadius="10px"
+          />
+          <Title>{slide.title}</Title>
+        </Card>
       ))}
-    </div>
+    </Slider>
   );
 }
