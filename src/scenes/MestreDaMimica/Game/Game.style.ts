@@ -24,7 +24,7 @@ export const Title = styled.p`
     font-size: 22px;
     text-align: center;
     @media(max-height: 740px){
-        font-size: 20px;
+        font-size: 18px;
     }
 `;
 
@@ -46,7 +46,9 @@ export const SuggestionsDiv = styled.div`
     padding: 10px;
     margin: 20px 0;
     @media(max-height: 740px){
-        margin: 18px 0;
+        width: 90%;
+        margin: 15px 0;
+        padding: 5px 10px;
     }
 `;
 
@@ -61,6 +63,10 @@ export const Item = styled.div`
     background: #170c32;
     border-radius: 20px;
     padding: 0 15px;
+    @media(max-height: 740px){
+        height: 72px;
+        margin: 4px;
+    }
 `;
 
 export const ItemContent = styled.div`
@@ -71,6 +77,9 @@ export const ItemContent = styled.div`
 export const Icon = styled.img`
     width: 30px;
     object-fit: scale-down;
+    @media(max-height: 740px){
+        width: 25px;
+    }
 `;
 
 export const CheckIcon = styled.div`
@@ -87,18 +96,14 @@ export const CategoryAndWord = styled.div`
     justify-content: center;
 `;
 
-export const Category = styled.p`
-    margin: 0;
-    font-size: 15px;
-    color: rgba(255, 255, 255, 0.6);
-    font-family: Roboto;
-`;
-
 export const Word = styled.p`
     margin: 0;
     font-size: 18px;
     color: rgba(255, 255, 255, 0.9);
     font-family: Roboto;
+    @media(max-height: 740px){
+        font-size: 16px;
+    }
 `;
 
 export const Emphasis = styled.span`
@@ -107,8 +112,13 @@ export const Emphasis = styled.span`
 
 export const TimerAndProgressBar = styled.div`
     width: 100%;
+    height: 80px;
     display: flex;
     justify-content: space-between;
+    @media(max-height: 740px){
+        width: 90%;
+        height: 72px;
+    }
 `;
 
 export const Timer = styled.div`
@@ -126,7 +136,7 @@ export const Timer = styled.div`
     @media(max-height: 740px){
         font-size: 20px;
         height: 54px;
-        padding: 0 18px;
+        padding: 0 12px;
         margin-bottom: 30px;
         border-radius: 18px;
     }
@@ -137,18 +147,22 @@ export const ProgressBarDiv = styled.div`
     width: 100%;
     height: 65px;
     flex-direction: column;
-    margin: 0 10px 0 20px;
+    margin-left: 10px;
 `;
 
 export const ProgressTitle = styled.p`
     font-size: 15px;
     color: rgba(255, 255, 255, 0.6);
     margin: 0;
+    @media(max-height: 740px){
+        font-size: 14px;
+    }
 `;
 
 export const ProgressBar = styled.div`
-    width: 100%;
+    width: 95%;
     height: 10px;
+    flex-shrink: 0;
     border-radius: 5px;
     background-color: #AAAAAA;
 `;
@@ -162,7 +176,7 @@ export const Progress = styled.div`
 
 export const MilestoneDiv = styled.div`
     display: flex;
-    width: 100%;
+    width: 95%;
     justify-content: space-between;
 `;
 
@@ -171,11 +185,17 @@ export const Milestone = styled.div`
     align-items: center;
     height: 30px;
     font-size: 14px;
+    @media(max-height: 740px){
+        height: 25px;
+    }
 `;
 
 export const MilestoneIcon = styled.img`
     width: 15px;
     object-fit: scale-down;
+    @media(max-height: 740px){
+        width: 12px;
+    }
 `;
 
 export const StillTimer = styled(Timer)`

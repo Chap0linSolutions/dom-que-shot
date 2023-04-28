@@ -1,16 +1,15 @@
 import React, { useEffect, useRef } from "react";
-import { Suggestion } from "../MestreDaMimica";
 import Background from "../../../components/Background";
 import Header from "../../../components/Header";
 import Button from "../../../components/Button";
 import gsap from 'gsap';
-import { Category, Content, CorrectName, Mimic, NamesDiv, Result, SideMarker, Subtitle, Title, Word, WordAndCategory, WrongName, WrongSideMarker, WrongWord } from "./Finish.style";
+import { Content, CorrectName, Mimic, NamesDiv, Result, SideMarker, Subtitle, Title, Word, WordAndCategory, WrongName, WrongSideMarker, WrongWord } from "./Finish.style";
 import { CheckCircle, X } from "react-feather";
 
 interface FinishProps {
     turnVisibility: boolean,
-    suggestions: Suggestion[],
-    correctGuesses: Suggestion[],
+    suggestions: string[],
+    correctGuesses: string[],
     endGame: () => void,
 }
 
@@ -100,17 +99,14 @@ export default function FinishPage({turnVisibility, suggestions, correctGuesses,
                     </Subtitle>
 
                     <NamesDiv ref={namesRef}>
-                        {suggestions.map(n => {
-                            if(correctGuesses.find(c => c.word === n.word)){
+                        {suggestions.map(name => {
+                            if(correctGuesses.find(c => c === name)){
                                 return (
                                     <CorrectName>
                                         <WordAndCategory className='names'>
                                             <Word>
-                                                {n.word}
+                                                {name}
                                             </Word>
-                                            <Category>
-                                                {n.category}
-                                            </Category>
                                         </WordAndCategory>
                                         <SideMarker>
                                             <CheckCircle width={30} color="#403a55"/>
@@ -122,11 +118,8 @@ export default function FinishPage({turnVisibility, suggestions, correctGuesses,
                                 <WrongName>
                                     <WordAndCategory className='names'>
                                         <WrongWord>
-                                            {n.word}
+                                            {name}
                                         </WrongWord>
-                                        <Category>
-                                            {n.category}
-                                        </Category>
                                     </WordAndCategory>
                                     <WrongSideMarker>
                                         <X width={30} color="#403a55"/>

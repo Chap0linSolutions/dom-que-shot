@@ -99,15 +99,6 @@ export const WrongWord = styled(Word)`
     color: #999999;
 `;
 
-export const Category = styled.p`
-    margin: 0;
-    font-size: 15px;
-    color: #999999;
-    @media(max-height: 740px){
-        font-size: 14px;
-    }
-`;
-
 export const WordAndCategory = styled.div`
     display: flex;
     flex-direction: column;

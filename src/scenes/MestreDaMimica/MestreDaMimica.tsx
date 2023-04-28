@@ -13,11 +13,6 @@ enum Game {
     Finish,
 }
 
-export type Suggestion = {
-  category: string,
-  word: string,
-}
-
 const title = 'Mestre da Mímica';
 
 const description = <>
@@ -34,10 +29,10 @@ const description = <>
 
 export default function MimicaMaster(){
     const { room, user, setRoom, setUser } = useGlobalContext();
-    const [ suggestions, setSuggestions ] = useState<Suggestion[]>([]);
+    const [ suggestions, setSuggestions ] = useState<string[]>([]);
     const [ mimicState, setMimicState ] = useState<number>(0);
     const [ namesSoFar, setNamesSoFar ] = useState<number>(0);
-    const [ correct, setCorrect ] = useState<Suggestion[]>([]);
+    const [ correct, setCorrect ] = useState<string[]>([]);
     const navigate = useNavigate();
 
     const sendMimicState = (ms: number) => {
@@ -127,10 +122,6 @@ export default function MimicaMaster(){
   }, []);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  useEffect(() => {
-    console.log(suggestions.map(s => s.word));
-  }, [suggestions])
 
   switch(room.page){
       case Game.Game: return (

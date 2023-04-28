@@ -6,13 +6,12 @@ import Button from "../../../components/Button";
 import beer from "../../../assets/beer.png";
 import sandWatch from "./assets/sand-watch.png";
 import gsap from 'gsap';
-import { Suggestion } from "../MestreDaMimica";
 import { CheckCircle, Circle } from "react-feather";
-import { Category, CategoryAndWord, Content, Emphasis, Icon, Item, ItemContent, Mimic, Subtitle, SuggestionsDiv, Title, Word, CheckIcon, Timer, StillTimer, TimerAndProgressBar, ProgressBarDiv, ProgressBar, Progress, ProgressTitle, MilestoneDiv, Milestone, MilestoneIcon, SandWatch, SandWatchDiv, Glass, Sand, GuessTimer, GuessGuidance, GuessProgressDiv, GuessProgressTitle, ButtonDiv } from "./Game.style";
+import { CategoryAndWord, Content, Emphasis, Icon, Item, ItemContent, Mimic, Subtitle, SuggestionsDiv, Title, Word, CheckIcon, Timer, StillTimer, TimerAndProgressBar, ProgressBarDiv, ProgressBar, Progress, ProgressTitle, MilestoneDiv, Milestone, MilestoneIcon, SandWatch, SandWatchDiv, Glass, Sand, GuessTimer, GuessGuidance, GuessProgressDiv, GuessProgressTitle, ButtonDiv } from "./Game.style";
 
 interface GameProps {
     turnVisibility: boolean,
-    suggestions: Suggestion[],
+    suggestions: string[],
     mimicState: number,
     namesSoFar: number,
     sendNamesSoFar: (value: number) => void,
@@ -22,17 +21,16 @@ interface GameProps {
 
 enum GameState {
     Idle,
-    Preparing,
-    AboutToStart,
     Started,
     GuessedTwo,
 }
 
-const GAME_DURATION = 33000;
+const IDLE_SAND_LEVEL = 10;
+const GAME_DURATION = 30000;
 const DELTA_TIME = 1000;
 const SAND_LEVEL = 55;
-const DELTA_SAND_LEVEL = (SAND_LEVEL * DELTA_TIME) / (GAME_DURATION - 3000);
-const GLASSWATCH_PACE = 1;
+const DELTA_SAND_LEVEL = (((IDLE_SAND_LEVEL/2) + SAND_LEVEL) * DELTA_TIME) / (GAME_DURATION);
+const GLASSWATCH_PACE = 0.5;
 
 export default function GamePage({turnVisibility, suggestions, mimicState, namesSoFar, sendNamesSoFar, sendMimicState, sendResults}: GameProps){
     const [ correct, setCorrect ] = useState<number[]>([]);
@@ -71,39 +69,9 @@ export default function GamePage({turnVisibility, suggestions, mimicState, names
     }
 
     const begin = () => {
-        gsap.to('.check', {
-            opacity: 1,
-            duration: 1,
-        });
-
-        gsap.timeline().call(() => {
-            setButtonText('Aguarde...');
-            setButtonEnabled(false);
-            setState(GameState.Preparing);
-            setGuidanceText(<>
-                Selecione as opções conforme<br/>forem sendo <Emphasis>adivinhadas</Emphasis>.
-            </>);
-        }).to(guidanceRef.current, {
-            opacity: 0,
-            duration: 0.75,
-            delay: 3,
-        }).to(hudRef.current, {
-            opacity: 1,
-            duration: 0.25,
-            delay: 0.25,
-        }).to(guidanceRef.current, {
-            y: 0,
-            duration: 0,
-            delay: 1,
-        }).call(() => {
-            setGuidanceText(<>Boa sorte!</>);
-        }).to(guidanceRef.current, {
-            opacity: 1,
-            duration: 1,
-            ease: 'power2',
-        }).call(() => {
-            setState(GameState.AboutToStart);
-        });
+        setButtonText('Aguarde...');
+        setButtonEnabled(false);
+        setState(GameState.Started);
     }
 
     const finish = () => {
@@ -155,27 +123,17 @@ export default function GamePage({turnVisibility, suggestions, mimicState, names
             setGuidanceText(<>
                 Você tem <Emphasis>30 segundos</Emphasis> para fazer as mímicas,
                 <br/>e a roda deve acertar <Emphasis>2 opções</Emphasis> para vencer.
+                <br/>Não se esqueça de marcar os nomes<br/>que forem sendo <Emphasis>adivinhados</Emphasis>.
             </>)
-            gsap.to('.check', {
-                opacity: 0,
-                duration: 0,
-            });
-            gsap.to(hudRef.current, {
-                opacity: 0,
-                duration: 0,
-            });
-            gsap.to(guidanceRef.current, {
-                y: -90,
-                duration: 0,
-            });
             return () => {
                 timer && clearInterval(timer);
             }
         } else {
-            setSandLevel(10);
+            setSandLevel(IDLE_SAND_LEVEL);
             setGuidanceText(<>
-                Aguardando o jogador da vez
-                <br/>dar início ao jogo...
+                <Emphasis>Vai começar em breve!</Emphasis><br/>
+                Lembrando, vocês precisam acertar <br/>
+                pelo menos <Emphasis>2 nomes</Emphasis> para vencer.
             </>);
             gsap.to(guessProgressRef.current, {
                 y: 200,
@@ -195,8 +153,8 @@ export default function GamePage({turnVisibility, suggestions, mimicState, names
     useEffect(() => {
         gsap.to(sandRef.current, {
             height: `${10 + sandLevel}%`,
-            ease: 'elastic',
-            duration: 0.9,
+            ease: 'back',
+            duration: 0.5,
         });
     }, [sandLevel]);
 
@@ -221,19 +179,12 @@ export default function GamePage({turnVisibility, suggestions, mimicState, names
     }, [correct]);
 
     useEffect(() => {
-        if(state === GameState.AboutToStart){
+        if(state === GameState.Started){
             if(msTimer === GAME_DURATION){
                 startTimer();
-            } if(msTimer > 30000){
-                setGuidanceText(<>Boa sorte!<br/>Começando em <Emphasis>{(msTimer/1000) - 30}</Emphasis></>);
-            } else if(turnVisibility) {
-                setState(GameState.Started);
                 setGuidanceText(<>Valendo!</>);
             }
-        } else if(state === GameState.Started){
-            if(!turnVisibility){
-                setSandLevel(previous => previous - DELTA_SAND_LEVEL);
-            } else {
+            if(turnVisibility) {
                 setButtonText('Finalizar (opcional)');
             }
         }
@@ -242,56 +193,60 @@ export default function GamePage({turnVisibility, suggestions, mimicState, names
     useEffect(() => {
         if(turnVisibility){
             sendMimicState(state);
-            if(state === GameState.AboutToStart){
+            if(state === GameState.Started){
                 hideButton();
             }
         } else {
-            if(state === GameState.Preparing){
-                setSandLevel(SAND_LEVEL);
-                setGuidanceText(<>
-                    <Emphasis>Vai começar em breve!</Emphasis><br/>
-                    Lembrando, vocês precisam acertar <br/>
-                    pelo menos <Emphasis>2 nomes</Emphasis> para vencer.
-                </>);
+            if(state === GameState.Started){
                 gsap.to(guessProgressRef.current, {
                     y: 0,
                     duration: 1,
                     delay: 0.5,
                     ease: 'back',
                 });
-            } else if(state === GameState.Started){
-                setGuidanceText(<>Valendo!</>);
-                gsap.timeline().to(glassRef.current, {
-                    rotate: 30,
-                    duration: GLASSWATCH_PACE,
-                    ease: 'power2',
-                }).to(glassRef.current, {
-                    rotate: 0,
-                    duration: GLASSWATCH_PACE,
-                    ease: 'power2',
-                }).to(glassRef.current, {
-                    rotate: -30,
-                    duration: GLASSWATCH_PACE,
-                    ease: 'power2',
-                }).to(glassRef.current, {
-                    rotate: 0,
-                    duration: GLASSWATCH_PACE,
-                    ease: 'power2',
-                }).repeat(-1);
+                gsap.timeline().to(sandRef.current, {
+                    height: `${IDLE_SAND_LEVEL + SAND_LEVEL}%`,
+                    ease: 'back',
+                    duration: 1,
+                }).call(() => {
+                    setSandLevel(SAND_LEVEL);
+                }).call(() => {
+                    gsap.timeline().to(glassRef.current, {
+                        rotate: 30,
+                        duration: GLASSWATCH_PACE,
+                        ease: 'power2',
+                    }).to(glassRef.current, {
+                        rotate: 0,
+                        duration: GLASSWATCH_PACE,
+                        ease: 'power2',
+                    }).call(() => { 
+                        setSandLevel(previous => previous - DELTA_SAND_LEVEL);
+                    }).to(glassRef.current, {
+                        rotate: -30,
+                        duration: GLASSWATCH_PACE,
+                        ease: 'power2',
+                    }).to(glassRef.current, {
+                        rotate: 0,
+                        duration: GLASSWATCH_PACE,
+                        ease: 'power2',
+                    }).call(() => { 
+                        setSandLevel(previous => previous - DELTA_SAND_LEVEL);
+                    }).repeat(-1);
+                })
             }
         }
     }, [state]);
 
     const RunningTimer = (turnVisibility)? Timer : GuessTimer;
 
-    const timeStamp = (state === GameState.Idle || state === GameState.Preparing || state === GameState.AboutToStart)
-    ? <StillTimer>00:{(GAME_DURATION / 1000) - 3}</StillTimer>
+    const timeStamp = (state === GameState.Idle)
+    ? <StillTimer>00:{(GAME_DURATION / 1000)}</StillTimer>
     : <RunningTimer>00:{(msTimer >= 10000)? (msTimer / 1000) : `0${msTimer / 1000}`}</RunningTimer>;
 
     const ProgressText = () => {
         switch(correct.length){
             case 0: return <>Todos ainda vão beber 2 doses</>
-            case 1: return <>Boa! Mas ainda vão beber 1 dose</>
+            case 1: return <>Ainda vão beber 1 dose</>
             case 2: return <>Yey! Todos venceram, 0 doses</>
             default: return <>Acertaram todas! Vem monstro!</>
         }
@@ -299,7 +254,7 @@ export default function GamePage({turnVisibility, suggestions, mimicState, names
 
     if(turnVisibility) return (
         <Background noImage>
-            <Header exit/>
+            <Header exit participants={turnVisibility}/>
             <Mimic>
                 <Content>
                     <Title>
@@ -315,11 +270,8 @@ export default function GamePage({turnVisibility, suggestions, mimicState, names
                                     <Icon src={glassIcon}/>
                                     <CategoryAndWord>
                                         <Word>
-                                            {s.word}
+                                            {s}
                                         </Word>
-                                        <Category>
-                                            {s.category}
-                                        </Category>
                                     </CategoryAndWord>
                                 </ItemContent>
                                 <CheckIcon className='check'>
@@ -373,7 +325,7 @@ export default function GamePage({turnVisibility, suggestions, mimicState, names
 
     return (
         <Background noImage>
-            <Header exit/>
+            <Header exit participants={turnVisibility}/>
             <Mimic>
                 <Content>
                     <SandWatchDiv>
