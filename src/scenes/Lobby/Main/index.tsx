@@ -55,6 +55,7 @@ export default function Main({
     user.isOwner === true ? (
       <Header
         goBackArrow={backToChooseAvatar}
+        participants
         exit
         settingsPage={() => {
           settingsPage();
