@@ -10,7 +10,7 @@ import Button from '../../components/Button';
 import Popup from '../../components/Popup';
 import api from '../../services/api';
 import games from '../../contexts/games';
-import './Home.css';
+import {Input, InputAndButton, JoinButton, Content, Text, Warning, WarningText, HomeDiv } from './Home.style';
 
 type GameInformation = {
   title: string;
@@ -25,6 +25,7 @@ function Home() {
     title: '',
     description: '',
   });
+  const [createRoomDisabled, setCreateRoomDisabled] = useState(false);
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
   const [roomCode, setRoomCode] = useState<string>('');
   const [inputErrorMsg, setInputErrorMsg] = useState({
@@ -124,52 +125,51 @@ function Home() {
   return (
     <Background>
       <Header title="Vamos começar?" logo />
-
-      <div className="JoinRoomDiv">
-        <p className="HelpInfo">Já possui uma sala?</p>
-        <div className="JoinRoomInputAndButton">
-          <input
-            ref={inputRef}
-            onChange={updateRoomCode}
-            className="JoinRoomEnterCode"
-            placeholder="Digite o código da sala"
-          />
-          <button className="JoinRoomButton">
-            <ArrowRight
-              width="30px"
-              height="30px"
-              onClick={() => verifyRoom(roomCode)}
+      <HomeDiv>
+        <Content>
+          <Text>Já possui uma sala?</Text>
+          <InputAndButton>
+            <Input
+              ref={inputRef}
+              onChange={updateRoomCode}
+              placeholder="Digite o código da sala"
+              onFocus={() => setCreateRoomDisabled(true)}
+              onBlur={() => setCreateRoomDisabled(false)}
             />
-          </button>
-        </div>
+            <JoinButton>
+              <ArrowRight
+                width="30px"
+                height="30px"
+                onClick={() => verifyRoom(roomCode)}
+              />
+            </JoinButton>
+          </InputAndButton>
+          <Warning
+            style={{
+              visibility:
+                inputErrorMsg.visibility === 'visible' ? 'visible' : 'hidden',
+            }}>
+            <AlertTriangle width="20px" height="20px" color="red" />
+            <WarningText>{inputErrorMsg.msg}</WarningText>
+          </Warning>
+        </Content>
 
-        <div
-          className="JoinRoomWarningSpace"
-          style={{
-            visibility:
-              inputErrorMsg.visibility === 'visible' ? 'visible' : 'hidden',
-          }}>
-          <AlertTriangle width="20px" height="20px" color="red" />
-          <p className="JoinRoomWarning">{inputErrorMsg.msg}</p>
-        </div>
-      </div>
+        <Content style={createRoomDisabled? {opacity: 0.2} : {opacity: 1}}>
+          <Text>Se ainda não possui:</Text>
+          <Button isDisabled={createRoomDisabled} width="100%" onClick={newRoom}>
+            Criar Sala
+          </Button>
+        </Content>
 
-      <div className="CreateRoomDiv">
-        <p className="HelpInfo">Se ainda não possui:</p>
-        <Button width="100%" onClick={newRoom}>
-          Criar Sala
-        </Button>
-      </div>
-
-      <div className="ChooseGameDiv">
-        <p className="ChooseGameText">Já conhece nossos jogos?</p>
-        <ImageSlider
-          content={games}
-          show={() => setPopupVisibility(true)}
-          setGameInfo={setGameInfo}
-        />
-      </div>
-
+        <Content>
+          <Text>Já conhece nossos jogos?</Text>
+          <ImageSlider
+            content={games}
+            show={() => setPopupVisibility(true)}
+            setGameInfo={setGameInfo}
+          />
+        </Content>
+      </HomeDiv>
       <Popup
         type="info"
         height={280}
