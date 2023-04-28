@@ -71,7 +71,7 @@ export default function GamePage({
                 state = 'selected';
               }
 
-              return (
+              return (  //TODO código 'obscuro' rs
                 <ItemContainer className={state} key={`${i}`}>
                   <Item onClick={() => selectPlayer(player)}>
                     <Nickname>{player.nickname}</Nickname>
