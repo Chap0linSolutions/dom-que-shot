@@ -7,7 +7,7 @@ interface AvatarProps {
   size?: number | string;
 }
 
-export default function ({ seed, size }: AvatarProps) {
+export default function Avatar({ seed, size }: AvatarProps) {
   const source = `data:image/svg+xml;utf8,${encodeURIComponent(
     createAvatar(style, { seed: seed })
   )}`;

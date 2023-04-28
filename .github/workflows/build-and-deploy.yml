@@ -23,6 +23,9 @@ jobs:
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
 
+      - name: Run tests
+        run: npm run test
+
       - name: Setup environment variables
         run: npm run setup:prod
 
