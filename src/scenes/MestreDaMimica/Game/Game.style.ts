@@ -203,8 +203,6 @@ export const StillTimer = styled(Timer)`
   color: #999999;
 `;
 
-export const ButtonDiv = styled.div``;
-
 export const SandWatchDiv = styled.div`
   display: flex;
   flex-direction: column;

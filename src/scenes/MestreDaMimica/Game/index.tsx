@@ -38,7 +38,6 @@ import {
   GuessGuidance,
   GuessProgressDiv,
   GuessProgressTitle,
-  ButtonDiv,
 } from './Game.style';
 
 interface GameProps {
@@ -364,14 +363,14 @@ export default function GamePage({
             </TimerAndProgressBar>
             <Subtitle>{guidanceText}</Subtitle>
           </Content>
-          <ButtonDiv ref={buttonRef}>
+          <Content ref={buttonRef}>
             <Button
               onClick={decideWhatToDo}
               staysOnBottom
               isDisabled={!buttonEnabled}>
               {buttonText}
             </Button>
-          </ButtonDiv>
+          </Content>
         </Mimic>
       </Background>
     );

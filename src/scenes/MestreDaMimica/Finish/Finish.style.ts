@@ -10,7 +10,7 @@ export const Mimic = styled.div`
   padding: 0 30px;
   overflow: hidden;
   @media (max-height: 740px) {
-    padding: 27px;
+    padding: 0 27px;
   }
 `;
 
