@@ -112,7 +112,7 @@ export default function JogoDaVerdade() {
     if (user.isCurrentTurn) {
       socket.pushMessage(gameRoom, 'get-suggestions', '');
     }
-    
+
     socket.addEventListener('verdade-suggestions', (suggs) => {
       setSuggestions(JSON.parse(suggs));
     });

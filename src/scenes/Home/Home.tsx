@@ -10,7 +10,16 @@ import Button from '../../components/Button';
 import Popup from '../../components/Popup';
 import api from '../../services/api';
 import games from '../../contexts/games';
-import {Input, InputAndButton, JoinButton, Content, Text, Warning, WarningText, HomeDiv } from './Home.style';
+import {
+  Input,
+  InputAndButton,
+  JoinButton,
+  Content,
+  Text,
+  Warning,
+  WarningText,
+  HomeDiv,
+} from './Home.style';
 
 type GameInformation = {
   title: string;
@@ -154,9 +163,12 @@ function Home() {
           </Warning>
         </Content>
 
-        <Content style={createRoomDisabled? {opacity: 0.2} : {opacity: 1}}>
+        <Content style={createRoomDisabled ? { opacity: 0.2 } : { opacity: 1 }}>
           <Text>Se ainda não possui:</Text>
-          <Button isDisabled={createRoomDisabled} width="100%" onClick={newRoom}>
+          <Button
+            isDisabled={createRoomDisabled}
+            width="100%"
+            onClick={newRoom}>
             Criar Sala
           </Button>
         </Content>

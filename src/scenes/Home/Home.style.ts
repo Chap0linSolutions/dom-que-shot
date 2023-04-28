@@ -1,9 +1,9 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const HomeDiv = styled.div`
   width: 100%;
   height: 100%;
-  padding: 24px 0 0 0;  
+  padding: 24px 0 0 0;
 `;
 
 export const Content = styled.div`
@@ -17,7 +17,7 @@ export const Text = styled.p`
   margin-bottom: 8px;
   font-weight: 500;
   font-size: 18px;
-  color: #AAAAAA;
+  color: #aaaaaa;
 `;
 
 export const InputAndButton = styled.div`
@@ -77,7 +77,7 @@ export const WarningText = styled.p`
   margin-left: 5px;
   color: red;
   font-size: 16px;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 15px;
   }
 `;

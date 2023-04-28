@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const Slider = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ export const Card = styled.div`
 export const Image = styled.img`
   height: 140px;
   object-fit: scale-down;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     height: 126px;
   }
 `;
@@ -33,7 +33,7 @@ export const Title = styled.p`
   font-size: 18px;
   color: white;
   text-align: center;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 16px;
   }
 `;

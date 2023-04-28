@@ -4,4 +4,7 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   ignorePatterns: ['/dist/**', '/src/serviceWorkers/**'],
   root: true,
+  env: {
+    node: true,
+  },
 };
