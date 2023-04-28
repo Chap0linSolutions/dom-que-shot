@@ -28,7 +28,7 @@ export default function Titanic() {
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////////
 
-  const gameTime = 60000;
+  const gameTime = 15000;
 
   const [msTimer, setMsTimer] = useState(gameTime);
   const [timer, setTimer] = useState<NodeJS.Timer | null>(null);
