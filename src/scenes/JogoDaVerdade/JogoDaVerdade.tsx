@@ -17,26 +17,23 @@ export default function JogoDaVerdade() {
   const gameRoom = room.code;
 
   const title = 'Jogo da Verdade';
-  const navigateTo = useNavigate();
+  const navigate = useNavigate();
   const socket = SocketConnection.getInstance();
 
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<string[]>();
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
 
   const description = (
     <>
-      O sorteado da rodada deverá decidir entre contar uma Verdade, respondendo
-      a uma pergunta de forma sincera, ou virar duas doses.
+      O jogador da vez deverá decidir entre contar uma Verdade, respondendo a
+      uma pergunta dada pelo jogo de forma sincera, ou virar duas doses.
       <br />
       <br />E aí? Vai escolher o que?
     </>
   );
 
-  const startGame = () => {
-    socket.push('move-room-to', {
-      roomCode: room.code,
-      destination: Game.Game,
-    });
+  const getSuggestions = () => {
+    socket.pushMessage(room.code, 'verdade-suggestions', 'please');
   };
 
   const backToLobby = () => {
@@ -54,6 +51,11 @@ export default function JogoDaVerdade() {
     });
   };
 
+  const showSuggs = () => {
+    socket.pushMessage(gameRoom, 'show-suggestions');
+    setShowSuggestions(true);
+  };
+
   const finishDrinking = () => {
     socket.push('players-who-drank-are', {
       roomCode: room.code,
@@ -63,6 +65,8 @@ export default function JogoDaVerdade() {
 
     roulettePage();
   };
+
+  //SOCKET////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
     socket.connect();
@@ -81,7 +85,7 @@ export default function JogoDaVerdade() {
           URL: destination,
           page: undefined,
         }));
-        return navigateTo(destination, {
+        return navigate(destination, {
           state: {
             coverImg: coverImg,
           },
@@ -101,21 +105,20 @@ export default function JogoDaVerdade() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigateTo('/Home');
+        navigate('/Home');
       }
     });
 
     if (user.isCurrentTurn) {
       socket.pushMessage(gameRoom, 'get-suggestions', '');
     }
-    socket.addEventListener('get-suggestions', (suggs) => {
-      setSuggestions(suggs);
+
+    socket.addEventListener('verdade-suggestions', (suggs) => {
+      setSuggestions(JSON.parse(suggs));
     });
 
     socket.addEventListener('show-suggestions', () => {
-      if (showSuggestions === false) {
-        setShowSuggestions(true);
-      }
+      if (!showSuggestions) setShowSuggestions(true);
     });
 
     return () => {
@@ -123,14 +126,20 @@ export default function JogoDaVerdade() {
     };
   }, []);
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+
   const setGlobalRoomPage = (newPage: Game) => {
     setRoom((previous) => ({ ...previous, page: newPage }));
   };
 
-  const showSuggs = () => {
-    socket.pushMessage(gameRoom, 'show-suggestions');
-    setShowSuggestions(true);
-  };
+  useEffect(() => {
+    if (user.isCurrentTurn && suggestions) {
+      socket.push('move-room-to', {
+        roomCode: room.code,
+        destination: Game.Game,
+      });
+    }
+  }, [suggestions]);
 
   switch (room.page) {
     case Game.Game:
@@ -154,7 +163,7 @@ export default function JogoDaVerdade() {
           title={title}
           coverImg={coverImg}
           goBackPage={backToLobby}
-          gamePage={startGame}
+          gamePage={getSuggestions}
           turnVisibility={user.isCurrentTurn}
           ownerVisibility={user.isOwner}
           description={description}

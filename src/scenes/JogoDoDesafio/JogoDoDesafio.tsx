@@ -17,26 +17,23 @@ export default function JogoDoDesafio() {
   const gameRoom = room.code;
 
   const title = 'Jogo do Desafio';
-  const navigateTo = useNavigate();
+  const navigate = useNavigate();
   const socket = SocketConnection.getInstance();
 
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<string[]>();
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
 
   const description = (
     <>
       O jogador da vez deverá decidir entre realizar um dos Desafios sugeridos
-      pelo jogo, ou virar duas doses.
+      pelo jogo ou virar duas doses.
       <br />
       <br />E aí? Vai escolher o que?
     </>
   );
 
-  const startGame = () => {
-    socket.push('move-room-to', {
-      roomCode: room.code,
-      destination: Game.Game,
-    });
+  const getSuggestions = () => {
+    socket.pushMessage(room.code, 'desafio-suggestions', 'please');
   };
 
   const backToLobby = () => {
@@ -54,6 +51,11 @@ export default function JogoDoDesafio() {
     });
   };
 
+  const showSuggs = () => {
+    socket.pushMessage(gameRoom, 'show-suggestions');
+    setShowSuggestions(true);
+  };
+
   const finishDrinking = () => {
     socket.push('players-who-drank-are', {
       roomCode: room.code,
@@ -63,6 +65,8 @@ export default function JogoDoDesafio() {
 
     roulettePage();
   };
+
+  //SOCKET////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
     socket.connect();
@@ -88,7 +92,7 @@ export default function JogoDoDesafio() {
           URL: destination,
           page: undefined,
         }));
-        return navigateTo(destination, {
+        return navigate(destination, {
           state: {
             coverImg: coverImg,
           },
@@ -105,17 +109,12 @@ export default function JogoDoDesafio() {
       }));
     });
 
-    if (user.isCurrentTurn) {
-      socket.pushMessage(gameRoom, 'get-suggestions', '');
-    }
-    socket.addEventListener('get-suggestions', (suggs) => {
-      setSuggestions(suggs);
+    socket.addEventListener('desafio-suggestions', (suggs) => {
+      setSuggestions(JSON.parse(suggs));
     });
 
     socket.addEventListener('show-suggestions', () => {
-      if (showSuggestions === false) {
-        setShowSuggestions(true);
-      }
+      if (!showSuggestions) setShowSuggestions(true);
     });
 
     return () => {
@@ -123,14 +122,20 @@ export default function JogoDoDesafio() {
     };
   }, []);
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+
   const setGlobalRoomPage = (newPage: Game) => {
     setRoom((previous) => ({ ...previous, page: newPage }));
   };
 
-  const showSuggs = () => {
-    socket.pushMessage(gameRoom, 'show-suggestions');
-    setShowSuggestions(true);
-  };
+  useEffect(() => {
+    if (user.isCurrentTurn && suggestions) {
+      socket.push('move-room-to', {
+        roomCode: room.code,
+        destination: Game.Game,
+      });
+    }
+  }, [suggestions]);
 
   switch (room.page) {
     case Game.Game:
@@ -154,7 +159,7 @@ export default function JogoDoDesafio() {
           title={title}
           coverImg={coverImg}
           goBackPage={backToLobby}
-          gamePage={startGame}
+          gamePage={getSuggestions}
           turnVisibility={user.isCurrentTurn}
           ownerVisibility={user.isOwner}
           description={description}
