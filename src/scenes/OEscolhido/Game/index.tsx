@@ -5,7 +5,18 @@ import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 import Avatar from '../../../components/Avatar';
 import gsap from 'gsap';
-import './Game.css';
+import {
+  Content,
+  Game,
+  Title,
+  PlayerList,
+  Nickname,
+  SelectedAvatar,
+  UnselectedAvatar,
+  SelectedPlayer,
+  UnselectedPlayer,
+  ItemContainer,
+} from './Game.style';
 
 interface GameProps {
   vote: React.Dispatch<React.SetStateAction<Player>>;
@@ -31,8 +42,8 @@ export default function GamePage({
 
   useLayoutEffect(() => {
     if (selectedPlayer) {
-      gsap.to('.selectedItem', { scale: 1.08, duration: 0.5 });
-      gsap.to('.unselectedItem', { scale: 1, duration: 0.5 });
+      gsap.to('.selected', { scale: 1.08, duration: 0.5 });
+      gsap.to('.unselected', { scale: 1, duration: 0.5 });
     }
   }, [selectedPlayer]);
 
@@ -45,41 +56,41 @@ export default function GamePage({
   return (
     <Background noImage>
       <Header participants={owner} timer={msTimeLeft} />
-      <div className="OEscolhidoContainer">
-        <div className="OEscolhidoTitleAndList">
-          <p className="OEscolhidoTitle">Vote em quem deve beber:</p>
-          <div className="GamePlayerListDiv">
-            {players.current.map((player, i) => (
-              <div
-                key={`${i}`}
-                onClick={() => {
-                  selectPlayer(player);
-                }}
-                className={
-                  player.nickname === selectedPlayer.nickname
-                    ? 'selectedItem GamePlayerListItem'
-                    : 'unselectedItem GamePlayerListItem'
-                }>
-                <p className="GamePlayerListNickname">{player.nickname}</p>
-                <div
-                  className={
-                    player.nickname === selectedPlayer.nickname
-                      ? 'selectedAvatar GamePlayerListAvatar'
-                      : 'unselectedAvatar GamePlayerListAvatar'
-                  }>
-                  <Avatar seed={player.avatarSeed} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      <Game>
+        <Content>
+          <Title>Vote em quem deve beber:</Title>
+          <PlayerList>
+            {players.current.map((player, i) => {
+              let Item = UnselectedPlayer;
+              let AvatarDiv = UnselectedAvatar;
+              let state = 'unselected';
+
+              if (player.nickname === selectedPlayer.nickname) {
+                Item = SelectedPlayer;
+                AvatarDiv = SelectedAvatar;
+                state = 'selected';
+              }
+
+              return (  //TODO código 'obscuro' rs
+                <ItemContainer className={state} key={`${i}`}>
+                  <Item onClick={() => selectPlayer(player)}>
+                    <Nickname>{player.nickname}</Nickname>
+                    <AvatarDiv>
+                      <Avatar seed={player.avatarSeed} />
+                    </AvatarDiv>
+                  </Item>
+                </ItemContainer>
+              );
+            })}
+          </PlayerList>
+        </Content>
         <Button
           staysOnBottom
           isDisabled={!hasSelected}
           onClick={() => vote(selectedPlayer)}>
           Votar
         </Button>
-      </div>
+      </Game>
     </Background>
   );
 }
