@@ -24,6 +24,7 @@ import QuemSouEu from './scenes/QuemSouEu';
 import QualODesenho from './scenes/QualODesenho';
 import JogoDoDesafio from './scenes/JogoDoDesafio';
 import JogoDaVerdade from './scenes/JogoDaVerdade';
+import MestreDaMimica from './scenes/MestreDaMimica';
 
 const Router: React.FC = () => {
   return (
@@ -52,6 +53,7 @@ const Router: React.FC = () => {
         <Route path="/QualODesenho" element={<QualODesenho />} />
         <Route path="/JogoDoDesafio" element={<JogoDoDesafio />} />
         <Route path="/JogoDaVerdade" element={<JogoDaVerdade />} />
+        <Route path="/MestreDaMimica" element={<MestreDaMimica />} />
       </Routes>
     </MemoryRouter>
   );
