@@ -300,7 +300,7 @@ export default function GamePage({
       </RunningTimer>
     );
 
-  const ProgressText = () => {
+  const ProgressText = () => { // TODO: return string
     switch (correct.length) {
       case 0:
         return <>Todos ainda vão beber 2 doses</>;
