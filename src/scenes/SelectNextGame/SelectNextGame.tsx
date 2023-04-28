@@ -46,6 +46,13 @@ export default function SelectNextGame() {
       }));
     });
 
+    socket.addEventListener('kick-player', (nickname) => {
+      if (user.nickname === nickname) {
+        window.localStorage.clear();
+        navigate('/Home');
+      }
+    });
+
     socket.addEventListener('player-turn-is', (turnName) => {
       setUser((previous) => ({
         ...previous,
@@ -197,7 +204,7 @@ export default function SelectNextGame() {
 
   const header =
     user.isOwner === true ? (
-      <Header exit goBackArrow={backToLobby} roomCode logo />
+      <Header participants exit goBackArrow={backToLobby} roomCode logo />
     ) : (
       <Header exit roomCode logo />
     );
@@ -210,6 +217,7 @@ export default function SelectNextGame() {
           <RouletteDiv>
             <SideIconSpace>&nbsp;</SideIconSpace>
             <Roulette
+              data-testid="roulette"
               width={rouletteDimensions.width}
               height={rouletteDimensions.height}>
               {room.gameList.map((rouletteCard, index) => (

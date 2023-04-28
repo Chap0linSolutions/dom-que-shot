@@ -56,6 +56,13 @@ export default function SimpleCardGame({
       }));
     });
 
+    socket.addEventListener('kick-player', (nickname) => {
+      if (user.nickname === nickname) {
+        window.localStorage.clear();
+        navigate('/Home');
+      }
+    });
+
     socket.addEventListener('room-owner-is', (ownerName) => {
       const isOwner = user.nickname === ownerName;
       setUser((previous) => ({

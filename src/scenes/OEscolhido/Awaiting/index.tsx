@@ -12,12 +12,14 @@ interface AwaitingProps {
   msTimeLeft: number;
   gamePage: () => void;
   finishPage: () => void;
+  owner: boolean;
 }
 
 export default function AwaitingResults({
   votedPlayer,
   gamePage,
   msTimeLeft,
+  owner,
 }: AwaitingProps) {
   useEffect(() => {
     gsap.from('.AwaitingTitle, .AwaitingCheck', {
@@ -43,7 +45,7 @@ export default function AwaitingResults({
 
   return (
     <Background noImage>
-      <Header timer={msTimeLeft} />
+      <Header participants={owner} timer={msTimeLeft} />
       <div className="AwaitingVotesDiv">
         <p className="AwaitingTitle">Você votou!</p>
 

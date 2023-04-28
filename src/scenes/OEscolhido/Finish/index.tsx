@@ -29,7 +29,6 @@ import {
   MultipleTiesOuter,
   MultipleTiesTextDiv,
   MultipleTiesText,
-  MultipleTiesTitle,
   MultipleTiesAvatar,
 } from './Finish.style';
 
@@ -38,6 +37,7 @@ interface CoverProps {
   numberOfVotes: number;
   turnVisibility: boolean;
   roulettePage: () => void;
+  owner: boolean;
 }
 
 export default function FinishPage({
@@ -45,6 +45,7 @@ export default function FinishPage({
   roulettePage,
   turnVisibility,
   numberOfVotes,
+  owner,
 }: CoverProps) {
   const rouletteButtonText = 'Próximo jogo';
 
@@ -86,7 +87,7 @@ export default function FinishPage({
   if (numberOfVotes === 0) {
     return (
       <Background noImage>
-        <Header />
+        <Header participants={owner} />
         <Finish>
           <Content>
             <Title>POXA! Ninguém votou?</Title>
@@ -115,7 +116,7 @@ export default function FinishPage({
   if (votedPlayer.length == 1) {
     return (
       <Background noImage>
-        <Header />
+        <Header participants={owner} />
         <Finish>
           <Content>
             <Title>E o mais votado foi:</Title>
@@ -142,7 +143,7 @@ export default function FinishPage({
   if (votedPlayer.length == 2) {
     return (
       <Background noImage>
-        <Header />
+        <Header participants={owner} />
         <Finish>
           <Content>
             <Title>Tivemos um empate!</Title>
@@ -191,9 +192,10 @@ export default function FinishPage({
 
   return (
     <Background noImage>
+      <Header participants={owner} />
       <Finish>
         <Content>
-          <MultipleTiesTitle>Tivemos um empate!</MultipleTiesTitle>
+          <Title>Tivemos um empate!</Title>
           <MultipleTies>
             {votedPlayer.map((player) => (
               <MultipleTiesOuter className="OuterCard">
