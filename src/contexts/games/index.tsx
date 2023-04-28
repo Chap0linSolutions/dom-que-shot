@@ -187,8 +187,8 @@ const games: Game[] = [
     backgroundColor: GameTypes.Dynamic,
     description: `O jogador da vez fará duas mímicas em um intervalo de 30 segundos,
     e os demais jogadores devem tentar adivinhar. Para cada palavra errada todos devem
-    virar uma dose.`
-  }
+    virar uma dose.`,
+  },
 ];
 
 export default games;
