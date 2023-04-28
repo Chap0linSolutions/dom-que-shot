@@ -204,9 +204,7 @@ export default function Header({
             <Power width="22px" height="22px" onClick={confirmLeaveRoom} />
           </LeftSideItem>
 
-          <LeftSideItem style={title ? {} : { display: 'none' }}>
-            <Title>{title}</Title>
-          </LeftSideItem>
+          <Title style={title ? {} : { display: 'none' }}>{title}</Title>
         </ArrowAndTitle>
 
         <SettingsInfoAndLogo>
