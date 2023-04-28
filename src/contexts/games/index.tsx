@@ -13,6 +13,7 @@ import QuemSouEu from '../../assets/game-covers/quem-sou-eu.png';
 import Titanic from '../../assets/game-covers/titanic.png';
 import JogoDoDesafio from '../../assets/game-covers/jogo-do-desafio.png';
 import JogoDaVerdade from '../../assets/game-covers/jogo-da-verdade.png';
+import MestreDaMimica from '../../assets/game-covers/mestre-da-mimica.png';
 
 enum GameTypes {
   Simple = '#403A55',
@@ -175,6 +176,15 @@ const games: Game[] = [
         bicho&#41;. Quem errar vira uma dose.{' '}
       </>
     ),
+  },
+  {
+    src: MestreDaMimica,
+    title: 'Mestre da Mímica',
+    id: 13,
+    backgroundColor: GameTypes.Dynamic,
+    description: `O jogador da vez fará duas mímicas em um intervalo de 30 segundos,
+    e os demais jogadores devem tentar adivinhar. Para cada palavra errada todos devem
+    virar uma dose.`,
   },
 ];
 

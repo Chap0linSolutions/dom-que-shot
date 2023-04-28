@@ -23,6 +23,7 @@ import Titanic from './scenes/Titanic';
 import QuemSouEu from './scenes/QuemSouEu';
 import JogoDoDesafio from './scenes/JogoDoDesafio';
 import JogoDaVerdade from './scenes/JogoDaVerdade';
+import MestreDaMimica from './scenes/MestreDaMimica';
 
 const Router: React.FC = () => {
   return (
@@ -50,6 +51,7 @@ const Router: React.FC = () => {
         <Route path="/QuemSouEu" element={<QuemSouEu />} />
         <Route path="/JogoDoDesafio" element={<JogoDoDesafio />} />
         <Route path="/JogoDaVerdade" element={<JogoDaVerdade />} />
+        <Route path="/MestreDaMimica" element={<MestreDaMimica />} />
       </Routes>
     </MemoryRouter>
   );
