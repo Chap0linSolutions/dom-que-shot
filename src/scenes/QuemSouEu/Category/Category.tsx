@@ -17,13 +17,14 @@ import Button from '../../../components/Button';
 
 const categories: { name: string; color: string }[] = [
   { name: 'Animais', color: '#3D1365' },
-  { name: 'Atores', color: '#3C1A7D' },
-  { name: 'Cantores e bandas', color: '#533D8B' },
-  { name: 'Personalidades brasileiras', color: '#857DB1' },
-  { name: 'Personalidades internacionais', color: '#B098C1' },
+  { name: 'Objetos', color: '#3C1A7D' },
+  { name: 'Personagens de animação', color: '#533D8B' },
+  { name: 'Cantores e bandas', color: '#857DB1' },
+  { name: 'Atores', color: '#B098C1' },
   { name: 'Jogadores de futebol', color: '#8D69A2' },
-  { name: 'Personagens da Disney', color: '#72418C' },
-  { name: 'Personagens de desenho animado', color: '#67127C' },
+  { name: 'Personalidades brasileiras', color: '#72418C' },
+  { name: 'Personalidades internacionais', color: '#67127C' },
+  
 ];
 
 interface CategoryProps {
