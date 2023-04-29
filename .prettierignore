@@ -11,3 +11,5 @@ jest.config.js
 vite.config.ts
 
 package-lock.json
+
+coverage/**

@@ -59,7 +59,7 @@ export default function WordPage({
     return (
       <Background noImage>
         <Popup
-          type='info'
+          type="info"
           title={title}
           description={description}
           show={popupVisibility}
@@ -99,7 +99,7 @@ export default function WordPage({
     return (
       <Background>
         <Popup
-          type='info'
+          type="info"
           title={title}
           description={description}
           show={popupVisibility}
