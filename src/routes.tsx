@@ -1,5 +1,5 @@
 import React from 'react';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Start from './scenes/Start';
 import Tutorial from './scenes/Tutorial';
@@ -28,7 +28,7 @@ import MestreDaMimica from './scenes/MestreDaMimica';
 
 const Router: React.FC = () => {
   return (
-    <MemoryRouter>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Start />} />
         <Route path="/Tutorial" element={<Tutorial />} />
@@ -55,7 +55,7 @@ const Router: React.FC = () => {
         <Route path="/JogoDaVerdade" element={<JogoDaVerdade />} />
         <Route path="/MestreDaMimica" element={<MestreDaMimica />} />
       </Routes>
-    </MemoryRouter>
+    </BrowserRouter>
   );
 };
 
