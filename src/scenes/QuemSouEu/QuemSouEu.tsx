@@ -26,6 +26,8 @@ export default function OEscolhido() {
   const title = 'Quem Sou Eu?';
 
   const navigate = useNavigate();
+  const [originalPlayerIsDown, setOriginalPlayerIsDown] = useState<boolean>(false);
+  const [weHaveResults, setWeHaveResults] = useState<boolean>(false);
   const [category, setCategory] = useState<string>(undefined);
   const [playersAndNames, setPlayersAndNames] =
     useState<whoPlayer[]>(undefined);
@@ -55,13 +57,6 @@ export default function OEscolhido() {
     socket.push('move-room-to', {
       roomCode: room.code,
       destination: Game.Game,
-    });
-  };
-
-  const finishGame = () => {
-    socket.push('move-room-to', {
-      roomCode: room.code,
-      destination: Game.Finish,
     });
   };
 
@@ -127,6 +122,17 @@ export default function OEscolhido() {
       }));
     });
 
+    socket.addEventListener('original-player-is-down', () => {
+      setOriginalPlayerIsDown(true);
+    })
+
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
+      }));
+    });
+
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
         setRoom((previous) => ({
@@ -161,7 +167,7 @@ export default function OEscolhido() {
           };
         })
       );
-      user.isCurrentTurn && finishGame();
+      setWeHaveResults(true);
     });
 
     socket.addEventListener('game-category-is', (category) => {
@@ -183,10 +189,22 @@ export default function OEscolhido() {
   }, []);
 
   useEffect(() => {
-    if (playersAndNames && user.isCurrentTurn && room.page === Game.Category) {
+    if (category &&
+      playersAndNames &&
+      user.isCurrentTurn &&
+      room.page === Game.Category
+    ) {
       startGame();
     }
-  }, [playersAndNames]);
+  }, [category, playersAndNames, room, user]);
+
+  useEffect(() => {
+    if(user.isCurrentTurn && weHaveResults)
+      socket.push('move-room-to', {
+        roomCode: room.code,
+        destination: Game.Finish,
+      });
+  }, [user, weHaveResults]);
 
   const listOfPlayers = playersAndNames
     ? room.playerList.map((player) => {
@@ -211,6 +229,8 @@ export default function OEscolhido() {
           setCategory={selectCategory}
           turnVisibility={user.isCurrentTurn}
           owner={user.isOwner}
+          down={originalPlayerIsDown}
+          undown={() => setOriginalPlayerIsDown(false)}
         />
       );
 
@@ -225,6 +245,8 @@ export default function OEscolhido() {
           setWinners={sendWinners}
           turnVisibility={user.isCurrentTurn}
           owner={user.isOwner}
+          down={originalPlayerIsDown}
+          undown={() => setOriginalPlayerIsDown(false)}
         />
       );
 

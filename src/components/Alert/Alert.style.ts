@@ -69,3 +69,25 @@ export const Button = styled.button`
     font-size: 16px;
   }
 `;
+
+export const YesOrNo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const Yes = styled.button`
+  width: 70px;
+  height: 40px;
+  margin: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #07bf0f;
+  color: white;
+  font-size: 18px;
+`;
+
+export const No = styled(Yes)`
+  background: #ad0000;
+`;

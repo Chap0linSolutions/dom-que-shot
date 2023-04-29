@@ -46,6 +46,8 @@ interface GameProps {
   turnVisibility: boolean;
   category: string;
   owner: boolean;
+  down: boolean;
+  undown: () => void;
 }
 
 export default function GamePage({
@@ -57,6 +59,8 @@ export default function GamePage({
   players,
   setWinners,
   owner,
+  down,
+  undown,
 }: GameProps) {
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
   const [whoPlayers, setWhoPlayers] = useState<WhoPlayersSelectable[]>(
@@ -109,7 +113,12 @@ export default function GamePage({
     return { background: isSelected === true ? '#8877DF' : '#403A55' };
   };
 
-  const alert = <Alert message="Clique no jogador que acertar primeiro!" />;
+  const alert = <Alert 
+    onButtonClick={undown}
+    message={(down)
+    ? "Parece que o jogador da vez caiu, então passou pra você! Clique em quem acertar primeiro!"
+    : "Clique no jogador que acertar primeiro!"}
+  />;
 
   const button = (
     <Button
