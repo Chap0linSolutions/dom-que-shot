@@ -161,7 +161,7 @@ export default function OEscolhido() {
           };
         })
       );
-      finishGame();
+      user.isCurrentTurn && finishGame();
     });
 
     socket.addEventListener('game-category-is', (category) => {
