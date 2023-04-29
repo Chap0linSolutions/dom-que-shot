@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
+import EnvironmentPlugin from 'vite-plugin-environment';
 
 import react from '@vitejs/plugin-react'
 
@@ -21,6 +22,6 @@ const pwaOptions: Partial<VitePWAOptions> = {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), VitePWA({...pwaOptions, registerType: 'autoUpdate', srcDir:"src/serviceWorkers" , filename: "core.js" })],
+  plugins: [react(), VitePWA({...pwaOptions, registerType: 'autoUpdate', srcDir:"src/serviceWorkers" , filename: "core.js" }), EnvironmentPlugin('all')],
   base: "/"
 })
