@@ -201,8 +201,8 @@ const games: Game[] = [
   },
   {
     src: MestreDaMimica,
-    title: 'Mestre da Mímica',
-    id: 13,
+    title: 'Mestre da Mímica',  
+    id: 14,
     backgroundColor: GameTypes.Dynamic,
     description: `O jogador da vez fará duas mímicas em um intervalo de 30 segundos,
     e os demais jogadores devem tentar adivinhar. Para cada palavra errada todos devem
