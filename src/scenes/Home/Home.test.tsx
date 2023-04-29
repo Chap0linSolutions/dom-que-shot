@@ -15,7 +15,7 @@ jest.mock('../../contexts/GlobalContextProvider', () => {
     useGlobalContext: () => ({
       setUser: () => null,
       setRoom: () => null,
-      room: { code: '123A' },
+      room: { code: '123A', playerList: [] },
     }),
   };
 });
