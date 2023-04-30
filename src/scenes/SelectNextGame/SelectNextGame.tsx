@@ -192,7 +192,7 @@ export default function SelectNextGame() {
   };
 
   const turnTheWheel = () => {
-    user.isCurrentTurn &&
+    user.isCurrentTurn && !rouletteIsSpinning &&
       socket.pushMessage(room.code, 'roulette-number-is', null);
   };
 
