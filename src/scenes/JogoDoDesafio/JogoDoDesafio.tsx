@@ -25,7 +25,7 @@ export default function JogoDoDesafio() {
 
   const description = (
     <>
-      O jogador da vez deverá decidir entre realizar um dos Desafios sugeridos
+      O jogador da vez deverá decidir entre realizar um dos desafios sugeridos
       pelo jogo ou virar duas doses.
       <br />
       <br />E aí? Vai escolher o que?
@@ -81,7 +81,7 @@ export default function JogoDoDesafio() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigateTo('/Home');
+        navigate('/Home');
       }
     });
 

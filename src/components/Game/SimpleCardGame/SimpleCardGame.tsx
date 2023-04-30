@@ -71,6 +71,13 @@ export default function SimpleCardGame({
       }));
     });
 
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
+      }));
+    });
+
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
         setRoom((previous) => ({

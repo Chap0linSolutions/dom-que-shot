@@ -63,9 +63,7 @@ export const Card = styled.div`
   margin: 4px;
   display: flex;
   align-items: center;
-  @media (max-height: 740px) {
-    height: 76px;
-  }
+  position: relative;
 `;
 
 export const Detail = styled.div`
@@ -106,6 +104,29 @@ export const YourName = styled.p`
     font-size: 20px;
     margin-bottom: 2px;
   }
+`;
+
+export const Reload = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #800080;
+  border-radius: 20px;
+  padding: 5px 15px;
+  margin-left: 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 0 10px;
+  cursor: pointer;
+`;
+
+export const ReloadsLeft = styled.p`
+  color: white;
+  font-size: 15px;
+  font-weight: 400;
+  margin: 0;
+  padding-right: 5px;
 `;
 
 export const HiddenName = styled(YourName)`

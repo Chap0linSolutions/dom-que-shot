@@ -40,6 +40,10 @@
   margin: 20px 0;
 }
 
+.Warning {
+  flex-direction: row;
+}
+
 .PopupDescription::-webkit-scrollbar {
   display: none;
 }
