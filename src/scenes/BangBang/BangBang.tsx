@@ -37,7 +37,7 @@ export function BangBang() {
       Neste jogo, cada participante vai jogar com o seu aparelho.
       <br />
       <br />
-      3, 2, 1, BANG! Um botão vermelho vai aparecer na tela, e após a contagem,
+      3, 2, 1, BANG! Um botão vermelho vai aparecer na tela e, após a contagem regressiva,
       todos devem tentar pressioná-lo o mais rápido que conseguirem.
       <br />
       <br />
