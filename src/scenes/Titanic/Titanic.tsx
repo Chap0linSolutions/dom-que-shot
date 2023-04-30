@@ -22,8 +22,13 @@ export const Status = {
   Disconnected: [-1],
 };
 
+const ICEBERGS = 5;
+const TITANICS = 3;
+
 export default function Titanic() {
   const { user, room, setUser, setRoom } = useGlobalContext();
+  const [timesUp, setTimesUp] = useState<boolean>(false);
+  const [places, setPlaces] = useState<number[]>([]);
   const title = 'Titanic';
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////////
@@ -42,11 +47,7 @@ export default function Titanic() {
     if (updatedMs > 0) {
       updatedMs -= 100;
       if (updatedMs === 0) {
-        setResults(`time's up`);
-        if (user.isCurrentTurn) {
-          return sendResults(JSON.stringify(Status.IcebergTimesUp));
-        }
-        return sendResults(JSON.stringify(Status.TitanicTimesUp));
+        setTimesUp(true);
       }
       setMsTimer(updatedMs);
     }
@@ -165,6 +166,22 @@ export default function Titanic() {
   }, [room.page]);
 
   useEffect(() => {
+    if(timesUp){
+      const target = (user.isCurrentTurn)? ICEBERGS : TITANICS;
+      const selection = places.filter((p) => p >= 100);
+      if(selection.length === target){
+        sendResults(JSON.stringify(selection));
+      } else {
+        setResults(`time's up`);
+        if (user.isCurrentTurn) {
+          return sendResults(JSON.stringify(Status.IcebergTimesUp));
+        }
+        return sendResults(JSON.stringify(Status.TitanicTimesUp));
+      }
+    }
+  }, [timesUp, places]);
+
+  useEffect(() => {
     if (typeof results === 'string') {
       if (timer !== null) {
         clearInterval(timer);
@@ -184,6 +201,8 @@ export default function Titanic() {
           msTimeLeft={msTimer}
           finishPage={() => setGlobalRoomPage(Game.Finish)}
           owner={user.isOwner}
+          places={places}
+          setPlaces={setPlaces}
         />
       );
 

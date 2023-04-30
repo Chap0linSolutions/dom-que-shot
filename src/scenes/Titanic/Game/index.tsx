@@ -27,6 +27,8 @@ interface GameProps {
   isCurrentTurn: boolean;
   msTimeLeft: number;
   owner: boolean;
+  places: number[];
+  setPlaces: (value: number[]) => void;
 }
 
 enum animationState {
@@ -42,10 +44,10 @@ export default function GamePage({
   isCurrentTurn,
   msTimeLeft,
   owner,
+  places,
+  setPlaces,
 }: GameProps) {
   const maxElements = isCurrentTurn ? 5 : 3;
-
-  const [places, setPlaces] = useState<number[]>([]);
   const [animation, setAnimation] = useState<animationState>(
     animationState.Start
   );
