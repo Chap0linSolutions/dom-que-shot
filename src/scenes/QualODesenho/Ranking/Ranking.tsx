@@ -23,6 +23,8 @@ import {
   Subtitle,
   Word,
   Guidance,
+  CardText,
+  CardSubtext,
 } from './Ranking.style';
 
 interface RankingProps {
@@ -33,6 +35,11 @@ interface RankingProps {
   finalResults: boolean;
 }
 
+enum Status {
+  Lost = -1,
+  Disconnected = -100,
+}
+
 export function RankingPage({
   data,
   roulettePage,
@@ -41,11 +48,11 @@ export function RankingPage({
   finalResults,
 }: RankingProps) {
   const whoGuessed = data.filter((d) => d.guessTime > -1);
-  const whoDidnt = data.filter((d) => d.guessTime < 0);
+  const whoDidnt = data.filter((d) => (d.guessTime === Status.Lost || d.guessTime === Status.Disconnected));
+  const whoMissed = data.filter((d) => d.guessTime === Status.Lost);
 
   whoGuessed.length > 0 && whoGuessed.sort((a, b) => a.guessTime - b.guessTime);
   whoDidnt.length > 0 && whoDidnt.sort((a, b) => b.guessTime - a.guessTime);
-  //PAREI AQUI
 
   const winner: GuessingPlayer =
     whoGuessed.length > 0
@@ -58,8 +65,8 @@ export function RankingPage({
         };
 
   const loser: GuessingPlayer =
-    data.length > 1
-      ? data[data.length - 1]
+    whoMissed.length > 0
+      ? whoMissed[whoMissed.length - 1]
       : {
           id: '',
           nickname: 'carregando...',
@@ -109,14 +116,14 @@ export function RankingPage({
           <Subtitle>E a palavra era:</Subtitle>
           <Word>{word}</Word>
           <Header>
-            {whoGuessed.length > 1 ? (
+            {whoMissed.length === 1 ? (
               <>
                 <Winner>
                   <AvatarBackground>
                     <Crown src={crown} />
                     <Avatar seed={winner.avatarSeed} />
                   </AvatarBackground>
-                  <Text>{winner.nickname}</Text>
+                  <CardText>{winner.nickname}</CardText>
                   <Text>{winner.guessTime}s</Text>
                 </Winner>
                 <Loser>
@@ -124,8 +131,8 @@ export function RankingPage({
                     <Avatar seed={loser.avatarSeed} />
                     <ThumbsDown src={thumbDown} />
                   </AvatarBackground>
-                  <Text>{loser.nickname}</Text>
-                  <Text>{loser.guessTime}s</Text>
+                  <CardText>{loser.nickname}</CardText>
+                  <CardSubtext>Olha Maurice!<br/>um bocó</CardSubtext>
                 </Loser>
               </>
             ) : (

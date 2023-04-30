@@ -59,6 +59,24 @@ export const Text = styled.p`
   }
 `;
 
+export const CardText = styled.p`
+  margin: 0;
+  font-size: 17px;
+  font-family: Adumu;
+  @media (max-height: 740px) {
+    font-size: 16px;
+  }
+`;
+
+export const CardSubtext = styled.p`
+  margin: 0;
+  font-family: Roboto;
+  font-size: 12px;
+  line-height: 14px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.3);
+`;
+
 export const OnlyWinner = styled.div`
   display: flex;
   flex-direction: column;
