@@ -34,15 +34,16 @@ export default function OEscolhido() {
 
   const description = (
     <>
-      Neste jogo, cada participante vai jogar com o seu aparelho.
+      O jogador da vez escolhe a categoria, e a partir daí serão sorteados
+      nomes dessa categoria para cada jogador. Então cada um na sua vez vai fazendo
+      perguntas de sim ou não para tentar adivinhar quem é.
       <br />
       <br />
-      Serão sorteados personagens para cada jogador a partir da categoria
-      escolhida pelo jogador da vez. A partir daí cada um na sua vez vai fazendo
-      perguntas de sim ou não para tentar adivinhar quem é o personagem
-      sorteado. Ele pode ser um ator/atriz, cantor e etc.
+      Quem acertar a pergunta pode fazer novas perguntas em sequência. Quem
+      errar perde a vez e passa para o próximo.
       <br />
-      <br />O primeiro a acertar é o único que não bebe. Boa sorte!
+      <br />
+      O primeiro a acertar é o único que não bebe. Boa sorte!
     </>
   );
 

@@ -25,7 +25,7 @@ export default function JogoDaVerdade() {
 
   const description = (
     <>
-      O jogador da vez deverá decidir entre contar uma Verdade, respondendo a
+      O jogador da vez deverá decidir entre contar uma verdade, respondendo a
       uma pergunta dada pelo jogo de forma sincera, ou virar duas doses.
       <br />
       <br />E aí? Vai escolher o que?

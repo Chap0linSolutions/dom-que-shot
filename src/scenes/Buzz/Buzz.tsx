@@ -6,27 +6,20 @@ export default function Buzz() {
   const title = 'Buzz';
   const description = (
     <>
-      Este jogo deve ser jogado fora do aparelho. Funciona assim:
-      <br />
-      <br />
-      Um jogador inicia a contagem com o número 1. O próximo na roda continua
-      com o 2, o seguinte com o 3 e assim por diante. A contagem continua até
-      que alguém cometa o erro fatal: Não dizer "Buzz" para determinados
-      números.
-      <br />
-      Os números em questão são:
+      O jogador da vez inicia a contagem com o número 1. O próximo na roda fala 2
+      e assim por diante. A contagem segue em sentido horário até alguém
+      cometer o erro fatal: não dizer "Fizz" ou "Buzz" para determinados números.
+      Esses números são:
       <ul>
         <li style={{ color: 'black' }}>
-          Os que contém um 7 &#40;7, 17, 27...&#41;
+          Os múltiplos de 3. Neste caso, o jogador deve dizer "FIZZ"
         </li>
         <li style={{ color: 'black' }}>
-          Múltiplos de 7 &#40;7, 14, 21...&#41;
-        </li>
-        <li style={{ color: 'black' }}>
-          Os que tiverem dígitos iguais &#40;11, 22, 33...&#41;
+          Os múltiplos de 5. Neste caso, o jogador deve dizer "BUZZ"
         </li>
       </ul>
-      Quem errar o Buzz deve virar uma dose!
+      E claro, se o número for múltipo de 3 e 5 ao mesmo, o jogador deve falar "FIZZ BUZZ".
+      O primeiro a errar deve virar uma dose!
     </>
   );
   const hint = (
@@ -34,7 +27,7 @@ export default function Buzz() {
       PREPARADOS??
       <br />
       <br />
-      O jogador da vez inicia a contagem.
+      O jogador da vez pode iniciar a contagem, e o resto continua em sentido horário.
       <br />
       <br />
       Finalizando a rodada com o primeiro que errar, clique no botão abaixo para
