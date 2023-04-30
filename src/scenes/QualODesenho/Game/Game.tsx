@@ -127,13 +127,8 @@ export default function GamePage({
   useEffect(() => {
     if (turnVisibility && counter.current > msTimer) {
       counter.current -= 1000;
-
-      if (last.current.id === 0) {
-        updateDrawingPaths(
-          JSON.stringify({ type: 'my-canvas-width-is', payload: canvas.width })
-        );
-      }
       if (paths.current.length > 0) {
+        updateDrawingPaths(JSON.stringify({ type: 'my-canvas-width-is', payload: canvas.width}));
         const current = paths.current.at(-1);
         if (current.id === last.current.id) {
           if (current.points.length > last.current.length) {
@@ -184,6 +179,7 @@ export default function GamePage({
     document.body.style.overscrollBehavior = 'none'; //prevent pull-to-refresh on this page
     document.querySelector('html').style.overflow = 'hidden';
     return () => {
+      window.removeEventListener('resize', handleResize);
       document.body.style.overscrollBehavior = 'auto';
       document.querySelector('html').style.overflow = 'auto';
     };

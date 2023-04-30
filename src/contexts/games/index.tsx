@@ -31,24 +31,23 @@ export type Game = {
 };
 
 const games: Game[] = [
-  //TODO incluir o jogo Direita-Esquerda (aqui e no backend) quando a mecânica dos dados tiver sido implementada
-  {
-    src: BangBang,
-    title: 'Bang Bang',
-    id: 0,
-    backgroundColor: GameTypes.Round,
-    description: `3, 2, 1, BANG! Ao final da contagem regressiva, todos os jogadores verão
-    um botão aparecer na tela de seus celulares. O último a conseguir apertar
-    deve virar uma dose.`,
-  },
   {
     src: EuNunca,
     title: 'Eu Nunca',
-    id: 1,
+    id: 0,
     backgroundColor: GameTypes.Dynamic,
     description: `É o "Eu Nunca" de sempre. O jogador da vez fala uma frase
     começada por "Eu Nunca" e quem já tiver feito o que ele
     falar deve virar uma dose. Aparecem sugestões para os pouco criativos.`,
+  },
+  {
+    src: BangBang,
+    title: 'Bang Bang',
+    id: 1,
+    backgroundColor: GameTypes.Round,
+    description: `3, 2, 1, BANG! Ao final da contagem regressiva, todos os jogadores verão
+    um botão aparecer na tela de seus celulares. O último a conseguir apertar
+    deve virar uma dose.`,
   },
   {
     src: Vrum,
@@ -115,9 +114,26 @@ const games: Game[] = [
     escolherem, aquele que falar "Medusa" por último tem de virar uma dose.`,
   },
   {
+    src: QuemSouEu,
+    title: 'Quem Sou Eu',
+    id: 7,
+    backgroundColor: GameTypes.Round,
+    description: `O jogador da vez escolhe uma categoria - por exemplo, animais - e todos os
+    participantes recebem um nome para adivinhar por meio de perguntas de sim ou não. O primeiro
+    que acertar é o único que não bebe.`,
+  },
+  {
+    src: JogoDaVerdade,
+    title: 'Jogo da Verdade',
+    id: 10,
+    backgroundColor: GameTypes.Dynamic,
+    description: `O jogador da vez deverá decidir entre contar uma verdade, 
+    respondendo a uma das perguntas de forma sincera, ou virar duas doses no lugar.`,
+  },
+  {
     src: OEscolhido,
     title: 'O Escolhido',
-    id: 7,
+    id: 9,
     backgroundColor: GameTypes.Round,
     description: `É um jogo de votação clássico. Vote em quem você acha que deve beber, e o mais
     votado vira uma dose. Se quiser votar em si mesmo está liberado.`,
@@ -137,23 +153,6 @@ const games: Game[] = [
         falar 'FIZZ BUZZ'. O primeiro que errar vira uma dose.
       </>
     ),
-  },
-  {
-    src: QuemSouEu,
-    title: 'Quem Sou Eu',
-    id: 9,
-    backgroundColor: GameTypes.Round,
-    description: `O jogador da vez escolhe uma categoria - por exemplo, animais - e todos os
-    participantes recebem um nome para adivinhar por meio de perguntas de sim ou não. O primeiro
-    que acertar é o único que não bebe.`,
-  },
-  {
-    src: JogoDaVerdade,
-    title: 'Jogo da Verdade',
-    id: 10,
-    backgroundColor: GameTypes.Dynamic,
-    description: `O jogador da vez deverá decidir entre contar uma verdade, 
-    respondendo a uma das perguntas de forma sincera, ou virar duas doses no lugar.`,
   },
   {
     src: CSComposto,

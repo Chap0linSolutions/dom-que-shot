@@ -43,7 +43,7 @@ export default function QualODesenho() {
       dentre outros) e terá 1 minuto para finalizar o desenho.
       <br />
       <br />
-      - Os que não acertarem dentro do tempo BEBEM; - Se ninguém acertar, o
+      Os que não acertarem dentro do tempo BEBEM; Se ninguém acertar, o
       jogador da vez BEBE.
       <br />
       <br />

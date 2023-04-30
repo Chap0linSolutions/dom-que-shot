@@ -102,9 +102,6 @@ export default function Lobby() {
 
     socket.addEventListener('current-state-is', (currentState) => {
       const { URL, page } = JSON.parse(currentState);
-
-      console.log(currentState);
-
       switch (URL) {
         case '/BangBang':
         case '/OEscolhido':
