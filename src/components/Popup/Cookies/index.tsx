@@ -44,7 +44,6 @@ export default function Cookies() {
 
   const checkCookieConsent = () => {
     const checkCookie = document.cookie.indexOf('DomQueShotCookies=true');
-    console.log(`cookies permitidos (checkCookie = ${checkCookie})`);
     if (checkCookie > -1) return;
     console.log('O usuário ainda não permitiu o uso de cookies.');
     setPopupVisibility(true);
