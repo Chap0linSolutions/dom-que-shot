@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { CheckCircle, Circle } from 'react-feather';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
 import glassIcon from '../../../assets/glass-icon-yellow-background.png';
@@ -6,7 +7,6 @@ import Button from '../../../components/Button';
 import beer from '../../../assets/beer.png';
 import sandWatch from './assets/sand-watch.png';
 import gsap from 'gsap';
-import { CheckCircle, Circle } from 'react-feather';
 import {
   CategoryAndWord,
   Content,

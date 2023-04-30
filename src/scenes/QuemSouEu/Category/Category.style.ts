@@ -43,7 +43,7 @@ export const Category = styled.div`
   margin: 8px;
   width: 160px;
   height: 100px;
-  padding: 20px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,6 +64,6 @@ export const CategoryName = styled.p`
   font-weight: 500;
   margin: 0;
   @media (max-height: 740px) {
-    font-size: 16px;
+    font-size: 15px;
   }
 `;
