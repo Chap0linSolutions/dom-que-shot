@@ -60,6 +60,10 @@ export default function OEscolhido() {
     });
   };
 
+  const changeMyName = () => {
+    socket.pushMessage(room.code, 'send-me-a-new-name');
+  }
+
   const backToLobby = () => {
     console.log('O usuário desejou voltar ao lobby');
     socket.push('move-room-to', {
@@ -247,6 +251,7 @@ export default function OEscolhido() {
           owner={user.isOwner}
           down={originalPlayerIsDown}
           undown={() => setOriginalPlayerIsDown(false)}
+          changeMyName={changeMyName}
         />
       );
 
