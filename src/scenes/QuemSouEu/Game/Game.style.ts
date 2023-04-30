@@ -63,9 +63,7 @@ export const Card = styled.div`
   margin: 4px;
   display: flex;
   align-items: center;
-  @media (max-height: 740px) {
-    height: 72px;
-  }
+  position: relative;
 `;
 
 export const Detail = styled.div`
@@ -108,6 +106,29 @@ export const YourName = styled.p`
   }
 `;
 
+export const Reload = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #800080;
+  border-radius: 20px;
+  padding: 5px 15px;
+  margin-left: 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 0 10px;
+  cursor: pointer;
+`;
+
+export const ReloadsLeft = styled.p`
+  color: white;
+  font-size: 15px;
+  font-weight: 400;
+  margin: 0;
+  padding-right: 5px;
+`;
+
 export const HiddenName = styled(YourName)`
   padding-left: 12px;
 `;
@@ -126,7 +147,11 @@ export const WhoGotThisName = styled.div`
 export const CategoryAndPlayer = styled.div`
   height: 38px;
   display: flex;
+  align-items: end;
   justify-content: space-between;
+  @media(max-height: 740px){
+    height: 32px;
+  }
 `;
 
 export const PlayerNickname = styled.p`
@@ -147,8 +172,13 @@ export const PlayerAvatar = styled.div`
 
 export const Category = styled.p`
   margin: 0;
+  margin-bottom: 4px;
   font-size: 12px;
-  max-width: 50%;
+  max-width: 30%;
   line-height: 14px;
   color: rgba(255, 255, 255, 0.54);
+  @media(max-height: 740px){
+    font-size: 11px;
+    line-height: 13px;
+  }
 `;

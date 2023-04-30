@@ -129,7 +129,7 @@ export default function Popup({
         <div ref={warningRef} className={`PopupContainer Bottom`}>
           <div className="PopupDiv" style={popupStyle}>
             <div
-              className="PopupDescription"
+              className="PopupDescription Warning"
               style={descriptionColor ? { color: descriptionColor } : {}}>
               {description}
               {getIcon()}

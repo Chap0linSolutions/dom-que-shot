@@ -4,6 +4,8 @@ import Header from '../../../components/Header';
 import beer from '../../../assets/beer.png';
 import AwaitingBanner from '../../../components/AwaitingBanner';
 import Popup from '../../../components/Popup';
+import Button from '../../../components/Button';
+import Alert from '../../../components/Alert';
 import {
   Categories,
   Category,
@@ -13,17 +15,18 @@ import {
   Content,
   CategoryDiv,
 } from './Category.style';
-import Button from '../../../components/Button';
+
 
 const categories: { name: string; color: string }[] = [
   { name: 'Animais', color: '#3D1365' },
-  { name: 'Atores', color: '#3C1A7D' },
-  { name: 'Cantores e bandas', color: '#533D8B' },
-  { name: 'Personalidades brasileiras', color: '#857DB1' },
-  { name: 'Personalidades internacionais', color: '#B098C1' },
+  { name: 'Objetos', color: '#3C1A7D' },
+  { name: 'Personagens de animação', color: '#533D8B' },
+  { name: 'Cantores e bandas', color: '#857DB1' },
+  { name: 'Atores', color: '#B098C1' },
   { name: 'Jogadores de futebol', color: '#8D69A2' },
-  { name: 'Personagens da Disney', color: '#72418C' },
-  { name: 'Personagens de desenho animado', color: '#67127C' },
+  { name: 'Personalidades brasileiras', color: '#72418C' },
+  { name: 'Personalidades internacionais', color: '#67127C' },
+  
 ];
 
 interface CategoryProps {
@@ -32,6 +35,8 @@ interface CategoryProps {
   setCategory: (value: string) => void;
   turnVisibility: boolean;
   owner: boolean;
+  down: boolean;
+  undown: () => void;
 }
 
 export default function CategoryPage({
@@ -40,6 +45,8 @@ export default function CategoryPage({
   setCategory,
   turnVisibility,
   owner,
+  down,
+  undown,
 }: CategoryProps) {
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>(undefined);
@@ -58,9 +65,19 @@ export default function CategoryPage({
     };
   };
 
+  const downAlert = <Alert 
+    onButtonClick={undown}
+    message={
+      `Parece que o jogador da vez caiu,
+      então passou pra você! Selecione a categoria do jogo!`
+    }
+  />
+
   if (turnVisibility === true) {
     return (
       <Background noImage>
+        {down && turnVisibility && downAlert}
+
         <Popup
           type="info"
           title={title}

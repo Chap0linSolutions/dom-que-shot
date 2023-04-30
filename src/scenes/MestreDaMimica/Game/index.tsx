@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { CheckCircle, Circle } from 'react-feather';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
 import glassIcon from '../../../assets/glass-icon-yellow-background.png';
@@ -6,7 +7,6 @@ import Button from '../../../components/Button';
 import beer from '../../../assets/beer.png';
 import sandWatch from './assets/sand-watch.png';
 import gsap from 'gsap';
-import { CheckCircle, Circle } from 'react-feather';
 import {
   CategoryAndWord,
   Content,
@@ -300,8 +300,7 @@ export default function GamePage({
       </RunningTimer>
     );
 
-  const ProgressText = () => {
-    // TODO: return string
+  const ProgressText = () => { // TODO: return string
     switch (correct.length) {
       case 0:
         return <>Todos ainda vão beber 2 doses</>;

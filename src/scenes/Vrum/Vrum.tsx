@@ -6,10 +6,7 @@ export default function Vrum() {
   const title = 'Vrum';
   const description = (
     <>
-      Este jogo deve ser jogado fora do aparelho. Funciona assim:
-      <br />
-      <br />
-      Os jogadores devem se organizar em uma roda. Começando em sentido horário,
+      Começando em sentido horário,
       cada participante vai ter que dizer uma dessas três opções quando chegar a
       sua vez:
       <br />
@@ -26,8 +23,7 @@ export default function Vrum() {
       3 - Falar PLOFT &#40;imitando o barulho de uma lombada&#41;: O sentido da
       roda se mantém, mas o jogador seguinte é pulado.
       <br />
-      <br />O resultado acaba sendo muito engraçado. Quem errar a vez, ou errar
-      a palavra, tem de virar uma dose.
+      <br />Quem errar a vez, ou errar a palavra, tem de virar uma dose.
     </>
   );
   const hint = (

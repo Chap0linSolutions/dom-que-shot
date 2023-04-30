@@ -26,21 +26,24 @@ export default function OEscolhido() {
   const title = 'Quem Sou Eu?';
 
   const navigate = useNavigate();
+  const [originalPlayerIsDown, setOriginalPlayerIsDown] = useState<boolean>(false);
+  const [weHaveResults, setWeHaveResults] = useState<boolean>(false);
   const [category, setCategory] = useState<string>(undefined);
   const [playersAndNames, setPlayersAndNames] =
     useState<whoPlayer[]>(undefined);
 
   const description = (
     <>
-      Neste jogo, cada participante vai jogar com o seu aparelho.
+      O jogador da vez escolhe a categoria, e a partir daí serão sorteados
+      nomes dessa categoria para cada jogador. Então cada um na sua vez vai fazendo
+      perguntas de sim ou não para tentar adivinhar quem é.
       <br />
       <br />
-      Serão sorteados personagens para cada jogador a partir da categoria
-      escolhida pelo jogador da vez. A partir daí cada um na sua vez vai fazendo
-      perguntas de sim ou não para tentar adivinhar quem é o personagem
-      sorteado. Ele pode ser um ator/atriz, cantor e etc.
+      Quem acertar a pergunta pode fazer novas perguntas em sequência. Quem
+      errar perde a vez e passa para o próximo.
       <br />
-      <br />O primeiro a acertar é o único que não bebe. Boa sorte!
+      <br />
+      O primeiro a acertar é o único que não bebe. Boa sorte!
     </>
   );
 
@@ -58,12 +61,9 @@ export default function OEscolhido() {
     });
   };
 
-  const finishGame = () => {
-    socket.push('move-room-to', {
-      roomCode: room.code,
-      destination: Game.Finish,
-    });
-  };
+  const changeMyName = () => {
+    socket.pushMessage(room.code, 'send-me-a-new-name');
+  }
 
   const backToLobby = () => {
     console.log('O usuário desejou voltar ao lobby');
@@ -127,6 +127,17 @@ export default function OEscolhido() {
       }));
     });
 
+    socket.addEventListener('original-player-is-down', () => {
+      setOriginalPlayerIsDown(true);
+    })
+
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
+      }));
+    });
+
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
         setRoom((previous) => ({
@@ -161,7 +172,7 @@ export default function OEscolhido() {
           };
         })
       );
-      finishGame();
+      setWeHaveResults(true);
     });
 
     socket.addEventListener('game-category-is', (category) => {
@@ -183,10 +194,22 @@ export default function OEscolhido() {
   }, []);
 
   useEffect(() => {
-    if (playersAndNames && user.isCurrentTurn && room.page === Game.Category) {
+    if (category &&
+      playersAndNames &&
+      user.isCurrentTurn &&
+      room.page === Game.Category
+    ) {
       startGame();
     }
-  }, [playersAndNames]);
+  }, [category, playersAndNames, room, user]);
+
+  useEffect(() => {
+    if(user.isCurrentTurn && weHaveResults)
+      socket.push('move-room-to', {
+        roomCode: room.code,
+        destination: Game.Finish,
+      });
+  }, [user, weHaveResults]);
 
   const listOfPlayers = playersAndNames
     ? room.playerList.map((player) => {
@@ -211,6 +234,8 @@ export default function OEscolhido() {
           setCategory={selectCategory}
           turnVisibility={user.isCurrentTurn}
           owner={user.isOwner}
+          down={originalPlayerIsDown}
+          undown={() => setOriginalPlayerIsDown(false)}
         />
       );
 
@@ -225,6 +250,9 @@ export default function OEscolhido() {
           setWinners={sendWinners}
           turnVisibility={user.isCurrentTurn}
           owner={user.isOwner}
+          down={originalPlayerIsDown}
+          undown={() => setOriginalPlayerIsDown(false)}
+          changeMyName={changeMyName}
         />
       );
 

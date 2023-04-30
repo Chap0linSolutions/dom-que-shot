@@ -6,9 +6,6 @@ export default function CSComposto() {
   const title = 'C, S, Composto';
   const description = (
     <>
-      Este jogo deve ser jogado fora do aparelho. Funciona assim:
-      <br />
-      <br />
       A regra geral do jogo é que estão proibidas palavras que comecem em C, S
       ou que sejam compostas &#40;que levem espaço ou hífen&#41;.
       <br />

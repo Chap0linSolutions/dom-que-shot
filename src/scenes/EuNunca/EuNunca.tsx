@@ -17,12 +17,8 @@ export default function EuNunca() {
 
   const description = (
     <>
-      Este jogo deve ser jogado fora do aparelho, mas pode contar com o auxílio
-      dele. Funciona assim:
-      <br />
-      <br />
       O jogador da vez deve dizer em voz alta uma frase iniciada por "Eu
-      nunca...", seguida por algo ou situação que pode ter acontecido com algum
+      nunca...", seguida por algo ou situação que pode ou não ter acontecido com algum
       dos jogadores. Se faltar criatividade, na tela do aparelho vão aparecer
       algumas sugestões.
       <br />

@@ -214,7 +214,7 @@ export default function SelectNextGame() {
       {header}
       <SelectGameDiv>
         <ContentDiv>
-          <RouletteDiv>
+          <RouletteDiv onClick={turnTheWheel}>
             <SideIconSpace>&nbsp;</SideIconSpace>
             <Roulette
               data-testid="roulette"

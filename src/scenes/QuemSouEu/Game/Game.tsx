@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Eye, EyeOff } from 'react-feather';
+import { Eye, EyeOff, RotateCw } from 'react-feather';
 import Avatar from '../../../components/Avatar';
 import Background from '../../../components/Background';
 import Button from '../../../components/Button';
@@ -24,6 +24,8 @@ import {
   CategoryAndPlayer,
   Category,
   Content,
+  Reload,
+  ReloadsLeft,
 } from './Game.style';
 
 interface WhoPlayersProps {
@@ -46,6 +48,9 @@ interface GameProps {
   turnVisibility: boolean;
   category: string;
   owner: boolean;
+  down: boolean;
+  undown: () => void;
+  changeMyName: () => void;
 }
 
 export default function GamePage({
@@ -57,7 +62,12 @@ export default function GamePage({
   players,
   setWinners,
   owner,
+  down,
+  undown,
+  changeMyName,
 }: GameProps) {
+  const [reloadsLeft, setReloadsLeft] = useState<number>(2);
+  const [reloaded, setReloaded] = useState<boolean>(false);
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
   const [whoPlayers, setWhoPlayers] = useState<WhoPlayersSelectable[]>(
     players.map((player) => {
@@ -79,6 +89,15 @@ export default function GamePage({
       );
     }
   };
+
+  const change = () => {
+    if(reloadsLeft > 0){
+      setReloadsLeft(previous => (previous - 1));
+      changeMyName();
+      setReloaded(true);
+      setTimeout(() => setReloaded(false), 3000);
+    }
+  }
 
   const endGame = () => {
     const winners = whoPlayers.filter((p) => p.selected).map((p) => p.nickname);
@@ -109,7 +128,12 @@ export default function GamePage({
     return { background: isSelected === true ? '#8877DF' : '#403A55' };
   };
 
-  const alert = <Alert message="Clique no jogador que acertar primeiro!" />;
+  const alert = <Alert 
+    onButtonClick={undown}
+    message={(down)
+    ? "Parece que o jogador da vez caiu, então passou pra você! Clique em quem acertar primeiro!"
+    : "Clique no jogador que acertar primeiro!"}
+  />;
 
   const button = (
     <Button
@@ -124,8 +148,22 @@ export default function GamePage({
     </Button>
   );
 
+  const reloadStyle = (reloadsLeft === 0)
+  ? {opacity: 0.2 } : null;
+
   return (
     <Background noImage>
+      <Popup
+        type="warning"
+        warningType="success"
+        description={(reloadsLeft > 0)
+          ? <>Nome trocado!<br/>Restantes: {reloadsLeft} vez(es).</>
+          : <>Nome trocado!<br/>Agora não pode trocar mais.
+        </>
+        }
+        show={reloaded}
+      />
+
       <Popup
         type="info"
         title={title}
@@ -153,21 +191,30 @@ export default function GamePage({
             {whoPlayers.map((player) => {
               const playerName =
                 player.nickname === currentPlayerNickname ? (
-                  <YourName>{`(você)`}</YourName>
+                  <>  
+                    <YourName onClick={() => toggleSelection(player.nickname)}>
+                      {`(você)`}
+                    </YourName>
+                    <Reload onClick={change} style={reloadStyle}>
+                      <ReloadsLeft>trocar</ReloadsLeft>
+                      <RotateCw width={15} color='white' />
+                    </Reload>
+                  </>
                 ) : (
-                  <OthersName>{player.whoPlayerIs}</OthersName>
+                  <OthersName onClick={() => toggleSelection(player.nickname)}>
+                    {player.whoPlayerIs}
+                  </OthersName>
                 );
               return (
                 <Card
                   key={player.nickname}
-                  onClick={() => toggleSelection(player.nickname)}
                   style={cardStyle(player.selected)}>
                   <Detail>&nbsp;</Detail>
                   <CardContent>
                     {areNamesVisible === true ? (
                       playerName
                     ) : (
-                      <HiddenName>{secretText}</HiddenName>
+                      <HiddenName onClick={() => toggleSelection(player.nickname)}>{secretText}</HiddenName>
                     )}
                     <CategoryAndPlayer>
                       <Category>{category}</Category>

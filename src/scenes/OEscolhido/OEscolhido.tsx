@@ -59,9 +59,6 @@ export default function OEscolhido() {
 
   const description = (
     <>
-      Neste jogo, cada participante vai jogar com o seu aparelho.
-      <br />
-      <br />
       Aparecerá uma lista com todos os participantes da sala e cada um votará em
       uma pessoa da lista para virar uma dose.
       <br />

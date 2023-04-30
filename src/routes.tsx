@@ -53,7 +53,7 @@ const Router: React.FC = () => {
         <Route path="/QualODesenho" element={<QualODesenho />} />
         <Route path="/JogoDoDesafio" element={<JogoDoDesafio />} />
         <Route path="/JogoDaVerdade" element={<JogoDaVerdade />} />
-        <Route path="/MestredaMimica" element={<MestreDaMimica />} />
+        <Route path="/MestreDaMimica" element={<MestreDaMimica />} />
       </Routes>
     </MemoryRouter>
   );
