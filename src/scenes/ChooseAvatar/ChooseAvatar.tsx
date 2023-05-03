@@ -40,7 +40,7 @@ function ChooseAvatar() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.connect();
+    socket.connect(room.code);
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (destination === '/SelectNextGame') {
         return navigate(destination);
@@ -86,7 +86,7 @@ function ChooseAvatar() {
 
   const redirect = () => {
     api
-      .get(`/roomCode/${roomCode}`)
+      .get(`/roomCode/${roomCode}?room=${roomCode}`)
       .then(() => {
         proceedTo('/Lobby');
       })
@@ -100,7 +100,7 @@ function ChooseAvatar() {
     const userName = inputRef.current.value.trim();
     if (userName.length > 2 && userName.length <= 16) {
       api
-        .get(`/nicknameCheck/${roomCode}/${userName}`)
+        .get(`/nicknameCheck/${roomCode}/${userName}?room=${roomCode}`)
         .then(() => {
           return storeInfo();
         })

@@ -46,7 +46,7 @@ function Home() {
 
   const newRoom = () => {
     api
-      .put(`/createRoom`)
+      .put(`/createRoom?room=any`)
       .then((response) => {
         console.log(response.data);
         window.localStorage.setItem('userData', JSON.stringify({}));
@@ -70,7 +70,7 @@ function Home() {
   const verifyRoom = (code) => {
     if (code.length === 4) {
       api
-        .get(`/roomCode/${code}`)
+        .get(`/roomCode/${code}?room=${code}`)
         .then((response) => {
           console.log(response.data);
           window.localStorage.setItem('userData', JSON.stringify({}));

@@ -69,7 +69,7 @@ export default function JogoDoDesafio() {
   //SOCKET////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    socket.connect();
+    socket.connect(room.code);
     socket.addEventListener('room-owner-is', (ownerName) => {
       const isOwner = user.nickname === ownerName;
       setUser((previous) => ({

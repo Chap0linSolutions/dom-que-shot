@@ -3,11 +3,13 @@ import { io, Socket } from 'socket.io-client';
 class SocketConnection {
   private static instance;
   socket: Socket;
-  serverAddress = import.meta.env.VITE_REACT_APP_SERVER_ADRESS;
+  baseServerAddress = import.meta.env.VITE_REACT_APP_SERVER_ADRESS;
 
-  connect() {
+  connect(roomCode?: string) {
     if (!this.socket) {
-      this.socket = io(this.serverAddress);
+      const server = `${this.baseServerAddress}/?room=${roomCode}`;
+      alert(server);
+      this.socket = io(server);
       this.socket.io.on('reconnect', () => {
         alert('Conexão perdida! Reconectando...');
         window.location.reload();

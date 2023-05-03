@@ -24,7 +24,7 @@ export default function Start() {
     if (userData) {
       api
         .get(
-          `/returningUser/${userData.roomCode}/${userData.nickname}/${userData.avatarSeed}`
+          `/returningUser/${userData.roomCode}/${userData.nickname}/${userData.avatarSeed}?room=${userData.roomCode}`
         )
         .then(() => {
           console.log('OK');

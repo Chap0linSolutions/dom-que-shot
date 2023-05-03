@@ -41,7 +41,7 @@ export default function Lobby() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.connect();
+    socket.connect(room.code);
     socket.joinRoom(
       {
         nickname: user.nickname,
