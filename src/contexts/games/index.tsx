@@ -10,6 +10,7 @@ import OEscolhido from '../../assets/game-covers/o-escolhido.png';
 //import PensaRapido from '../../assets/game-covers/pensa-rapido.png';    //removido temporariamente
 import Vrum from '../../assets/game-covers/vrum.png';
 import QuemSouEu from '../../assets/game-covers/quem-sou-eu.png';
+import QualODesenho from '../../assets/game-covers/qual-o-desenho.png';
 import Titanic from '../../assets/game-covers/titanic.png';
 import JogoDoDesafio from '../../assets/game-covers/jogo-do-desafio.png';
 import JogoDaVerdade from '../../assets/game-covers/jogo-da-verdade.png';
@@ -30,24 +31,23 @@ export type Game = {
 };
 
 const games: Game[] = [
-  //TODO incluir o jogo Direita-Esquerda (aqui e no backend) quando a mecânica dos dados tiver sido implementada
-  {
-    src: BangBang,
-    title: 'Bang Bang',
-    id: 0,
-    backgroundColor: GameTypes.Round,
-    description: `3, 2, 1, BANG! Ao final da contagem regressiva, todos os jogadores verão
-    um botão aparecer na tela de seus celulares. O último a conseguir apertar
-    deve virar uma dose.`,
-  },
   {
     src: EuNunca,
     title: 'Eu Nunca',
-    id: 1,
+    id: 0,
     backgroundColor: GameTypes.Dynamic,
     description: `É o "Eu Nunca" de sempre. O jogador da vez fala uma frase
     começada por "Eu Nunca" e quem já tiver feito o que ele
     falar deve virar uma dose. Aparecem sugestões para os pouco criativos.`,
+  },
+  {
+    src: BangBang,
+    title: 'Bang Bang',
+    id: 1,
+    backgroundColor: GameTypes.Round,
+    description: `3, 2, 1, BANG! Ao final da contagem regressiva, todos os jogadores verão
+    um botão aparecer na tela de seus celulares. O último a conseguir apertar
+    deve virar uma dose.`,
   },
   {
     src: Vrum,
@@ -78,44 +78,40 @@ const games: Game[] = [
   {
     src: MestreDaMimica,
     title: 'Mestre da Mímica',
-    id: 11,
+    id: 4,
     backgroundColor: GameTypes.Dynamic,
     description: `O jogador da vez irá tentar fazer pelo menos duas mímicas em um intervalo de
     30 segundos, e os demais jogadores devem tentar adivinhar. Todos bebem uma vez para cada palavra
     não acertada.`,
   },
   {
+    src: QualODesenho,
+    title: 'Qual O Desenho',
+    id: 5,
+    backgroundColor: GameTypes.Round,
+    description: (
+      <>
+        O jogador da vez vai escolher uma palavra para desenhar (pode ser um
+        animal, um objeto, dentre outros) e terá 1 minuto para finalizar o desenho.
+        <br />
+        <br />
+        - Os que não acertarem dentro do tempo BEBEM;
+        <br />
+        - Se ninguém acertar, o jogador da vez BEBE.
+        <br />
+        <br />
+        Boa sorte!
+      </>
+    ),
+  },
+  {
     src: Medusa,
     title: 'Medusa',
-    id: 5,
+    id: 6,
     backgroundColor: GameTypes.Simple,
     description: `Todos abaixam a cabeça e assim ficam até o jogador da vez falar "Já". Aí
     todos erguem a cabeça e escolhem alguém da roda para encarar. Se dois jogadores se
     escolherem, aquele que falar "Medusa" por último tem de virar uma dose.`,
-  },
-  {
-    src: OEscolhido,
-    title: 'O Escolhido',
-    id: 4,
-    backgroundColor: GameTypes.Round,
-    description: `É um jogo de votação clássico. Vote em quem você acha que deve beber, e o mais
-    votado vira uma dose. Se quiser votar em si mesmo está liberado.`,
-  },
-  {
-    src: Buzz,
-    title: 'Buzz',
-    id: 6,
-    backgroundColor: GameTypes.Simple,
-    description: (
-      <>
-        É um jogo de contagem coletiva - o jogador da vez começa com '1' e cada
-        um na sua vez vai dizendo o próximo número &#40;2, 3, 4...&#41;. <br />
-        <br />
-        Mas atenção! Se o número for múltiplo de 3 o jogador deve falar 'FIZZ' no lugar.
-        Se for múltiplo de 5, deve falar 'BUZZ'. E se for múltiplo de ambos 3 e 5, deve
-        falar 'FIZZ BUZZ'. O primeiro que errar vira uma dose.
-      </>
-    ),
   },
   {
     src: QuemSouEu,
@@ -129,15 +125,39 @@ const games: Game[] = [
   {
     src: JogoDaVerdade,
     title: 'Jogo da Verdade',
-    id: 8,
+    id: 10,
     backgroundColor: GameTypes.Dynamic,
     description: `O jogador da vez deverá decidir entre contar uma verdade, 
     respondendo a uma das perguntas de forma sincera, ou virar duas doses no lugar.`,
   },
   {
+    src: OEscolhido,
+    title: 'O Escolhido',
+    id: 9,
+    backgroundColor: GameTypes.Round,
+    description: `É um jogo de votação clássico. Vote em quem você acha que deve beber, e o mais
+    votado vira uma dose. Se quiser votar em si mesmo está liberado.`,
+  },
+  {
+    src: Buzz,
+    title: 'Buzz',
+    id: 8,
+    backgroundColor: GameTypes.Simple,
+    description: (
+      <>
+        É um jogo de contagem coletiva - o jogador da vez começa com '1' e cada
+        um na sua vez vai dizendo o próximo número &#40;2, 3, 4...&#41;. <br />
+        <br />
+        Mas atenção! Se o número for múltiplo de 3 o jogador deve falar 'FIZZ' no lugar.
+        Se for múltiplo de 5, deve falar 'BUZZ'. E se for múltiplo de ambos 3 e 5, deve
+        falar 'FIZZ BUZZ'. O primeiro que errar vira uma dose.
+      </>
+    ),
+  },
+  {
     src: CSComposto,
     title: 'C, S, Composto',
-    id: 9,
+    id: 11,
     backgroundColor: GameTypes.Simple,
     description: `Começando pelo jogador da vez, cada um vai falando uma palavra. A palavra tem que
     ser relacionada com a anterior e NÃO pode começar com C, S ou ser composta (ter espaços ou hífens).
@@ -146,10 +166,10 @@ const games: Game[] = [
   {
     src: JogoDoDesafio,
     title: 'Jogo do Desafio',
-    id: 10,
+    id: 12,
     backgroundColor: GameTypes.Dynamic,
     description: `O sorteado da rodada deverá decidir entre realizar 
-    um dos desafios sugeridos pelo jogo, ou virar duas doses no lugar.`,
+    um dos desafios sugeridos pelo jogo, ou virar duas doses.`,
   },
 ];
 

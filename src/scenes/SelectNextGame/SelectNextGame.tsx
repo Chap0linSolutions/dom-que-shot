@@ -192,7 +192,8 @@ export default function SelectNextGame() {
   };
 
   const turnTheWheel = () => {
-    socket.pushMessage(room.code, 'roulette-number-is', null);
+    user.isCurrentTurn && !rouletteIsSpinning &&
+      socket.pushMessage(room.code, 'roulette-number-is', null);
   };
 
   const backToLobby = () => {
@@ -214,7 +215,7 @@ export default function SelectNextGame() {
       {header}
       <SelectGameDiv>
         <ContentDiv>
-          <RouletteDiv onClick={turnTheWheel}>
+          <RouletteDiv onClick={turnTheWheel} onTouchStart={turnTheWheel}>
             <SideIconSpace>&nbsp;</SideIconSpace>
             <Roulette
               data-testid="roulette"

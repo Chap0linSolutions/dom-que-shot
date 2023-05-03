@@ -3,7 +3,7 @@ import { io, Socket } from 'socket.io-client';
 class SocketConnection {
   private static instance;
   socket: Socket;
-  baseServerAddress = import.meta.env.VITE_REACT_APP_SERVER_ADRESS;
+  baseServerAddress = process.env.VITE_REACT_APP_SERVER_ADRESS;
 
   connect(roomCode?: string) {
     if (!this.socket) {

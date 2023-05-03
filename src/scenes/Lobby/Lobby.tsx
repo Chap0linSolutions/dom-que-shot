@@ -102,9 +102,6 @@ export default function Lobby() {
 
     socket.addEventListener('current-state-is', (currentState) => {
       const { URL, page } = JSON.parse(currentState);
-
-      console.log(currentState);
-
       switch (URL) {
         case '/BangBang':
         case '/OEscolhido':
@@ -112,6 +109,15 @@ export default function Lobby() {
         case '/MestredaMimica':
           if (!page || page === 0) {
             //se o jogo ainda estiver na capa é possível entrar tardiamente
+            setAlertMessage('Reconectando...');
+            goTo(URL, page);
+          } else {
+            setAlertMessage('Aguardando finalizar jogo em andamento.');
+          }
+          break;
+        case '/QualODesenho':
+          if (!page || page < 2) {
+            //para o qual-desenho ainda é possível entrar nas duas primeiras telas
             setAlertMessage('Reconectando...');
             goTo(URL, page);
           } else {
