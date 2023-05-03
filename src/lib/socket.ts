@@ -8,7 +8,6 @@ class SocketConnection {
   connect(roomCode?: string) {
     if (!this.socket) {
       const server = `${this.baseServerAddress}/?room=${roomCode}`;
-      alert(server);
       this.socket = io(server);
       this.socket.io.on('reconnect', () => {
         alert('Conexão perdida! Reconectando...');

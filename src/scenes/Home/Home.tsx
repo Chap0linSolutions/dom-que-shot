@@ -45,15 +45,16 @@ function Home() {
   const inputRef = useRef(null);
 
   const newRoom = () => {
+    const newRoomCode = Math.random().toString(36).substring(2, 6).toUpperCase();
     api
-      .put(`/createRoom?room=any`)
+      .put(`/create?room=${newRoomCode}`)
       .then((response) => {
         console.log(response.data);
         window.localStorage.setItem('userData', JSON.stringify({}));
         enterRoom(response.data, 'create');
       })
       .catch(() => {
-        alert(`Erro ao criar a sala. Tente novamente mais tarde.`);
+        alert(`Erro ao criar a sala. Tente novamente.`);
       });
     return;
   };
@@ -70,7 +71,7 @@ function Home() {
   const verifyRoom = (code) => {
     if (code.length === 4) {
       api
-        .get(`/roomCode/${code}?room=${code}`)
+        .get(`/check?room=${code}`)
         .then((response) => {
           console.log(response.data);
           window.localStorage.setItem('userData', JSON.stringify({}));

@@ -86,12 +86,12 @@ function ChooseAvatar() {
 
   const redirect = () => {
     api
-      .get(`/roomCode/${roomCode}?room=${roomCode}`)
+      .get(`/check?room=${roomCode}`)
       .then(() => {
         proceedTo('/Lobby');
       })
       .catch(() => {
-        // TODO: add error message handling to inform user room doesn't exist (anymore)
+        alert('Parece que a sala não existe mais. Por favor tente outra.');
         proceedTo('/Home');
       });
   };
@@ -100,7 +100,7 @@ function ChooseAvatar() {
     const userName = inputRef.current.value.trim();
     if (userName.length > 2 && userName.length <= 16) {
       api
-        .get(`/nicknameCheck/${roomCode}/${userName}?room=${roomCode}`)
+        .get(`/nickname?room=${roomCode}&nickname=${userName}`)
         .then(() => {
           return storeInfo();
         })
