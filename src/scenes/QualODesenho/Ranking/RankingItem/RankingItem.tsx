@@ -23,22 +23,17 @@ export default function RankingItem({
   time,
 }: RankingItemProps) {
   const Info = () => {
-    return (time < 0) 
-    ? (
-        <>
-          <LoserName>{name}</LoserName>
-          <LoserTime>
-            {time > -100 ? 'Não acertou' : 'Caiu da partida'}
-          </LoserTime>
-        </>
-      ) 
-    : (
-        <>
-          <WinnerText>{name}</WinnerText>
-          <WinnerText>{time}s</WinnerText>
-        </>
-      )
-    ;
+    return time < 0 ? (
+      <>
+        <LoserName>{name}</LoserName>
+        <LoserTime>{time > -100 ? 'Não acertou' : 'Caiu da partida'}</LoserTime>
+      </>
+    ) : (
+      <>
+        <WinnerText>{name}</WinnerText>
+        <WinnerText>{time}s</WinnerText>
+      </>
+    );
   };
 
   return (

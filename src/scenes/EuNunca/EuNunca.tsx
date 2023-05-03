@@ -18,9 +18,9 @@ export default function EuNunca() {
   const description = (
     <>
       O jogador da vez deve dizer em voz alta uma frase iniciada por "Eu
-      nunca...", seguida por algo ou situação que pode ou não ter acontecido com algum
-      dos jogadores. Se faltar criatividade, na tela do aparelho vão aparecer
-      algumas sugestões.
+      nunca...", seguida por algo ou situação que pode ou não ter acontecido com
+      algum dos jogadores. Se faltar criatividade, na tela do aparelho vão
+      aparecer algumas sugestões.
       <br />
       <br />
       Aqueles que já passaram pela situação falada pelo jogador da vez devem

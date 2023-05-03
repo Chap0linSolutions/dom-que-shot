@@ -45,7 +45,10 @@ function Home() {
   const inputRef = useRef(null);
 
   const newRoom = () => {
-    const newRoomCode = Math.random().toString(36).substring(2, 6).toUpperCase();
+    const newRoomCode = Math.random()
+      .toString(36)
+      .substring(2, 6)
+      .toUpperCase();
     api
       .put(`/create?room=${newRoomCode}`)
       .then((response) => {

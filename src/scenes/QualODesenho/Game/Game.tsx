@@ -128,7 +128,9 @@ export default function GamePage({
     if (turnVisibility && counter.current > msTimer) {
       counter.current -= 1000;
       if (paths.current.length > 0) {
-        updateDrawingPaths(JSON.stringify({ type: 'my-canvas-width-is', payload: canvas.width}));
+        updateDrawingPaths(
+          JSON.stringify({ type: 'my-canvas-width-is', payload: canvas.width })
+        );
         const current = paths.current.at(-1);
         if (current.id === last.current.id) {
           if (current.points.length > last.current.length) {

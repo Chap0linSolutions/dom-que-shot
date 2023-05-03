@@ -149,7 +149,7 @@ export const CategoryAndPlayer = styled.div`
   display: flex;
   align-items: end;
   justify-content: space-between;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     height: 32px;
   }
 `;
@@ -177,7 +177,7 @@ export const Category = styled.p`
   max-width: 30%;
   line-height: 14px;
   color: rgba(255, 255, 255, 0.54);
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 11px;
     line-height: 13px;
   }

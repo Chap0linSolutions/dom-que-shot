@@ -166,10 +166,10 @@ export default function Titanic() {
   }, [room.page]);
 
   useEffect(() => {
-    if(timesUp){
-      const target = (user.isCurrentTurn)? ICEBERGS : TITANICS;
+    if (timesUp) {
+      const target = user.isCurrentTurn ? ICEBERGS : TITANICS;
       const selection = places.filter((p) => p >= 100);
-      if(selection.length === target){
+      if (selection.length === target) {
         sendResults(JSON.stringify(selection));
       } else {
         setResults(`time's up`);

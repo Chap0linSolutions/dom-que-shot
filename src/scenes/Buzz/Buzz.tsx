@@ -6,10 +6,10 @@ export default function Buzz() {
   const title = 'Buzz';
   const description = (
     <>
-      O jogador da vez inicia a contagem com o número 1. O próximo na roda fala 2
-      e assim por diante. A contagem segue em sentido horário até alguém
-      cometer o erro fatal: não dizer "Fizz" ou "Buzz" para determinados números.
-      Esses números são:
+      O jogador da vez inicia a contagem com o número 1. O próximo na roda fala
+      2 e assim por diante. A contagem segue em sentido horário até alguém
+      cometer o erro fatal: não dizer "Fizz" ou "Buzz" para determinados
+      números. Esses números são:
       <ul>
         <li style={{ color: 'black' }}>
           Os múltiplos de 3. Neste caso, o jogador deve dizer "FIZZ"
@@ -18,8 +18,8 @@ export default function Buzz() {
           Os múltiplos de 5. Neste caso, o jogador deve dizer "BUZZ"
         </li>
       </ul>
-      E claro, se o número for múltipo de 3 e 5 ao mesmo, o jogador deve falar "FIZZ BUZZ".
-      O primeiro a errar deve virar uma dose!
+      E claro, se o número for múltipo de 3 e 5 ao mesmo, o jogador deve falar
+      "FIZZ BUZZ". O primeiro a errar deve virar uma dose!
     </>
   );
   const hint = (
@@ -27,7 +27,8 @@ export default function Buzz() {
       PREPARADOS??
       <br />
       <br />
-      O jogador da vez pode iniciar a contagem, e o resto continua em sentido horário.
+      O jogador da vez pode iniciar a contagem, e o resto continua em sentido
+      horário.
       <br />
       <br />
       Finalizando a rodada com o primeiro que errar, clique no botão abaixo para

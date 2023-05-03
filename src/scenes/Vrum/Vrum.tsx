@@ -6,9 +6,8 @@ export default function Vrum() {
   const title = 'Vrum';
   const description = (
     <>
-      Começando em sentido horário,
-      cada participante vai ter que dizer uma dessas três opções quando chegar a
-      sua vez:
+      Começando em sentido horário, cada participante vai ter que dizer uma
+      dessas três opções quando chegar a sua vez:
       <br />
       <br />
       1 - Falar VRUM &#40;imitando o barulho de um motor de carro&#41;: O jogo
@@ -23,7 +22,8 @@ export default function Vrum() {
       3 - Falar PLOFT &#40;imitando o barulho de uma lombada&#41;: O sentido da
       roda se mantém, mas o jogador seguinte é pulado.
       <br />
-      <br />Quem errar a vez, ou errar a palavra, tem de virar uma dose.
+      <br />
+      Quem errar a vez, ou errar a palavra, tem de virar uma dose.
     </>
   );
   const hint = (
