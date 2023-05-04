@@ -69,7 +69,7 @@ export default function OEscolhido() {
     console.log('O usuário desejou voltar ao lobby');
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
 
@@ -86,7 +86,7 @@ export default function OEscolhido() {
     socket.push('update-turn', room.code);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/SelectNextGame',
+      destination: '/proximojogo',
     });
   };
 
@@ -115,7 +115,7 @@ export default function OEscolhido() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
     });
 

@@ -57,7 +57,7 @@ export default function MimicaMaster() {
   const backToLobby = () => {
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
 
@@ -73,7 +73,7 @@ export default function MimicaMaster() {
     socket.push('update-turn', room.code);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/SelectNextGame',
+      destination: '/proximojogo',
     });
   };
 

@@ -93,7 +93,7 @@ export default function Titanic() {
     clearInterval(timer);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/SelectNextGame',
+      destination: '/proximojogo',
     });
   };
 
@@ -102,7 +102,7 @@ export default function Titanic() {
     clearInterval(timer);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
 
@@ -122,7 +122,7 @@ export default function Titanic() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
     });
 

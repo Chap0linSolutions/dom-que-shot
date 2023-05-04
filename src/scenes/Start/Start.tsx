@@ -28,7 +28,7 @@ export default function Start() {
         )
         .then(() => {
           console.log('OK');
-          const nextURL = '/Lobby';
+          const nextURL = '/saguao';
           setUser({
             nickname: userData.nickname,
             avatarSeed: userData.avatarSeed,

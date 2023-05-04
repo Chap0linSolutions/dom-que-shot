@@ -44,7 +44,7 @@ export default function EuNunca() {
   const backToLobby = () => {
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
 
@@ -66,7 +66,7 @@ export default function EuNunca() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
     });
 
