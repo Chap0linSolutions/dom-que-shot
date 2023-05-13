@@ -20,7 +20,7 @@ export const CoverCard = styled.div`
   border-radius: 10px;
   z-index: 1;
   @media (max-height: 740px) {
-    width: 264px;
+    width: 284px;
     height: 367px;
     margin-top: 1em;
   }
@@ -39,7 +39,7 @@ export const CoverTitle = styled.p`
   font-size: 32px;
   font-weight: 700;
   color: white;
-  margin: 12px;
+  margin: 15px 5px;
   @media (max-height: 740px) {
     font-size: 26px;
   }

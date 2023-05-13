@@ -21,6 +21,7 @@ const rotateCCW = keyframes`
 
 export const MapView = styled.div`
   background: url(${seaWithWaves});
+  background-color: #358fb0;
   background-size: contain;
   border-radius: 20px;
   width: 345px;
@@ -40,13 +41,17 @@ export const FinishMapView = styled(MapView)`
   }
 `;
 
+// 
 export const RadarMapView = styled(MapView)`
   background: url(${seaWithRadarAndWaves});
+  background-color: #358fb0;
   background-size: contain;
 `;
 
+//  
 export const RadarMapViewRed = styled(MapView)`
   background: url(${seaWithRadarAndWavesRed});
+  background-color: #358fb0;
   background-size: contain;
 `;
 
