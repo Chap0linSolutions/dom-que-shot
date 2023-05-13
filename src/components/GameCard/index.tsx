@@ -30,7 +30,6 @@ export default function GameCard({
       style={{ background: backgroundColor }}>
       <InfoButton onClick={onInfoClick}>
         <HelpCircle width='18px'color='#170c32'/>
-        {/* <InfoText>Info</InfoText> */}
       </InfoButton>
       <CardImage onClick={onClick} src={image} alt={title} />
       <CardTitle>{title}</CardTitle>

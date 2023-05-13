@@ -225,7 +225,6 @@ export default function Header({
               width="20px"
               height="20px"
             />
-            {/* <InfoText>Info</InfoText> */}
           </InfoButton>
 
           <SettingsDiv style={settingsPage ? {} : { display: 'none' }}>
