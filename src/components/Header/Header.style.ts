@@ -122,11 +122,14 @@ export const SettingsInfoAndLogo = styled.div`
 `;
 
 export const InfoButton = styled.div`
-  padding: 10px;
+  padding: 6px 15px 6px 10px;
   background: #f9c95c;
   display: flex;
   align-items: center;
   border-radius: 30px 0 0 30px;
+  @media(max-height: 740px){
+    padding: 5px 8px;
+  }
 `;
 
 export const InfoText = styled.p`
@@ -135,10 +138,15 @@ export const InfoText = styled.p`
   font-size: 16px;
   color: #170c32;
   font-family: Roboto;
+  @media(max-height: 740px){
+    font-size: 14px;
+  }
 `;
 
 export const SettingsDiv = styled.div`
-  padding-right: 1em;
+  padding-right: 1.5em;
+  display: flex;
+  align-items: center;
 `;
 
 export const LogoDiv = styled.div`
