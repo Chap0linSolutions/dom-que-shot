@@ -67,17 +67,20 @@ export const WaitingMessageDiv = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: 5%;
+  margin-top: 1em;
+  @media(max-height: 740px){
+    margin-top: 0.5em;
+  }
 `;
 
 export const WaitingMessage = styled.p`
   color: rgba(255, 255, 255, 0.6);
   text-align: center;
-  font-size: 20px;
+  font-size: 18px;
   font-family: 'Roboto';
   font-weight: 400;
-  letter-spacing: 0em;
+  margin: 5px;
   @media (max-height: 740px) {
-    font-size: 16px;
+    font-size: 17px;
   }
 `;

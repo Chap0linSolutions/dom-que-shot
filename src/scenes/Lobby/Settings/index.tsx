@@ -13,6 +13,12 @@ import {
   WarningDiv,
   WarningText,
 } from './Settings.style';
+import Popup from '../../../components/Popup';
+
+type GameInfo = {
+  name: string;
+  description: string | JSX.Element;
+}
 
 interface SettingsProps {
   previousGameSelection: Game[];
@@ -23,6 +29,7 @@ export default function Settings({
   previousGameSelection,
   mainPage,
 }: SettingsProps) {
+  const [gameInfo, setGameInfo] = useState<GameInfo | undefined>(undefined);
   const previousGameNames = previousGameSelection.map((p) => p.title);
   const [gameCards, setGameCards] = useState<Game[]>(
     games.map((g) => {
@@ -63,6 +70,14 @@ export default function Settings({
 
   return (
     <Background>
+      {gameInfo && <Popup 
+        type='info'
+        title={gameInfo.name}
+        description={gameInfo.description}
+        show={!!gameInfo}
+        exit={() => setGameInfo(undefined)}
+      />}
+
       <Header
         goBackArrow={() => mainPage(gameCards.filter((game) => game.id < 1000))}
         logo
@@ -83,6 +98,7 @@ export default function Settings({
               style={card.id >= 1000 ? { opacity: 0.2 } : { opacity: 1 }}>
               <GameCard
                 onClick={() => updateSelection(card.id)}
+                onInfoClick={() => setGameInfo({name: card.title, description: card.description})}
                 id={card.id}
                 title={card.title}
                 image={card.src}

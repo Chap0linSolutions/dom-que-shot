@@ -1,7 +1,15 @@
-import { CardBackground, CardImage, CardTitle } from './GameCard';
+import { HelpCircle } from 'react-feather';
+import {
+  CardBackground,
+  CardImage,
+  CardTitle,
+  InfoButton,
+  InfoText
+} from './GameCard.style';
 
 interface GameCardProps {
   onClick?: () => void;
+  onInfoClick?: () => void;
   id: string | number;
   title: string;
   image: string;
@@ -10,6 +18,7 @@ interface GameCardProps {
 
 export default function GameCard({
   onClick,
+  onInfoClick,
   id,
   title,
   image,
@@ -17,10 +26,13 @@ export default function GameCard({
 }: GameCardProps) {
   return (
     <CardBackground
-      onClick={onClick}
       key={id}
       style={{ background: backgroundColor }}>
-      <CardImage src={image} alt={title} />
+      <InfoButton onClick={onInfoClick}>
+        <HelpCircle width='18px'color='#170c32'/>
+        {/* <InfoText>Info</InfoText> */}
+      </InfoButton>
+      <CardImage onClick={onClick} src={image} alt={title} />
       <CardTitle>{title}</CardTitle>
     </CardBackground>
   );

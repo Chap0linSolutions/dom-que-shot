@@ -12,13 +12,13 @@ export default function Buzz() {
       Esses números são:
       <ul>
         <li style={{ color: 'black' }}>
-          Os múltiplos de 3. Neste caso, o jogador deve dizer "FIZZ"
+          Os múltiplos de 3. Neste caso, o jogador deve dizer "FIZZ" em vez do número;
         </li>
         <li style={{ color: 'black' }}>
-          Os múltiplos de 5. Neste caso, o jogador deve dizer "BUZZ"
+          Os múltiplos de 5. Neste caso, o jogador deve dizer "BUZZ" em vez do número;
         </li>
       </ul>
-      E claro, se o número for múltipo de 3 e 5 ao mesmo, o jogador deve falar "FIZZ BUZZ".
+      E claro, se o número for múltipo de 3 e 5 ao mesmo tempo, o jogador deve falar "FIZZ BUZZ".
       O primeiro a errar deve virar uma dose!
     </>
   );
