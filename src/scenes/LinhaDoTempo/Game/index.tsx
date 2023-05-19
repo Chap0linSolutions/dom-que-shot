@@ -1,47 +1,59 @@
 import { useRef, useState } from "react";
+import { PhraseAndOptions } from "../LinhaDoTempo";
+import { Content, Game, Selected, Unselected, Options, PhraseDiv, LeftSide, RightSide } from "./Game.style";
 import Background from "../../../components/Background";
 import Header from "../../../components/Header";
-import { PhraseAndOptions } from "../LinhaDoTempo";
-import Popup from "../../../components/Popup";
-import { Content, Game, PhraseDiv, Timer } from "./Game.style";
 import Button from "../../../components/Button";
-
 
 interface GameProps {
     phraseAndOptions: PhraseAndOptions,
-    gameDescription: string | JSX.Element,
-    gameName: string,
+    timeLeft: number,
+    turnVisibility: boolean,
+    sendGuess: (value) => void,
 }
 
-export default function GamePage({phraseAndOptions, gameDescription, gameName}: GameProps){
+export default function GamePage({phraseAndOptions, timeLeft, turnVisibility, sendGuess}: GameProps){
 
     const phrase = useRef(phraseAndOptions.phrase).current;
     const options = useRef(phraseAndOptions.options).current;
-    const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
+    const [guess, setGuess] = useState<string | number | undefined>(undefined);
 
     return (
         <Background>
-            <Popup
-                type="info"
-                title={gameName}
-                description={gameDescription}
-                show={popupVisibility}
-                exit={() => setPopupVisibility(false)}
-                comesFromTop
+            <Header
+                participants={turnVisibility}
+                timer={timeLeft}
             />
-            <Header exit infoPage={() => setPopupVisibility(true)}/>
             <Game>
                 <Content>
-                    <Timer>
-                        00:00
-                    </Timer>
                     <PhraseDiv>
                         {phrase}
                     </PhraseDiv>
+                    <Options>
+                        <LeftSide/>
+                        <Content>
+                        {options.map((option) => {
+                            if(guess === option){
+                                return (
+                                    <Selected onClick={() => setGuess(undefined)}>
+                                        {option}
+                                    </Selected>
+                                )
+                            } else {
+                                return (
+                                    <Unselected onClick={() => setGuess(option)}>
+                                        {option}
+                                    </Unselected>
+                                )
+                            }
+                        })}
+                        </Content>
+                        <RightSide/>
+                    </Options>
                 </Content>
 
-                <Button staysOnBottom>
-                    Votar
+                <Button isDisabled={!guess} staysOnBottom onClick={() => sendGuess(guess)}>
+                    Confirmar
                 </Button>
             </Game>
         </Background>

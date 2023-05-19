@@ -5,10 +5,19 @@ import { useGlobalContext } from '../../contexts/GlobalContextProvider';
 import GamePage from './Game';
 import CoverPage from '../../components/Game/Cover';
 import coverImg from '../../assets/game-covers/linha-do-tempo.png';
+import FinishPage from './Finish';
 
 export type PhraseAndOptions = {
   phrase: string,
   options: string[],
+}
+
+export type Results = {
+  answer: string | number,
+  guesses: {
+    player: string,
+    guess: string | number,
+  }[]
 }
 
 enum Game {
@@ -17,33 +26,35 @@ enum Game {
   Finish,
 }
 
+const GAME_DURATION = 20000;
+const DELTA_TIME = 100;
+
 export default function LinhaDoTempo() {
   const title = 'Linha do Tempo';
   const { user, room, setUser, setRoom } = useGlobalContext();
   const [phraseAndOptions, setPhraseAndOptions] = useState<PhraseAndOptions | undefined>(undefined);
-  
+  const [results, setResults] = useState<Results | undefined>(undefined);
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////////
 
-  const gameTime = 10000;
-
-  const [msTimer, setMsTimer] = useState(gameTime);
+  const [msTimer, setMsTimer] = useState(() => GAME_DURATION);
   const [timer, setTimer] = useState<NodeJS.Timer>();
 
   const startTimer = () => {
-    setTimer(setInterval(run, 100));
+    setTimer(setInterval(run, DELTA_TIME));
   };
 
-  let updatedMs = msTimer;
   const run = () => {
-    if (updatedMs > 0) {
-      updatedMs -= 100;
-      if (updatedMs === 0) {
-        setMsTimer(0);
-      }
-      setMsTimer(updatedMs);
-    }
+    setMsTimer((previous) => (previous > 0 ? previous - DELTA_TIME : previous));
   };
+
+  useEffect(() => {
+    if (msTimer === 0) {
+      console.log('acabou o tempo.');
+      clearInterval(timer);
+      user.isCurrentTurn && finishGame();
+    }
+  }, [msTimer]);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -55,8 +66,8 @@ export default function LinhaDoTempo() {
       e algumas opções de data em que o acontecimento pode ter ocorrido.
       <br/>
       <br/>
-      Os jogadores então terão
-      15 segundos pare escolher uma opção, e quem escolher errado (ou não escolher a tempo) bebe.
+      Os jogadores então terão 20 segundos pare escolher uma opção, e quem escolher errado
+      (ou não escolher a tempo) bebe.
       <br />
       <br />
       Boa sorte!
@@ -72,7 +83,18 @@ export default function LinhaDoTempo() {
   }
 
   const startGame = () => {
-    socket.pushMessage(room.code, 'move-to', Game.Game);
+    socket.pushMessage(room.code, 'start-game', Game.Game);
+  };
+
+  const finishGame = () => {
+    socket.pushMessage(room.code, 'times-up');
+  }
+
+  const sendGuess = (value: string | number) => {
+    socket.pushMessage(room.code, 'my-guess-is', JSON.stringify({
+      player: user.nickname,
+      guess: value,
+    }));
   };
 
   const backToLobby = () => {
@@ -83,6 +105,13 @@ export default function LinhaDoTempo() {
       destination: '/Lobby',
     });
   };
+
+  const backToRoulette = () => {
+    socket.push('move-room-to', {
+      roomCode: room.code,
+      destination: '/SelectNextGame',
+    });
+  }
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
@@ -126,8 +155,12 @@ export default function LinhaDoTempo() {
 
     socket.addEventListener('phrase-and-options', (value) => {
       setPhraseAndOptions(JSON.parse(value));
-      startGame();
+      user.isCurrentTurn && startGame();
     });
+
+    socket.addEventListener('results', (value) => {
+      setResults(JSON.parse(value));
+    })
 
     return () => {
       socket.removeAllListeners();
@@ -136,16 +169,36 @@ export default function LinhaDoTempo() {
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
+  useEffect(() => {
+    if(room.page === Game.Game){
+      startTimer();
+    }
+  }, [room.page]);
+
+  useEffect(() => {
+    if(results){
+      setGlobalRoomPage(Game.Finish);
+    }
+  }, [results]);
+
   switch (room.page) {
     case Game.Game:
       return (
         <GamePage 
+          turnVisibility={user.isCurrentTurn}
           phraseAndOptions={phraseAndOptions}
-          gameDescription={description}
-          gameName={title}
+          timeLeft={msTimer}
+          sendGuess={sendGuess}
         />
       );
     case Game.Finish:
+      return (
+        <FinishPage
+          turnVisibility={user.isCurrentTurn}
+          results={results}
+          backToRoulette={backToRoulette}
+        />
+      );
     default:
       return (
         <CoverPage
