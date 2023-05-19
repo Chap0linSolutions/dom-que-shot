@@ -60,16 +60,17 @@ export default function Titanic() {
 
   const description = (
     <>
-      Neste jogo, cada participante vai jogar com o seu aparelho.
+      Este jogo é uma espécie de Batalha Naval. Aparecerá um mapa na tela de cada jogador, e cada um
+      deve escolher onde vai posicionar suas peças. O jogador da vez será os ICEBERGS, e todos os
+      demais serão os TITANICS.
       <br />
       <br />
-      Aparecerá um mapa na tela, e os jogadores da roda devem escolher onde vão
-      posicionar seus barcos. Enquanto isso, o jogador da vez escolhe onde vai
-      posicionar seus Icebergs.
-      <br />
-      <br />
-      Se o jogador da vez colocar um Iceberg onde algum dos demais colocou um
-      barco, o jogador atingido deve virar uma dose.
+      Serão 5 ICEBERGS para o jogador da vez, e 3 TITANICS para cada um dos demais. Todos vão ter 15 segundos
+      para escolher onde irão botar suas peças.
+      <br/>
+      <br/>
+      Quem não posicionar todas as peças a tempo BEBE. E claro, se o jogador da vez colocar um Iceberg
+      onde algum dos demais colocou um barco, o jogador atingido deve virar uma dose.
       <br />
       <br />
       Boa sorte!

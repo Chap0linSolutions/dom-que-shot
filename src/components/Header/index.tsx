@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Player, useGlobalContext } from '../../contexts/GlobalContextProvider';
-import { ArrowLeft, Info, Settings, Users, Power } from 'react-feather';
+import { ArrowLeft, HelpCircle, Settings, Users, Power } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import DomQueShotLogo from '../../assets/logo-darker.png';
 import Popup from '../Popup';
@@ -12,7 +12,7 @@ import {
   Title,
   Timer,
   SettingsInfoAndLogo,
-  InfoDiv,
+  InfoButton,
   SettingsDiv,
   LogoDiv,
   LogoBackground,
@@ -31,6 +31,7 @@ import {
   ConfirmYes,
   ConfirmNo,
   Buttons,
+  InfoText,
 } from './Header.style';
 
 interface HeaderProps {
@@ -218,14 +219,13 @@ export default function Header({
             </RoomCode>
           </RoomCodeDiv>
 
-          <InfoDiv style={infoPage ? {} : { display: 'none' }}>
-            <Info
-              color="#FBBC05"
-              width="22px"
-              height="22px"
-              onClick={goToInfoPage}
+          <InfoButton onClick={goToInfoPage} style={infoPage ? {} : { display: 'none' }}>
+            <HelpCircle
+              color="#170c32"
+              width="20px"
+              height="20px"
             />
-          </InfoDiv>
+          </InfoButton>
 
           <SettingsDiv style={settingsPage ? {} : { display: 'none' }}>
             <Settings width="22px" height="22px" onClick={goToSettingPage} />

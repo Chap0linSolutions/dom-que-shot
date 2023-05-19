@@ -20,7 +20,7 @@ import {
   ContentDiv,
   WaitingMessageDiv,
   WaitingMessage,
-} from './styles';
+} from './SelectNextGame.style';
 
 export default function SelectNextGame() {
   const { user, setUser, room, setRoom } = useGlobalContext();
@@ -273,14 +273,22 @@ export default function SelectNextGame() {
 
           <WaitingMessageDiv
             style={
-              currentPlayer !== user.nickname && nextGameName === ''
+                nextGameName === ''
                 ? { visibility: 'visible' }
                 : { display: 'none' }
             }>
             <WaitingMessage>
-              Aguardando {currentPlayer}
-              <br />
-              girar a roleta...
+              {currentPlayer !== user.nickname
+              ? <>
+                  Aguardando {currentPlayer}
+                  <br />
+                  girar a roleta...
+                </>
+              : <>
+                  É a sua vez!
+                </>
+              }
+              
             </WaitingMessage>
           </WaitingMessageDiv>
           <NextGameName ref={nextGameTitle}>{nextGameName}</NextGameName>

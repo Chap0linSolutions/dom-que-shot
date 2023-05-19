@@ -39,7 +39,7 @@ export default function Popup({
   const releaseProps = comesFromTop
     ? {
         scale: 1,
-        top: 75,
+        top: 85,
         duration: 0.6,
         ease: 'power2',
       }

@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 
 export const HeaderDiv = styled.div`
   font-family: 'Adumu';
-  font-size: 26px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -36,6 +35,11 @@ export const RightSideItem = styled(LeftSideItem)`
 export const Title = styled.p`
   margin: 0;
   margin-left: 1em;
+  font-size: 26px;
+  @media(max-height: 740px){
+    margin-left: 0.6em;
+    font-size: 22px;
+  }
 `;
 
 export const ConfirmDiv = styled.div`
@@ -96,7 +100,7 @@ export const RoomCodeDiv = styled.div`
 export const RoomCode = styled.p`
   font-size: 16px;
   color: #524b6e;
-  margin-right: 10px;
+  margin-right: 1em;
 `;
 
 export const Timer = styled.div`
@@ -117,12 +121,32 @@ export const SettingsInfoAndLogo = styled.div`
   align-items: center;
 `;
 
-export const InfoDiv = styled.div`
-  margin-right: 1em;
+export const InfoButton = styled.div`
+  padding: 6px 15px 6px 10px;
+  background: #f9c95c;
+  display: flex;
+  align-items: center;
+  border-radius: 30px 0 0 30px;
+  @media(max-height: 740px){
+    padding: 5px 8px;
+  }
+`;
+
+export const InfoText = styled.p`
+  margin: 0;
+  margin-left: 5px;
+  font-size: 16px;
+  color: #170c32;
+  font-family: Roboto;
+  @media(max-height: 740px){
+    font-size: 14px;
+  }
 `;
 
 export const SettingsDiv = styled.div`
-  padding-right: 1em;
+  padding-right: 1.5em;
+  display: flex;
+  align-items: center;
 `;
 
 export const LogoDiv = styled.div`
