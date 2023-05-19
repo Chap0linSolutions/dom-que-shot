@@ -94,6 +94,13 @@ export default function JogoDaVerdade() {
       setGlobalRoomPage(destination);
     });
 
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
+      }));
+    });
+
     socket.addEventListener('lobby-update', (reply) => {
       const newPlayerList = JSON.parse(reply);
       setRoom((previous) => ({

@@ -106,6 +106,13 @@ export default function MimicaMaster() {
       setGlobalRoomPage(destination);
     });
 
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
+      }));
+    });
+
     socket.addEventListener('game-results-are', (stringifiedResults) => {
       setCorrect(JSON.parse(stringifiedResults));
       setGlobalRoomPage(Game.Finish);

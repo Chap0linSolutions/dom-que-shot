@@ -145,6 +145,13 @@ export default function OEscolhido() {
       setGlobalRoomPage(destination);
     });
 
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
+      }));
+    });
+
     return () => {
       socket.removeAllListeners();
     };

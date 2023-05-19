@@ -111,7 +111,7 @@ export default function QualODesenho() {
       roomCode: room.code,
       destination: Game.Game,
     });
-  };
+  };  
 
   const sendDrawingUpdate = (stringifiedArray: string) => {
     socket.pushMessage(room.code, 'drawing-points', stringifiedArray);
@@ -139,6 +139,13 @@ export default function QualODesenho() {
       setUser((previous) => ({
         ...previous,
         isOwner: isOwner,
+      }));
+    });
+
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
       }));
     });
 
