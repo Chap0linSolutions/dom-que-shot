@@ -48,7 +48,9 @@ export function RankingPage({
   finalResults,
 }: RankingProps) {
   const whoGuessed = data.filter((d) => d.guessTime > -1);
-  const whoDidnt = data.filter((d) => (d.guessTime === Status.Lost || d.guessTime === Status.Disconnected));
+  const whoDidnt = data.filter(
+    (d) => d.guessTime === Status.Lost || d.guessTime === Status.Disconnected
+  );
   const whoMissed = data.filter((d) => d.guessTime === Status.Lost);
 
   whoGuessed.length > 0 && whoGuessed.sort((a, b) => a.guessTime - b.guessTime);
@@ -132,7 +134,11 @@ export function RankingPage({
                     <ThumbsDown src={thumbDown} />
                   </AvatarBackground>
                   <CardText>{loser.nickname}</CardText>
-                  <CardSubtext>Olha Maurice!<br/>um bocó</CardSubtext>
+                  <CardSubtext>
+                    Olha Maurice!
+                    <br />
+                    um bocó
+                  </CardSubtext>
                 </Loser>
               </>
             ) : (

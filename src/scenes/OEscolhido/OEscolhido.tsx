@@ -80,7 +80,7 @@ export default function OEscolhido() {
     clearInterval(timer);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/proximojogo',
+      destination: '/roleta',
     });
   };
 

@@ -91,7 +91,7 @@ function Home() {
   };
 
   const enterRoom = (roomCode: string, option: string) => {
-    const nextURL = '/escolheravatar';
+    const nextURL = '/avatar';
     setUser({
       nickname: undefined,
       avatarSeed: undefined,

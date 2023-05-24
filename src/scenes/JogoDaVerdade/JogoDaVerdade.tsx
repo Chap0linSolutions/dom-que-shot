@@ -47,7 +47,7 @@ export default function JogoDaVerdade() {
     socket.push('update-turn', room.code);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/proximojogo',
+      destination: '/roleta',
     });
   };
 

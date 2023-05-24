@@ -40,13 +40,13 @@ export default function Main({
   const [copyColor, setCopyColor] = useState('#8877DF');
 
   const backToChooseAvatar = () => {
-    const destination = '/escolheravatar';
+    const destination = '/avatar';
     setRoom((previous) => ({
       ...previous,
       URL: destination,
       page: undefined,
     }));
-    navigate('/escolheravatar', {
+    navigate('/avatar', {
       state: { option: 'update' },
     });
   };

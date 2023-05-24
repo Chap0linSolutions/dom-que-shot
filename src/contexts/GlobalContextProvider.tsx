@@ -70,8 +70,7 @@ export function useGlobalContext() {
   const context = useContext(GlobalContext);
   if (typeof context !== 'undefined') {
     return context;
-  }
-  else {
+  } else {
     window.location.replace(import.meta.env.VITE_REACT_APP_ADRESS);
   }
 }

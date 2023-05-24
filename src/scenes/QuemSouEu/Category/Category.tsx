@@ -16,7 +16,6 @@ import {
   CategoryDiv,
 } from './Category.style';
 
-
 const categories: { name: string; color: string }[] = [
   { name: 'Animais', color: '#3D1365' },
   { name: 'Objetos', color: '#3C1A7D' },
@@ -26,7 +25,6 @@ const categories: { name: string; color: string }[] = [
   { name: 'Jogadores de futebol', color: '#8D69A2' },
   { name: 'Personalidades brasileiras', color: '#72418C' },
   { name: 'Personalidades internacionais', color: '#67127C' },
-  
 ];
 
 interface CategoryProps {
@@ -65,13 +63,13 @@ export default function CategoryPage({
     };
   };
 
-  const downAlert = <Alert 
-    onButtonClick={undown}
-    message={
-      `Parece que o jogador da vez caiu,
-      então passou pra você! Selecione a categoria do jogo!`
-    }
-  />
+  const downAlert = (
+    <Alert
+      onButtonClick={undown}
+      message={`Parece que o jogador da vez caiu,
+      então passou pra você! Selecione a categoria do jogo!`}
+    />
+  );
 
   if (turnVisibility === true) {
     return (

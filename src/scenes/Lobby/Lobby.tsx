@@ -90,7 +90,7 @@ export default function Lobby() {
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
-      if (destination === '/proximojogo' || destination === '/quembebeu') {
+      if (destination === '/roleta' || destination === '/quembebeu') {
         setRoom((previous) => ({
           ...previous,
           URL: destination,
@@ -198,7 +198,7 @@ export default function Lobby() {
       socket.push('set-turn', room.code);
       socket.push('move-room-to', {
         roomCode: room.code,
-        destination: '/proximojogo',
+        destination: '/roleta',
       });
       return;
     }

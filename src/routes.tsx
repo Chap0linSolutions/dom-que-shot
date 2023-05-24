@@ -34,10 +34,10 @@ const Router: React.FC = () => {
         <Route path="/tutorial" element={<Tutorial />} />
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/escolheravatar" element={<ChooseAvatar />} />
+        <Route path="/avatar" element={<ChooseAvatar />} />
         <Route path="/saguao" element={<Lobby />} />
         <Route path="/oescolhido" element={<OEscolhido />} />
-        <Route path="/proximojogo" element={<SelectNextGame />} />
+        <Route path="/roleta" element={<SelectNextGame />} />
         <Route path="/quembebeu" element={<WhoDrank />} />
         <Route path="/vrum" element={<Vrum />} />
         <Route path="/bichobebe" element={<BichoBebe />} />

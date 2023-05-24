@@ -1,0 +1,144 @@
+.JoinRoomDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  margin-top: 44px;
+  padding: 0em 1em;
+}
+
+.JoinRoomInputAndButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.HelpInfo {
+  margin: 0;
+  margin-bottom: 8px;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 19px;
+}
+
+.JoinRoomEnterCode {
+  color: black;
+  background-color: white;
+  border-radius: 10px 0 0 10px;
+  font-weight: 400;
+  border: none;
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 20px;
+}
+
+/*Para o placeholder continuar lowercase: */
+.JoinRoomEnterCode::-webkit-input-placeholder {
+  /* WebKit browsers */
+  text-transform: none;
+}
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  text-transform: none;
+}
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  text-transform: none;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  text-transform: none;
+}
+::placeholder {
+  /* Recent browsers */
+  text-transform: none;
+}
+
+.JoinRoomButton {
+  background-color: #8877df;
+  border-radius: 0 10px 10px 0;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.JoinRoomWarningSpace {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  padding: 5px;
+}
+
+.JoinRoomWarning {
+  margin-left: 5px;
+  color: red;
+}
+
+.CreateRoomDiv {
+  margin: 1em 0em;
+  height: 52px;
+  padding: 0em 1em;
+}
+
+.ChooseGameDiv {
+  margin-top: 30px;
+  padding: 1em;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.ChooseGameText {
+  font-size: 20px;
+}
+
+.GameSwiper {
+  width: 100px;
+  height: 100px;
+}
+
+.ScreenDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+@media (max-height: 740px) {
+  .JoinRoomEnterCode {
+    width: 100%;
+    height: 45px;
+    font-size: 18px;
+  }
+
+  .JoinRoomButton {
+    width: 45px;
+    height: 45px;
+    padding: 0.5em;
+  }
+
+  .HelpInfo {
+    font-size: 16px;
+  }
+
+  .JoinRoomDiv {
+    margin-top: 30px;
+  }
+
+  .ChooseGameDiv {
+    margin-top: 20px;
+  }
+
+  .ChooseGameText {
+    font-size: 18px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+}

@@ -1,0 +1,52 @@
+.slider {
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.slider::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1em;
+  border-radius: 10px;
+  padding: 1em 0.5em;
+}
+
+.image {
+  width: 140px;
+  height: 140px;
+}
+
+.HomeImageDiv {
+  margin-top: 1em;
+}
+
+.title {
+  font-weight: 700;
+  margin: 0;
+  font-size: 20px;
+  color: white;
+}
+
+@media (max-height: 740px) {
+  .card {
+    margin-right: 0.6em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+  }
+
+  .image {
+    width: 126px;
+    height: 126px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+}

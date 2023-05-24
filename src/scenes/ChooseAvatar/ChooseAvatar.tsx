@@ -42,7 +42,7 @@ function ChooseAvatar() {
   useEffect(() => {
     socket.connect();
     socket.addEventListener('room-is-moving-to', (destination) => {
-      if (destination === '/proximojogo') {
+      if (destination === '/roleta') {
         return navigate(destination);
       }
     });
