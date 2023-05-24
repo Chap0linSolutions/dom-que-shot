@@ -7,7 +7,10 @@ export const Finish = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 0 16px;
+    padding: 0 12px;
+    @media(max-height: 740px){
+        padding: 0 6px;
+    }
 `;
 
 export const Content = styled(Finish)`
@@ -24,6 +27,10 @@ export const AnswerDiv = styled.div`
     background: #403a55;
     border-radius: 50%;
     margin-bottom: 10px;
+    @media(max-height: 740px){
+        width: 108px;
+        height: 108px;
+    }
 `;
 
 export const AnswerTile = styled.div`
@@ -31,20 +38,23 @@ export const AnswerTile = styled.div`
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0);
-    background: #800080;
+    background: #403a55;
     border-radius: 15px;
-    border-left: 5px solid #403a55;
-    border-right: 5px solid #403a55;
+    border-left: 8px solid #800080;
+    border-right: 8px solid #800080;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 5px 30px;
+    @media(max-height: 740px){
+        padding: 4px 20px;
+    }
 `;
 
 export const AnswerText = styled.p`
     font-size: 16px;
-    color: rgba(255, 255, 255, 0.6);
+    color: #AAAAAA;
     margin: 0;
     white-space: nowrap;
     width: 100%;
@@ -58,7 +68,7 @@ export const Answer = styled.p`
     margin: 0;
     font-family: Roboto;
     color: white;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
     padding: 5px;
     @media(max-height: 740px){

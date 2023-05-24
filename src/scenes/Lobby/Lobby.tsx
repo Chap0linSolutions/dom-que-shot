@@ -107,6 +107,7 @@ export default function Lobby() {
         case '/OEscolhido':
         case '/Titanic':
         case '/MestredaMimica':
+        case '/LinhadoTempo':
           if (!page || page === 0) {
             //se o jogo ainda estiver na capa é possível entrar tardiamente
             setAlertMessage('Reconectando...');

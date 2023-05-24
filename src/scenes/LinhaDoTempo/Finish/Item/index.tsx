@@ -1,17 +1,20 @@
 import { useLayoutEffect } from "react";
-import { CorrectGuess, CorrectIcon, WrongIcon, DNFIcon, ItemBackground, LeftSide, WrongGuess, DNFGuess } from "./Item.style";
+import { Status } from "../../LinhaDoTempo";
 import crown from '../../../../assets/crown.png';
 import beer from '../../../../assets/beer.png';
 import dnf from '../../../../assets/no-votes.png';
 import gsap from 'gsap';
+import { CorrectIcon, WrongIcon, DNFIcon, ItemBackground, LeftSide, DNFGuess, LeftText, Name, RightText, RightSide, SubtitleBackground, SubtitleLeft, SubtitleRight } from "./Item.style";
 
 interface ItemProps {
-    name: string,
-    guess: string | number,
-    correct: boolean,
+    subtitle?: boolean,
+    name?: string,
+    guess?: number,
+    diff?: number,
+    bestAnswer?: boolean,
 }
 
-export default function Item({name, guess, correct}: ItemProps){
+export default function Item({subtitle, name, guess, bestAnswer, diff}: ItemProps){
 
     useLayoutEffect(() => {
         const animation = gsap.to(".icon", {
@@ -25,38 +28,52 @@ export default function Item({name, guess, correct}: ItemProps){
             animation.revert();
         }
     }, []);
-
     
-    if(correct){
+    if(subtitle){
         return (
-            <ItemBackground>
-                <LeftSide>
-                    {name}
-                </LeftSide>
-                <CorrectGuess>
-                    {guess}
-                    <CorrectIcon src={crown} className="icon"/>
-                </CorrectGuess>
-            </ItemBackground>
-        );
-    }
-    if(typeof guess === 'string'){
-        return (
-            <ItemBackground>
-                <LeftSide>
-                    {name}
-                </LeftSide>
-                <WrongGuess>
-                    {guess}
-                    <WrongIcon src={beer} className="icon"/>
-                </WrongGuess>
-            </ItemBackground>
+            <SubtitleBackground>
+                <SubtitleLeft>
+                    <LeftText>resposta</LeftText>
+                </SubtitleLeft>
+                <SubtitleRight>
+                    <RightText>diferença</RightText>
+                </SubtitleRight>
+            </SubtitleBackground>
         );
     }
 
-    const dnfMessage = (guess === -1)
-    ? <>caiu antes<br/>de jogar</>
-    : <>não jogou<br/>a tempo</>
+    if(bestAnswer){
+        return (
+            <ItemBackground>
+                <LeftSide>
+                    <Name>{name}</Name>
+                    <LeftText>{guess}</LeftText>
+                </LeftSide>
+                <RightSide>
+                    <RightText style={{color: 'lime'}}>
+                        {(diff === 0)? 'wow!' : diff}
+                    </RightText>
+                    <CorrectIcon src={crown}/>
+                </RightSide>
+            </ItemBackground>
+        );
+    }
+    if(guess !== Status.DISCONNECTED && guess !== Status.TIMESUP){
+        return (
+            <ItemBackground>
+                <LeftSide>
+                    <Name>{name}</Name>
+                    <LeftText>{guess}</LeftText>
+                </LeftSide>
+                <RightSide>
+                    <RightText>
+                        {diff}
+                    </RightText>
+                    <WrongIcon src={beer} className="icon"/>
+                </RightSide>
+            </ItemBackground>
+        );
+    }
 
     return (
         <ItemBackground>
@@ -64,7 +81,10 @@ export default function Item({name, guess, correct}: ItemProps){
                 {name}
             </LeftSide>
             <DNFGuess>
-                {dnfMessage}
+                {(guess === Status.DISCONNECTED)
+                    ? <>caiu antes<br/>de jogar</>
+                    : <>não jogou<br/>a tempo</>
+                }
                 <DNFIcon src={dnf} className="icon"/>
             </DNFGuess>
         </ItemBackground>

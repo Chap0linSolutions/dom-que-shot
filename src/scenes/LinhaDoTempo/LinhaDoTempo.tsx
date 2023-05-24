@@ -1,22 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SocketConnection from '../../lib/socket';
 import { useGlobalContext } from '../../contexts/GlobalContextProvider';
+import SocketConnection from '../../lib/socket';
 import GamePage from './Game';
 import CoverPage from '../../components/Game/Cover';
 import coverImg from '../../assets/game-covers/linha-do-tempo.png';
 import FinishPage from './Finish';
 
-export type PhraseAndOptions = {
-  phrase: string,
-  options: string[],
-}
-
 export type Results = {
-  answer: string | number,
+  answer: number,
   guesses: {
     player: string,
-    guess: string | number,
+    guess: number,
   }[]
 }
 
@@ -26,13 +21,18 @@ enum Game {
   Finish,
 }
 
+export enum Status {
+  DISCONNECTED = -1,
+  TIMESUP = -100,
+}
+
 const GAME_DURATION = 20000;
 const DELTA_TIME = 100;
 
 export default function LinhaDoTempo() {
   const title = 'Linha do Tempo';
   const { user, room, setUser, setRoom } = useGlobalContext();
-  const [phraseAndOptions, setPhraseAndOptions] = useState<PhraseAndOptions | undefined>(undefined);
+  const [question, setQuestion] = useState<string | undefined>(undefined);
   const [results, setResults] = useState<Results | undefined>(undefined);
 
   //TIMER//////////////////////////////////////////////////////////////////////////////////////
@@ -41,18 +41,17 @@ export default function LinhaDoTempo() {
   const [timer, setTimer] = useState<NodeJS.Timer>();
 
   const startTimer = () => {
-    setTimer(setInterval(run, DELTA_TIME));
+    //setTimer(setInterval(run, DELTA_TIME));
   };
 
   const run = () => {
-    setMsTimer((previous) => (previous > 0 ? previous - DELTA_TIME : previous));
+    setMsTimer((previous) => (previous > 0 ? previous - DELTA_TIME : 0));
   };
 
   useEffect(() => {
     if (msTimer === 0) {
       console.log('acabou o tempo.');
       clearInterval(timer);
-      user.isCurrentTurn && finishGame();
     }
   }, [msTimer]);
 
@@ -62,12 +61,14 @@ export default function LinhaDoTempo() {
 
   const description = (
     <>
-      Aparecerá uma frase com algum acontecimento histórico (ex.: 'Quando foi inventada a lâmpada?')
-      e algumas opções de data em que o acontecimento pode ter ocorrido.
+      Aparecerá uma pergunta de quando determinado evento histórico aconteceu
+      (ex.: 'Em que ano foi inventada a lâmpada?') e os jogadores então terão
+      20 segundos para responder. O jogador que mais se aproximar da data correta
+      é o único que não bebe!
       <br/>
       <br/>
-      Os jogadores então terão 20 segundos pare escolher uma opção, e quem escolher errado
-      (ou não escolher a tempo) bebe.
+      Se a resposta dele for exata, todos os demais bebem duas vezes
+      (quem mandou chamar o nerd pro jogo? rs).
       <br />
       <br />
       Boa sorte!
@@ -78,17 +79,13 @@ export default function LinhaDoTempo() {
     setRoom((previous) => ({ ...previous, page: newPage }));
   };
 
-  const getPhraseAndOptions = () => {
-    socket.pushMessage(room.code, 'phrase-and-options');
+  const getQuestion = () => {
+    socket.pushMessage(room.code, 'question-is');
   }
 
   const startGame = () => {
     socket.pushMessage(room.code, 'start-game', Game.Game);
   };
-
-  const finishGame = () => {
-    socket.pushMessage(room.code, 'times-up');
-  }
 
   const sendGuess = (value: string | number) => {
     socket.pushMessage(room.code, 'my-guess-is', JSON.stringify({
@@ -107,6 +104,7 @@ export default function LinhaDoTempo() {
   };
 
   const backToRoulette = () => {
+    socket.push('update-turn', room.code);
     socket.push('move-room-to', {
       roomCode: room.code,
       destination: '/SelectNextGame',
@@ -141,6 +139,13 @@ export default function LinhaDoTempo() {
       }));
     });
 
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
+      }));
+    });
+
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (typeof destination === 'string') {
         setRoom((previous) => ({
@@ -153,8 +158,8 @@ export default function LinhaDoTempo() {
       setGlobalRoomPage(destination);
     });
 
-    socket.addEventListener('phrase-and-options', (value) => {
-      setPhraseAndOptions(JSON.parse(value));
+    socket.addEventListener('question-is', (value) => {
+      setQuestion(value);
       user.isCurrentTurn && startGame();
     });
 
@@ -186,7 +191,7 @@ export default function LinhaDoTempo() {
       return (
         <GamePage 
           turnVisibility={user.isCurrentTurn}
-          phraseAndOptions={phraseAndOptions}
+          question={question}
           timeLeft={msTimer}
           sendGuess={sendGuess}
         />
@@ -209,7 +214,7 @@ export default function LinhaDoTempo() {
           turnVisibility={user.isCurrentTurn}
           ownerVisibility={user.isOwner}
           description={description}
-          gamePage={getPhraseAndOptions}
+          gamePage={getQuestion}
         />
       );
   }
