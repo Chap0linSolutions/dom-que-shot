@@ -41,7 +41,7 @@ export default function LinhaDoTempo() {
   const [timer, setTimer] = useState<NodeJS.Timer>();
 
   const startTimer = () => {
-    //setTimer(setInterval(run, DELTA_TIME));
+    setTimer(setInterval(run, DELTA_TIME));
   };
 
   const run = () => {

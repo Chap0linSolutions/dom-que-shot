@@ -132,17 +132,6 @@ export const InfoButton = styled.div`
   }
 `;
 
-export const InfoText = styled.p`
-  margin: 0;
-  margin-left: 5px;
-  font-size: 16px;
-  color: #170c32;
-  font-family: Roboto;
-  @media(max-height: 740px){
-    font-size: 14px;
-  }
-`;
-
 export const SettingsDiv = styled.div`
   padding-right: 1.5em;
   display: flex;

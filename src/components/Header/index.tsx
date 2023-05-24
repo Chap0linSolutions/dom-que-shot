@@ -31,7 +31,6 @@ import {
   ConfirmYes,
   ConfirmNo,
   Buttons,
-  InfoText,
 } from './Header.style';
 
 interface HeaderProps {

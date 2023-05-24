@@ -60,7 +60,7 @@ export default function FinishPage({turnVisibility, results, backToRoulette}: Fi
     const playersRef = useRef(null);
     const textRef = useRef(null);
 
-    let guidanceText = getGuidanceText(whoGuessed, answer);
+    const guidanceText = getGuidanceText(whoGuessed, answer);
 
     useEffect(() => {
         gsap.timeline().to(answerDivRef.current, {

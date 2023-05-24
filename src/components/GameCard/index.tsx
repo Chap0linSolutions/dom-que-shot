@@ -4,7 +4,6 @@ import {
   CardImage,
   CardTitle,
   InfoButton,
-  InfoText
 } from './GameCard.style';
 
 interface GameCardProps {
