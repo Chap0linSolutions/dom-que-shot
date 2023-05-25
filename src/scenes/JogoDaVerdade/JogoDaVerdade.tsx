@@ -69,7 +69,7 @@ export default function JogoDaVerdade() {
   //SOCKET////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    socket.connect();
+    socket.connect(room.code);
     socket.addEventListener('room-owner-is', (ownerName) => {
       const isOwner = user.nickname === ownerName;
       setUser((previous) => ({
@@ -92,6 +92,13 @@ export default function JogoDaVerdade() {
         });
       }
       setGlobalRoomPage(destination);
+    });
+
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
+      }));
     });
 
     socket.addEventListener('lobby-update', (reply) => {

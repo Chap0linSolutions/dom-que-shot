@@ -40,7 +40,7 @@ function ChooseAvatar() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.connect();
+    socket.connect(room.code);
     socket.addEventListener('room-is-moving-to', (destination) => {
       if (destination === '/roleta') {
         return navigate(destination);
@@ -86,12 +86,12 @@ function ChooseAvatar() {
 
   const redirect = () => {
     api
-      .get(`/roomCode/${roomCode}`)
+      .get(`/check?room=${roomCode}`)
       .then(() => {
         proceedTo('/saguao');
       })
       .catch(() => {
-        // TODO: add error message handling to inform user room doesn't exist (anymore)
+        alert('Parece que a sala não existe mais. Por favor tente outra.');
         proceedTo('/home');
       });
   };
@@ -100,7 +100,7 @@ function ChooseAvatar() {
     const userName = inputRef.current.value.trim();
     if (userName.length > 2 && userName.length <= 16) {
       api
-        .get(`/nicknameCheck/${roomCode}/${userName}`)
+        .get(`/nickname?room=${roomCode}&nickname=${userName}`)
         .then(() => {
           return storeInfo();
         })
