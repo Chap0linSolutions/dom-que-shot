@@ -37,16 +37,16 @@ export default function Cookies() {
     document.cookie = `DomQueShotCookies=true; path=/; max-age=${maxAgeInSeconds}`;
     if (document.cookie) {
       console.log('Configuração de cookies bem-sucedida.');
-      
+
       return checkCookieConsent();
     }
     console.log('Erro na configuração do cookie.');
-    return
+    return;
   };
 
   const checkCookieConsent = () => {
     const doNotShow = window.localStorage.getItem('cookies');
-    if(typeof doNotShow !== 'string'){
+    if (typeof doNotShow !== 'string') {
       const checkCookie = document.cookie.indexOf('DomQueShotCookies=true');
       if (checkCookie > -1) return;
       console.log('O usuário ainda não permitiu o uso de cookies.');
@@ -59,7 +59,7 @@ export default function Cookies() {
   }, [room]);
 
   useEffect(() => {
-    if (!popupVisibility){
+    if (!popupVisibility) {
       setContent(true);
     }
   }, [popupVisibility]);

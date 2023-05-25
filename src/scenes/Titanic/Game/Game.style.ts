@@ -42,7 +42,7 @@ export const RemainingElements = styled(Titanic)`
   justify-content: flex-end;
   height: auto;
   padding: 10px 40px;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     padding: 10px 60px;
   }
 `;
