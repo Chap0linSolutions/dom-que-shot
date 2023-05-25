@@ -137,7 +137,7 @@ export default function Header({
 
   const leaveRoom = () => {
     window.localStorage.clear();
-    navigate('/Home');
+    navigate('/home');
   };
 
   const copyCode = () => {

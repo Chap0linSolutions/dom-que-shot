@@ -49,7 +49,7 @@ export default function SelectNextGame() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
     });
 
@@ -192,14 +192,15 @@ export default function SelectNextGame() {
   };
 
   const turnTheWheel = () => {
-    user.isCurrentTurn && !rouletteIsSpinning &&
+    user.isCurrentTurn &&
+      !rouletteIsSpinning &&
       socket.pushMessage(room.code, 'roulette-number-is', null);
   };
 
   const backToLobby = () => {
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
 

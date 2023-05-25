@@ -93,7 +93,7 @@ export default function Titanic() {
     clearInterval(timer);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/SelectNextGame',
+      destination: '/roleta',
     });
   };
 
@@ -102,7 +102,7 @@ export default function Titanic() {
     clearInterval(timer);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
 
@@ -122,7 +122,7 @@ export default function Titanic() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
     });
 
@@ -167,10 +167,10 @@ export default function Titanic() {
   }, [room.page]);
 
   useEffect(() => {
-    if(timesUp){
-      const target = (user.isCurrentTurn)? ICEBERGS : TITANICS;
+    if (timesUp) {
+      const target = user.isCurrentTurn ? ICEBERGS : TITANICS;
       const selection = places.filter((p) => p >= 100);
-      if(selection.length === target){
+      if (selection.length === target) {
         sendResults(JSON.stringify(selection));
       } else {
         setResults(`time's up`);

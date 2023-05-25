@@ -42,7 +42,7 @@ function ChooseAvatar() {
   useEffect(() => {
     socket.connect();
     socket.addEventListener('room-is-moving-to', (destination) => {
-      if (destination === '/SelectNextGame') {
+      if (destination === '/roleta') {
         return navigate(destination);
       }
     });
@@ -88,11 +88,11 @@ function ChooseAvatar() {
     api
       .get(`/roomCode/${roomCode}`)
       .then(() => {
-        proceedTo('/Lobby');
+        proceedTo('/saguao');
       })
       .catch(() => {
         // TODO: add error message handling to inform user room doesn't exist (anymore)
-        proceedTo('/Home');
+        proceedTo('/home');
       });
   };
 
@@ -172,7 +172,7 @@ function ChooseAvatar() {
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
   const leaveMatch = () => {
-    const nextURL = '/Home';
+    const nextURL = '/home';
     setRoom((previous) => ({
       ...previous,
       code: undefined,

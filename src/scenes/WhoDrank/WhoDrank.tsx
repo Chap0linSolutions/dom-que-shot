@@ -34,7 +34,8 @@ export default function WhoDrankPage() {
   }
 
   const playerList = useRef<Player[]>(room.playerList);
-  const [originalPlayerIsDown, setOriginalPlayerIsDown] = useState<boolean>(false);
+  const [originalPlayerIsDown, setOriginalPlayerIsDown] =
+    useState<boolean>(false);
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [SP, setSP] = useState<number>(Math.random());
   const [buttonText, setButtonText] = useState('Ninguém bebeu');
@@ -63,7 +64,7 @@ export default function WhoDrankPage() {
 
     socket.addEventListener('original-player-is-down', () => {
       setOriginalPlayerIsDown(true);
-    })
+    });
 
     socket.addEventListener('room-owner-is', (ownerName) => {
       const isOwner = user.nickname === ownerName;
@@ -125,10 +126,12 @@ export default function WhoDrankPage() {
     socket.pushMessage(room.code, 'end-game', null);
   };
 
-  const alert = <Alert 
-    onButtonClick={() => setOriginalPlayerIsDown(false)}
-    message="Parece que o jogador da vez caiu, então passou pra você! Selecione quem bebeu nessa rodada!"
-  />
+  const alert = (
+    <Alert
+      onButtonClick={() => setOriginalPlayerIsDown(false)}
+      message="Parece que o jogador da vez caiu, então passou pra você! Selecione quem bebeu nessa rodada!"
+    />
+  );
 
   const header = coverImg ? (
     <Header exit roomCode logo={coverImg} />

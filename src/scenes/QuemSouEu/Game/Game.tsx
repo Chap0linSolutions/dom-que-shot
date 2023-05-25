@@ -91,13 +91,13 @@ export default function GamePage({
   };
 
   const change = () => {
-    if(reloadsLeft > 0){
-      setReloadsLeft(previous => (previous - 1));
+    if (reloadsLeft > 0) {
+      setReloadsLeft((previous) => previous - 1);
       changeMyName();
       setReloaded(true);
       setTimeout(() => setReloaded(false), 3000);
     }
-  }
+  };
 
   const endGame = () => {
     const winners = whoPlayers.filter((p) => p.selected).map((p) => p.nickname);
@@ -128,12 +128,16 @@ export default function GamePage({
     return { background: isSelected === true ? '#8877DF' : '#403A55' };
   };
 
-  const alert = <Alert 
-    onButtonClick={undown}
-    message={(down)
-    ? "Parece que o jogador da vez caiu, então passou pra você! Clique em quem acertar primeiro!"
-    : "Clique no jogador que acertar primeiro!"}
-  />;
+  const alert = (
+    <Alert
+      onButtonClick={undown}
+      message={
+        down
+          ? 'Parece que o jogador da vez caiu, então passou pra você! Clique em quem acertar primeiro!'
+          : 'Clique no jogador que acertar primeiro!'
+      }
+    />
+  );
 
   const button = (
     <Button
@@ -148,18 +152,27 @@ export default function GamePage({
     </Button>
   );
 
-  const reloadStyle = (reloadsLeft === 0)
-  ? {opacity: 0.2 } : null;
+  const reloadStyle = reloadsLeft === 0 ? { opacity: 0.2 } : null;
 
   return (
     <Background noImage>
       <Popup
         type="warning"
         warningType="success"
-        description={(reloadsLeft > 0)
-          ? <>Nome trocado!<br/>Restantes: {reloadsLeft} vez(es).</>
-          : <>Nome trocado!<br/>Agora não pode trocar mais.
-        </>
+        description={
+          reloadsLeft > 0 ? (
+            <>
+              Nome trocado!
+              <br />
+              Restantes: {reloadsLeft} vez(es).
+            </>
+          ) : (
+            <>
+              Nome trocado!
+              <br />
+              Agora não pode trocar mais.
+            </>
+          )
         }
         show={reloaded}
       />
@@ -191,13 +204,13 @@ export default function GamePage({
             {whoPlayers.map((player) => {
               const playerName =
                 player.nickname === currentPlayerNickname ? (
-                  <>  
+                  <>
                     <YourName onClick={() => toggleSelection(player.nickname)}>
                       {`(você)`}
                     </YourName>
                     <Reload onClick={change} style={reloadStyle}>
                       <ReloadsLeft>trocar</ReloadsLeft>
-                      <RotateCw width={15} color='white' />
+                      <RotateCw width={15} color="white" />
                     </Reload>
                   </>
                 ) : (
@@ -206,15 +219,16 @@ export default function GamePage({
                   </OthersName>
                 );
               return (
-                <Card
-                  key={player.nickname}
-                  style={cardStyle(player.selected)}>
+                <Card key={player.nickname} style={cardStyle(player.selected)}>
                   <Detail>&nbsp;</Detail>
                   <CardContent>
                     {areNamesVisible === true ? (
                       playerName
                     ) : (
-                      <HiddenName onClick={() => toggleSelection(player.nickname)}>{secretText}</HiddenName>
+                      <HiddenName
+                        onClick={() => toggleSelection(player.nickname)}>
+                        {secretText}
+                      </HiddenName>
                     )}
                     <CategoryAndPlayer>
                       <Category>{category}</Category>

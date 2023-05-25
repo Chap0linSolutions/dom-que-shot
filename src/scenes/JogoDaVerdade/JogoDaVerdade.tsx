@@ -39,7 +39,7 @@ export default function JogoDaVerdade() {
   const backToLobby = () => {
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
 
@@ -47,7 +47,7 @@ export default function JogoDaVerdade() {
     socket.push('update-turn', room.code);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/SelectNextGame',
+      destination: '/roleta',
     });
   };
 
@@ -105,7 +105,7 @@ export default function JogoDaVerdade() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
     });
 
