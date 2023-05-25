@@ -273,22 +273,20 @@ export default function SelectNextGame() {
 
           <WaitingMessageDiv
             style={
-                nextGameName === ''
+              nextGameName === ''
                 ? { visibility: 'visible' }
                 : { display: 'none' }
             }>
             <WaitingMessage>
-              {currentPlayer !== user.nickname
-              ? <>
+              {currentPlayer !== user.nickname ? (
+                <>
                   Aguardando {currentPlayer}
                   <br />
                   girar a roleta...
                 </>
-              : <>
-                  É a sua vez!
-                </>
-              }
-              
+              ) : (
+                <>É a sua vez!</>
+              )}
             </WaitingMessage>
           </WaitingMessageDiv>
           <NextGameName ref={nextGameTitle}>{nextGameName}</NextGameName>

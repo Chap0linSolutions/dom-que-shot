@@ -31,7 +31,6 @@ import {
   ConfirmYes,
   ConfirmNo,
   Buttons,
-  InfoText,
 } from './Header.style';
 
 interface HeaderProps {
@@ -219,12 +218,10 @@ export default function Header({
             </RoomCode>
           </RoomCodeDiv>
 
-          <InfoButton onClick={goToInfoPage} style={infoPage ? {} : { display: 'none' }}>
-            <HelpCircle
-              color="#170c32"
-              width="20px"
-              height="20px"
-            />
+          <InfoButton
+            onClick={goToInfoPage}
+            style={infoPage ? {} : { display: 'none' }}>
+            <HelpCircle color="#170c32" width="20px" height="20px" />
           </InfoButton>
 
           <SettingsDiv style={settingsPage ? {} : { display: 'none' }}>
