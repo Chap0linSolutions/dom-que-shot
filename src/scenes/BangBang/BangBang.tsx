@@ -50,7 +50,7 @@ export function BangBang() {
   const backToLobby = () => {
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
 
@@ -98,7 +98,7 @@ export function BangBang() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
     });
 
@@ -168,7 +168,7 @@ export function BangBang() {
           turnVisibility={user.isCurrentTurn}
           roulettePage={() => {
             socket.push('update-turn', room.code);
-            goTo('/SelectNextGame');
+            goTo('/roleta');
           }}
           owner={user.isOwner}
         />

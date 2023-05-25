@@ -36,7 +36,7 @@ export const Title = styled.p`
   margin: 0;
   margin-left: 1em;
   font-size: 26px;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     margin-left: 0.6em;
     font-size: 22px;
   }
@@ -127,7 +127,7 @@ export const InfoButton = styled.div`
   display: flex;
   align-items: center;
   border-radius: 30px 0 0 30px;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     padding: 5px 8px;
   }
 `;
@@ -138,7 +138,7 @@ export const InfoText = styled.p`
   font-size: 16px;
   color: #170c32;
   font-family: Roboto;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 14px;
   }
 `;

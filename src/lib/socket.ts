@@ -4,6 +4,7 @@ class SocketConnection {
   private static instance;
   socket: Socket;
   baseServerAddress = process.env.VITE_REACT_APP_SERVER_ADRESS;
+  applicationAdress = process.env.VITE_REACT_APP_ADRESS;
 
   connect(roomCode?: string) {
     if (!this.socket) {
@@ -11,7 +12,7 @@ class SocketConnection {
       this.socket = io(server);
       this.socket.io.on('reconnect', () => {
         alert('Conexão perdida! Reconectando...');
-        window.location.reload();
+        window.location.replace(this.applicationAdress);
       });
     }
   }
@@ -83,6 +84,9 @@ class SocketConnection {
   }
 
   addEventListener(eventName, callback) {
+    if (!this.socket) {
+      return window.location.replace(this.applicationAdress);
+    }
     this.socket.on(eventName, callback);
     return () => {
       console.log('esse é o return do addEventListener.');

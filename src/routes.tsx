@@ -1,5 +1,5 @@
 import React from 'react';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Start from './scenes/Start';
 import Tutorial from './scenes/Tutorial';
@@ -28,34 +28,34 @@ import MestreDaMimica from './scenes/MestreDaMimica';
 
 const Router: React.FC = () => {
   return (
-    <MemoryRouter>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Start />} />
-        <Route path="/Tutorial" element={<Tutorial />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Home" element={<Home />} />
-        <Route path="/ChooseAvatar" element={<ChooseAvatar />} />
-        <Route path="/Lobby" element={<Lobby />} />
-        <Route path="/OEscolhido" element={<OEscolhido />} />
-        <Route path="/SelectNextGame" element={<SelectNextGame />} />
-        <Route path="/WhoDrank" element={<WhoDrank />} />
-        <Route path="/Vrum" element={<Vrum />} />
-        <Route path="/BichoBebe" element={<BichoBebe />} />
-        <Route path="/Medusa" element={<Medusa />} />
-        <Route path="/CSComposto" element={<CSComposto />} />
-        <Route path="/DireitaEsquerda" element={<DireitaEsquerda />} />
-        <Route path="/PensaRapido" element={<PensaRapido />} />
-        <Route path="/Buzz" element={<Buzz />} />
-        <Route path="/EuNunca" element={<EuNunca />} />
-        <Route path="/BangBang" element={<BangBang />} />
-        <Route path="/Titanic" element={<Titanic />} />
-        <Route path="/QuemSouEu" element={<QuemSouEu />} />
-        <Route path="/QualODesenho" element={<QualODesenho />} />
-        <Route path="/JogoDoDesafio" element={<JogoDoDesafio />} />
-        <Route path="/JogoDaVerdade" element={<JogoDaVerdade />} />
-        <Route path="/MestreDaMimica" element={<MestreDaMimica />} />
+        <Route path="/tutorial" element={<Tutorial />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/avatar" element={<ChooseAvatar />} />
+        <Route path="/saguao" element={<Lobby />} />
+        <Route path="/oescolhido" element={<OEscolhido />} />
+        <Route path="/roleta" element={<SelectNextGame />} />
+        <Route path="/quembebeu" element={<WhoDrank />} />
+        <Route path="/vrum" element={<Vrum />} />
+        <Route path="/bichobebe" element={<BichoBebe />} />
+        <Route path="/medusa" element={<Medusa />} />
+        <Route path="/cscomposto" element={<CSComposto />} />
+        <Route path="/direitaesquerda" element={<DireitaEsquerda />} />
+        <Route path="/pensarapido" element={<PensaRapido />} />
+        <Route path="/buzz" element={<Buzz />} />
+        <Route path="/eununca" element={<EuNunca />} />
+        <Route path="/bangbang" element={<BangBang />} />
+        <Route path="/titanic" element={<Titanic />} />
+        <Route path="/quemsoueu" element={<QuemSouEu />} />
+        <Route path="/qualodesenho" element={<QualODesenho />} />
+        <Route path="/jogododesafio" element={<JogoDoDesafio />} />
+        <Route path="/jogodaverdade" element={<JogoDaVerdade />} />
+        <Route path="/mestredamimica" element={<MestreDaMimica />} />
       </Routes>
-    </MemoryRouter>
+    </BrowserRouter>
   );
 };
 

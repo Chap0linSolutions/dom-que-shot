@@ -4,7 +4,6 @@ import {
   CardImage,
   CardTitle,
   InfoButton,
-  InfoText
 } from './GameCard.style';
 
 interface GameCardProps {
@@ -25,11 +24,9 @@ export default function GameCard({
   backgroundColor,
 }: GameCardProps) {
   return (
-    <CardBackground
-      key={id}
-      style={{ background: backgroundColor }}>
+    <CardBackground key={id} style={{ background: backgroundColor }}>
       <InfoButton onClick={onInfoClick}>
-        <HelpCircle width='18px'color='#170c32'/>
+        <HelpCircle width="18px" color="#170c32" />
       </InfoButton>
       <CardImage onClick={onClick} src={image} alt={title} />
       <CardTitle>{title}</CardTitle>

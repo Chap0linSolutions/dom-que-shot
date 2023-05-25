@@ -49,7 +49,7 @@ export default function SelectNextGame() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
     });
 
@@ -200,7 +200,7 @@ export default function SelectNextGame() {
   const backToLobby = () => {
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
 
@@ -273,22 +273,20 @@ export default function SelectNextGame() {
 
           <WaitingMessageDiv
             style={
-                nextGameName === ''
+              nextGameName === ''
                 ? { visibility: 'visible' }
                 : { display: 'none' }
             }>
             <WaitingMessage>
-              {currentPlayer !== user.nickname
-              ? <>
+              {currentPlayer !== user.nickname ? (
+                <>
                   Aguardando {currentPlayer}
                   <br />
                   girar a roleta...
                 </>
-              : <>
-                  É a sua vez!
-                </>
-              }
-              
+              ) : (
+                <>É a sua vez!</>
+              )}
             </WaitingMessage>
           </WaitingMessageDiv>
           <NextGameName ref={nextGameTitle}>{nextGameName}</NextGameName>

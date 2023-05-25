@@ -49,7 +49,7 @@ export default function Lobby() {
         roomCode: room.code,
       },
       () => {
-        const errorScreen = '/Home';
+        const errorScreen = '/home';
         navigate(errorScreen);
       }
     );
@@ -90,7 +90,7 @@ export default function Lobby() {
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
-      if (destination === '/SelectNextGame' || destination === '/WhoDrank') {
+      if (destination === '/roleta' || destination === '/quembebeu') {
         setRoom((previous) => ({
           ...previous,
           URL: destination,
@@ -103,10 +103,10 @@ export default function Lobby() {
     socket.addEventListener('current-state-is', (currentState) => {
       const { URL, page } = JSON.parse(currentState);
       switch (URL) {
-        case '/BangBang':
-        case '/OEscolhido':
-        case '/Titanic':
-        case '/MestredaMimica':
+        case '/bangbang':
+        case '/oescolhido':
+        case '/titanic':
+        case '/mestredamimica':
           if (!page || page === 0) {
             //se o jogo ainda estiver na capa é possível entrar tardiamente
             setAlertMessage('Reconectando...');
@@ -115,7 +115,7 @@ export default function Lobby() {
             setAlertMessage('Aguardando finalizar jogo em andamento.');
           }
           break;
-        case '/QualODesenho':
+        case '/qualodesenho':
           if (!page || page < 2) {
             //para o qual-desenho ainda é possível entrar nas duas primeiras telas
             setAlertMessage('Reconectando...');
@@ -124,7 +124,7 @@ export default function Lobby() {
             setAlertMessage('Aguardando finalizar jogo em andamento.');
           }
           break;
-        case '/QuemSouEu':
+        case '/quemsoueu':
           if (page !== 3) {
             //no caso do Quem Sou Eu os jogadores podem entrar a qualquer momento, com exceção da tela de resultados
             setAlertMessage('Reconectando...');
@@ -133,7 +133,7 @@ export default function Lobby() {
             setAlertMessage('Aguardando finalizar jogo em andamento.');
           }
           break;
-        case '/WhoDrank':
+        case '/quembebeu':
           setAlertMessage('Aguardando finalizar jogo em andamento.');
           break;
         default:
@@ -198,7 +198,7 @@ export default function Lobby() {
       socket.push('set-turn', room.code);
       socket.push('move-room-to', {
         roomCode: room.code,
-        destination: '/SelectNextGame',
+        destination: '/roleta',
       });
       return;
     }

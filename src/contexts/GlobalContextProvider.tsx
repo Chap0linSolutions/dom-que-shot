@@ -70,8 +70,9 @@ export function useGlobalContext() {
   const context = useContext(GlobalContext);
   if (typeof context !== 'undefined') {
     return context;
+  } else {
+    window.location.replace(process.env.VITE_REACT_APP_ADRESS);
   }
-  throw new Error(`useGlobalContext must be used within a GlobalContext`);
 }
 
 export default function GlobalProvider(props: GlobalProviderProps) {
