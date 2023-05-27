@@ -21,6 +21,7 @@ export default function Lobby() {
   const [alertMessage, setAlertMessage] = useState<string>(undefined);
 
   useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
     if (room.playerList.length === 0) {
       setRoom((previous) => ({
         ...previous,

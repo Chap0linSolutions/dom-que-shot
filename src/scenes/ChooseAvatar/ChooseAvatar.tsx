@@ -157,6 +157,7 @@ function ChooseAvatar() {
   ////Listener para remover foco do <input> quando o usuário aperta Enter/////////////////////////
 
   useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
     document.addEventListener('keydown', detectKeyDown);
     return () => {
       document.removeEventListener('keydown', detectKeyDown);

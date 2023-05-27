@@ -132,6 +132,7 @@ export default function SelectNextGame() {
   };
 
   useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
     window.addEventListener('resize', handleResize);
     return () => {
       if (animation.current) {

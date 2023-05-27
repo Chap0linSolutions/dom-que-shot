@@ -71,7 +71,7 @@ export function useGlobalContext() {
   if (typeof context !== 'undefined') {
     return context;
   } else {
-    window.location.replace(process.env.VITE_REACT_APP_ADRESS);
+    console.log('Global Context cannot be accessed from here.')
   }
 }
 

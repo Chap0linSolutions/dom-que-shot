@@ -113,6 +113,7 @@ function Home() {
   };
 
   useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
     const socket = SocketConnection.getInstance();
     socket && socket.disconnect();
   }, []);

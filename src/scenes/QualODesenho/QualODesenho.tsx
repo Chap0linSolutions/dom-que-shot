@@ -117,6 +117,10 @@ export default function QualODesenho() {
     socket.pushMessage(room.code, 'drawing-points', stringifiedArray);
   };
 
+  useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
+  }, []);
+
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
   const socket = SocketConnection.getInstance();
