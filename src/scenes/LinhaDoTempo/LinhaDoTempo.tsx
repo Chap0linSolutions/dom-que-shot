@@ -107,9 +107,13 @@ export default function LinhaDoTempo() {
     socket.push('update-turn', room.code);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/SelectNextGame',
+      destination: '/roleta',
     });
   }
+
+  useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
+  }, []);
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
