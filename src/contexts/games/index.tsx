@@ -93,7 +93,8 @@ const games: Game[] = [
     description: (
       <>
         O jogador da vez vai escolher uma palavra para desenhar (pode ser um
-        animal, um objeto, dentre outros) e terá 1 minuto para finalizar o desenho.
+        animal, um objeto, dentre outros) e terá 1 minuto para finalizar o
+        desenho.
         <br />
         <br />
         - Os que não acertarem dentro do tempo BEBEM;
@@ -149,9 +150,9 @@ const games: Game[] = [
         É um jogo de contagem coletiva - o jogador da vez começa com '1' e cada
         um na sua vez vai dizendo o próximo número &#40;2, 3, 4...&#41;. <br />
         <br />
-        Mas atenção! Se o número for múltiplo de 3 o jogador deve falar 'FIZZ' no lugar.
-        Se for múltiplo de 5, deve falar 'BUZZ'. E se for múltiplo de ambos 3 e 5, deve
-        falar 'FIZZ BUZZ'. O primeiro que errar vira uma dose.
+        Mas atenção! Se o número for múltiplo de 3 o jogador deve falar 'FIZZ'
+        no lugar. Se for múltiplo de 5, deve falar 'BUZZ'. E se for múltiplo de
+        ambos 3 e 5, deve falar 'FIZZ BUZZ'. O primeiro que errar vira uma dose.
       </>
     ),
   },
@@ -184,59 +185,40 @@ const games: Game[] = [
 
 export default games;
 
+//cemitério dos jogos k k k
+// {
+//   src: PensaRapido,
+//   title: 'Pensa Rápido',
+//   id: 10,
+//   backgroundColor: GameTypes.Simple,
+//   description: `O jogador da vez escolhe alguém para responder uma pergunta. Essa pessoa então
+//   ouve a pergunta e começa a beber, só podendo parar quando souber a resposta. Se o autor da pergunta
+//   não souber a resposta, ele próprio tem de virar uma dose.`,
+// },
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//cemitério dos jogos k k k 
-  // {
-  //   src: PensaRapido,
-  //   title: 'Pensa Rápido',
-  //   id: 10,
-  //   backgroundColor: GameTypes.Simple,
-  //   description: `O jogador da vez escolhe alguém para responder uma pergunta. Essa pessoa então
-  //   ouve a pergunta e começa a beber, só podendo parar quando souber a resposta. Se o autor da pergunta
-  //   não souber a resposta, ele próprio tem de virar uma dose.`,
-  // },
-
-  // {
-  //   src: BichoBebe,
-  //   title: 'Bicho Bebe',
-  //   id: 12,
-  //   backgroundColor: GameTypes.Simple,
-  //   description: (
-  //     <>
-  //       Cada jogador vai pensar em um animal que o represente e falar em voz
-  //       alta. O jogador da vez, então, vai escolher um animal - digamos,
-  //       cachorro - e perguntar:
-  //       <br />
-  //       <br />
-  //       -Cachorro bebe?
-  //       <br />
-  //       <br />O jogador que escolheu o cachorro responde:
-  //       <br />
-  //       <br />
-  //       -Cachorro não bebe, quem bebe é o tatu!
-  //       <br />
-  //       <br />O jogador que escolher o tatu responde da mesma maneira,
-  //       perguntando se outro animal bebe, e assim o jogo segue até alguém errar
-  //       &#40;falando um animal que ninguém escolheu ou respondendo por outro
-  //       bicho&#41;. Quem errar vira uma dose.{' '}
-  //     </>
-  //   ),
-  // },
+// {
+//   src: BichoBebe,
+//   title: 'Bicho Bebe',
+//   id: 12,
+//   backgroundColor: GameTypes.Simple,
+//   description: (
+//     <>
+//       Cada jogador vai pensar em um animal que o represente e falar em voz
+//       alta. O jogador da vez, então, vai escolher um animal - digamos,
+//       cachorro - e perguntar:
+//       <br />
+//       <br />
+//       -Cachorro bebe?
+//       <br />
+//       <br />O jogador que escolheu o cachorro responde:
+//       <br />
+//       <br />
+//       -Cachorro não bebe, quem bebe é o tatu!
+//       <br />
+//       <br />O jogador que escolher o tatu responde da mesma maneira,
+//       perguntando se outro animal bebe, e assim o jogo segue até alguém errar
+//       &#40;falando um animal que ninguém escolheu ou respondendo por outro
+//       bicho&#41;. Quem errar vira uma dose.{' '}
+//     </>
+//   ),
+// },

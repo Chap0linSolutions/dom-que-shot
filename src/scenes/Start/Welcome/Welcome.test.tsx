@@ -38,7 +38,7 @@ describe('Welcome page', () => {
 
     fireEvent.click(getByText('Entrar'));
 
-    expect(mockNavigate).toBeCalledWith('/Home');
+    expect(mockNavigate).toBeCalledWith('/home');
   });
 
   it('Should not show options from Menu without click on it', () => {

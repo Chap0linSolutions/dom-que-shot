@@ -30,7 +30,7 @@ export default function Welcome({ navigate, setRoom, setPage }: WelcomeProps) {
   const [options, setOptions] = useState<boolean>(() => false);
 
   const goHome = () => {
-    const nextURL = '/Home';
+    const nextURL = '/home';
     setRoom((previous) => ({
       ...previous,
       URL: nextURL,

@@ -57,7 +57,7 @@ export default function MimicaMaster() {
   const backToLobby = () => {
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
 
@@ -73,9 +73,13 @@ export default function MimicaMaster() {
     socket.push('update-turn', room.code);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/SelectNextGame',
+      destination: '/roleta',
     });
   };
+
+  useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
+  }, []);
 
   //SOCKET////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -104,6 +108,13 @@ export default function MimicaMaster() {
         });
       }
       setGlobalRoomPage(destination);
+    });
+
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
+      }));
     });
 
     socket.addEventListener('game-results-are', (stringifiedResults) => {

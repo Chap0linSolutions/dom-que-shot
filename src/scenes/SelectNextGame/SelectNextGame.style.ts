@@ -68,7 +68,7 @@ export const WaitingMessageDiv = styled.div`
   justify-content: center;
   width: 100%;
   margin-top: 1em;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     margin-top: 0.5em;
   }
 `;

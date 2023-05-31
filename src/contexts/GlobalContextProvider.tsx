@@ -70,8 +70,9 @@ export function useGlobalContext() {
   const context = useContext(GlobalContext);
   if (typeof context !== 'undefined') {
     return context;
+  } else {
+    console.log('Global Context cannot be accessed from here.')
   }
-  throw new Error(`useGlobalContext must be used within a GlobalContext`);
 }
 
 export default function GlobalProvider(props: GlobalProviderProps) {

@@ -34,8 +34,8 @@ export function BangBang() {
 
   const description = (
     <>
-      3, 2, 1, BANG! Um botão vermelho vai aparecer na tela e, após a contagem regressiva,
-      todos devem tentar pressioná-lo o mais rápido que conseguirem.
+      3, 2, 1, BANG! Um botão vermelho vai aparecer na tela e, após a contagem
+      regressiva, todos devem tentar pressioná-lo o mais rápido que conseguirem.
       <br />
       <br />
       Quem queimar a largada, apertar por último ou não apertar dentro do tempo
@@ -50,9 +50,13 @@ export function BangBang() {
   const backToLobby = () => {
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
+
+  useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
+  }, []);
 
   useEffect(() => {
     socket.addEventListener('room-is-moving-to', (destination) => {
@@ -98,8 +102,15 @@ export function BangBang() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
+    });
+
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
+      }));
     });
 
     socket.addEventListener('room-is-moving-to', (destination) => {
@@ -161,7 +172,7 @@ export function BangBang() {
           turnVisibility={user.isCurrentTurn}
           roulettePage={() => {
             socket.push('update-turn', room.code);
-            goTo('/SelectNextGame');
+            goTo('/roleta');
           }}
           owner={user.isOwner}
         />

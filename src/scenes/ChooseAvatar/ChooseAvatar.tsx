@@ -40,9 +40,9 @@ function ChooseAvatar() {
   const socket = SocketConnection.getInstance();
 
   useEffect(() => {
-    socket.connect();
+    socket.connect(room.code);
     socket.addEventListener('room-is-moving-to', (destination) => {
-      if (destination === '/SelectNextGame') {
+      if (destination === '/roleta') {
         return navigate(destination);
       }
     });
@@ -86,13 +86,13 @@ function ChooseAvatar() {
 
   const redirect = () => {
     api
-      .get(`/roomCode/${roomCode}`)
+      .get(`/check?room=${roomCode}`)
       .then(() => {
-        proceedTo('/Lobby');
+        proceedTo('/saguao');
       })
       .catch(() => {
-        // TODO: add error message handling to inform user room doesn't exist (anymore)
-        proceedTo('/Home');
+        alert('Parece que a sala não existe mais. Por favor tente outra.');
+        proceedTo('/home');
       });
   };
 
@@ -100,7 +100,7 @@ function ChooseAvatar() {
     const userName = inputRef.current.value.trim();
     if (userName.length > 2 && userName.length <= 16) {
       api
-        .get(`/nicknameCheck/${roomCode}/${userName}`)
+        .get(`/nickname?room=${roomCode}&nickname=${userName}`)
         .then(() => {
           return storeInfo();
         })
@@ -157,6 +157,7 @@ function ChooseAvatar() {
   ////Listener para remover foco do <input> quando o usuário aperta Enter/////////////////////////
 
   useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
     document.addEventListener('keydown', detectKeyDown);
     return () => {
       document.removeEventListener('keydown', detectKeyDown);
@@ -172,7 +173,7 @@ function ChooseAvatar() {
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
   const leaveMatch = () => {
-    const nextURL = '/Home';
+    const nextURL = '/home';
     setRoom((previous) => ({
       ...previous,
       code: undefined,

@@ -26,7 +26,8 @@ export default function OEscolhido() {
   const title = 'Quem Sou Eu?';
 
   const navigate = useNavigate();
-  const [originalPlayerIsDown, setOriginalPlayerIsDown] = useState<boolean>(false);
+  const [originalPlayerIsDown, setOriginalPlayerIsDown] =
+    useState<boolean>(false);
   const [weHaveResults, setWeHaveResults] = useState<boolean>(false);
   const [category, setCategory] = useState<string>(undefined);
   const [playersAndNames, setPlayersAndNames] =
@@ -34,16 +35,15 @@ export default function OEscolhido() {
 
   const description = (
     <>
-      O jogador da vez escolhe a categoria, e a partir daí serão sorteados
-      nomes dessa categoria para cada jogador. Então cada um na sua vez vai fazendo
+      O jogador da vez escolhe a categoria, e a partir daí serão sorteados nomes
+      dessa categoria para cada jogador. Então cada um na sua vez vai fazendo
       perguntas de sim ou não para tentar adivinhar quem é.
       <br />
       <br />
       Quem acertar a pergunta pode fazer novas perguntas em sequência. Quem
       errar perde a vez e passa para o próximo.
       <br />
-      <br />
-      O primeiro a acertar é o único que não bebe. Boa sorte!
+      <br />O primeiro a acertar é o único que não bebe. Boa sorte!
     </>
   );
 
@@ -63,13 +63,13 @@ export default function OEscolhido() {
 
   const changeMyName = () => {
     socket.pushMessage(room.code, 'send-me-a-new-name');
-  }
+  };
 
   const backToLobby = () => {
     console.log('O usuário desejou voltar ao lobby');
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
 
@@ -86,7 +86,7 @@ export default function OEscolhido() {
     socket.push('update-turn', room.code);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/SelectNextGame',
+      destination: '/roleta',
     });
   };
 
@@ -98,6 +98,10 @@ export default function OEscolhido() {
     console.log(`categoria selecionada: ${category}`);
     socket.pushMessage(room.code, 'game-category-is', category);
   };
+
+  useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
+  }, []);
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
@@ -115,7 +119,7 @@ export default function OEscolhido() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
     });
 
@@ -129,7 +133,7 @@ export default function OEscolhido() {
 
     socket.addEventListener('original-player-is-down', () => {
       setOriginalPlayerIsDown(true);
-    })
+    });
 
     socket.addEventListener('player-turn-is', (turnName) => {
       setUser((previous) => ({
@@ -194,7 +198,8 @@ export default function OEscolhido() {
   }, []);
 
   useEffect(() => {
-    if (category &&
+    if (
+      category &&
       playersAndNames &&
       user.isCurrentTurn &&
       room.page === Game.Category
@@ -204,7 +209,7 @@ export default function OEscolhido() {
   }, [category, playersAndNames, room, user]);
 
   useEffect(() => {
-    if(user.isCurrentTurn && weHaveResults)
+    if (user.isCurrentTurn && weHaveResults)
       socket.push('move-room-to', {
         roomCode: room.code,
         destination: Game.Finish,

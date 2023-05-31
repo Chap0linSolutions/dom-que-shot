@@ -39,7 +39,7 @@ export default function JogoDoDesafio() {
   const backToLobby = () => {
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
 
@@ -47,7 +47,7 @@ export default function JogoDoDesafio() {
     socket.push('update-turn', room.code);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/SelectNextGame',
+      destination: '/roleta',
     });
   };
 
@@ -66,10 +66,14 @@ export default function JogoDoDesafio() {
     roulettePage();
   };
 
+  useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
+  }, []);
+
   //SOCKET////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    socket.connect();
+    socket.connect(room.code);
     socket.addEventListener('room-owner-is', (ownerName) => {
       const isOwner = user.nickname === ownerName;
       setUser((previous) => ({
@@ -81,7 +85,7 @@ export default function JogoDoDesafio() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
     });
 
@@ -99,6 +103,13 @@ export default function JogoDoDesafio() {
         });
       }
       setGlobalRoomPage(destination);
+    });
+
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
+      }));
     });
 
     socket.addEventListener('lobby-update', (reply) => {

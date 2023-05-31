@@ -49,7 +49,7 @@ export default function SelectNextGame() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
     });
 
@@ -132,6 +132,7 @@ export default function SelectNextGame() {
   };
 
   useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
     window.addEventListener('resize', handleResize);
     return () => {
       if (animation.current) {
@@ -192,14 +193,15 @@ export default function SelectNextGame() {
   };
 
   const turnTheWheel = () => {
-    user.isCurrentTurn && !rouletteIsSpinning &&
+    user.isCurrentTurn &&
+      !rouletteIsSpinning &&
       socket.pushMessage(room.code, 'roulette-number-is', null);
   };
 
   const backToLobby = () => {
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
 
@@ -272,22 +274,20 @@ export default function SelectNextGame() {
 
           <WaitingMessageDiv
             style={
-                nextGameName === ''
+              nextGameName === ''
                 ? { visibility: 'visible' }
                 : { display: 'none' }
             }>
             <WaitingMessage>
-              {currentPlayer !== user.nickname
-              ? <>
+              {currentPlayer !== user.nickname ? (
+                <>
                   Aguardando {currentPlayer}
                   <br />
                   girar a roleta...
                 </>
-              : <>
-                  É a sua vez!
-                </>
-              }
-              
+              ) : (
+                <>É a sua vez!</>
+              )}
             </WaitingMessage>
           </WaitingMessageDiv>
           <NextGameName ref={nextGameTitle}>{nextGameName}</NextGameName>

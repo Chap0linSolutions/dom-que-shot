@@ -18,7 +18,7 @@ import Popup from '../../../components/Popup';
 type GameInfo = {
   name: string;
   description: string | JSX.Element;
-}
+};
 
 interface SettingsProps {
   previousGameSelection: Game[];
@@ -70,13 +70,15 @@ export default function Settings({
 
   return (
     <Background>
-      {gameInfo && <Popup 
-        type='info'
-        title={gameInfo.name}
-        description={gameInfo.description}
-        show={!!gameInfo}
-        exit={() => setGameInfo(undefined)}
-      />}
+      {gameInfo && (
+        <Popup
+          type="info"
+          title={gameInfo.name}
+          description={gameInfo.description}
+          show={!!gameInfo}
+          exit={() => setGameInfo(undefined)}
+        />
+      )}
 
       <Header
         goBackArrow={() => mainPage(gameCards.filter((game) => game.id < 1000))}
@@ -98,7 +100,12 @@ export default function Settings({
               style={card.id >= 1000 ? { opacity: 0.2 } : { opacity: 1 }}>
               <GameCard
                 onClick={() => updateSelection(card.id)}
-                onInfoClick={() => setGameInfo({name: card.title, description: card.description})}
+                onInfoClick={() =>
+                  setGameInfo({
+                    name: card.title,
+                    description: card.description,
+                  })
+                }
                 id={card.id}
                 title={card.title}
                 image={card.src}

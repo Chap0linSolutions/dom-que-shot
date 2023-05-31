@@ -39,9 +39,13 @@ export default function SimpleCardGame({
   const backToLobby = () => {
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
+
+  useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
+  }, []);
 
   //SOCKET////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -59,7 +63,7 @@ export default function SimpleCardGame({
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
     });
 

@@ -60,17 +60,19 @@ export default function Titanic() {
 
   const description = (
     <>
-      Este jogo é uma espécie de Batalha Naval. Aparecerá um mapa na tela de cada jogador, e cada um
-      deve escolher onde vai posicionar suas peças. O jogador da vez será os ICEBERGS, e todos os
-      demais serão os TITANICS.
+      Este jogo é uma espécie de Batalha Naval. Aparecerá um mapa na tela de
+      cada jogador, e cada um deve escolher onde vai posicionar suas peças. O
+      jogador da vez será os ICEBERGS, e todos os demais serão os TITANICS.
       <br />
       <br />
-      Serão 5 ICEBERGS para o jogador da vez, e 3 TITANICS para cada um dos demais. Todos vão ter 15 segundos
-      para escolher onde irão botar suas peças.
-      <br/>
-      <br/>
-      Quem não posicionar todas as peças a tempo BEBE. E claro, se o jogador da vez colocar um Iceberg
-      onde algum dos demais colocou um barco, o jogador atingido deve virar uma dose.
+      Serão 5 ICEBERGS para o jogador da vez, e 3 TITANICS para cada um dos
+      demais. Todos vão ter 15 segundos para escolher onde irão botar suas
+      peças.
+      <br />
+      <br />
+      Quem não posicionar todas as peças a tempo BEBE. E claro, se o jogador da
+      vez colocar um Iceberg onde algum dos demais colocou um barco, o jogador
+      atingido deve virar uma dose.
       <br />
       <br />
       Boa sorte!
@@ -93,7 +95,7 @@ export default function Titanic() {
     clearInterval(timer);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/SelectNextGame',
+      destination: '/roleta',
     });
   };
 
@@ -102,9 +104,13 @@ export default function Titanic() {
     clearInterval(timer);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
+
+  useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
+  }, []);
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
@@ -122,7 +128,7 @@ export default function Titanic() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
     });
 
@@ -167,10 +173,10 @@ export default function Titanic() {
   }, [room.page]);
 
   useEffect(() => {
-    if(timesUp){
-      const target = (user.isCurrentTurn)? ICEBERGS : TITANICS;
+    if (timesUp) {
+      const target = user.isCurrentTurn ? ICEBERGS : TITANICS;
       const selection = places.filter((p) => p >= 100);
-      if(selection.length === target){
+      if (selection.length === target) {
         sendResults(JSON.stringify(selection));
       } else {
         setResults(`time's up`);

@@ -43,8 +43,8 @@ export default function QualODesenho() {
       dentre outros) e terá 1 minuto para finalizar o desenho.
       <br />
       <br />
-      Os que não acertarem dentro do tempo BEBEM; Se ninguém acertar, o
-      jogador da vez BEBE.
+      Os que não acertarem dentro do tempo BEBEM; Se ninguém acertar, o jogador
+      da vez BEBE.
       <br />
       <br />
       Boa sorte!
@@ -95,7 +95,7 @@ export default function QualODesenho() {
     socket.push('update-turn', room.code);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/SelectNextGame',
+      destination: '/roleta',
     });
   };
 
@@ -111,11 +111,15 @@ export default function QualODesenho() {
       roomCode: room.code,
       destination: Game.Game,
     });
-  };
+  };  
 
   const sendDrawingUpdate = (stringifiedArray: string) => {
     socket.pushMessage(room.code, 'drawing-points', stringifiedArray);
   };
+
+  useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
+  }, []);
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
@@ -139,6 +143,13 @@ export default function QualODesenho() {
       setUser((previous) => ({
         ...previous,
         isOwner: isOwner,
+      }));
+    });
+
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
       }));
     });
 

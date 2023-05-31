@@ -18,9 +18,9 @@ export default function EuNunca() {
   const description = (
     <>
       O jogador da vez deve dizer em voz alta uma frase iniciada por "Eu
-      nunca...", seguida por algo ou situação que pode ou não ter acontecido com algum
-      dos jogadores. Se faltar criatividade, na tela do aparelho vão aparecer
-      algumas sugestões.
+      nunca...", seguida por algo ou situação que pode ou não ter acontecido com
+      algum dos jogadores. Se faltar criatividade, na tela do aparelho vão
+      aparecer algumas sugestões.
       <br />
       <br />
       Aqueles que já passaram pela situação falada pelo jogador da vez devem
@@ -44,11 +44,15 @@ export default function EuNunca() {
   const backToLobby = () => {
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
 
   const [euNuncaSuggestions, setEuNuncaSuggestions] = useState<string[]>();
+
+  useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
+  }, []);
 
   //SOCKET////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -63,10 +67,17 @@ export default function EuNunca() {
       }));
     });
 
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
+      }));
+    });
+
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
     });
 

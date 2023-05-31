@@ -80,7 +80,7 @@ export default function OEscolhido() {
     clearInterval(timer);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/SelectNextGame',
+      destination: '/roleta',
     });
   };
 
@@ -89,9 +89,13 @@ export default function OEscolhido() {
     clearInterval(timer);
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
+
+  useEffect(() => {
+    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
+  }, []);
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
@@ -109,7 +113,7 @@ export default function OEscolhido() {
     socket.addEventListener('kick-player', (nickname) => {
       if (user.nickname === nickname) {
         window.localStorage.clear();
-        navigate('/Home');
+        navigate('/home');
       }
     });
 
@@ -143,6 +147,13 @@ export default function OEscolhido() {
         return navigate(destination);
       }
       setGlobalRoomPage(destination);
+    });
+
+    socket.addEventListener('player-turn-is', (turnName) => {
+      setUser((previous) => ({
+        ...previous,
+        isCurrentTurn: user.nickname === turnName,
+      }));
     });
 
     return () => {

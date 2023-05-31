@@ -3,14 +3,16 @@ import { io, Socket } from 'socket.io-client';
 class SocketConnection {
   private static instance;
   socket: Socket;
-  serverAddress = process.env.VITE_REACT_APP_SERVER_ADRESS;
+  baseServerAddress = process.env.VITE_REACT_APP_SERVER_ADRESS;
+  applicationAdress = process.env.VITE_REACT_APP_ADRESS;
 
-  connect() {
+  connect(roomCode?: string) {
     if (!this.socket) {
-      this.socket = io(this.serverAddress);
+      const server = `${this.baseServerAddress}/?room=${roomCode}`;
+      this.socket = io(server);
       this.socket.io.on('reconnect', () => {
         alert('Conexão perdida! Reconectando...');
-        window.location.reload();
+        window.location.replace(this.applicationAdress);
       });
     }
   }
@@ -82,6 +84,9 @@ class SocketConnection {
   }
 
   addEventListener(eventName, callback) {
+    if (!this.socket) {
+      return window.location.replace(this.applicationAdress);
+    }
     this.socket.on(eventName, callback);
     return () => {
       console.log('esse é o return do addEventListener.');
