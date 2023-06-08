@@ -1,10 +1,8 @@
-import React, { useState, useLayoutEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Player } from '../../../contexts/GlobalContextProvider';
 import Background from '../../../components/Background';
 import Header from '../../../components/Header';
-import Button from '../../../components/Button';
 import Avatar from '../../../components/Avatar';
-import gsap from 'gsap';
 import {
   Content,
   Game,
@@ -19,39 +17,22 @@ import {
 } from './Game.style';
 
 interface GameProps {
-  vote: React.Dispatch<React.SetStateAction<Player>>;
+  voted: Player,
+  setVoted: React.Dispatch<React.SetStateAction<Player>>;
   msTimeLeft: number;
   playerList: Player[];
   owner: boolean;
 }
 
 export default function GamePage({
-  vote,
+  voted,
+  setVoted,
   msTimeLeft,
   playerList,
   owner,
 }: GameProps) {
-  const [selectedPlayer, setSelectedPlayer] = useState<Player>({
-    nickname: '',
-    avatarSeed: '',
-    beers: 0,
-    playerID: 0,
-  });
 
   const players = useRef(playerList);
-
-  useLayoutEffect(() => {
-    if (selectedPlayer) {
-      gsap.to('.selected', { scale: 1.08, duration: 0.5 });
-      gsap.to('.unselected', { scale: 1, duration: 0.5 });
-    }
-  }, [selectedPlayer]);
-
-  const selectPlayer = (player) => {
-    setSelectedPlayer(player);
-  };
-
-  const hasSelected = selectedPlayer.nickname != '';
 
   return (
     <Background noImage>
@@ -65,7 +46,7 @@ export default function GamePage({
               let AvatarDiv = UnselectedAvatar;
               let state = 'unselected';
 
-              if (player.nickname === selectedPlayer.nickname) {
+              if (voted && (player.nickname === voted.nickname)) {
                 Item = SelectedPlayer;
                 AvatarDiv = SelectedAvatar;
                 state = 'selected';
@@ -74,7 +55,7 @@ export default function GamePage({
               return (
                 //TODO código 'obscuro' rs
                 <ItemContainer className={state} key={`${i}`}>
-                  <Item onClick={() => selectPlayer(player)}>
+                  <Item onClick={() => setVoted(player)}>
                     <Nickname>{player.nickname}</Nickname>
                     <AvatarDiv>
                       <Avatar seed={player.avatarSeed} />
@@ -85,12 +66,6 @@ export default function GamePage({
             })}
           </PlayerList>
         </Content>
-        <Button
-          staysOnBottom
-          isDisabled={!hasSelected}
-          onClick={() => vote(selectedPlayer)}>
-          Votar
-        </Button>
       </Game>
     </Background>
   );

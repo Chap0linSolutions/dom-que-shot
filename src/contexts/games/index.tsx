@@ -15,6 +15,7 @@ import Titanic from '../../assets/game-covers/titanic.png';
 import JogoDoDesafio from '../../assets/game-covers/jogo-do-desafio.png';
 import JogoDaVerdade from '../../assets/game-covers/jogo-da-verdade.png';
 import MestreDaMimica from '../../assets/game-covers/mestre-da-mimica.png';
+import LinhaDoTempo from '../../assets/game-covers/linha-do-tempo.png';
 
 enum GameTypes {
   Simple = '#403A55',
@@ -126,7 +127,7 @@ const games: Game[] = [
   {
     src: JogoDaVerdade,
     title: 'Jogo da Verdade',
-    id: 10,
+    id: 8,
     backgroundColor: GameTypes.Dynamic,
     description: `O jogador da vez deverá decidir entre contar uma verdade, 
     respondendo a uma das perguntas de forma sincera, ou virar duas doses no lugar.`,
@@ -142,7 +143,7 @@ const games: Game[] = [
   {
     src: Buzz,
     title: 'Buzz',
-    id: 8,
+    id: 10,
     backgroundColor: GameTypes.Simple,
     description: (
       <>
@@ -156,13 +157,12 @@ const games: Game[] = [
     ),
   },
   {
-    src: CSComposto,
-    title: 'C, S, Composto',
+    src: LinhaDoTempo,
+    title: 'Linha do Tempo',
     id: 11,
-    backgroundColor: GameTypes.Simple,
-    description: `Começando pelo jogador da vez, cada um vai falando uma palavra. A palavra tem que
-    ser relacionada com a anterior e NÃO pode começar com C, S ou ser composta (ter espaços ou hífens).
-    O primeiro que quebrar alguma destas regras deve virar uma dose.`,
+    backgroundColor: GameTypes.Round,
+    description: `Um simples jogo de conhecimentos gerais. Aparecerá uma frase com algum
+    acontecimento histórico e os jogadores devem tentar adivinhar em que ano ocorreu.`
   },
   {
     src: JogoDoDesafio,
@@ -172,44 +172,15 @@ const games: Game[] = [
     description: `O sorteado da rodada deverá decidir entre realizar 
     um dos desafios sugeridos pelo jogo, ou virar duas doses.`,
   },
+  {
+    src: CSComposto,
+    title: 'C, S, Composto',
+    id: 13,
+    backgroundColor: GameTypes.Simple,
+    description: `Começando pelo jogador da vez, cada um vai falando uma palavra. A palavra tem que
+    ser relacionada com a anterior e NÃO pode começar com C, S ou ser composta (ter espaços ou hífens).
+    O primeiro que quebrar alguma destas regras deve virar uma dose.`,
+  },
 ];
 
 export default games;
-
-//cemitério dos jogos k k k
-// {
-//   src: PensaRapido,
-//   title: 'Pensa Rápido',
-//   id: 10,
-//   backgroundColor: GameTypes.Simple,
-//   description: `O jogador da vez escolhe alguém para responder uma pergunta. Essa pessoa então
-//   ouve a pergunta e começa a beber, só podendo parar quando souber a resposta. Se o autor da pergunta
-//   não souber a resposta, ele próprio tem de virar uma dose.`,
-// },
-
-// {
-//   src: BichoBebe,
-//   title: 'Bicho Bebe',
-//   id: 12,
-//   backgroundColor: GameTypes.Simple,
-//   description: (
-//     <>
-//       Cada jogador vai pensar em um animal que o represente e falar em voz
-//       alta. O jogador da vez, então, vai escolher um animal - digamos,
-//       cachorro - e perguntar:
-//       <br />
-//       <br />
-//       -Cachorro bebe?
-//       <br />
-//       <br />O jogador que escolheu o cachorro responde:
-//       <br />
-//       <br />
-//       -Cachorro não bebe, quem bebe é o tatu!
-//       <br />
-//       <br />O jogador que escolher o tatu responde da mesma maneira,
-//       perguntando se outro animal bebe, e assim o jogo segue até alguém errar
-//       &#40;falando um animal que ninguém escolheu ou respondendo por outro
-//       bicho&#41;. Quem errar vira uma dose.{' '}
-//     </>
-//   ),
-// },

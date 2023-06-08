@@ -37,10 +37,3 @@ export const InfoButton = styled.div`
   display: flex;
   align-items: center;
 `;
-
-export const InfoText = styled.p`
-  margin: 0;
-  margin-left: 5px;
-  font-size: 16px;
-  color: #170c32;
-`;

@@ -195,7 +195,8 @@ export default function OEscolhido() {
         <GamePage
           msTimeLeft={msTimer}
           playerList={room.playerList}
-          vote={setUserVote}
+          voted={userVote}
+          setVoted={setUserVote}
           owner={user.isOwner}
         />
       );
