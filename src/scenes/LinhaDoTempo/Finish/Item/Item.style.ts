@@ -108,6 +108,16 @@ const Icon = styled.img`
 
 export const CorrectIcon = styled(Icon)`
     transform: rotate(30deg);
+    background: linear-gradient(110deg, #cc9921 8%, #e3ba5b 18%, #cc9921 33%);
+    background-size: 300% 100%;
+    border: 1px solid gold;
+    padding: 6px;
+    animation: 3s shine linear infinite;
+    @keyframes shine {
+        to {
+          background-position-x: -300%;
+        }
+      }
 `;
 
 export const WrongIcon = styled(Icon)`

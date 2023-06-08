@@ -24,15 +24,23 @@ const getOrganizedResults = (results: Results) => {
     return organizedGuesses.sort((a, b) => a.diff - b.diff);
 }
 
-const getGuidanceText = (players: {diff: number; player: string; guess: number;}[], answer: number) => {
-    if(players.length === 0) return (
+const getGuidanceText = (
+    whoPlayed: {diff: number; player: string; guess: number;}[],
+    dnf: {player: string; guess: number;}[],
+    answer: number
+) => {
+    if(whoPlayed.length === 0) return (
         <>Tragédia total! Todo mundo bebe.</>
     )
 
-    const top = players.filter(p => p.guess === players[0].guess);
-    const bullseye = (players[0].guess === answer);
+    const top = whoPlayed.filter(p => p.guess === whoPlayed[0].guess);
+    const bullseye = (whoPlayed[0].guess === answer);
 
-    if(top.length === players.length){
+    if(whoPlayed.length === 1){
+        return <>Mas só um respondeu? Aff<br/>Quem não jogou a tempo bebe.</>
+    }
+
+    if(top.length === whoPlayed.length){
         return (bullseye)
         ?<>Todo mundo acertou em cheio!<br/>Neste caso, ninguém bebe. Nerds.</>
         :<>Todo mundo empatou!<br/>Neste caso, ninguém bebe.</>;
@@ -60,7 +68,7 @@ export default function FinishPage({turnVisibility, results, backToRoulette}: Fi
     const playersRef = useRef(null);
     const textRef = useRef(null);
 
-    const guidanceText = getGuidanceText(whoGuessed, answer);
+    const guidanceText = getGuidanceText(whoGuessed, dnf, answer);
 
     useEffect(() => {
         gsap.timeline().to(answerDivRef.current, {
