@@ -34,7 +34,6 @@
 }
 
 #ranking-item .position .circle-border img {
-  rotate: -0.3rad;
   margin-top: 3px;
 }
 
@@ -52,4 +51,19 @@
   line-height: 23px;
   display: flex;
   align-items: center;
+}
+
+#ranking-item .icon {
+  width: 20px;
+  object-fit: scale-down;
+}
+
+@media(max-height: 740px){
+  #ranking-item .infos {
+    font-size: 16px;
+  }
+  
+  #ranking-item .icon {
+    width: 18px;
+  }
 }
