@@ -105,7 +105,7 @@ export default function SelectNextGame() {
   const startSelectedGame = () => {
     if (user.isCurrentTurn === true) {
       setTimeout(() => {
-        socket.pushMessage(room.code, 'start-game', nextGameName);
+        socket.pushMessage(room.code, 'start-game', 'Quem Sou Eu');//nextGameName);
       }, 1000);
     }
   };

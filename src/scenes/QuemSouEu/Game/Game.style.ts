@@ -33,15 +33,20 @@ export const TextAndHide = styled.div`
 `;
 
 export const GuidanceText = styled.p`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
   margin: 0;
   @media (max-height: 740px) {
-    font-size: 18px;
+    font-size: 16px;
   }
 `;
 
-export const HideNames = styled.div`
+export const Options = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const GameOption = styled.div`
   background: #403a55;
   width: 50px;
   height: 50px;
@@ -49,6 +54,7 @@ export const HideNames = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 10px;
+  margin: 0 4px;
   @media (max-height: 740px) {
     width: 40px;
     height: 40px;
