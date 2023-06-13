@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Player, useGlobalContext } from '../../contexts/GlobalContextProvider';
 import { ArrowLeft, HelpCircle, Settings, Users, Power } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
@@ -86,6 +86,14 @@ export default function Header({
     ),
     [room.playerList]
   );
+
+  useEffect(() => {
+    try{
+      window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
+    } catch (e) {
+      console.log('Erro ao renomear o endereço da página (window.history.replaceState).');
+    }
+  }, [])
 
   const kickPlayer = (p: Player) => {
     const socket = SocketConnection.getInstance();

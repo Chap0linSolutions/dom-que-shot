@@ -105,7 +105,7 @@ export default function SelectNextGame() {
   const startSelectedGame = () => {
     if (user.isCurrentTurn === true) {
       setTimeout(() => {
-        socket.pushMessage(room.code, 'start-game', 'Quem Sou Eu');//nextGameName);
+        socket.pushMessage(room.code, 'start-game', nextGameName);
       }, 1000);
     }
   };
@@ -132,7 +132,6 @@ export default function SelectNextGame() {
   };
 
   useEffect(() => {
-    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
     document.body.style.overscrollBehavior = 'none'; //prevent pull-to-refresh on this page
     document.querySelector('html').style.overflow = 'hidden';
     return () => {
