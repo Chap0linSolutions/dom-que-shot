@@ -1,2 +1,2 @@
-import LinhaDoTempo from "./LinhaDoTempo";
+import LinhaDoTempo from './LinhaDoTempo';
 export default LinhaDoTempo;

@@ -142,8 +142,6 @@ export default function GamePage({
     />
   );
 
-
-
   const button = (
     <Button
       staysOnBottom
@@ -172,8 +170,8 @@ export default function GamePage({
 
       <Popup
         type="info"
-        title='Anotações'
-        description={<Notes/>}
+        title="Anotações"
+        description={<Notes />}
         show={areNotesVisible}
         exit={() => setNotesVisibility(false)}
       />
@@ -212,15 +210,13 @@ export default function GamePage({
             <GuidanceText>{guidanceText}</GuidanceText>
             <Options>
               <GameOption
-                style={{background: (areNotesVisible)? '#8877df' : '#403a55'}} 
-                onClick={() => setNotesVisibility(!areNotesVisible)}
-              >
-                <Edit2/>
+                style={{ background: areNotesVisible ? '#8877df' : '#403a55' }}
+                onClick={() => setNotesVisibility(!areNotesVisible)}>
+                <Edit2 />
               </GameOption>
               <GameOption
-                style={{background: (areNamesVisible)? '#403a55' : '#8877df'}} 
-                onClick={() => setNamesVisibility(!areNamesVisible)}
-              >
+                style={{ background: areNamesVisible ? '#403a55' : '#8877df' }}
+                onClick={() => setNamesVisibility(!areNamesVisible)}>
                 {areNamesVisible === true ? <Eye /> : <EyeOff />}
               </GameOption>
             </Options>

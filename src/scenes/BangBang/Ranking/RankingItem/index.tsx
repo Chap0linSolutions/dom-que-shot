@@ -13,7 +13,11 @@ const RankingItem: React.FC<RankingItemProps> = ({ position, name, time }) => {
     <div id="ranking-item">
       <div className="position">
         <div className="circle-border">
-          {time >= 10 ? <img className='icon' src={thumbDown} /> : <p>{position + 1}º</p>}
+          {time >= 10 ? (
+            <img className="icon" src={thumbDown} />
+          ) : (
+            <p>{position + 1}º</p>
+          )}
         </div>
       </div>
       <div className="infos">

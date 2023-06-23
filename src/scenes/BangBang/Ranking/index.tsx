@@ -7,8 +7,22 @@ import thumbDown from '../../../assets/thumbs-down.png';
 import Background from '../../../components/Background';
 import noOneFiredImage from '../../../assets/no-votes.png';
 import Header from '../../../components/Header';
-import { AvatarDiv, Crown, ThumbsDown, BannerText, Banners, Content, Ranking, ShotTime, Winner, Loser, Players, OnlyWinner, NoOneVoted, Text } from './Ranking.style';
-
+import {
+  AvatarDiv,
+  Crown,
+  ThumbsDown,
+  BannerText,
+  Banners,
+  Content,
+  Ranking,
+  ShotTime,
+  Winner,
+  Loser,
+  Players,
+  OnlyWinner,
+  NoOneVoted,
+  Text,
+} from './Ranking.style';
 
 type Results = {
   id: string;
@@ -26,13 +40,13 @@ interface RankingProps {
   owner: boolean;
 }
 
-const getGuidanceText = (players: Results[], noOneFired: boolean) => { 
-  if(players.length === 0) return ''; 
-  if(noOneFired) return 'Todo mundo bebe!';
-  const firedTooSoon = players.filter(p => p.shotTime === -10001);
-  if(firedTooSoon.length > 0) return 'Quem queimou a largada bebe!';
+const getGuidanceText = (players: Results[], noOneFired: boolean) => {
+  if (players.length === 0) return '';
+  if (noOneFired) return 'Todo mundo bebe!';
+  const firedTooSoon = players.filter((p) => p.shotTime === -10001);
+  if (firedTooSoon.length > 0) return 'Quem queimou a largada bebe!';
   return 'Quem atirou por último bebe!';
-}
+};
 
 export function RankingPage({
   data,
@@ -87,7 +101,7 @@ export function RankingPage({
       <Ranking>
         <Content>
           <Banners>
-            {((losersCount < 2) && finalRanking)? (
+            {losersCount < 2 && finalRanking ? (
               <>
                 <Winner>
                   <AvatarDiv>
@@ -95,9 +109,7 @@ export function RankingPage({
                     <Avatar seed={winner.avatarSeed} />
                   </AvatarDiv>
                   <BannerText>{winner.nickname}</BannerText>
-                  <ShotTime>
-                    {(winner.shotTime / -1000).toFixed(2)}s
-                  </ShotTime>
+                  <ShotTime>{(winner.shotTime / -1000).toFixed(2)}s</ShotTime>
                 </Winner>
                 <Loser>
                   <AvatarDiv>
@@ -105,9 +117,7 @@ export function RankingPage({
                     <ThumbsDown src={thumbDown} />
                   </AvatarDiv>
                   <BannerText>{loser.nickname}</BannerText>
-                    <ShotTime>
-                      {(loser.shotTime / -1000).toFixed(2)}s
-                    </ShotTime>
+                  <ShotTime>{(loser.shotTime / -1000).toFixed(2)}s</ShotTime>
                 </Loser>
               </>
             ) : (
@@ -119,17 +129,13 @@ export function RankingPage({
                       <Avatar seed={winner.avatarSeed} />
                     </>
                   ) : (
-                    <NoOneVoted
-                      src={noOneFiredImage}
-                    />
+                    <NoOneVoted src={noOneFiredImage} />
                   )}
                 </AvatarDiv>
                 {!noOneFired ? (
                   <>
                     <BannerText>{winner.nickname}</BannerText>
-                    <ShotTime>
-                      {(winner.shotTime / -1000).toFixed(2)}s
-                    </ShotTime>
+                    <ShotTime>{(winner.shotTime / -1000).toFixed(2)}s</ShotTime>
                   </>
                 ) : (
                   <BannerText>
@@ -147,15 +153,13 @@ export function RankingPage({
               <RankingItem
                 key={i}
                 name={player.nickname}
-                time={(player.shotTime) / -1000}
+                time={player.shotTime / -1000}
                 position={i}
               />
             ))}
           </Players>
 
-          {finalRanking && <Text>
-              {getGuidanceText(data, noOneFired)}
-          </Text>}
+          {finalRanking && <Text>{getGuidanceText(data, noOneFired)}</Text>}
         </Content>
         {button}
       </Ranking>

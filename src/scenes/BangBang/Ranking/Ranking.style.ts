@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const Ranking = styled.div`
   width: 100%;
@@ -102,7 +102,7 @@ export const BannerText = styled.p`
   font-weight: 600;
   line-height: 20px;
   z-index: 2;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 15px;
   }
 `;
@@ -121,7 +121,7 @@ export const Players = styled.div`
   align-items: center;
   gap: 5px;
   z-index: 2;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     margin-top: -36px;
   }
 `;
@@ -147,7 +147,7 @@ export const Text = styled.p`
   font-size: 16px;
   color: #aaaaaa;
   text-align: center;
-  @media(max-height: 740px){
+  @media (max-height: 740px) {
     font-size: 15px;
   }
 `;

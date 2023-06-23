@@ -88,12 +88,18 @@ export default function Header({
   );
 
   useEffect(() => {
-    try{
-      window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
+    try {
+      window.history.replaceState(
+        {},
+        'Dom Que Shot',
+        process.env.VITE_REACT_APP_ADRESS
+      );
     } catch (e) {
-      console.log('Erro ao renomear o endereço da página (window.history.replaceState).');
+      console.log(
+        'Erro ao renomear o endereço da página (window.history.replaceState).'
+      );
     }
-  }, [])
+  }, []);
 
   const kickPlayer = (p: Player) => {
     const socket = SocketConnection.getInstance();
