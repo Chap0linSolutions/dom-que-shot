@@ -111,7 +111,7 @@ export default function QualODesenho() {
       roomCode: room.code,
       destination: Game.Game,
     });
-  };  
+  };
 
   const sendDrawingUpdate = (stringifiedArray: string) => {
     socket.pushMessage(room.code, 'drawing-points', stringifiedArray);

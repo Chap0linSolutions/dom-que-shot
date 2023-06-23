@@ -71,7 +71,7 @@ export function useGlobalContext() {
   if (typeof context !== 'undefined') {
     return context;
   } else {
-    console.log('Global Context cannot be accessed from here.')
+    console.log('Global Context cannot be accessed from here.');
   }
 }
 

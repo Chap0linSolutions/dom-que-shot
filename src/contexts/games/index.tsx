@@ -162,7 +162,7 @@ const games: Game[] = [
     id: 11,
     backgroundColor: GameTypes.Round,
     description: `Um simples jogo de conhecimentos gerais. Aparecerá uma frase com algum
-    acontecimento histórico e os jogadores devem tentar adivinhar em que ano ocorreu.`
+    acontecimento histórico e os jogadores devem tentar adivinhar em que ano ocorreu.`,
   },
   {
     src: JogoDoDesafio,

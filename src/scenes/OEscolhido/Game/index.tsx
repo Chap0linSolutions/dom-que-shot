@@ -17,7 +17,7 @@ import {
 } from './Game.style';
 
 interface GameProps {
-  voted: Player,
+  voted: Player;
   setVoted: React.Dispatch<React.SetStateAction<Player>>;
   msTimeLeft: number;
   playerList: Player[];
@@ -31,7 +31,6 @@ export default function GamePage({
   playerList,
   owner,
 }: GameProps) {
-
   const players = useRef(playerList);
 
   return (
@@ -46,7 +45,7 @@ export default function GamePage({
               let AvatarDiv = UnselectedAvatar;
               let state = 'unselected';
 
-              if (voted && (player.nickname === voted.nickname)) {
+              if (voted && player.nickname === voted.nickname) {
                 Item = SelectedPlayer;
                 AvatarDiv = SelectedAvatar;
                 state = 'selected';

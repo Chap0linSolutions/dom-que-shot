@@ -58,11 +58,11 @@
   object-fit: scale-down;
 }
 
-@media(max-height: 740px){
+@media (max-height: 740px) {
   #ranking-item .infos {
     font-size: 16px;
   }
-  
+
   #ranking-item .icon {
     width: 18px;
   }

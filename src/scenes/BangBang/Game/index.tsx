@@ -98,7 +98,7 @@ export function GamePage({
   const animationBalloon = () => {
     const timeline = gsap.timeline();
     timeline
-      .to(balloonRef.current, {opacity: 1, duration: 0 })
+      .to(balloonRef.current, { opacity: 1, duration: 0 })
       .to(balloonRef.current, { opacity: 1, duration: 0 })
       .to(balloonRef.current, { opacity: 0, duration: 0.5, delay: 1 })
       .to(balloonTextRef.current, { opacity: 1, fontSize: 44, duration: 0 })
@@ -140,7 +140,7 @@ export function GamePage({
   };
 
   const handleClick = () => {
-    if(!everyoneIsReady) return;
+    if (!everyoneIsReady) return;
     shotValidation();
     clearInterval(timer);
     rankingPage();
@@ -176,7 +176,9 @@ export function GamePage({
             onLoad={iAmReady}
             onError={iAmReady}
           />
-          <p ref={balloonTextRef} className="balloon-text">{balloonText}</p>
+          <p ref={balloonTextRef} className="balloon-text">
+            {balloonText}
+          </p>
         </div>
 
         <button className="button-bang" onClick={handleClick}></button>

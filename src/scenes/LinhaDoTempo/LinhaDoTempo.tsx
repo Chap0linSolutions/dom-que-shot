@@ -8,12 +8,12 @@ import coverImg from '../../assets/game-covers/linha-do-tempo.png';
 import FinishPage from './Finish';
 
 export type Results = {
-  answer: number,
+  answer: number;
   guesses: {
-    player: string,
-    guess: number,
-  }[]
-}
+    player: string;
+    guess: number;
+  }[];
+};
 
 enum Game {
   Cover,
@@ -62,13 +62,13 @@ export default function LinhaDoTempo() {
   const description = (
     <>
       Aparecerá uma pergunta de quando determinado evento histórico aconteceu
-      (ex.: 'Em que ano foi inventada a lâmpada?') e os jogadores então terão
-      20 segundos para responder. O jogador que mais se aproximar da data correta
-      é o único que não bebe!
-      <br/>
-      <br/>
-      Se a resposta dele for exata, todos os demais bebem duas vezes
-      (quem mandou chamar o nerd pro jogo? rs).
+      (ex.: 'Em que ano foi inventada a lâmpada?') e os jogadores então terão 20
+      segundos para responder. O jogador que mais se aproximar da data correta é
+      o único que não bebe!
+      <br />
+      <br />
+      Se a resposta dele for exata, todos os demais bebem duas vezes (quem
+      mandou chamar o nerd pro jogo? rs).
       <br />
       <br />
       Boa sorte!
@@ -81,17 +81,21 @@ export default function LinhaDoTempo() {
 
   const getQuestion = () => {
     socket.pushMessage(room.code, 'question-is');
-  }
+  };
 
   const startGame = () => {
     socket.pushMessage(room.code, 'start-game', Game.Game);
   };
 
   const sendGuess = (value: string | number) => {
-    socket.pushMessage(room.code, 'my-guess-is', JSON.stringify({
-      player: user.nickname,
-      guess: value,
-    }));
+    socket.pushMessage(
+      room.code,
+      'my-guess-is',
+      JSON.stringify({
+        player: user.nickname,
+        guess: value,
+      })
+    );
   };
 
   const backToLobby = () => {
@@ -109,7 +113,7 @@ export default function LinhaDoTempo() {
       roomCode: room.code,
       destination: '/roleta',
     });
-  }
+  };
 
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
@@ -165,7 +169,7 @@ export default function LinhaDoTempo() {
 
     socket.addEventListener('results', (value) => {
       setResults(JSON.parse(value));
-    })
+    });
 
     return () => {
       socket.removeAllListeners();
@@ -175,13 +179,13 @@ export default function LinhaDoTempo() {
   //////////////////////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    if(room.page === Game.Game){
+    if (room.page === Game.Game) {
       startTimer();
     }
   }, [room.page]);
 
   useEffect(() => {
-    if(results){
+    if (results) {
       setGlobalRoomPage(Game.Finish);
     }
   }, [results]);
@@ -189,7 +193,7 @@ export default function LinhaDoTempo() {
   switch (room.page) {
     case Game.Game:
       return (
-        <GamePage 
+        <GamePage
           turnVisibility={user.isCurrentTurn}
           question={question}
           timeLeft={msTimer}
