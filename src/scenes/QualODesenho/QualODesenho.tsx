@@ -79,7 +79,7 @@ export default function QualODesenho() {
     console.log('O usuário desejou voltar ao lobby');
     socket.push('move-room-to', {
       roomCode: room.code,
-      destination: '/Lobby',
+      destination: '/saguao',
     });
   };
 
