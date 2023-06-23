@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Header from '../../../components/Header';
 import targetImage from './img/target.png';
 import Background from '../../../components/Background';
@@ -56,14 +56,16 @@ export function GamePage({
   const [balloonText, setBalloonText] = useState('Prontos?');
   const [msTimer, setMsTimer] = useState(1); //tem de ter valor inicial > 0
   const [errorMsg, setErrorMsg] = useState<Error[]>([]);
-
   const [timer, setTimer] = useState<NodeJS.Timer>();
   const startTimer = () => {
-    setTimer(setInterval(run, 97));
+    setTimer(setInterval(run, 77));
   };
 
+  const balloonTextRef = useRef(null);
+  const balloonRef = useRef(null);
+
   useEffect(() => {
-    gsap.to('.balloon-img', { opacity: 1, duration: 0 });
+    gsap.to(balloonRef.current, { opacity: 0.01, duration: 0 });
   }, []);
 
   useEffect(() => {
@@ -96,27 +98,32 @@ export function GamePage({
   const animationBalloon = () => {
     const timeline = gsap.timeline();
     timeline
-      .to('.animation-balloon', { opacity: 1, duration: 0 })
-      .to('.animation-balloon', { opacity: 0, duration: 0.5, delay: 1 })
+      .to(balloonRef.current, {opacity: 1, duration: 0 })
+      .to(balloonRef.current, { opacity: 1, duration: 0 })
+      .to(balloonRef.current, { opacity: 0, duration: 0.5, delay: 1 })
+      .to(balloonTextRef.current, { opacity: 1, fontSize: 44, duration: 0 })
       .call(() => {
         setBalloonText('3');
       })
-      .to('.balloon-text', { fontSize: 44, duration: 0 })
-      .to('.animation-balloon', { opacity: 1, duration: 0, delay: 0.1 })
-      .to('.animation-balloon', { opacity: 0, duration: 0.5, delay: 0.5 })
+      .to(balloonRef.current, { opacity: 1, duration: 0, delay: 0.1 })
+      .to(balloonRef.current, { opacity: 0, duration: 0.5, delay: 0.5 })
       .call(() => {
         setBalloonText('2');
       })
-      .to('.animation-balloon', { opacity: 1, duration: 0, delay: 0.1 })
-      .to('.animation-balloon', { opacity: 0, duration: 0.5, delay: 0.5 })
+      .to(balloonRef.current, { opacity: 1, duration: 0, delay: 0.1 })
+      .to(balloonRef.current, { opacity: 0, duration: 0.5, delay: 0.5 })
       .call(() => {
         setBalloonText('1');
       })
-      .to('.animation-balloon', { opacity: 1, duration: 0, delay: 0.1 })
-      .to('.animation-balloon, .balloon-text', {
+      .to(balloonRef.current, { opacity: 1, duration: 0, delay: 0.1 })
+      .to(balloonTextRef.current, {
         display: 'none',
         duration: 0,
         delay: 0.9,
+      })
+      .to(balloonRef.current, {
+        display: 'none',
+        duration: 0,
       })
       .to('.target-image', { opacity: 1, duration: 0.1 })
       .call(startTimer);
@@ -133,6 +140,7 @@ export function GamePage({
   };
 
   const handleClick = () => {
+    if(!everyoneIsReady) return;
     shotValidation();
     clearInterval(timer);
     rankingPage();
@@ -161,14 +169,14 @@ export function GamePage({
           ))}
         </div>
 
-        <div className="animation-balloon">
+        <div className="animation-balloon" ref={balloonRef}>
           <img
             src={balloon}
             className="balloon-img"
             onLoad={iAmReady}
             onError={iAmReady}
           />
-          <p className="balloon-text">{balloonText}</p>
+          <p ref={balloonTextRef} className="balloon-text">{balloonText}</p>
         </div>
 
         <button className="button-bang" onClick={handleClick}></button>

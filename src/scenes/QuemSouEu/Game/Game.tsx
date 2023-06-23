@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Eye, EyeOff, RotateCw } from 'react-feather';
+import { Edit2, Eye, EyeOff, RotateCw } from 'react-feather';
 import Avatar from '../../../components/Avatar';
 import Background from '../../../components/Background';
 import Button from '../../../components/Button';
@@ -12,7 +12,7 @@ import {
   CardContent,
   Detail,
   GuidanceText,
-  HideNames,
+  GameOption,
   OthersName,
   YourName,
   HiddenName,
@@ -26,7 +26,9 @@ import {
   Content,
   Reload,
   ReloadsLeft,
+  Options,
 } from './Game.style';
+import Notes from './Notes';
 
 interface WhoPlayersProps {
   nickname: string;
@@ -75,6 +77,7 @@ export default function GamePage({
     })
   );
 
+  const [areNotesVisible, setNotesVisibility] = useState<boolean>(false);
   const [areNamesVisible, setNamesVisibility] = useState<boolean>(true);
 
   const toggleSelection = (nickname) => {
@@ -121,7 +124,7 @@ export default function GamePage({
 
   const guidanceText =
     turnVisibility === true
-      ? 'Selecione o primeiro que acertar:'
+      ? 'Quem acertou primeiro?'
       : 'Veja quem são seus amigos:';
 
   const cardStyle = (isSelected: boolean) => {
@@ -138,6 +141,8 @@ export default function GamePage({
       }
     />
   );
+
+
 
   const button = (
     <Button
@@ -156,6 +161,23 @@ export default function GamePage({
 
   return (
     <Background noImage>
+      <Popup
+        type="info"
+        title={title}
+        description={description}
+        show={popupVisibility}
+        exit={() => setPopupVisibility(false)}
+        comesFromTop
+      />
+
+      <Popup
+        type="info"
+        title='Anotações'
+        description={<Notes/>}
+        show={areNotesVisible}
+        exit={() => setNotesVisibility(false)}
+      />
+
       <Popup
         type="warning"
         warningType="success"
@@ -177,14 +199,6 @@ export default function GamePage({
         show={reloaded}
       />
 
-      <Popup
-        type="info"
-        title={title}
-        description={description}
-        show={popupVisibility}
-        exit={() => setPopupVisibility(false)}
-        comesFromTop
-      />
       <Header
         participants={owner}
         exit
@@ -196,9 +210,20 @@ export default function GamePage({
         <Content>
           <TextAndHide>
             <GuidanceText>{guidanceText}</GuidanceText>
-            <HideNames onClick={() => setNamesVisibility(!areNamesVisible)}>
-              {areNamesVisible === true ? <Eye /> : <EyeOff />}
-            </HideNames>
+            <Options>
+              <GameOption
+                style={{background: (areNotesVisible)? '#8877df' : '#403a55'}} 
+                onClick={() => setNotesVisibility(!areNotesVisible)}
+              >
+                <Edit2/>
+              </GameOption>
+              <GameOption
+                style={{background: (areNamesVisible)? '#403a55' : '#8877df'}} 
+                onClick={() => setNamesVisibility(!areNamesVisible)}
+              >
+                {areNamesVisible === true ? <Eye /> : <EyeOff />}
+              </GameOption>
+            </Options>
           </TextAndHide>
           <PlayerList>
             {whoPlayers.map((player) => {

@@ -40,10 +40,6 @@ export default function WhoDrankPage() {
   const [SP, setSP] = useState<number>(Math.random());
   const [buttonText, setButtonText] = useState('Ninguém bebeu');
 
-  useEffect(() => {
-    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
-  }, []);
-
   //SOCKET////////////////////////////////////////////////////////////////////////////////////////////
 
   const socket = SocketConnection.getInstance();

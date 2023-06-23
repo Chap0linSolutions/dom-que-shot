@@ -132,9 +132,12 @@ export default function SelectNextGame() {
   };
 
   useEffect(() => {
-    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
-    window.addEventListener('resize', handleResize);
+    document.body.style.overscrollBehavior = 'none'; //prevent pull-to-refresh on this page
+    document.querySelector('html').style.overflow = 'hidden';
     return () => {
+      document.body.style.overscrollBehavior = 'auto';
+      document.querySelector('html').style.overflow = 'auto';
+      window.removeEventListener('resize', handleResize);
       if (animation.current) {
         animation.current.kill();
       }

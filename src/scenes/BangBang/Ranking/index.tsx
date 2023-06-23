@@ -1,19 +1,20 @@
 import React from 'react';
-import './Ranking.css';
 import Avatar from '../../../components/Avatar';
 import Button from '../../../components/Button';
 import RankingItem from './RankingItem';
-import thumbDown from './img/thumbs-down.png';
-import crown from './img/crown.png';
+import crown from '../../../assets/crown.png';
+import thumbDown from '../../../assets/thumbs-down.png';
 import Background from '../../../components/Background';
-import noOneVotedImage from '../../../assets/no-votes.png';
+import noOneFiredImage from '../../../assets/no-votes.png';
 import Header from '../../../components/Header';
+import { AvatarDiv, Crown, ThumbsDown, BannerText, Banners, Content, Ranking, ShotTime, Winner, Loser, Players, OnlyWinner, NoOneVoted, Text } from './Ranking.style';
+
 
 type Results = {
   id: string;
   nickname: string;
   avatarSeed: string;
-  shotTime: string;
+  shotTime: number;
 };
 
 interface RankingProps {
@@ -23,6 +24,14 @@ interface RankingProps {
   gamePage: () => void;
   turnVisibility: boolean;
   owner: boolean;
+}
+
+const getGuidanceText = (players: Results[], noOneFired: boolean) => { 
+  if(players.length === 0) return ''; 
+  if(noOneFired) return 'Todo mundo bebe!';
+  const firedTooSoon = players.filter(p => p.shotTime === -10001);
+  if(firedTooSoon.length > 0) return 'Quem queimou a largada bebe!';
+  return 'Quem atirou por último bebe!';
 }
 
 export function RankingPage({
@@ -39,7 +48,7 @@ export function RankingPage({
           id: 0,
           nickname: 'carregando...',
           avatarSeed: 'a winner avatar has no seed',
-          shotTime: `${Infinity}`,
+          shotTime: Infinity,
         };
 
   const loser =
@@ -49,20 +58,20 @@ export function RankingPage({
           id: 1,
           nickname: 'carregando...',
           avatarSeed: 'a loser avatar has no seed',
-          shotTime: `${Infinity}`,
+          shotTime: Infinity,
         };
 
-  let count = 0;
-  let noOneVoted = false;
+  let losersCount = 0;
+  let noOneFired = false;
 
   data.forEach((player) => {
-    if (parseInt(player.shotTime) / -1000 >= 10) {
-      count++;
+    if (player.shotTime / -1000 >= 10) {
+      losersCount++;
     }
   });
 
-  if (count === data.length) {
-    noOneVoted = true;
+  if (losersCount === data.length) {
+    noOneFired = true;
   }
 
   const button =
@@ -75,81 +84,81 @@ export function RankingPage({
   return (
     <Background>
       <Header participants={owner} />
-      <div id="ranking-page" className="ranking-page">
-        <div className="RankingDiv">
-          <div className="container-header">
-            {count < 2 ? (
+      <Ranking>
+        <Content>
+          <Banners>
+            {((losersCount < 2) && finalRanking)? (
               <>
-                <div className="container-winner">
-                  <div className="background-avatar">
-                    <img className="crown" src={crown} />
+                <Winner>
+                  <AvatarDiv>
+                    <Crown src={crown} />
                     <Avatar seed={winner.avatarSeed} />
-                  </div>
-                  <p>{winner.nickname}</p>
-                  <span>{(parseInt(winner.shotTime) / -1000).toFixed(2)}s</span>
-                </div>
-                <div className="container-loser">
-                  <div className="background-avatar">
-                    {finalRanking && <Avatar seed={loser.avatarSeed} />}
-                    <img className="thumbDown" src={thumbDown} />
-                  </div>
-                  {finalRanking && <p>{loser.nickname}</p>}
-                  {finalRanking && (
-                    <span>
-                      {(parseInt(loser.shotTime) / -1000).toFixed(2)}s
-                    </span>
-                  )}
-                </div>
+                  </AvatarDiv>
+                  <BannerText>{winner.nickname}</BannerText>
+                  <ShotTime>
+                    {(winner.shotTime / -1000).toFixed(2)}s
+                  </ShotTime>
+                </Winner>
+                <Loser>
+                  <AvatarDiv>
+                    <Avatar seed={loser.avatarSeed} />
+                    <ThumbsDown src={thumbDown} />
+                  </AvatarDiv>
+                  <BannerText>{loser.nickname}</BannerText>
+                    <ShotTime>
+                      {(loser.shotTime / -1000).toFixed(2)}s
+                    </ShotTime>
+                </Loser>
               </>
             ) : (
-              <div className="container-only-winner">
-                <div className="background-avatar">
-                  {!noOneVoted ? (
+              <OnlyWinner>
+                <AvatarDiv>
+                  {!noOneFired ? (
                     <>
-                      <img className="only-crown" src={crown} />
+                      <Crown src={crown} />
                       <Avatar seed={winner.avatarSeed} />
                     </>
                   ) : (
-                    <img
-                      src={noOneVotedImage}
-                      width="63px;"
-                      style={{ transform: 'rotate(10deg)' }}
+                    <NoOneVoted
+                      src={noOneFiredImage}
                     />
                   )}
-                </div>
-                {!noOneVoted ? (
+                </AvatarDiv>
+                {!noOneFired ? (
                   <>
-                    <p>{winner.nickname}</p>
-                    <span>
-                      {(parseInt(winner.shotTime) / -1000).toFixed(2)}s
-                    </span>
+                    <BannerText>{winner.nickname}</BannerText>
+                    <ShotTime>
+                      {(winner.shotTime / -1000).toFixed(2)}s
+                    </ShotTime>
                   </>
                 ) : (
-                  <p style={{ textAlign: 'center' }}>
+                  <BannerText>
                     Todo mundo
                     <br />
                     morreu!
-                  </p>
+                  </BannerText>
                 )}
-              </div>
+              </OnlyWinner>
             )}
-          </div>
+          </Banners>
 
-          <div className="container-body">
-            <div className="ranking-container">
-              {data.map((player, i) => (
-                <RankingItem
-                  key={i}
-                  name={player.nickname}
-                  time={parseInt(player.shotTime) / -1000}
-                  position={i}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+          <Players>
+            {data.map((player, i) => (
+              <RankingItem
+                key={i}
+                name={player.nickname}
+                time={(player.shotTime) / -1000}
+                position={i}
+              />
+            ))}
+          </Players>
+
+          {finalRanking && <Text>
+              {getGuidanceText(data, noOneFired)}
+          </Text>}
+        </Content>
         {button}
-      </div>
+      </Ranking>
     </Background>
   );
 }

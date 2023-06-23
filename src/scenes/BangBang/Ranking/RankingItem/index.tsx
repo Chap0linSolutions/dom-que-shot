@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles.css';
-import thumbDown from '../img/thumbs-down.png';
+import thumbDown from '../../../../assets/thumbs-down.png';
 
 interface RankingItemProps {
   position: number;
@@ -13,7 +13,7 @@ const RankingItem: React.FC<RankingItemProps> = ({ position, name, time }) => {
     <div id="ranking-item">
       <div className="position">
         <div className="circle-border">
-          {time >= 10 ? <img src={thumbDown} /> : <p>{position + 1}º</p>}
+          {time >= 10 ? <img className='icon' src={thumbDown} /> : <p>{position + 1}º</p>}
         </div>
       </div>
       <div className="infos">

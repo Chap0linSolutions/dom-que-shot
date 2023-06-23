@@ -93,10 +93,6 @@ export default function OEscolhido() {
     });
   };
 
-  useEffect(() => {
-    window.history.replaceState({}, 'Dom Que Shot', process.env.VITE_REACT_APP_ADRESS);
-  }, []);
-
   //SOCKET///////////////////////////////////////////////////////////////////////////////////////
 
   const socket = SocketConnection.getInstance();
